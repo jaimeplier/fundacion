@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}" media="screen,projection"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}" media="screen,projection">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/icono.png' %}"/>
+    {% block style %}
+
+    {% endblock %}
+</head>
+
+<body>
+<main>
+
+    <div class="had-container">
+        <div class="row fondo_blanco">
+            <div class="col s12 m2 l2 txt_algn_center">
+                <img src="{% static 'images/logo.png' %}" class="responsive-img" style="max-width: 100px;">
+            </div>
+            <div class="col s12 m4 l6"></div>
+            <div class="col s12 m6 l4 txt_algn_center ">
+                <div class="row pasos">
+                    <div class="col s12 linea_verde">
+                        <span class="span_sb_2 font_verde">{% block paso %} {% endblock %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+
+    </div>
+</main>
+<div class="footer-copyright">
+    <div class="container">
+        <div class="row" style="text-align: center;">
+            <a class="font_blanco" href="#!">- FUNDACION ORIGEN 2018 -</a>
+        </div>
+    </div>
+</div>
+<!-- another scripts on the wall -->
+<script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+{% block scripts %}
+{% endblock %}
+</body>
+</html>

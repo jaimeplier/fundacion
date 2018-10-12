@@ -5,7 +5,7 @@ from django.db import models
 
 class Catalogo(models.Model):
     nombre = models.CharField(max_length=512)
-    estatus = models.IntegerField(default=True)
+    estatus = models.BooleanField(default=True)
     fecha_alta = models.DateTimeField(auto_now_add=True)
     fecha_baja = models.DateTimeField(blank=True, null=True)
 

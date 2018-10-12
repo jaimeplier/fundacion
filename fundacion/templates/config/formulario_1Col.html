@@ -1,0 +1,312 @@
+{% extends 'config/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="row">
+        <div class="col s1 m1 l1"></div>
+        <div class="col s10 m10 l10">
+            <div class="row">
+                <div class="col s12 center">
+                    <h2 class="font_azul" style="font-family: 'Jura', sans-serif; font-size: 4rem;">{{ titulo }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col s1 l1 m1"></div>
+
+    </div>
+    <div class="row">
+        <div class="col s1 m1 l1"></div>
+        <div class="col s10 m10 l10 left">
+            <div class="chip">
+                {{ instrucciones }}
+                <i class="close material-icons">close</i>
+            </div>
+        </div>
+    </div>
+    <div class="col s1 m1 l1"></div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 m1 l1 "></div>
+        <div class="col s12 m10 l10 padding_0">
+            <div class="col s12 ">
+                <div class="row">
+                    <form class="col s12" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    {% if field|field_type == 'filefield' or field|field_type == 'imagefield' %}
+                                        <div class="row">
+                                            <div class="col s12 center">
+                                                <label style="margin-top: -2%;"
+                                                       for="{{ field.auto_id }} ">{{ field.label }}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s12 left">
+                                                {% render_field field %}
+                                            </div>
+                                        </div>
+                                    {% elif field|field_type == 'datetimefield' %}
+                                        <div class="row">
+                                            <div class="input-field col s12 m6 l6">
+                                                <input placeholder="Fecha" id="fecha" type="text"
+                                                       class="datepicker" required="required"
+                                                       data-validation-required-message="Este campo es requerido"
+                                                       onchange="copiar_fecha_hora()">
+                                                <label for="fecha">Fecha</label>
+                                            </div>
+                                            <div class="input-field col s12 m6 l6">
+                                                <input placeholder="Hora" id="hora" type="text"
+                                                       class="validate timepicker" required="required"
+                                                       data-validation-required-message="Este campo es requerido"
+                                                       onchange="copiar_fecha_hora()">
+                                                <label for="fecha">Hora</label>
+                                            </div>
+                                        </div>
+
+                                        {% render_field field class+="validate" placeholder=field.label required='required' data-validation-required-message="Este campo es requerido" id="fecha-hora" hidden="true" %}
+                                    {% elif field.html_name == 'fecha_nac' %}
+                                        <input placeholder="Fecha de nacimiento" id="fecha_nac" type="text"
+                                               class="datepicker_nacimiento" required="required"
+                                               data-validation-required-message="Este campo es requerido"
+                                               onchange="copiar_fecha()">
+                                        {% render_field field class+="validate fecha_nac_form" placeholder="Fecha de nacimiento" required='required' data-validation-required-message="Este campo es requerido" id="fecha_nac_form" hidden="true" %}
+                                        <label for="fecha_nac">Fecha de nacimiento</label>
+                                    {% elif field.html_name == 'lista_reproduccion' %}
+                                        {% render_field field class+="validate tooltipped" placeholder=field.label data-tooltip="Copia y pega el embed de Spotify Ej. https://open.spotify.com/embed/user/spotify/playlist/37i9dQZF1DWYN0zdqzbEwl" %}
+                                        <label for="{{ field.auto_id }} ">{{ field.label }}</label>
+                                    {% elif field.html_name == 'video' %}
+                                        {% render_field field class+="validate tooltipped" placeholder=field.label data-tooltip="Copia y pega el embed de Youtube Ej. https://www.youtube.com/embed/xnKhsTXoKCI" %}
+                                        <label for="{{ field.auto_id }} ">{{ field.label }}</label>
+                                    {% elif field.html_name == 'video_productora' %}
+                                        <label for="{{ field.auto_id }} ">{{ field.label }}</label>
+                                        {% render_field field class+="validate tooltipped" placeholder=field.label data-tooltip="Copia y pega el embed de Youtube Ej. https://www.youtube.com/embed/xnKhsTXoKCI" %}
+                                    {% elif field.html_name == 'video_artista' %}
+                                        {% render_field field class+="validate tooltipped" placeholder=field.label data-tooltip="Copia y pega el embed de Youtube Ej. https://www.youtube.com/embed/xnKhsTXoKCI" %}
+                                        <label for="{{ field.auto_id }} ">{{ field.label }}</label>
+                                    {% else %}
+                                        {% with WIDGET_REQUIRED_CLASS='required' %}
+                                            {% render_field field class+="validate" placeholder=field.label data-validation-required-message="Este campo es requerido" %}
+                                            <label for="{{ field.auto_id }} ">{{ field.label }}</label>
+                                        {% endwith %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% if form2 %}
+                            {% for field in form2 %}
+                                {% if field|field_type == 'filefield' or field|field_type == 'imagefield' %}
+                                    <div class="row">
+                                        <div class="col s12 left">
+                                            <label style="margin-top: -2%;"
+                                                   for="{{ field.auto_id }} ">{{ field.label }}</label>
+                                            {% render_field field %}
+                                        </div>
+                                    </div><br>
+                                {% else %}
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            {% render_field field class+="validate" placeholder=field.label required='required' data-validation-required-message="Este campo es requerido" %}
+                                            <label for="{{ field.auto_id }} ">{{ field.label }}</label>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+
+                        {% endif %}
+                        {{ error }}
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li class="{{ message.tags }}">{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong class="box_error">{{ field.label }}: {{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    <strong class="box_error">{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if form2.errors %}
+                            {% for field in form2 %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong class="box_error">{{ field.label }}{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form2.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    <strong class="box_error">{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        {% if save_and_new %}
+                            <div class="row">
+                                <div class="col s1"></div>
+                                <div class="col s10" style="text-align: right;">
+                                    <button class="btn waves-effect waves-light" type="submit" name="save_and_new">
+                                        Guardar y registrar otro
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                                <div class="col s1"></div>
+                            </div>
+                        {% endif %}
+                        {% if continuar %}
+                            <div class="row">
+                                <div class="col s1"></div>
+                                <div class="col s10" style="text-align: right;">
+                                    <button class="btn waves-effect waves-light" type="submit" name="continuar">
+                                        Guardar y continuar
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                                <div class="col s1"></div>
+                            </div>
+                        {% endif %}
+
+                        <div class="row">
+                            <div class="col s1"></div>
+                            <div class="col s10" style="text-align: right;">
+                                <button class="btn waves-effect waves-light" type="submit" name="action">Guardar
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                            <div class="col s1"></div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div class="col s12 m1 l1"></div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if user.is_admin or user.is_admin_gral or user.is_admin_payments or user.is_admin_users or user.is_productor or user.productor_has_empresa or user.productor_has_representante or user.boletos_productora %}
+                $('.redes_sociales').hide();
+            {% endif %}
+            $(".button-collapse").sideNav();
+            $('.slider').slider();
+            $('ul.tabs').tabs();
+            $('.carousel').carousel({
+                dist: 0,
+                shift: 0,
+                padding: 20
+
+            });
+
+            var $calendario = $('.datepicker').pickadate({
+                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsShort: ['Enero', 'Feb', 'Mar', 'Abr', 'Mayo', 'Jun', 'Jul', 'Agos', 'Sept', 'Oct', 'Nov', 'Dic'],
+                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vier', 'Sab'],
+                formatSubmit: 'dd/mm/yyyy',
+                hiddenName: 'fecha_val',
+                containerHidden: '#fecha-hora',
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 2, // Creates a dropdown of 15 years to control year,
+                today: 'Hoy',
+                clear: 'Cancelar',
+                close: 'Ok',
+                min: true,
+                closeOnSelect: true // Close upon selecting a date,
+            });
+            selector_calendario = $calendario.pickadate('picker')
+
+            var $calendario_nacimiento = $('.datepicker_nacimiento').pickadate({
+                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsShort: ['Enero', 'Feb', 'Mar', 'Abr', 'Mayo', 'Jun', 'Jul', 'Agos', 'Sept', 'Oct', 'Nov', 'Dic'],
+                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vier', 'Sab'],
+                weekdaysAbbrev: ['D', 'L', 'M', 'Mi', 'J', 'V', 'S'],
+                formatSubmit: 'dd/mm/yyyy',
+                hiddenName: true,
+                containerHidden: '#fecha',
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 80, // Creates a dropdown of 50 years to control year,
+                today: 'Hoy',
+                clear: 'Cancelar',
+                close: 'Ok',
+                min: false,
+                max: true,
+                closeOnSelect: true // Close upon selecting a date,
+            });
+            selector_nacimiento = $calendario_nacimiento.pickadate('picker')
+
+            $('.timepicker').pickatime({
+                default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+                fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+                twelvehour: false, // Use AM/PM or 24-hour format
+                donetext: 'OK', // text for done-button
+                //cleartext: 'Restaurar', // text for clear-button
+                canceltext: 'Cancelar', // Text for cancel-button,
+                container: undefined, // ex. 'body' will append picker to body
+                autoclose: true, // automatic close timepicker
+                ampmclickable: true, // make AM PM clickable
+                aftershow: function () {
+                } //Function for after opening timepicker
+            });
+
+
+            $('select').material_select();
+
+            var fecha = $('#fecha_nac_form').val();
+            if (fecha !== undefined) {
+                selector_nacimiento.set('select', fecha, {format: 'dd/mm/yyyy'})
+                //$('#fecha_nac').val(fecha);
+                //$('[name=fecha_nac]').val(fecha);
+            }
+
+            var fecha_hora = $('#fecha-hora').val();
+            if (fecha_hora !== undefined) {
+                var array_datetime = fecha_hora.split(' ');
+                if (array_datetime.length == 2) {
+                    selector_calendario.set('select', array_datetime[0], {format: 'dd/mm/yyyy'}).trigger("change")
+                    $('#hora').val(array_datetime[1]);
+                    $('#fecha-hora').val(fecha_hora);
+                }
+            }
+
+        });
+
+
+        function copiar_fecha() {
+            var $input = $('.datepicker_nacimiento').pickadate();
+            var picker = $input.pickadate('picker');
+            var fecha = picker._hidden;
+            $('#fecha_nac_form').val('');
+            var fecha_pick = fecha.value
+            $('#fecha_nac_form').val(fecha_pick);
+        }
+
+        function copiar_fecha_hora() {
+            var fecha_hora = $('#fecha-hora').val();
+            $('#fecha-hora').val(fecha_hora);
+            var $input = $('.datepicker').pickadate();
+            var picker = $input.pickadate('picker');
+            var fecha = picker._hidden;
+            $('#fecha-hora').val('');
+            var fecha_hora = fecha.value + ' ' + $('#hora').val()
+            $('#fecha-hora').val(fecha_hora);
+        }
+    </script>
+{% endblock %}
+
+        
+

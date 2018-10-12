@@ -1,0 +1,241 @@
+<!--   SOFTIC SOLUTIONS   -->
+{% extends 'config/base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'vendor/DataTables/datatables.css' %}"/>
+    <style>
+        #tabla_length {
+            width: 41% !important;
+            margin-left: 59% !important;
+        }
+
+        .flexcontent {
+            margin-top: -8% !important;
+        }
+
+        #tabla_filter {
+            margin-top: 2% !important;
+            width: 41% !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            color: white !important;
+            border: 1px solid #979797;
+            background: none;
+            background-color: #00A4E1;
+
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col s1 m1 l1"></div>
+        <div class="col s10 m10 l10">
+            <div class="row">
+                <div class="col s12 left">
+                    {% block titulo_tabla %}{% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="col s1 m1 l1"></div>
+    </div>
+
+    <div class="row">
+        <div class="col s1 m1 l1"></div>
+        <div class="col s10 m10 l10">
+            <div class="row">
+                {% block instrucciones_tabla %}{% endblock %}
+            </div>
+        </div>
+        <div class="col s1 m1 l1"></div>
+    </div>
+
+    <br/>
+    <br/>
+
+    <!-- aquí va el contenido de la tabla -->
+    <div class="row" style="margin-top: 2%;">
+        <div class="col s1 m1 l1"></div>
+        <div class="col s10 m10 l10">
+            <div class="row">
+                <div class="col s12">
+                    <table class="bordered highlight centered responsive-table stripe" id="tabla">
+                        <thead class="fondo_negro white-text">
+                        <tr>
+                            {% block campos %}{% endblock %}
+                        </tr>
+                        </thead>
+                        {% block datos_tabla %} {% endblock %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col s1 m1 l1"></div>
+    </div>
+    <!-- Modal -->
+    {% block modal %}
+
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <p>¿Seguro que deseas eliminarlo?</p>
+            </div>
+            <div class="modal-footer">
+                <a class="modal-action modal-close waves-effect btn-flat">Cancelar</a>
+                <a onclick="eliminar()" class="modal-action modal-close waves-effect btn-flat">Aceptar</a>
+            </div>
+        </div>
+
+    {% endblock %}
+    <!-- fin del modal -->
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'vendor/DataTables/datatables.min.js' %}"></script>
+    <script src="{% static 'js/crsfajax.js' %}"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
+            integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {% if user.is_admin or user.is_admin_gral or user.is_admin_payments or user.is_admin_users or user.is_productor or user.productor_has_empresa or user.productor_has_representante or user.boletos_productora %}
+                $('.redes_sociales').hide();
+            {% endif %}
+            $(".dropdown-trigger").dropdown();
+        });
+        {% block scripts_tabla %}
+        {% endblock %}
+
+        var id = 0;
+
+        function actualiza(uid) {
+            id = uid;
+            $('.modal').modal({
+                    dismissible: false
+                }
+            );
+            $('#modal1').modal('open');
+        }
+
+
+        $(document).ready(function () {
+            $(".button-collapse").sideNav();
+
+            {% if user.is_admin or user.is_admin_gral or user.is_admin_payments or user.is_admin_users %}
+                $('.redes_sociales').hide()
+            {% endif %}
+
+            tabla = $('#tabla').DataTable({
+                dom: 'lBfrtip',
+                language: {
+                    url: "{% static "datatables/spanish.json" %}"
+                },
+                //buttons: ['copy', 'excel', 'pdf', 'csv', 'print'],
+                buttons: {
+                    dom: {
+                        container: {
+                            tag: 'div',
+                            className: 'flexcontent'
+                        },
+                        buttonLiner: {
+                            tag: null
+                        }
+                    },
+                    buttons: [
+
+
+                        {
+                            extend: 'copyHtml5',
+                            text: '<i class="far fa-copy fa-2x"></i></i><br/>Copy',
+                            title: '{{ titulo_tabla }}',
+                            titleAttr: 'Copiar',
+                            className: 'btn btn-app export barras btncopy',
+                            exportOptions: {
+                                columns: [0, 1]
+                            }
+                        },
+
+                        {
+                            extend: 'pdfHtml5',
+                            text: '<i class="far fa-file-pdf fa-2x"></i><br/>PDF',
+                            title: 'Titulo de tabla en pdf',
+                            titleAttr: 'PDF',
+                            className: 'btn btn-app export pdf btnpdf',
+                            exportOptions: {
+                                columns: [0, 1]
+                            },
+                            customize: function (doc) {
+
+                                doc.styles.title = {
+                                    color: '#4c8aa0',
+                                    fontSize: '30',
+                                    alignment: 'center'
+                                },
+                                    doc.styles['td:nth-child(2)'] = {
+                                        width: '100px',
+                                        'max-width': '100px'
+                                    },
+                                    doc.styles.tableHeader = {
+                                        fillColor: '#4c8aa0',
+                                        color: 'white',
+                                        alignment: 'center'
+                                    },
+                                    doc.content[1].margin = [100, 0, 100, 0]
+
+                            }
+
+                        },
+
+                        {
+                            extend: 'excelHtml5',
+                            text: '<i class="far fa-file-excel fa-2x"></i></i><br/>Excel',
+                            title: '{{ titulo_tabla }}',
+                            titleAttr: 'Excel',
+                            className: 'btn btn-app export excel btnexcel',
+                            exportOptions: {
+                                columns: [0, 1]
+                            },
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="far fa-file-alt fa-2x"></i><br/>Print',
+                            title: '{{ titulo_tabla }}',
+                            titleAttr: 'Imprimir',
+                            className: 'btn btn-app export imprimir btnprint',
+                            exportOptions: {
+                                columns: [0, 1]
+                            }
+                        },
+                    ]
+                },
+                processing: true,
+                serverSide: true,
+                ajax: "{% block url_ajax %}{% endblock %}",
+                {% block order %}{% endblock %}
+            });
+
+            $("#buscar").on('keyup', function () {
+                $('#usuarios').dataTable().fnFilter(this.value);
+            });
+
+
+            tabla.on('draw', function () {
+                $('select').material_select();
+            });
+
+            $('select').material_select();
+            $(".button-collapse").sideNav();
+
+            Materialize.updateTextFields();
+            $('select').material_select();
+            $('ul.tabs').tabs({
+                swipeable: true,
+                responsiveThreshold: 1920
+            });
+
+
+            $('select').material_select();
+
+        });
+
+    </script>
+{% endblock %}
+
