@@ -24,7 +24,7 @@ SECRET_KEY = 'i=3^xi75cspp^ng3p)v@xn^we%p+u5v)mh9gp)3#m(d8^*cqcs'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'config.apps.ConfigConfig'
 ]
 
 MIDDLEWARE = [
@@ -75,7 +76,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'fundacionorigen',
         'USER': 'root',
-        'PASSWORD': 'n0m3l0s3',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '3306'
     }
