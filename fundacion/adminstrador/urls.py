@@ -1,7 +1,7 @@
 from django.urls import path
 
 from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, AcudeInstitucionEdit, EstadoAdd, \
-    EstadoAjaxList, EstadoEdit
+    EstadoAjaxList, EstadoEdit, PaisAdd, PaisAjaxList, PaisEdit
 from . import views
 
 app_name = 'administrador'

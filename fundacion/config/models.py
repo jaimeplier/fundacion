@@ -23,7 +23,7 @@ class AcudeInstitucion(Catalogo):
 
 
 class Estado(Catalogo):
-    pais = models.ForeignKey('Estado',on_delete=models.DO_NOTHING)
+    pais = models.ForeignKey('Pais',on_delete=models.DO_NOTHING)
 
     class Meta:
         managed = True

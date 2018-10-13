@@ -6,8 +6,8 @@ from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from adminstrador.forms import AcudeInstitucionForm, EstadoForm
-from config.models import AcudeInstitucion, Estado
+from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm
+from config.models import AcudeInstitucion, Estado, Pais
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -185,4 +185,92 @@ class EstadoEdit(UpdateView):
 def delete_estado(request, pk):
     estado = get_object_or_404(Estado, pk=pk)
     estado.delete()
+    return JsonResponse({'result': 1})
+
+class PaisAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_pais'
+
+    model = Pais
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/pais/list'
+    form_class = PaisForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PaisAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un pais'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_pais', login_url='/login/')
+def list_pais(request):
+    template_name = 'administrador/tab_pais.html'
+    return render(request, template_name)
+
+
+class PaisAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_pais'
+
+    model = Pais
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_pais',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(PaisAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Pais.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class PaisEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_pais'
+    success_url = '/administrador/pais/list'
+
+    model = Pais
+    template_name = 'config/formulario_1Col.html'
+    form_class = PaisForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PaisEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_pais', login_url='/login/')
+def delete_pais(request, pk):
+    pais = get_object_or_404(Pais, pk=pk)
+    pais.delete()
     return JsonResponse({'result': 1})

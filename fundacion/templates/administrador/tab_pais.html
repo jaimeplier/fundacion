@@ -2,7 +2,7 @@
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
     <label class="titulo_tabla">Acude a institución</label><br/>
-    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_acude_institucion' %}"><i
+    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_pais' %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -34,5 +34,5 @@
     }
 {% endblock %}
 
-{% block url_ajax %}{% url 'administrador:list_ajax_acude_institucion' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_pais' %}{% endblock %}
 
