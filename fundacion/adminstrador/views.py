@@ -7,8 +7,9 @@ from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
-    LenguaIndigenaForm, MedioContactoForm
-from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto
+    LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm
+from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
+    ModalidadViolencia
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -628,4 +629,92 @@ class MedioContactoEdit(UpdateView):
 def delete_medio_contacto(request, pk):
     medio_contacto = get_object_or_404(MedioContacto, pk=pk)
     medio_contacto.delete()
+    return JsonResponse({'result': 1})
+
+class ModalidadViolenciaAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_modalidad_violencia'
+
+    model = ModalidadViolencia
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/modalidad_violencia/list'
+    form_class = ModalidadViolenciaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ModalidadViolenciaAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un modalidad_violencia'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_modalidad_violencia', login_url='/login/')
+def list_modalidad_violencia(request):
+    template_name = 'administrador/tab_modalidad_violencia.html'
+    return render(request, template_name)
+
+
+class ModalidadViolenciaAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_modalidad_violencia'
+
+    model = ModalidadViolencia
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_modalidad_violencia',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(ModalidadViolenciaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return ModalidadViolencia.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class ModalidadViolenciaEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_modalidad_violencia'
+    success_url = '/administrador/modalidad_violencia/list'
+
+    model = ModalidadViolencia
+    template_name = 'config/formulario_1Col.html'
+    form_class = ModalidadViolenciaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ModalidadViolenciaEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_modalidad_violencia', login_url='/login/')
+def delete_modalidad_violencia(request, pk):
+    modalidad_violencia = get_object_or_404(ModalidadViolencia, pk=pk)
+    modalidad_violencia.delete()
     return JsonResponse({'result': 1})
