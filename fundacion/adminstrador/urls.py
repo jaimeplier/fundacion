@@ -8,7 +8,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     NivelEstudioEdit, NivelViolenciaAdd, NivelViolenciaAjaxList, NivelViolenciaEdit, OcupacionAdd, OcupacionAjaxList, \
     OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit, \
     TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
-    ViolentometroEdit
+    ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit
 from . import views
 
 app_name = 'administrador'
@@ -109,4 +109,10 @@ urlpatterns = [
     path('violentometro/ajax/list/', ViolentometroAjaxList.as_view(), name='list_ajax_violentometro'),
     path('violentometro/edit/<int:pk>', ViolentometroEdit.as_view(), name='edit_violentometro'),
     path('violentometro/list/delete/<int:pk>', views.delete_violentometro, name='delete_violentometro'),
+
+    path('vive_con/add/', ViveConAdd.as_view(), name='add_vive_con'),
+    path('vive_con/list/', views.list_vive_con, name='list_vive_con'),
+    path('vive_con/ajax/list/', ViveConAjaxList.as_view(), name='list_ajax_vive_con'),
+    path('vive_con/edit/<int:pk>', ViveConEdit.as_view(), name='edit_vive_con'),
+    path('vive_con/list/delete/<int:pk>', views.delete_vive_con, name='delete_vive_con'),
 ]
