@@ -6,8 +6,8 @@ from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm
-from config.models import AcudeInstitucion, Estado, Pais
+from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm
+from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -273,4 +273,92 @@ class PaisEdit(UpdateView):
 def delete_pais(request, pk):
     pais = get_object_or_404(Pais, pk=pk)
     pais.delete()
+    return JsonResponse({'result': 1})
+
+class EstadoCivilAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_estado_civil'
+
+    model = EstadoCivil
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/estado_civil/list'
+    form_class = EstadoCivilForm
+
+    def get_context_data(self, **kwargs):
+        context = super(EstadoCivilAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un estado_civil'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_estado_civil', login_url='/login/')
+def list_estado_civil(request):
+    template_name = 'administrador/tab_estado_civil.html'
+    return render(request, template_name)
+
+
+class EstadoCivilAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_estado_civil'
+
+    model = EstadoCivil
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_estado_civil',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(EstadoCivilAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return EstadoCivil.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class EstadoCivilEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_estado_civil'
+    success_url = '/administrador/estado_civil/list'
+
+    model = EstadoCivil
+    template_name = 'config/formulario_1Col.html'
+    form_class = EstadoCivilForm
+
+    def get_context_data(self, **kwargs):
+        context = super(EstadoCivilEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_estado_civil', login_url='/login/')
+def delete_estado_civil(request, pk):
+    estado_civil = get_object_or_404(EstadoCivil, pk=pk)
+    estado_civil.delete()
     return JsonResponse({'result': 1})

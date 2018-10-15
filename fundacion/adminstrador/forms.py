@@ -1,6 +1,6 @@
 from django.forms import ModelForm, Select
 
-from config.models import AcudeInstitucion, Estado, Pais
+from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil
 
 
 class AcudeInstitucionForm(ModelForm):
@@ -20,6 +20,13 @@ class EstadoForm(ModelForm):
 class PaisForm(ModelForm):
     class Meta:
         model = Pais
+        exclude = ['fecha_alta', 'fecha_baja']
+        widgets = {
+            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
+class EstadoCivilForm(ModelForm):
+    class Meta:
+        model = EstadoCivil
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }

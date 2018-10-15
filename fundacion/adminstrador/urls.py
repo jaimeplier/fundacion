@@ -1,7 +1,7 @@
 from django.urls import path
 
 from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, AcudeInstitucionEdit, EstadoAdd, \
-    EstadoAjaxList, EstadoEdit, PaisAdd, PaisAjaxList, PaisEdit
+    EstadoAjaxList, EstadoEdit, PaisAdd, PaisAjaxList, PaisEdit, EstadoCivilAdd, EstadoCivilAjaxList, EstadoCivilEdit
 from . import views
 
 app_name = 'administrador'
@@ -24,4 +24,10 @@ urlpatterns = [
     path('pais/ajax/list/', PaisAjaxList.as_view(), name='list_ajax_pais'),
     path('pais/edit/<int:pk>', PaisEdit.as_view(), name='edit_pais'),
     path('pais/list/delete/<int:pk>', views.delete_pais, name='delete_pais'),
+
+    path('estado_civil/add/', EstadoCivilAdd.as_view(), name='add_estado_civil'),
+    path('estado_civil/list/', views.list_estado_civil, name='list_estado_civil'),
+    path('estado_civil/ajax/list/', EstadoCivilAjaxList.as_view(), name='list_ajax_estado_civil'),
+    path('estado_civil/edit/<int:pk>', EstadoCivilEdit.as_view(), name='edit_estado_civil'),
+    path('estado_civil/list/delete/<int:pk>', views.delete_estado_civil, name='delete_estado_civil'),
 ]
