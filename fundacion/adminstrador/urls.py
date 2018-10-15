@@ -4,7 +4,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     EstadoAjaxList, EstadoEdit, PaisAdd, PaisAjaxList, PaisEdit, EstadoCivilAdd, EstadoCivilAjaxList, EstadoCivilEdit, \
     EstatusAdd, EstatusAjaxList, EstatusEdit, LenguaIndigenaAdd, LenguaIndigenaAjaxList, LenguaIndigenaEdit, \
     MedioContactoAdd, MedioContactoAjaxList, MedioContactoEdit, ModalidadViolenciaAdd, ModalidadViolenciaAjaxList, \
-    ModalidadViolenciaEdit
+    ModalidadViolenciaEdit, MunicipioAdd, MunicipioAjaxList, MunicipioEdit
 from . import views
 
 app_name = 'administrador'
@@ -57,4 +57,11 @@ urlpatterns = [
     path('modalidad_violencia/ajax/list/', ModalidadViolenciaAjaxList.as_view(), name='list_ajax_modalidad_violencia'),
     path('modalidad_violencia/edit/<int:pk>', ModalidadViolenciaEdit.as_view(), name='edit_modalidad_violencia'),
     path('modalidad_violencia/list/delete/<int:pk>', views.delete_modalidad_violencia, name='delete_modalidad_violencia'),
+
+    path('municipio/add/', MunicipioAdd.as_view(), name='add_municipio'),
+    path('municipio/list/', views.list_municipio, name='list_municipio'),
+    path('municipio/ajax/list/', MunicipioAjaxList.as_view(), name='list_ajax_municipio'),
+    path('municipio/edit/<int:pk>', MunicipioEdit.as_view(), name='edit_municipio'),
+    path('municipio/list/delete/<int:pk>', views.delete_municipio,
+         name='delete_municipio'),
 ]

@@ -7,9 +7,9 @@ from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
-    LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm
+    LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
-    ModalidadViolencia
+    ModalidadViolencia, Municipio
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -717,4 +717,92 @@ class ModalidadViolenciaEdit(UpdateView):
 def delete_modalidad_violencia(request, pk):
     modalidad_violencia = get_object_or_404(ModalidadViolencia, pk=pk)
     modalidad_violencia.delete()
+    return JsonResponse({'result': 1})
+
+class MunicipioAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_municipio'
+
+    model = Municipio
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/municipio/list'
+    form_class = MunicipioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(MunicipioAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un municipio'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_municipio', login_url='/login/')
+def list_municipio(request):
+    template_name = 'administrador/tab_municipio.html'
+    return render(request, template_name)
+
+
+class MunicipioAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_municipio'
+
+    model = Municipio
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_municipio',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(MunicipioAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Municipio.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class MunicipioEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_municipio'
+    success_url = '/administrador/municipio/list'
+
+    model = Municipio
+    template_name = 'config/formulario_1Col.html'
+    form_class = MunicipioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(MunicipioEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_municipio', login_url='/login/')
+def delete_municipio(request, pk):
+    municipio = get_object_or_404(Municipio, pk=pk)
+    municipio.delete()
     return JsonResponse({'result': 1})
