@@ -8,9 +8,9 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
-    OcupacionForm, ReligionForm
+    OcupacionForm, ReligionForm, TipoCasoForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
-    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion
+    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -1159,4 +1159,92 @@ class ReligionEdit(UpdateView):
 def delete_religion(request, pk):
     religion = get_object_or_404(Religion, pk=pk)
     religion.delete()
+    return JsonResponse({'result': 1})
+
+class TipoCasoAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_tipo_caso'
+
+    model = TipoCaso
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/tipo_caso/list'
+    form_class = TipoCasoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TipoCasoAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un tipo_caso'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_tipo_caso', login_url='/login/')
+def list_tipo_caso(request):
+    template_name = 'administrador/tab_tipo_caso.html'
+    return render(request, template_name)
+
+
+class TipoCasoAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_tipo_caso'
+
+    model = TipoCaso
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_tipo_caso',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(TipoCasoAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return TipoCaso.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class TipoCasoEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_tipo_caso'
+    success_url = '/administrador/tipo_caso/list'
+
+    model = TipoCaso
+    template_name = 'config/formulario_1Col.html'
+    form_class = TipoCasoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TipoCasoEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_tipo_caso', login_url='/login/')
+def delete_tipo_caso(request, pk):
+    tipo_caso = get_object_or_404(TipoCaso, pk=pk)
+    tipo_caso.delete()
     return JsonResponse({'result': 1})

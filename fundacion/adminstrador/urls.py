@@ -6,7 +6,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     MedioContactoAdd, MedioContactoAjaxList, MedioContactoEdit, ModalidadViolenciaAdd, ModalidadViolenciaAjaxList, \
     ModalidadViolenciaEdit, MunicipioAdd, MunicipioAjaxList, MunicipioEdit, NivelEstudioAdd, NivelEstudioAjaxList, \
     NivelEstudioEdit, NivelViolenciaAdd, NivelViolenciaAjaxList, NivelViolenciaEdit, OcupacionAdd, OcupacionAjaxList, \
-    OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit
+    OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit
 from . import views
 
 app_name = 'administrador'
@@ -89,4 +89,10 @@ urlpatterns = [
     path('religion/ajax/list/', ReligionAjaxList.as_view(), name='list_ajax_religion'),
     path('religion/edit/<int:pk>', ReligionEdit.as_view(), name='edit_religion'),
     path('religion/list/delete/<int:pk>', views.delete_religion, name='delete_religion'),
+
+    path('tipo_caso/add/', TipoCasoAdd.as_view(), name='add_tipo_caso'),
+    path('tipo_caso/list/', views.list_tipo_caso, name='list_tipo_caso'),
+    path('tipo_caso/ajax/list/', TipoCasoAjaxList.as_view(), name='list_ajax_tipo_caso'),
+    path('tipo_caso/edit/<int:pk>', TipoCasoEdit.as_view(), name='edit_tipo_caso'),
+    path('tipo_caso/list/delete/<int:pk>', views.delete_tipo_caso, name='delete_tipo_caso'),
 ]
