@@ -7,9 +7,10 @@ from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
-    LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm
+    LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
+    OcupacionForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
-    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia
+    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -981,4 +982,92 @@ class NivelViolenciaEdit(UpdateView):
 def delete_nivel_violencia(request, pk):
     nivel_violencia = get_object_or_404(NivelViolencia, pk=pk)
     nivel_violencia.delete()
+    return JsonResponse({'result': 1})
+
+class OcupacionAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_ocupacion'
+
+    model = Ocupacion
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/ocupacion/list'
+    form_class = OcupacionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(OcupacionAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un ocupacion'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_ocupacion', login_url='/login/')
+def list_ocupacion(request):
+    template_name = 'administrador/tab_ocupacion.html'
+    return render(request, template_name)
+
+
+class OcupacionAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_ocupacion'
+
+    model = Ocupacion
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_ocupacion',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(OcupacionAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Ocupacion.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class OcupacionEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_ocupacion'
+    success_url = '/administrador/ocupacion/list'
+
+    model = Ocupacion
+    template_name = 'config/formulario_1Col.html'
+    form_class = OcupacionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(OcupacionEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_ocupacion', login_url='/login/')
+def delete_ocupacion(request, pk):
+    ocupacion = get_object_or_404(Ocupacion, pk=pk)
+    ocupacion.delete()
     return JsonResponse({'result': 1})
