@@ -2,7 +2,7 @@ from django.urls import path
 
 from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, AcudeInstitucionEdit, EstadoAdd, \
     EstadoAjaxList, EstadoEdit, PaisAdd, PaisAjaxList, PaisEdit, EstadoCivilAdd, EstadoCivilAjaxList, EstadoCivilEdit, \
-    EstatusAdd, EstatusAjaxList, EstatusEdit
+    EstatusAdd, EstatusAjaxList, EstatusEdit, LenguaIndigenaAdd, LenguaIndigenaAjaxList, LenguaIndigenaEdit
 from . import views
 
 app_name = 'administrador'
@@ -37,4 +37,10 @@ urlpatterns = [
     path('estatus/ajax/list/', EstatusAjaxList.as_view(), name='list_ajax_estatus'),
     path('estatus/edit/<int:pk>', EstatusEdit.as_view(), name='edit_estatus'),
     path('estatus/list/delete/<int:pk>', views.delete_estatus, name='delete_estatus'),
+
+    path('lengua_indigena/add/', LenguaIndigenaAdd.as_view(), name='add_lengua_indigena'),
+    path('lengua_indigena/list/', views.list_lengua_indigena, name='list_lengua_indigena'),
+    path('lengua_indigena/ajax/list/', LenguaIndigenaAjaxList.as_view(), name='list_ajax_lengua_indigena'),
+    path('lengua_indigena/edit/<int:pk>', LenguaIndigenaEdit.as_view(), name='edit_lengua_indigena'),
+    path('lengua_indigena/list/delete/<int:pk>', views.delete_lengua_indigena, name='delete_lengua_indigena'),
 ]

@@ -6,8 +6,9 @@ from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm
-from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus
+from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
+    LenguaIndigenaForm
+from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -449,4 +450,93 @@ class EstatusEdit(UpdateView):
 def delete_estatus(request, pk):
     estatus = get_object_or_404(Estatus, pk=pk)
     estatus.delete()
+    return JsonResponse({'result': 1})
+
+
+class LenguaIndigenaAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_lengua_indigena'
+
+    model = LenguaIndigena
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/lengua_indigena/list'
+    form_class = LenguaIndigenaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(LenguaIndigenaAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un lengua_indigena'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_lengua_indigena', login_url='/login/')
+def list_lengua_indigena(request):
+    template_name = 'administrador/tab_lengua_indigena.html'
+    return render(request, template_name)
+
+
+class LenguaIndigenaAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_lengua_indigena'
+
+    model = LenguaIndigena
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_lengua_indigena',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(LenguaIndigenaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return LenguaIndigena.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class LenguaIndigenaEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_lengua_indigena'
+    success_url = '/administrador/lengua_indigena/list'
+
+    model = LenguaIndigena
+    template_name = 'config/formulario_1Col.html'
+    form_class = LenguaIndigenaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(LenguaIndigenaEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_lengua_indigena', login_url='/login/')
+def delete_lengua_indigena(request, pk):
+    lengua_indigena = get_object_or_404(LenguaIndigena, pk=pk)
+    lengua_indigena.delete()
     return JsonResponse({'result': 1})
