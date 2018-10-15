@@ -7,7 +7,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     ModalidadViolenciaEdit, MunicipioAdd, MunicipioAjaxList, MunicipioEdit, NivelEstudioAdd, NivelEstudioAjaxList, \
     NivelEstudioEdit, NivelViolenciaAdd, NivelViolenciaAjaxList, NivelViolenciaEdit, OcupacionAdd, OcupacionAjaxList, \
     OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit, \
-    TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit
+    TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
+    ViolentometroEdit
 from . import views
 
 app_name = 'administrador'
@@ -102,4 +103,10 @@ urlpatterns = [
     path('tipo_violencia/ajax/list/', TipoViolenciaAjaxList.as_view(), name='list_ajax_tipo_violencia'),
     path('tipo_violencia/edit/<int:pk>', TipoViolenciaEdit.as_view(), name='edit_tipo_violencia'),
     path('tipo_violencia/list/delete/<int:pk>', views.delete_tipo_violencia, name='delete_tipo_violencia'),
+
+    path('violentometro/add/', ViolentometroAdd.as_view(), name='add_violentometro'),
+    path('violentometro/list/', views.list_violentometro, name='list_violentometro'),
+    path('violentometro/ajax/list/', ViolentometroAjaxList.as_view(), name='list_ajax_violentometro'),
+    path('violentometro/edit/<int:pk>', ViolentometroEdit.as_view(), name='edit_violentometro'),
+    path('violentometro/list/delete/<int:pk>', views.delete_violentometro, name='delete_violentometro'),
 ]

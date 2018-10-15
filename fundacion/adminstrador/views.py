@@ -8,9 +8,10 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
-    OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm
+    OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
-    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia
+    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
+    Violentometro
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -1335,4 +1336,92 @@ class TipoViolenciaEdit(UpdateView):
 def delete_tipo_violencia(request, pk):
     tipo_violencia = get_object_or_404(TipoViolencia, pk=pk)
     tipo_violencia.delete()
+    return JsonResponse({'result': 1})
+
+class ViolentometroAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_violentometro'
+
+    model = Violentometro
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/violentometro/list'
+    form_class = ViolentometroForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ViolentometroAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un violentometro'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_violentometro', login_url='/login/')
+def list_violentometro(request):
+    template_name = 'administrador/tab_violentometro.html'
+    return render(request, template_name)
+
+
+class ViolentometroAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_violentometro'
+
+    model = Violentometro
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_violentometro',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(ViolentometroAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Violentometro.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class ViolentometroEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_violentometro'
+    success_url = '/administrador/violentometro/list'
+
+    model = Violentometro
+    template_name = 'config/formulario_1Col.html'
+    form_class = ViolentometroForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ViolentometroEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_violentometro', login_url='/login/')
+def delete_violentometro(request, pk):
+    violentometro = get_object_or_404(Violentometro, pk=pk)
+    violentometro.delete()
     return JsonResponse({'result': 1})
