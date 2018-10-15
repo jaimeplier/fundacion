@@ -8,9 +8,9 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
-    OcupacionForm, ReligionForm, TipoCasoForm
+    OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
-    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso
+    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -1247,4 +1247,92 @@ class TipoCasoEdit(UpdateView):
 def delete_tipo_caso(request, pk):
     tipo_caso = get_object_or_404(TipoCaso, pk=pk)
     tipo_caso.delete()
+    return JsonResponse({'result': 1})
+
+class TipoViolenciaAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_tipo_violencia'
+
+    model = TipoViolencia
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/tipo_violencia/list'
+    form_class = TipoViolenciaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TipoViolenciaAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un tipo_violencia'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_tipo_violencia', login_url='/login/')
+def list_tipo_violencia(request):
+    template_name = 'administrador/tab_tipo_violencia.html'
+    return render(request, template_name)
+
+
+class TipoViolenciaAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_tipo_violencia'
+
+    model = TipoViolencia
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_tipo_violencia',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(TipoViolenciaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return TipoViolencia.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class TipoViolenciaEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_tipo_violencia'
+    success_url = '/administrador/tipo_violencia/list'
+
+    model = TipoViolencia
+    template_name = 'config/formulario_1Col.html'
+    form_class = TipoViolenciaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TipoViolenciaEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_tipo_violencia', login_url='/login/')
+def delete_tipo_violencia(request, pk):
+    tipo_violencia = get_object_or_404(TipoViolencia, pk=pk)
+    tipo_violencia.delete()
     return JsonResponse({'result': 1})
