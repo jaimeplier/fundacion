@@ -7,9 +7,9 @@ from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
-    LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm
+    LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
-    ModalidadViolencia, Municipio, NivelEstudio
+    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -893,4 +893,92 @@ class NivelEstudioEdit(UpdateView):
 def delete_nivel_estudio(request, pk):
     nivel_estudio = get_object_or_404(NivelEstudio, pk=pk)
     nivel_estudio.delete()
+    return JsonResponse({'result': 1})
+
+class NivelViolenciaAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_nivel_violencia'
+
+    model = NivelViolencia
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/nivel_violencia/list'
+    form_class = NivelViolenciaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(NivelViolenciaAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un nivel_violencia'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_nivel_violencia', login_url='/login/')
+def list_nivel_violencia(request):
+    template_name = 'administrador/tab_nivel_violencia.html'
+    return render(request, template_name)
+
+
+class NivelViolenciaAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_nivel_violencia'
+
+    model = NivelViolencia
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_nivel_violencia',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(NivelViolenciaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return NivelViolencia.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class NivelViolenciaEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_nivel_violencia'
+    success_url = '/administrador/nivel_violencia/list'
+
+    model = NivelViolencia
+    template_name = 'config/formulario_1Col.html'
+    form_class = NivelViolenciaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(NivelViolenciaEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_nivel_violencia', login_url='/login/')
+def delete_nivel_violencia(request, pk):
+    nivel_violencia = get_object_or_404(NivelViolencia, pk=pk)
+    nivel_violencia.delete()
     return JsonResponse({'result': 1})
