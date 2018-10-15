@@ -8,9 +8,9 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
-    OcupacionForm
+    OcupacionForm, ReligionForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
-    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion
+    ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -1070,4 +1070,93 @@ class OcupacionEdit(UpdateView):
 def delete_ocupacion(request, pk):
     ocupacion = get_object_or_404(Ocupacion, pk=pk)
     ocupacion.delete()
+    return JsonResponse({'result': 1})
+
+
+class ReligionAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_religion'
+
+    model = Religion
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/religion/list'
+    form_class = ReligionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ReligionAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un religion'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_religion', login_url='/login/')
+def list_religion(request):
+    template_name = 'administrador/tab_religion.html'
+    return render(request, template_name)
+
+
+class ReligionAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_religion'
+
+    model = Religion
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_religion',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(ReligionAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Religion.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class ReligionEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_religion'
+    success_url = '/administrador/religion/list'
+
+    model = Religion
+    template_name = 'config/formulario_1Col.html'
+    form_class = ReligionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ReligionEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_religion', login_url='/login/')
+def delete_religion(request, pk):
+    religion = get_object_or_404(Religion, pk=pk)
+    religion.delete()
     return JsonResponse({'result': 1})

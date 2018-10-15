@@ -6,7 +6,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     MedioContactoAdd, MedioContactoAjaxList, MedioContactoEdit, ModalidadViolenciaAdd, ModalidadViolenciaAjaxList, \
     ModalidadViolenciaEdit, MunicipioAdd, MunicipioAjaxList, MunicipioEdit, NivelEstudioAdd, NivelEstudioAjaxList, \
     NivelEstudioEdit, NivelViolenciaAdd, NivelViolenciaAjaxList, NivelViolenciaEdit, OcupacionAdd, OcupacionAjaxList, \
-    OcupacionEdit
+    OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit
 from . import views
 
 app_name = 'administrador'
@@ -83,4 +83,10 @@ urlpatterns = [
     path('ocupacion/ajax/list/', OcupacionAjaxList.as_view(), name='list_ajax_ocupacion'),
     path('ocupacion/edit/<int:pk>', OcupacionEdit.as_view(), name='edit_ocupacion'),
     path('ocupacion/list/delete/<int:pk>', views.delete_ocupacion, name='delete_ocupacion'),
+
+    path('religion/add/', ReligionAdd.as_view(), name='add_religion'),
+    path('religion/list/', views.list_religion, name='list_religion'),
+    path('religion/ajax/list/', ReligionAjaxList.as_view(), name='list_ajax_religion'),
+    path('religion/edit/<int:pk>', ReligionEdit.as_view(), name='edit_religion'),
+    path('religion/list/delete/<int:pk>', views.delete_religion, name='delete_religion'),
 ]
