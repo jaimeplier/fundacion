@@ -7,8 +7,8 @@ from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
-    LenguaIndigenaForm
-from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena
+    LenguaIndigenaForm, MedioContactoForm
+from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -539,4 +539,93 @@ class LenguaIndigenaEdit(UpdateView):
 def delete_lengua_indigena(request, pk):
     lengua_indigena = get_object_or_404(LenguaIndigena, pk=pk)
     lengua_indigena.delete()
+    return JsonResponse({'result': 1})
+
+
+class MedioContactoAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_medio_contacto'
+
+    model = MedioContacto
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/medio_contacto/list'
+    form_class = MedioContactoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(MedioContactoAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un medio_contacto'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_medio_contacto', login_url='/login/')
+def list_medio_contacto(request):
+    template_name = 'administrador/tab_medio_contacto.html'
+    return render(request, template_name)
+
+
+class MedioContactoAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_medio_contacto'
+
+    model = MedioContacto
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_medio_contacto',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(MedioContactoAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return MedioContacto.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class MedioContactoEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_medio_contacto'
+    success_url = '/administrador/medio_contacto/list'
+
+    model = MedioContacto
+    template_name = 'config/formulario_1Col.html'
+    form_class = MedioContactoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(MedioContactoEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_medio_contacto', login_url='/login/')
+def delete_medio_contacto(request, pk):
+    medio_contacto = get_object_or_404(MedioContacto, pk=pk)
+    medio_contacto.delete()
     return JsonResponse({'result': 1})
