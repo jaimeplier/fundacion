@@ -7,9 +7,9 @@ from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
-    LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm
+    LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
-    ModalidadViolencia, Municipio
+    ModalidadViolencia, Municipio, NivelEstudio
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -805,4 +805,92 @@ class MunicipioEdit(UpdateView):
 def delete_municipio(request, pk):
     municipio = get_object_or_404(Municipio, pk=pk)
     municipio.delete()
+    return JsonResponse({'result': 1})
+
+class NivelEstudioAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_nivel_estudio'
+
+    model = NivelEstudio
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/nivel_estudio/list'
+    form_class = NivelEstudioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(NivelEstudioAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un nivel_estudio'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_nivel_estudio', login_url='/login/')
+def list_nivel_estudio(request):
+    template_name = 'administrador/tab_nivel_estudio.html'
+    return render(request, template_name)
+
+
+class NivelEstudioAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_nivel_estudio'
+
+    model = NivelEstudio
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_nivel_estudio',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(NivelEstudioAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return NivelEstudio.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class NivelEstudioEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_nivel_estudio'
+    success_url = '/administrador/nivel_estudio/list'
+
+    model = NivelEstudio
+    template_name = 'config/formulario_1Col.html'
+    form_class = NivelEstudioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(NivelEstudioEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_nivel_estudio', login_url='/login/')
+def delete_nivel_estudio(request, pk):
+    nivel_estudio = get_object_or_404(NivelEstudio, pk=pk)
+    nivel_estudio.delete()
     return JsonResponse({'result': 1})

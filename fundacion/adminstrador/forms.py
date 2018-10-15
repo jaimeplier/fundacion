@@ -1,7 +1,7 @@
 from django.forms import ModelForm, Select
 
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
-    ModalidadViolencia, Municipio
+    ModalidadViolencia, Municipio, NivelEstudio
 
 
 class AcudeInstitucionForm(ModelForm):
@@ -63,6 +63,13 @@ class ModalidadViolenciaForm(ModelForm):
 class MunicipioForm(ModelForm):
     class Meta:
         model = Municipio
+        exclude = ['fecha_alta', 'fecha_baja']
+        widgets = {
+            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
+class NivelEstudioForm(ModelForm):
+    class Meta:
+        model = NivelEstudio
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }

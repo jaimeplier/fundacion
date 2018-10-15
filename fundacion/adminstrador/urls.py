@@ -4,7 +4,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     EstadoAjaxList, EstadoEdit, PaisAdd, PaisAjaxList, PaisEdit, EstadoCivilAdd, EstadoCivilAjaxList, EstadoCivilEdit, \
     EstatusAdd, EstatusAjaxList, EstatusEdit, LenguaIndigenaAdd, LenguaIndigenaAjaxList, LenguaIndigenaEdit, \
     MedioContactoAdd, MedioContactoAjaxList, MedioContactoEdit, ModalidadViolenciaAdd, ModalidadViolenciaAjaxList, \
-    ModalidadViolenciaEdit, MunicipioAdd, MunicipioAjaxList, MunicipioEdit
+    ModalidadViolenciaEdit, MunicipioAdd, MunicipioAjaxList, MunicipioEdit, NivelEstudioAdd, NivelEstudioAjaxList, \
+    NivelEstudioEdit
 from . import views
 
 app_name = 'administrador'
@@ -62,6 +63,11 @@ urlpatterns = [
     path('municipio/list/', views.list_municipio, name='list_municipio'),
     path('municipio/ajax/list/', MunicipioAjaxList.as_view(), name='list_ajax_municipio'),
     path('municipio/edit/<int:pk>', MunicipioEdit.as_view(), name='edit_municipio'),
-    path('municipio/list/delete/<int:pk>', views.delete_municipio,
-         name='delete_municipio'),
+    path('municipio/list/delete/<int:pk>', views.delete_municipio, name='delete_municipio'),
+
+    path('nivel_estudio/add/', NivelEstudioAdd.as_view(), name='add_nivel_estudio'),
+    path('nivel_estudio/list/', views.list_nivel_estudio, name='list_nivel_estudio'),
+    path('nivel_estudio/ajax/list/', NivelEstudioAjaxList.as_view(), name='list_ajax_nivel_estudio'),
+    path('nivel_estudio/edit/<int:pk>', NivelEstudioEdit.as_view(), name='edit_nivel_estudio'),
+    path('nivel_estudio/list/delete/<int:pk>', views.delete_nivel_estudio, name='delete_nivel_estudio'),
 ]
