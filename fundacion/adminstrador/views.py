@@ -6,8 +6,8 @@ from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm
-from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil
+from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm
+from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -361,4 +361,92 @@ class EstadoCivilEdit(UpdateView):
 def delete_estado_civil(request, pk):
     estado_civil = get_object_or_404(EstadoCivil, pk=pk)
     estado_civil.delete()
+    return JsonResponse({'result': 1})
+
+class EstatusAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_estatus'
+
+    model = Estatus
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/estatus/list'
+    form_class = EstatusForm
+
+    def get_context_data(self, **kwargs):
+        context = super(EstatusAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un estatus'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+#@permission_required(perm='change_estatus', login_url='/login/')
+def list_estatus(request):
+    template_name = 'administrador/tab_estatus.html'
+    return render(request, template_name)
+
+
+class EstatusAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_estatus'
+
+    model = Estatus
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_estatus',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(EstatusAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Estatus.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class EstatusEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_estatus'
+    success_url = '/administrador/estatus/list'
+
+    model = Estatus
+    template_name = 'config/formulario_1Col.html'
+    form_class = EstatusForm
+
+    def get_context_data(self, **kwargs):
+        context = super(EstatusEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+#@permission_required(perm='delete_estatus', login_url='/login/')
+def delete_estatus(request, pk):
+    estatus = get_object_or_404(Estatus, pk=pk)
+    estatus.delete()
     return JsonResponse({'result': 1})
