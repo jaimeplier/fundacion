@@ -10,7 +10,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
     OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, AsesorCallcenterForm, \
-    PsicologoForm
+    PsicologoForm, ReporteroForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon
@@ -256,6 +256,127 @@ class PsicologoEdit(UpdateView):
 def delete_psicologo(request, pk):
     psicologo = get_object_or_404(User, pk=pk)
     psicologo.delete()
+    return JsonResponse({'result': 1})
+
+class ReporteroAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_reportero'
+
+    model = User
+    template_name = 'config/formulario_1Col.html'
+    form_class = ReporteroForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ReporteroAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar asesor de callcenter'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            permiso = Permission.objects.get(codename='reportes')
+            user.save()
+            user.user_permissions.add(permiso)
+            user.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_reportero')
+
+
+# @permission_required(perm='change_reportero', login_url='/login/')
+def list_reportero(request):
+    template_name = 'administrador/tab_reportero.html'
+    return render(request, template_name)
+
+
+class ReporteroAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_reportero'
+
+    model = User
+    columns = ['id', 'username', 'email', 'editar', 'eliminar']
+    order_columns = ['id', 'username', 'email']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_reportero',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(ReporteroAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        permiso = Permission.objects.get(codename='reportes')
+        return User.objects.all().filter(user_permissions=permiso)
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(useraname__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+                email__icontains=search)
+        return qs
+
+
+class ReporteroEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_reportero'
+    success_url = '/administrador/reportero/list'
+
+    model = User
+    template_name = 'config/formulario_1Col.html'
+    form_class = ReporteroForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ReporteroEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        usuario = User.objects.get(pk=kwargs['pk'])
+        form = self.form_class(request.POST, instance=usuario)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_reportero')
+
+
+# @permission_required(perm='delete_reportero', login_url='/login/')
+def delete_reportero(request, pk):
+    reportero = get_object_or_404(User, pk=pk)
+    reportero.delete()
     return JsonResponse({'result': 1})
 
 

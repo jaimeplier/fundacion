@@ -9,7 +9,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit, \
     TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
     ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, AsesorCallcenterAdd, AsesorCallcenterAjaxList, \
-    AsesorCallcenterEdit, PsicologoAdd, PsicologoAjaxList, PsicologoEdit
+    AsesorCallcenterEdit, PsicologoAdd, PsicologoAjaxList, PsicologoEdit, ReporteroAdd, ReporteroAjaxList, ReporteroEdit
 from . import views
 
 app_name = 'administrador'
