@@ -90,7 +90,7 @@ class AsesorCallcenterAjaxList(BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(useraname__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+            qs = qs.filter(username__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
                 email__icontains=search)
         return qs
 
@@ -211,7 +211,7 @@ class PsicologoAjaxList(BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(useraname__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+            qs = qs.filter(username__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
                 email__icontains=search)
         return qs
 
@@ -332,7 +332,7 @@ class ReporteroAjaxList(BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(useraname__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+            qs = qs.filter(username__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
                 email__icontains=search)
         return qs
 
