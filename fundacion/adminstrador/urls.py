@@ -9,7 +9,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit, \
     TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
     ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, AsesorCallcenterAdd, AsesorCallcenterAjaxList, \
-    AsesorCallcenterEdit
+    AsesorCallcenterEdit, PsicologoAdd, PsicologoAjaxList, PsicologoEdit
 from . import views
 
 app_name = 'administrador'
@@ -20,6 +20,18 @@ urlpatterns = [
     path('asesor_callcenter/ajax/list/', AsesorCallcenterAjaxList.as_view(), name='list_ajax_asesor_callcenter'),
     path('asesor_callcenter/edit/<int:pk>', AsesorCallcenterEdit.as_view(), name='edit_asesor_callcenter'),
     path('asesor_callcenter/list/delete/<int:pk>', views.delete_asesor_callcenter, name='delete_asesor_callcenter'),
+
+    path('psicologo/add/', PsicologoAdd.as_view(), name='add_psicologo'),
+    path('psicologo/list/', views.list_psicologo, name='list_psicologo'),
+    path('psicologo/ajax/list/', PsicologoAjaxList.as_view(), name='list_ajax_psicologo'),
+    path('psicologo/edit/<int:pk>', PsicologoEdit.as_view(), name='edit_psicologo'),
+    path('psicologo/list/delete/<int:pk>', views.delete_psicologo, name='delete_psicologo'),
+
+    path('reportero/add/', ReporteroAdd.as_view(), name='add_reportero'),
+    path('reportero/list/', views.list_reportero, name='list_reportero'),
+    path('reportero/ajax/list/', ReporteroAjaxList.as_view(), name='list_ajax_reportero'),
+    path('reportero/edit/<int:pk>', ReporteroEdit.as_view(), name='edit_reportero'),
+    path('reportero/list/delete/<int:pk>', views.delete_reportero, name='delete_reportero'),
 
     path('acude_institucion/add/', AcudeInstitucionAdd.as_view(), name='add_acude_institucion'),
     path('acude_institucion/list/', views.list_acude_institucion, name='list_acude_institucion'),

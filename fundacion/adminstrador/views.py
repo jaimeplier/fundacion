@@ -9,7 +9,8 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
-    OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, AsesorCallcenterForm
+    OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, AsesorCallcenterForm, \
+    PsicologoForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon
@@ -135,6 +136,128 @@ def delete_asesor_callcenter(request, pk):
     asesor_callcenter = get_object_or_404(User, pk=pk)
     asesor_callcenter.delete()
     return JsonResponse({'result': 1})
+
+class PsicologoAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_psicologo'
+
+    model = User
+    template_name = 'config/formulario_1Col.html'
+    form_class = PsicologoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PsicologoAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar asesor de callcenter'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            permiso = Permission.objects.get(codename='psicologo')
+            user.save()
+            user.user_permissions.add(permiso)
+            user.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_psicologo')
+
+
+# @permission_required(perm='change_psicologo', login_url='/login/')
+def list_psicologo(request):
+    template_name = 'administrador/tab_psicologo.html'
+    return render(request, template_name)
+
+
+class PsicologoAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_psicologo'
+
+    model = User
+    columns = ['id', 'username', 'email', 'editar', 'eliminar']
+    order_columns = ['id', 'username', 'email']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_psicologo',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(PsicologoAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        permiso = Permission.objects.get(codename='psicologo')
+        return User.objects.all().filter(user_permissions=permiso)
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(useraname__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+                email__icontains=search)
+        return qs
+
+
+class PsicologoEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_psicologo'
+    success_url = '/administrador/psicologo/list'
+
+    model = User
+    template_name = 'config/formulario_1Col.html'
+    form_class = PsicologoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PsicologoEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        usuario = User.objects.get(pk=kwargs['pk'])
+        form = self.form_class(request.POST, instance=usuario)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_psicologo')
+
+
+# @permission_required(perm='delete_psicologo', login_url='/login/')
+def delete_psicologo(request, pk):
+    psicologo = get_object_or_404(User, pk=pk)
+    psicologo.delete()
+    return JsonResponse({'result': 1})
+
 
 
 class AcudeInstitucionAdd(CreateView):

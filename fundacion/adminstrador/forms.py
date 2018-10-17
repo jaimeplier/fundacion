@@ -18,6 +18,19 @@ class AsesorCallcenterForm(ModelForm):
         widgets = {
             'password': PasswordInput(), }
 
+class PsicologoForm(ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+        )
+        widgets = {
+            'password': PasswordInput(), }
+
 class AcudeInstitucionForm(ModelForm):
     class Meta:
         model = AcudeInstitucion
