@@ -1,9 +1,22 @@
-from django.forms import ModelForm, Select
+from django.contrib.auth.models import User
+from django.forms import ModelForm, Select, PasswordInput, DateTimeField
 
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon
 
+class AsesorCallcenterForm(ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+        )
+        widgets = {
+            'password': PasswordInput(), }
 
 class AcudeInstitucionForm(ModelForm):
     class Meta:

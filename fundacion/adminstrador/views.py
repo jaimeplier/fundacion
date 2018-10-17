@@ -1,4 +1,5 @@
-from django.http import JsonResponse
+from django.contrib.auth.models import User, Permission
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -8,10 +9,132 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
-    OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm
+    OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, AsesorCallcenterForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon
+
+
+class AsesorCallcenterAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_asesor_callcenter'
+
+    model = User
+    template_name = 'config/formulario_1Col.html'
+    form_class = AsesorCallcenterForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AsesorCallcenterAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar asesor de callcenter'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            permiso = Permission.objects.get(codename='callcenter')
+            user.save()
+            user.user_permissions.add(permiso)
+            user.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_asesor_callcenter')
+
+
+# @permission_required(perm='change_asesor_callcenter', login_url='/login/')
+def list_asesor_callcenter(request):
+    template_name = 'administrador/tab_asesor_callcenter.html'
+    return render(request, template_name)
+
+
+class AsesorCallcenterAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_asesor_callcenter'
+
+    model = User
+    columns = ['id', 'username', 'email', 'editar', 'eliminar']
+    order_columns = ['id', 'username', 'email']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_asesor_callcenter',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(AsesorCallcenterAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        permiso = Permission.objects.get(codename='callcenter')
+        return User.objects.all().filter(user_permissions=permiso)
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(useraname__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+                email__icontains=search)
+        return qs
+
+
+class AsesorCallcenterEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_asesor_callcenter'
+    success_url = '/administrador/asesor_callcenter/list'
+
+    model = User
+    template_name = 'config/formulario_1Col.html'
+    form_class = AsesorCallcenterForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AsesorCallcenterEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        usuario = User.objects.get(pk=kwargs['pk'])
+        form = self.form_class(request.POST, instance=usuario)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_asesor_callcenter')
+
+
+# @permission_required(perm='delete_asesor_callcenter', login_url='/login/')
+def delete_asesor_callcenter(request, pk):
+    asesor_callcenter = get_object_or_404(User, pk=pk)
+    asesor_callcenter.delete()
+    return JsonResponse({'result': 1})
 
 
 class AcudeInstitucionAdd(CreateView):
@@ -35,7 +158,7 @@ class AcudeInstitucionAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_acude_institucion', login_url='/login/')
+# @permission_required(perm='change_acude_institucion', login_url='/login/')
 def list_acude_institucion(request):
     template_name = 'administrador/tab_acude_institucion.html'
     return render(request, template_name)
@@ -96,7 +219,7 @@ class AcudeInstitucionEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_acude_institucion', login_url='/login/')
+# @permission_required(perm='delete_acude_institucion', login_url='/login/')
 def delete_acude_institucion(request, pk):
     acude_institucion = get_object_or_404(AcudeInstitucion, pk=pk)
     acude_institucion.delete()
@@ -124,7 +247,7 @@ class EstadoAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_estado', login_url='/login/')
+# @permission_required(perm='change_estado', login_url='/login/')
 def list_estado(request):
     template_name = 'administrador/tab_estado.html'
     return render(request, template_name)
@@ -185,11 +308,12 @@ class EstadoEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_estado', login_url='/login/')
+# @permission_required(perm='delete_estado', login_url='/login/')
 def delete_estado(request, pk):
     estado = get_object_or_404(Estado, pk=pk)
     estado.delete()
     return JsonResponse({'result': 1})
+
 
 class PaisAdd(CreateView):
     redirect_field_name = 'next'
@@ -212,7 +336,7 @@ class PaisAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_pais', login_url='/login/')
+# @permission_required(perm='change_pais', login_url='/login/')
 def list_pais(request):
     template_name = 'administrador/tab_pais.html'
     return render(request, template_name)
@@ -273,11 +397,12 @@ class PaisEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_pais', login_url='/login/')
+# @permission_required(perm='delete_pais', login_url='/login/')
 def delete_pais(request, pk):
     pais = get_object_or_404(Pais, pk=pk)
     pais.delete()
     return JsonResponse({'result': 1})
+
 
 class EstadoCivilAdd(CreateView):
     redirect_field_name = 'next'
@@ -300,7 +425,7 @@ class EstadoCivilAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_estado_civil', login_url='/login/')
+# @permission_required(perm='change_estado_civil', login_url='/login/')
 def list_estado_civil(request):
     template_name = 'administrador/tab_estado_civil.html'
     return render(request, template_name)
@@ -361,11 +486,12 @@ class EstadoCivilEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_estado_civil', login_url='/login/')
+# @permission_required(perm='delete_estado_civil', login_url='/login/')
 def delete_estado_civil(request, pk):
     estado_civil = get_object_or_404(EstadoCivil, pk=pk)
     estado_civil.delete()
     return JsonResponse({'result': 1})
+
 
 class EstatusAdd(CreateView):
     redirect_field_name = 'next'
@@ -388,7 +514,7 @@ class EstatusAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_estatus', login_url='/login/')
+# @permission_required(perm='change_estatus', login_url='/login/')
 def list_estatus(request):
     template_name = 'administrador/tab_estatus.html'
     return render(request, template_name)
@@ -449,7 +575,7 @@ class EstatusEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_estatus', login_url='/login/')
+# @permission_required(perm='delete_estatus', login_url='/login/')
 def delete_estatus(request, pk):
     estatus = get_object_or_404(Estatus, pk=pk)
     estatus.delete()
@@ -477,7 +603,7 @@ class LenguaIndigenaAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_lengua_indigena', login_url='/login/')
+# @permission_required(perm='change_lengua_indigena', login_url='/login/')
 def list_lengua_indigena(request):
     template_name = 'administrador/tab_lengua_indigena.html'
     return render(request, template_name)
@@ -538,7 +664,7 @@ class LenguaIndigenaEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_lengua_indigena', login_url='/login/')
+# @permission_required(perm='delete_lengua_indigena', login_url='/login/')
 def delete_lengua_indigena(request, pk):
     lengua_indigena = get_object_or_404(LenguaIndigena, pk=pk)
     lengua_indigena.delete()
@@ -566,7 +692,7 @@ class MedioContactoAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_medio_contacto', login_url='/login/')
+# @permission_required(perm='change_medio_contacto', login_url='/login/')
 def list_medio_contacto(request):
     template_name = 'administrador/tab_medio_contacto.html'
     return render(request, template_name)
@@ -627,11 +753,12 @@ class MedioContactoEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_medio_contacto', login_url='/login/')
+# @permission_required(perm='delete_medio_contacto', login_url='/login/')
 def delete_medio_contacto(request, pk):
     medio_contacto = get_object_or_404(MedioContacto, pk=pk)
     medio_contacto.delete()
     return JsonResponse({'result': 1})
+
 
 class ModalidadViolenciaAdd(CreateView):
     redirect_field_name = 'next'
@@ -654,7 +781,7 @@ class ModalidadViolenciaAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_modalidad_violencia', login_url='/login/')
+# @permission_required(perm='change_modalidad_violencia', login_url='/login/')
 def list_modalidad_violencia(request):
     template_name = 'administrador/tab_modalidad_violencia.html'
     return render(request, template_name)
@@ -715,11 +842,12 @@ class ModalidadViolenciaEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_modalidad_violencia', login_url='/login/')
+# @permission_required(perm='delete_modalidad_violencia', login_url='/login/')
 def delete_modalidad_violencia(request, pk):
     modalidad_violencia = get_object_or_404(ModalidadViolencia, pk=pk)
     modalidad_violencia.delete()
     return JsonResponse({'result': 1})
+
 
 class MunicipioAdd(CreateView):
     redirect_field_name = 'next'
@@ -742,7 +870,7 @@ class MunicipioAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_municipio', login_url='/login/')
+# @permission_required(perm='change_municipio', login_url='/login/')
 def list_municipio(request):
     template_name = 'administrador/tab_municipio.html'
     return render(request, template_name)
@@ -803,11 +931,12 @@ class MunicipioEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_municipio', login_url='/login/')
+# @permission_required(perm='delete_municipio', login_url='/login/')
 def delete_municipio(request, pk):
     municipio = get_object_or_404(Municipio, pk=pk)
     municipio.delete()
     return JsonResponse({'result': 1})
+
 
 class NivelEstudioAdd(CreateView):
     redirect_field_name = 'next'
@@ -830,7 +959,7 @@ class NivelEstudioAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_nivel_estudio', login_url='/login/')
+# @permission_required(perm='change_nivel_estudio', login_url='/login/')
 def list_nivel_estudio(request):
     template_name = 'administrador/tab_nivel_estudio.html'
     return render(request, template_name)
@@ -891,11 +1020,12 @@ class NivelEstudioEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_nivel_estudio', login_url='/login/')
+# @permission_required(perm='delete_nivel_estudio', login_url='/login/')
 def delete_nivel_estudio(request, pk):
     nivel_estudio = get_object_or_404(NivelEstudio, pk=pk)
     nivel_estudio.delete()
     return JsonResponse({'result': 1})
+
 
 class NivelViolenciaAdd(CreateView):
     redirect_field_name = 'next'
@@ -918,7 +1048,7 @@ class NivelViolenciaAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_nivel_violencia', login_url='/login/')
+# @permission_required(perm='change_nivel_violencia', login_url='/login/')
 def list_nivel_violencia(request):
     template_name = 'administrador/tab_nivel_violencia.html'
     return render(request, template_name)
@@ -979,11 +1109,12 @@ class NivelViolenciaEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_nivel_violencia', login_url='/login/')
+# @permission_required(perm='delete_nivel_violencia', login_url='/login/')
 def delete_nivel_violencia(request, pk):
     nivel_violencia = get_object_or_404(NivelViolencia, pk=pk)
     nivel_violencia.delete()
     return JsonResponse({'result': 1})
+
 
 class OcupacionAdd(CreateView):
     redirect_field_name = 'next'
@@ -1006,7 +1137,7 @@ class OcupacionAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_ocupacion', login_url='/login/')
+# @permission_required(perm='change_ocupacion', login_url='/login/')
 def list_ocupacion(request):
     template_name = 'administrador/tab_ocupacion.html'
     return render(request, template_name)
@@ -1067,7 +1198,7 @@ class OcupacionEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_ocupacion', login_url='/login/')
+# @permission_required(perm='delete_ocupacion', login_url='/login/')
 def delete_ocupacion(request, pk):
     ocupacion = get_object_or_404(Ocupacion, pk=pk)
     ocupacion.delete()
@@ -1095,7 +1226,7 @@ class ReligionAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_religion', login_url='/login/')
+# @permission_required(perm='change_religion', login_url='/login/')
 def list_religion(request):
     template_name = 'administrador/tab_religion.html'
     return render(request, template_name)
@@ -1156,11 +1287,12 @@ class ReligionEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_religion', login_url='/login/')
+# @permission_required(perm='delete_religion', login_url='/login/')
 def delete_religion(request, pk):
     religion = get_object_or_404(Religion, pk=pk)
     religion.delete()
     return JsonResponse({'result': 1})
+
 
 class TipoCasoAdd(CreateView):
     redirect_field_name = 'next'
@@ -1183,7 +1315,7 @@ class TipoCasoAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_tipo_caso', login_url='/login/')
+# @permission_required(perm='change_tipo_caso', login_url='/login/')
 def list_tipo_caso(request):
     template_name = 'administrador/tab_tipo_caso.html'
     return render(request, template_name)
@@ -1244,11 +1376,12 @@ class TipoCasoEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_tipo_caso', login_url='/login/')
+# @permission_required(perm='delete_tipo_caso', login_url='/login/')
 def delete_tipo_caso(request, pk):
     tipo_caso = get_object_or_404(TipoCaso, pk=pk)
     tipo_caso.delete()
     return JsonResponse({'result': 1})
+
 
 class TipoViolenciaAdd(CreateView):
     redirect_field_name = 'next'
@@ -1271,7 +1404,7 @@ class TipoViolenciaAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_tipo_violencia', login_url='/login/')
+# @permission_required(perm='change_tipo_violencia', login_url='/login/')
 def list_tipo_violencia(request):
     template_name = 'administrador/tab_tipo_violencia.html'
     return render(request, template_name)
@@ -1332,11 +1465,12 @@ class TipoViolenciaEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_tipo_violencia', login_url='/login/')
+# @permission_required(perm='delete_tipo_violencia', login_url='/login/')
 def delete_tipo_violencia(request, pk):
     tipo_violencia = get_object_or_404(TipoViolencia, pk=pk)
     tipo_violencia.delete()
     return JsonResponse({'result': 1})
+
 
 class ViolentometroAdd(CreateView):
     redirect_field_name = 'next'
@@ -1359,7 +1493,7 @@ class ViolentometroAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_violentometro', login_url='/login/')
+# @permission_required(perm='change_violentometro', login_url='/login/')
 def list_violentometro(request):
     template_name = 'administrador/tab_violentometro.html'
     return render(request, template_name)
@@ -1420,11 +1554,12 @@ class ViolentometroEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_violentometro', login_url='/login/')
+# @permission_required(perm='delete_violentometro', login_url='/login/')
 def delete_violentometro(request, pk):
     violentometro = get_object_or_404(Violentometro, pk=pk)
     violentometro.delete()
     return JsonResponse({'result': 1})
+
 
 class ViveConAdd(CreateView):
     redirect_field_name = 'next'
@@ -1447,7 +1582,7 @@ class ViveConAdd(CreateView):
         return context
 
 
-#@permission_required(perm='change_vive_con', login_url='/login/')
+# @permission_required(perm='change_vive_con', login_url='/login/')
 def list_vive_con(request):
     template_name = 'administrador/tab_vive_con.html'
     return render(request, template_name)
@@ -1508,7 +1643,7 @@ class ViveConEdit(UpdateView):
         return context
 
 
-#@permission_required(perm='delete_vive_con', login_url='/login/')
+# @permission_required(perm='delete_vive_con', login_url='/login/')
 def delete_vive_con(request, pk):
     vive_con = get_object_or_404(ViveCon, pk=pk)
     vive_con.delete()

@@ -8,12 +8,19 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     NivelEstudioEdit, NivelViolenciaAdd, NivelViolenciaAjaxList, NivelViolenciaEdit, OcupacionAdd, OcupacionAjaxList, \
     OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit, \
     TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
-    ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit
+    ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, AsesorCallcenterAdd, AsesorCallcenterAjaxList, \
+    AsesorCallcenterEdit
 from . import views
 
 app_name = 'administrador'
 
 urlpatterns = [
+    path('asesor_callcenter/add/', AsesorCallcenterAdd.as_view(), name='add_asesor_callcenter'),
+    path('asesor_callcenter/list/', views.list_asesor_callcenter, name='list_asesor_callcenter'),
+    path('asesor_callcenter/ajax/list/', AsesorCallcenterAjaxList.as_view(), name='list_ajax_asesor_callcenter'),
+    path('asesor_callcenter/edit/<int:pk>', AsesorCallcenterEdit.as_view(), name='edit_asesor_callcenter'),
+    path('asesor_callcenter/list/delete/<int:pk>', views.delete_asesor_callcenter, name='delete_asesor_callcenter'),
+
     path('acude_institucion/add/', AcudeInstitucionAdd.as_view(), name='add_acude_institucion'),
     path('acude_institucion/list/', views.list_acude_institucion, name='list_acude_institucion'),
     path('acude_institucion/ajax/list/', AcudeInstitucionAjaxList.as_view(), name='list_ajax_acude_institucion'),
