@@ -4939,7 +4939,7 @@ if (Vel) {
       // Wrap Elements
       $select.wrap(wrapper);
       // Add Select Display Element
-      var dropdownIcon = $('<span class="caret">&#9660;</span>');
+      var dropdownIcon = $('<span class="caret">&#8744;</span>');
 
       // escape double quotes
       var sanitizedLabelHtml = label.replace(/"/g, '&quot;');
