@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'fundacion.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.contrib.gis.db.backends.mysql',
         'NAME': 'fundacionorigen',
         'USER': 'inydes',
         'PASSWORD': 'rRy2S<_:',

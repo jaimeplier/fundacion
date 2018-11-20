@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from django.db import models
+from django.contrib.gis.db import models
 
 
 class Catalogo(models.Model):
@@ -8,6 +8,7 @@ class Catalogo(models.Model):
     estatus = models.BooleanField(default=True)
     fecha_alta = models.DateTimeField(auto_now_add=True)
     fecha_baja = models.DateTimeField(blank=True, null=True)
+    fecha_actualizacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.nombre
@@ -15,8 +16,22 @@ class Catalogo(models.Model):
     class Meta:
         abstract = True
 
-
 class AcudeInstitucion(Catalogo):
+    dependencia = models.ForeignKey('Dependencia', on_delete=models.DO_NOTHING)
+    coordenadas = models.PointField()
+    convenio = models.BooleanField(default=False)
+    direccion = models.CharField(max_length=512)
+
+    @property
+    def latitud(self):
+        """I'm the 'x' property."""
+        return str(self.coordenadas.coords[1])
+
+    @property
+    def longitud(self):
+        """I'm the 'x' property."""
+        return str(self.coordenadas.coords[0])
+
     class Meta:
         managed = True
         db_table = 'acude_institucion'
@@ -194,3 +209,9 @@ class ViveCon(Catalogo):
     class Meta:
         managed = True
         db_table = 'vive_con'
+
+
+class Dependencia(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'dependencia'
