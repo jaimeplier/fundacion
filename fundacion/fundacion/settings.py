@@ -77,9 +77,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'fundacionorigen',
-        'USER': 'root',
-        'PASSWORD': 'n0m3l0s3',
-        'HOST': 'localhost',
+        'USER': 'inydes',
+        'PASSWORD': 'rRy2S<_:',
+        'HOST': 'inydes.cl7uq5voofn2.us-west-2.rds.amazonaws.com',
         'PORT': '3306'
     }
 }
