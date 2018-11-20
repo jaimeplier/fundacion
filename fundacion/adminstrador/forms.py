@@ -47,7 +47,7 @@ class ReporteroForm(ModelForm):
 class AcudeInstitucionForm(ModelForm):
     class Meta:
         model = AcudeInstitucion
-        exclude = ['fecha_alta', 'fecha_baja']
+        exclude = ['fecha_alta', 'fecha_baja', 'fecha_actualizacion', 'coordenadas']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 

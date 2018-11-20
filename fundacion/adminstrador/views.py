@@ -1,3 +1,4 @@
+from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User, Permission
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -387,7 +388,7 @@ class AcudeInstitucionAdd(CreateView):
     permission_required = 'add_acude_institucion'
 
     model = AcudeInstitucion
-    template_name = 'config/formulario_1Col.html'
+    template_name = 'config/formMapa.html'
     success_url = '/administrador/acude_institucion/list'
     form_class = AcudeInstitucionForm
 
@@ -400,6 +401,28 @@ class AcudeInstitucionAdd(CreateView):
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Completa todos los campos para registrar un'
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        lon = self.request.POST.get('lgn')
+        lat = self.request.POST.get('lat')
+        if form.is_valid():
+            try:
+                pnt = Point(float(lon), float(lat))
+                form.instance.coordenadas = pnt
+
+                institucion = form.save(commit=False)
+                institucion.save()
+                return HttpResponseRedirect(self.get_success_url())
+            except:
+                return render(request, template_name=self.template_name,
+                              context={'form': form, 'error': 'Falta ubicación de máquina'})
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_acude_institucion')
 
 
 # @permission_required(perm='change_acude_institucion', login_url='/login/')
