@@ -8,8 +8,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     NivelEstudioEdit, NivelViolenciaAdd, NivelViolenciaAjaxList, NivelViolenciaEdit, OcupacionAdd, OcupacionAjaxList, \
     OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit, \
     TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
-    ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, AsesorCallcenterAdd, AsesorCallcenterAjaxList, \
-    AsesorCallcenterEdit, PsicologoAdd, PsicologoAjaxList, PsicologoEdit, ReporteroAdd, ReporteroAjaxList, \
+    ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, ConsejeroAdd, ConsejeroAjaxList, \
+    ConsejeroEdit, PsicologoAdd, PsicologoAjaxList, PsicologoEdit, ReporteroAdd, ReporteroAjaxList, \
     ReporteroEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit
 from . import views
 
@@ -19,11 +19,11 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('catalogos/', views.catalogos, name='catalogos'),
 
-    path('asesor_callcenter/add/', AsesorCallcenterAdd.as_view(), name='add_asesor_callcenter'),
-    path('asesor_callcenter/list/', views.list_asesor_callcenter, name='list_asesor_callcenter'),
-    path('asesor_callcenter/ajax/list/', AsesorCallcenterAjaxList.as_view(), name='list_ajax_asesor_callcenter'),
-    path('asesor_callcenter/edit/<int:pk>', AsesorCallcenterEdit.as_view(), name='edit_asesor_callcenter'),
-    path('asesor_callcenter/list/delete/<int:pk>', views.delete_asesor_callcenter, name='delete_asesor_callcenter'),
+    path('consejero/add/', ConsejeroAdd.as_view(), name='add_consejero'),
+    path('consejero/list/', views.list_consejero, name='list_consejero'),
+    path('consejero/ajax/list/', ConsejeroAjaxList.as_view(), name='list_ajax_consejero'),
+    path('consejero/edit/<int:pk>', ConsejeroEdit.as_view(), name='edit_consejero'),
+    path('consejero/list/delete/<int:pk>', views.delete_consejero, name='delete_consejero'),
 #director, calidad, consejero, supervisor, directorio
     path('psicologo/add/', PsicologoAdd.as_view(), name='add_psicologo'),
     path('psicologo/list/', views.list_psicologo, name='list_psicologo'),

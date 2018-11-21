@@ -6,7 +6,7 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     Violentometro, ViveCon, ContactoInstitucion
 
 
-class AsesorCallcenterForm(ModelForm):
+class ConsejeroForm(ModelForm):
     class Meta:
         model = User
         fields = (

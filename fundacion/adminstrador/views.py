@@ -10,7 +10,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
-    OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, AsesorCallcenterForm, \
+    OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, ConsejeroForm, \
     PsicologoForm, ReporteroForm, ContactoInstitucionForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
@@ -24,23 +24,23 @@ def catalogos(request):
     template_name = 'administrador/catalogos.html'
     return render(request, template_name)
 
-class AsesorCallcenterAdd(CreateView):
+class ConsejeroAdd(CreateView):
     redirect_field_name = 'next'
     login_url = '/login/'
-    permission_required = 'add_asesor_callcenter'
+    permission_required = 'add_consejero'
 
     model = User
     template_name = 'config/formulario_1Col.html'
-    form_class = AsesorCallcenterForm
+    form_class = ConsejeroForm
 
     def get_context_data(self, **kwargs):
-        context = super(AsesorCallcenterAdd, self).get_context_data(**kwargs)
+        context = super(ConsejeroAdd, self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Agregar asesor de callcenter'
+            context['titulo'] = 'Agregar un consejero'
         if 'instrucciones' not in context:
-            context['instrucciones'] = 'Completa todos los campos para registrar un'
+            context['instrucciones'] = 'Completa todos los campos para registrar un consejero'
         return context
 
     def post(self, request, *args, **kwargs):
@@ -49,7 +49,7 @@ class AsesorCallcenterAdd(CreateView):
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
-            permiso = Permission.objects.get(codename='callcenter')
+            permiso = Permission.objects.get(codename='consejero')
             user.save()
             user.user_permissions.add(permiso)
             user.save()
@@ -58,19 +58,19 @@ class AsesorCallcenterAdd(CreateView):
             return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):
-        return reverse('administrador:list_asesor_callcenter')
+        return reverse('administrador:list_consejero')
 
 
-# @permission_required(perm='change_asesor_callcenter', login_url='/login/')
-def list_asesor_callcenter(request):
-    template_name = 'administrador/tab_asesor_callcenter.html'
+# @permission_required(perm='change_consejero', login_url='/login/')
+def list_consejero(request):
+    template_name = 'administrador/tab_consejero.html'
     return render(request, template_name)
 
 
-class AsesorCallcenterAjaxList(BaseDatatableView):
+class ConsejeroAjaxList(BaseDatatableView):
     redirect_field_name = 'next'
     login_url = '/login/'
-    permission_required = 'change_asesor_callcenter'
+    permission_required = 'change_consejero'
 
     model = User
     columns = ['id', 'username', 'email', 'editar', 'eliminar']
@@ -80,7 +80,7 @@ class AsesorCallcenterAjaxList(BaseDatatableView):
     def render_column(self, row, column):
 
         if column == 'editar':
-            return '<a class="" href ="' + reverse('administrador:edit_asesor_callcenter',
+            return '<a class="" href ="' + reverse('administrador:edit_consejero',
                                                    kwargs={
                                                        'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
         elif column == 'eliminar':
@@ -89,10 +89,10 @@ class AsesorCallcenterAjaxList(BaseDatatableView):
         elif column == 'id':
             return row.pk
 
-        return super(AsesorCallcenterAjaxList, self).render_column(row, column)
+        return super(ConsejeroAjaxList, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        permiso = Permission.objects.get(codename='callcenter')
+        permiso = Permission.objects.get(codename='consejero')
         return User.objects.all().filter(user_permissions=permiso)
 
     def filter_queryset(self, qs):
@@ -103,18 +103,18 @@ class AsesorCallcenterAjaxList(BaseDatatableView):
         return qs
 
 
-class AsesorCallcenterEdit(UpdateView):
+class ConsejeroEdit(UpdateView):
     redirect_field_name = 'next'
     login_url = '/login/'
-    permission_required = 'change_asesor_callcenter'
-    success_url = '/administrador/asesor_callcenter/list'
+    permission_required = 'change_consejero'
+    success_url = '/administrador/consejero/list'
 
     model = User
     template_name = 'config/formulario_1Col.html'
-    form_class = AsesorCallcenterForm
+    form_class = ConsejeroForm
 
     def get_context_data(self, **kwargs):
-        context = super(AsesorCallcenterEdit, self).get_context_data(**kwargs)
+        context = super(ConsejeroEdit, self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -136,13 +136,13 @@ class AsesorCallcenterEdit(UpdateView):
             return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):
-        return reverse('administrador:list_asesor_callcenter')
+        return reverse('administrador:list_consejero')
 
 
-# @permission_required(perm='delete_asesor_callcenter', login_url='/login/')
-def delete_asesor_callcenter(request, pk):
-    asesor_callcenter = get_object_or_404(User, pk=pk)
-    asesor_callcenter.delete()
+# @permission_required(perm='delete_consejero', login_url='/login/')
+def delete_consejero(request, pk):
+    consejero = get_object_or_404(User, pk=pk)
+    consejero.delete()
     return JsonResponse({'result': 1})
 
 class PsicologoAdd(CreateView):
