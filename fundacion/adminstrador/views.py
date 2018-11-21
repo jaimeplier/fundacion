@@ -1,7 +1,8 @@
+from django.contrib.auth import logout
 from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User, Permission
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
 from django.urls import reverse
@@ -15,6 +16,10 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('administrador:index'))
 
 def index(request):
     template_name = 'config/index.html'
