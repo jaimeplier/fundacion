@@ -22,7 +22,7 @@
                 <div class="col s10 m10 l10" style="margin-top: 0px;">
                     <div class="row" style="padding: 1%;">
                         <div class="col s12">
-                            <table id="example" class="display responsive-table" style="width:100%; padding-top: 5%;">
+                            <table id="tabla" class="display responsive-table" style="width:100%; padding-top: 5%;">
                                 <thead>
                                 <tr>
                                     {% block campos %}{% endblock %}
@@ -63,6 +63,19 @@
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
 
     <script type="text/javascript">
+        {% block scripts_tabla %}
+        {% endblock %}
+        var id = 0;
+
+        function actualiza(uid) {
+            id = uid;
+            $('.modal').modal({
+                    dismissible: false
+                }
+            );
+            $('#modal1').modal('open');
+        }
+
         $(document).ready(function () {
             $('select').material_select();
             $('.button-collapse').sideNav({
@@ -73,7 +86,7 @@
                 }
             );
 
-            $('#example').DataTable({
+            $('#tabla').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     {
@@ -117,7 +130,11 @@
                     }
 
 
-                ]
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: "{% block url_ajax %}{% endblock %}",
+                {% block order %}{% endblock %}
             });
 
         });
