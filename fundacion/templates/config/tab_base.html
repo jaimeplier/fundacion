@@ -20,6 +20,22 @@
             <div class="row fondo_blanco" style="padding-top: 10%;">
                 <div class="col s1 m1 l1"></div>
                 <div class="col s10 m10 l10" style="margin-top: 0px;">
+                    <!-- Corregir esta parte-->
+                    <div class="row">
+                        <div class="col s12">
+                            <p>- {% block titulo_tabla %}{% endblock %} </p>
+                        </div>
+
+                        <div class="col s12">
+                            <p class="font_gris"> {% block instrucciones_tabla %}{% endblock %}</p>
+                        </div>
+
+                        <div class="col s12" style="text-align: center; margin-top: 5%;">
+                            {% block btn_agregar %}{% endblock %}
+                        </div>
+                    </div>
+                    <!-- Hasta aqui-->
+
                     <div class="row" style="padding: 1%;">
                         <div class="col s12">
                             <table id="tabla" class="display responsive-table" style="width:100%; padding-top: 5%;">
