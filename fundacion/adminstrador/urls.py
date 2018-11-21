@@ -10,7 +10,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
     ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, ConsejeroAdd, ConsejeroAjaxList, \
     ConsejeroEdit, DirectorioAdd, DirectorioAjaxList, DirectorioEdit, SupervisorAdd, SupervisorAjaxList, \
-    SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit
+    SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit, CalidadAdd, \
+    CalidadAjaxList, CalidadEdit
 from . import views
 
 app_name = 'administrador'
@@ -36,6 +37,12 @@ urlpatterns = [
     path('supervisor/ajax/list/', SupervisorAjaxList.as_view(), name='list_ajax_supervisor'),
     path('supervisor/edit/<int:pk>', SupervisorEdit.as_view(), name='edit_supervisor'),
     path('supervisor/list/delete/<int:pk>', views.delete_supervisor, name='delete_supervisor'),
+
+    path('calidad/add/', CalidadAdd.as_view(), name='add_calidad'),
+    path('calidad/list/', views.list_calidad, name='list_calidad'),
+    path('calidad/ajax/list/', CalidadAjaxList.as_view(), name='list_ajax_calidad'),
+    path('calidad/edit/<int:pk>', CalidadEdit.as_view(), name='edit_calidad'),
+    path('calidad/list/delete/<int:pk>', views.delete_calidad, name='delete_calidad'),
 
     path('acude_institucion/add/', AcudeInstitucionAdd.as_view(), name='add_acude_institucion'),
     path('acude_institucion/list/', views.list_acude_institucion, name='list_acude_institucion'),

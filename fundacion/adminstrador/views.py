@@ -11,7 +11,7 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
     OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, ConsejeroForm, \
-    DirectorioForm, SupervisorForm, ContactoInstitucionForm
+    DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion
@@ -387,7 +387,126 @@ def delete_supervisor(request, pk):
     supervisor.delete()
     return JsonResponse({'result': 1})
 
+class CalidadAdd(CreateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'add_calidad'
 
+    model = User
+    template_name = 'config/formulario_1Col.html'
+    form_class = CalidadForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CalidadAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar calidad'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un calidad'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            permiso = Permission.objects.get(codename='calidad')
+            user.save()
+            user.user_permissions.add(permiso)
+            user.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_calidad')
+
+
+# @permission_required(perm='change_calidad', login_url='/login/')
+def list_calidad(request):
+    template_name = 'administrador/tab_calidad.html'
+    return render(request, template_name)
+
+
+class CalidadAjaxList(BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_calidad'
+
+    model = User
+    columns = ['id', 'username', 'email', 'editar', 'eliminar']
+    order_columns = ['id', 'username', 'email']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_calidad',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(CalidadAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        permiso = Permission.objects.get(codename='calidad')
+        return User.objects.all().filter(user_permissions=permiso)
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(username__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+                email__icontains=search)
+        return qs
+
+
+class CalidadEdit(UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/login/'
+    permission_required = 'change_calidad'
+    success_url = '/administrador/calidad/list'
+
+    model = User
+    template_name = 'config/formulario_1Col.html'
+    form_class = CalidadForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CalidadEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        usuario = User.objects.get(pk=kwargs['pk'])
+        form = self.form_class(request.POST, instance=usuario)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_calidad')
+
+
+# @permission_required(perm='delete_calidad', login_url='/login/')
+def delete_calidad(request, pk):
+    calidad = get_object_or_404(User, pk=pk)
+    calidad.delete()
+    return JsonResponse({'result': 1})
 
 class AcudeInstitucionAdd(CreateView):
     redirect_field_name = 'next'
