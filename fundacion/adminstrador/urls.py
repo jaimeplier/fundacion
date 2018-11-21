@@ -9,8 +9,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit, \
     TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
     ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, ConsejeroAdd, ConsejeroAjaxList, \
-    ConsejeroEdit, PsicologoAdd, PsicologoAjaxList, PsicologoEdit, ReporteroAdd, ReporteroAjaxList, \
-    ReporteroEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit
+    ConsejeroEdit, PsicologoAdd, PsicologoAjaxList, PsicologoEdit, SupervisorAdd, SupervisorAjaxList, \
+    SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit
 from . import views
 
 app_name = 'administrador'
@@ -18,24 +18,24 @@ app_name = 'administrador'
 urlpatterns = [
     path('', views.index, name='index'),
     path('catalogos/', views.catalogos, name='catalogos'),
-
+    # Psicologos, Medicos, Abogados
     path('consejero/add/', ConsejeroAdd.as_view(), name='add_consejero'),
     path('consejero/list/', views.list_consejero, name='list_consejero'),
     path('consejero/ajax/list/', ConsejeroAjaxList.as_view(), name='list_ajax_consejero'),
     path('consejero/edit/<int:pk>', ConsejeroEdit.as_view(), name='edit_consejero'),
     path('consejero/list/delete/<int:pk>', views.delete_consejero, name='delete_consejero'),
-#director, calidad, consejero, supervisor, directorio
+
     path('psicologo/add/', PsicologoAdd.as_view(), name='add_psicologo'),
     path('psicologo/list/', views.list_psicologo, name='list_psicologo'),
     path('psicologo/ajax/list/', PsicologoAjaxList.as_view(), name='list_ajax_psicologo'),
     path('psicologo/edit/<int:pk>', PsicologoEdit.as_view(), name='edit_psicologo'),
     path('psicologo/list/delete/<int:pk>', views.delete_psicologo, name='delete_psicologo'),
-#supervisor
-    path('reportero/add/', ReporteroAdd.as_view(), name='add_reportero'),
-    path('reportero/list/', views.list_reportero, name='list_reportero'),
-    path('reportero/ajax/list/', ReporteroAjaxList.as_view(), name='list_ajax_reportero'),
-    path('reportero/edit/<int:pk>', ReporteroEdit.as_view(), name='edit_reportero'),
-    path('reportero/list/delete/<int:pk>', views.delete_reportero, name='delete_reportero'),
+    #Reportes
+    path('supervisor/add/', SupervisorAdd.as_view(), name='add_supervisor'),
+    path('supervisor/list/', views.list_supervisor, name='list_supervisor'),
+    path('supervisor/ajax/list/', SupervisorAjaxList.as_view(), name='list_ajax_supervisor'),
+    path('supervisor/edit/<int:pk>', SupervisorEdit.as_view(), name='edit_supervisor'),
+    path('supervisor/list/delete/<int:pk>', views.delete_supervisor, name='delete_supervisor'),
 
     path('acude_institucion/add/', AcudeInstitucionAdd.as_view(), name='add_acude_institucion'),
     path('acude_institucion/list/', views.list_acude_institucion, name='list_acude_institucion'),

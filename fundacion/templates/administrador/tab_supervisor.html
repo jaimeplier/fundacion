@@ -2,7 +2,7 @@
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
     <label class="titulo_tabla">Personas que generan reportes</label><br/>
-    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_reportero' %}"><i
+    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_supervisor' %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -35,5 +35,5 @@
     }
 {% endblock %}
 
-{% block url_ajax %}{% url 'administrador:list_ajax_reportero' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_supervisor' %}{% endblock %}
 

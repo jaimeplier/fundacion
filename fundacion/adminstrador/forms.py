@@ -32,7 +32,7 @@ class PsicologoForm(ModelForm):
         widgets = {
             'password': PasswordInput(), }
 
-class ReporteroForm(ModelForm):
+class SupervisorForm(ModelForm):
     class Meta:
         model = User
         fields = (
