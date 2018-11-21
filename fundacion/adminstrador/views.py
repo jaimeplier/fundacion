@@ -20,6 +20,10 @@ def index(request):
     template_name = 'config/index.html'
     return render(request, template_name)
 
+def catalogos(request):
+    template_name = 'administrador/catalogos.html'
+    return render(request, template_name)
+
 class AsesorCallcenterAdd(CreateView):
     redirect_field_name = 'next'
     login_url = '/login/'

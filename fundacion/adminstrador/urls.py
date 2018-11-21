@@ -17,19 +17,20 @@ app_name = 'administrador'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('catalogos/', views.catalogos, name='catalogos'),
 
     path('asesor_callcenter/add/', AsesorCallcenterAdd.as_view(), name='add_asesor_callcenter'),
     path('asesor_callcenter/list/', views.list_asesor_callcenter, name='list_asesor_callcenter'),
     path('asesor_callcenter/ajax/list/', AsesorCallcenterAjaxList.as_view(), name='list_ajax_asesor_callcenter'),
     path('asesor_callcenter/edit/<int:pk>', AsesorCallcenterEdit.as_view(), name='edit_asesor_callcenter'),
     path('asesor_callcenter/list/delete/<int:pk>', views.delete_asesor_callcenter, name='delete_asesor_callcenter'),
-#director, callcenter, calidad
+#director, calidad, consejero, supervisor, directorio
     path('psicologo/add/', PsicologoAdd.as_view(), name='add_psicologo'),
     path('psicologo/list/', views.list_psicologo, name='list_psicologo'),
     path('psicologo/ajax/list/', PsicologoAjaxList.as_view(), name='list_ajax_psicologo'),
     path('psicologo/edit/<int:pk>', PsicologoEdit.as_view(), name='edit_psicologo'),
     path('psicologo/list/delete/<int:pk>', views.delete_psicologo, name='delete_psicologo'),
-
+#supervisor
     path('reportero/add/', ReporteroAdd.as_view(), name='add_reportero'),
     path('reportero/list/', views.list_reportero, name='list_reportero'),
     path('reportero/ajax/list/', ReporteroAjaxList.as_view(), name='list_ajax_reportero'),
