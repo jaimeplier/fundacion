@@ -2,7 +2,7 @@
 {% load static %}
 {% block style %}
     <style>
-    .card:hover{
+    .card-box:hover{
         background-color: #EF7F13 !important;
     }
     </style>
@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col s12 m4 l4">
                     <a class="modal-trigger" href="#modalUsers">
-                        <div class="card blue-grey darken-1">
+                        <div class="card card-box blue-grey darken-1">
                             <div class="card-content white-text">
                                 <span class="card-title text-center"><p><i
                                         class="fas fa-users fa-2x"></i></p>Usuarios</span>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="col s12 m4 l4">
                     <a href="{% url 'administrador:catalogos' %}">
-                        <div class="card blue-grey darken-1">
+                        <div class="card card-box blue-grey darken-1">
                             <div class="card-content white-text">
                                 <span class="card-title text-center"><p><i class="fas fa-book-open fa-2x"></i></p>Catálogos</span>
                             </div>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col s12 m4 l4">
                     <a href="{% url 'administrador:list_acude_institucion' %}">
-                        <div class="card blue-grey darken-1">
+                        <div class="card card-box blue-grey darken-1">
                             <div class="card-content white-text">
                                 <span class="card-title text-center"><p><i class="fas fa-building fa-2x"></i></p>Instituciones</span>
                             </div>
@@ -52,7 +52,7 @@
                     <div class="row">
                         <div class="col s4 m4 l4">
                             <a href="{% url 'administrador:list_asesor_callcenter' %}">
-                                <div class="card blue-grey darken-1">
+                                <div class="card card-box blue-grey darken-1">
                                     <div class="card-content white-text">
                                         <span class="card-title text-center text-bold">Asesor</span>
                                     </div>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="col s4 m4 l4">
                             <a href="{% url 'administrador:list_psicologo' %}">
-                                <div class="card blue-grey darken-1">
+                                <div class="card card-box blue-grey darken-1">
                                     <div class="card-content white-text">
                                         <span class="card-title text-center text-bold">Psicólogo</span>
                                     </div>
@@ -70,7 +70,7 @@
                         </div>
                         <div class="col s4 m4 l4">
                             <a href="{% url 'administrador:list_reportero' %}">
-                                <div class="card blue-grey darken-1">
+                                <div class="card card-box blue-grey darken-1">
                                     <div class="card-content white-text">
                                         <span class="card-title text-center text-bold">Supervisor</span>
                                     </div>
@@ -81,7 +81,7 @@
                     <div class="row">
                         <div class="col s4 m4 l4">
                             <a href="">
-                                <div class="card blue-grey darken-1">
+                                <div class="card card-box blue-grey darken-1">
                                     <div class="card-content white-text">
                                         <span class="card-title text-center text-bold">Director</span>
                                     </div>
@@ -91,7 +91,7 @@
                         <div class="col s4 m4 l4"></div>
                         <div class="col s4 m4 l4">
                             <a href="">
-                                <div class="card blue-grey darken-1">
+                                <div class="card card-box blue-grey darken-1">
                                     <div class="card-content white-text">
                                         <span class="card-title text-center text-bold">Calidad</span>
                                     </div>
