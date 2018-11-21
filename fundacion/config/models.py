@@ -215,3 +215,13 @@ class Dependencia(Catalogo):
     class Meta:
         managed = True
         db_table = 'dependencia'
+
+class ContactoInstitucion(models.Model):
+    nombre = models.CharField(max_length=256)
+    telefono = models.CharField(max_length=15)
+    extension = models.CharField(max_length=5, blank=True, null=True)
+    institucion = models.ForeignKey('AcudeInstitucion', on_delete=models.DO_NOTHING)
+
+    class Meta:
+        managed = True
+        db_table = 'contacto_institucion'
