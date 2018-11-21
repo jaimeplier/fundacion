@@ -1,38 +1,54 @@
 {% extends 'config/base.html' %}
 {% load static %}
+{% block style %}
+    <style>
+        .collapsible-header:hover {
+            color: black !important;
 
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col s12">
             <div class="row">
-                <div class="col s12 m6 l6">
+                <div class="col s12 m4 l4">
                     <ul class="collapsible popout" data-collapsible="accordion">
                         <li>
-                            <div class="collapsible-header"><i class="material-icons">build</i>Vive con...</div>
+                            <div class="collapsible-header"><i class="fas fa-users"></i>Vive con...</div>
                             <div class="collapsible-body">
                                 <div class="row">
-                                    <div class="col s6 center">
-                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Texto</a>
-                                    </div>
-                                    <div class="col s6 center">
-                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Texto</a>
+                                    <div class="col s12 center">
+                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Entrar</a>
                                     </div>
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div class="col s12 m6 l6">
+                <div class="col s12 m4 l4">
                     <ul class="collapsible popout" data-collapsible="accordion">
                         <li>
-                            <div class="collapsible-header"><i class="material-icons">build</i>Religión</div>
+                            <div class="collapsible-header"><i class="fas fa-venus"></i><i class="fas fa-mars"></i>Sexo
+                            </div>
                             <div class="collapsible-body">
                                 <div class="row">
-                                    <div class="col s6 center">
-                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Texto</a>
+                                    <div class="col s12 center">
+                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Entrar</a>
                                     </div>
-                                    <div class="col s6 center">
-                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Texto</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col s12 m4 l4">
+                    <ul class="collapsible popout" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header"><i class="fas fa-church"></i>Religión</div>
+                            <div class="collapsible-body">
+                                <div class="row">
+                                    <div class="col s12 center">
+                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Entrar</a>
                                     </div>
                                 </div>
                             </div>
@@ -44,48 +60,26 @@
                 <div class="col s12 m4 l4">
                     <ul class="collapsible popout" data-collapsible="accordion">
                         <li>
-                            <div class="collapsible-header"><i class="material-icons">build</i>Lengua indígena</div>
+                            <div class="collapsible-header"><i class="fas fa-language"></i>Lengua indígena</div>
                             <div class="collapsible-body">
                                 <div class="row">
-                                    <div class="col s6 center">
-                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Texto</a>
-                                    </div>
-                                    <div class="col s6 center">
-                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Texto</a>
+                                    <div class="col s12 center">
+                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Entrar</a>
                                     </div>
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
+                <div class="col s12 m4 l4"></div>
                 <div class="col s12 m4 l4">
                     <ul class="collapsible popout" data-collapsible="accordion">
                         <li>
-                            <div class="collapsible-header"><i class="material-icons">build</i>Nivel de estudios</div>
+                            <div class="collapsible-header"><i class="fas fa-user-graduate"></i>Nivel de estudios</div>
                             <div class="collapsible-body">
                                 <div class="row">
-                                    <div class="col s6 center">
-                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Texto</a>
-                                    </div>
-                                    <div class="col s6 center">
-                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Texto</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col s12 m4 l4">
-                    <ul class="collapsible popout" data-collapsible="accordion">
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons">build</i>Sexo</div>
-                            <div class="collapsible-body">
-                                <div class="row">
-                                    <div class="col s6 center">
-                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Texto</a>
-                                    </div>
-                                    <div class="col s6 center">
-                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Texto</a>
+                                    <div class="col s12 center">
+                                        <a class="waves-effect waves-light btn" href="#"><i class="material-icons left">add</i>Entrar</a>
                                     </div>
                                 </div>
                             </div>
@@ -100,14 +94,8 @@
 <!-- another script on the wall -->
 {% block scripts %}
     <script>
-        $('.collapsible').collapsible({
-            accordion: false, // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-            onOpen: function (el) {
-                alert('Open');
-            }, // Callback for Collapsible open
-            onClose: function (el) {
-                alert('Closed');
-            } // Callback for Collapsible close
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
         });
     </script>
 {% endblock %}
