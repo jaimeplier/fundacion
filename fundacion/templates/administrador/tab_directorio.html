@@ -1,8 +1,8 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
-    <label class="titulo_tabla">Psicologos</label><br/>
-    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_psicologo' %}"><i
+    <label class="titulo_tabla">Directorio</label><br/>
+    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_directorio' %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -35,5 +35,5 @@
     }
 {% endblock %}
 
-{% block url_ajax %}{% url 'administrador:list_ajax_psicologo' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_directorio' %}{% endblock %}
 

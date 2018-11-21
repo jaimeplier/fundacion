@@ -9,7 +9,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit, \
     TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
     ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, ConsejeroAdd, ConsejeroAjaxList, \
-    ConsejeroEdit, PsicologoAdd, PsicologoAjaxList, PsicologoEdit, SupervisorAdd, SupervisorAjaxList, \
+    ConsejeroEdit, DirectorioAdd, DirectorioAjaxList, DirectorioEdit, SupervisorAdd, SupervisorAjaxList, \
     SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit
 from . import views
 
@@ -25,11 +25,11 @@ urlpatterns = [
     path('consejero/edit/<int:pk>', ConsejeroEdit.as_view(), name='edit_consejero'),
     path('consejero/list/delete/<int:pk>', views.delete_consejero, name='delete_consejero'),
 
-    path('psicologo/add/', PsicologoAdd.as_view(), name='add_psicologo'),
-    path('psicologo/list/', views.list_psicologo, name='list_psicologo'),
-    path('psicologo/ajax/list/', PsicologoAjaxList.as_view(), name='list_ajax_psicologo'),
-    path('psicologo/edit/<int:pk>', PsicologoEdit.as_view(), name='edit_psicologo'),
-    path('psicologo/list/delete/<int:pk>', views.delete_psicologo, name='delete_psicologo'),
+    path('directorio/add/', DirectorioAdd.as_view(), name='add_directorio'),
+    path('directorio/list/', views.list_directorio, name='list_directorio'),
+    path('directorio/ajax/list/', DirectorioAjaxList.as_view(), name='list_ajax_directorio'),
+    path('directorio/edit/<int:pk>', DirectorioEdit.as_view(), name='edit_directorio'),
+    path('directorio/list/delete/<int:pk>', views.delete_directorio, name='delete_directorio'),
     #Reportes
     path('supervisor/add/', SupervisorAdd.as_view(), name='add_supervisor'),
     path('supervisor/list/', views.list_supervisor, name='list_supervisor'),
