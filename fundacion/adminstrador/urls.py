@@ -9,12 +9,15 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit, \
     TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
     ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, AsesorCallcenterAdd, AsesorCallcenterAjaxList, \
-    AsesorCallcenterEdit, PsicologoAdd, PsicologoAjaxList, PsicologoEdit, ReporteroAdd, ReporteroAjaxList, ReporteroEdit
+    AsesorCallcenterEdit, PsicologoAdd, PsicologoAjaxList, PsicologoEdit, ReporteroAdd, ReporteroAjaxList, \
+    ReporteroEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit
 from . import views
 
 app_name = 'administrador'
 
 urlpatterns = [
+    path('', views.index, name='index'),
+
     path('asesor_callcenter/add/', AsesorCallcenterAdd.as_view(), name='add_asesor_callcenter'),
     path('asesor_callcenter/list/', views.list_asesor_callcenter, name='list_asesor_callcenter'),
     path('asesor_callcenter/ajax/list/', AsesorCallcenterAjaxList.as_view(), name='list_ajax_asesor_callcenter'),
@@ -134,4 +137,10 @@ urlpatterns = [
     path('vive_con/ajax/list/', ViveConAjaxList.as_view(), name='list_ajax_vive_con'),
     path('vive_con/edit/<int:pk>', ViveConEdit.as_view(), name='edit_vive_con'),
     path('vive_con/list/delete/<int:pk>', views.delete_vive_con, name='delete_vive_con'),
+
+    path('contacto_institucion/add/<int:institucion>', ContactoInstitucionAdd.as_view(), name='add_contacto_institucion'),
+    path('contacto_institucion/list/<int:institucion>', views.list_contacto_institucion, name='list_contacto_institucion'),
+    path('contacto_institucion/ajax/list/<int:institucion>', ContactoInstitucionAjaxList.as_view(), name='list_ajax_contacto_institucion'),
+    path('contacto_institucion/edit/<int:pk>/<int:institucion>', ContactoInstitucionEdit.as_view(), name='edit_contacto_institucion'),
+    path('contacto_institucion/list/delete/<int:pk>', views.delete_contacto_institucion, name='delete_contacto_institucion'),
 ]

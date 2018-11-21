@@ -1,8 +1,8 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
-    <label class="titulo_tabla">Acude a institución</label><br/>
-    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_acude_institucion' %}"><i
+    <label class="titulo_tabla">Contactos</label><br/>
+    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_contacto_institucion'  institucion.pk %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -10,7 +10,6 @@
 {% block campos %}
     <th>ID</th>
     <th>Nombre</th>
-    <th data-orderable="false">Contactos</th>
     <th data-orderable="false">Editar</th>
     <th data-orderable="false">Eliminar</th>
 {% endblock %}
@@ -35,5 +34,5 @@
     }
 {% endblock %}
 
-{% block url_ajax %}{% url 'administrador:list_ajax_acude_institucion' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_contacto_institucion' institucion.pk %}{% endblock %}
 

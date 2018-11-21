@@ -3,7 +3,8 @@ from django.forms import ModelForm, Select, PasswordInput, DateTimeField
 
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
-    Violentometro, ViveCon
+    Violentometro, ViveCon, ContactoInstitucion
+
 
 class AsesorCallcenterForm(ModelForm):
     class Meta:
@@ -164,3 +165,12 @@ class ViveConForm(ModelForm):
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
+class ContactoInstitucionForm(ModelForm):
+    class Meta:
+        model = ContactoInstitucion
+        exclude = ['institucion']
+        labels = {
+            'telefono': 'Teléfono',
+            'extension': 'Extensión'
+        }
