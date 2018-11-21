@@ -417,7 +417,7 @@ class AcudeInstitucionAdd(CreateView):
                 return HttpResponseRedirect(self.get_success_url())
             except:
                 return render(request, template_name=self.template_name,
-                              context={'form': form, 'error': 'Falta ubicación de máquina'})
+                              context={'form': form, 'error': 'Falta ubicación de la institución'})
         else:
             return self.render_to_response(self.get_context_data(form=form))
 
@@ -472,7 +472,7 @@ class AcudeInstitucionEdit(UpdateView):
     success_url = '/administrador/acude_institucion/list'
 
     model = AcudeInstitucion
-    template_name = 'config/formulario_1Col.html'
+    template_name = 'config/formMapa.html'
     form_class = AcudeInstitucionForm
 
     def get_context_data(self, **kwargs):
@@ -484,6 +484,29 @@ class AcudeInstitucionEdit(UpdateView):
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST, request.FILES)
+        lon = self.request.POST.get('lgn')
+        lat = self.request.POST.get('lat')
+
+        l = self.model.objects.get(pk=self.kwargs['pk'])
+        form = AcudeInstitucionForm(request.POST, request.FILES, instance=l)
+        if form.is_valid():
+            try:
+                pnt = Point(float(lon), float(lat))
+                form.instance.coordenadas = pnt
+                institucion = form.save()
+                return HttpResponseRedirect(self.get_success_url())
+            except:
+                return render(request, template_name=self.template_name,
+                              context={'form': form, 'error': 'Falta ubicación de la institución'})
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_acude_institucion')
 
 
 # @permission_required(perm='delete_acude_institucion', login_url='/login/')

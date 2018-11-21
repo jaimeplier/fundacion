@@ -49,7 +49,9 @@ class AcudeInstitucionForm(ModelForm):
         model = AcudeInstitucion
         exclude = ['fecha_alta', 'fecha_baja', 'fecha_actualizacion', 'coordenadas']
         widgets = {
-            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]),
+            'convenio': Select(choices=[[True, 'Sí'], [False, 'No']]),
+        }
 
 class EstadoForm(ModelForm):
     class Meta:

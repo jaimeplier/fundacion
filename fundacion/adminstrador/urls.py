@@ -20,7 +20,7 @@ urlpatterns = [
     path('asesor_callcenter/ajax/list/', AsesorCallcenterAjaxList.as_view(), name='list_ajax_asesor_callcenter'),
     path('asesor_callcenter/edit/<int:pk>', AsesorCallcenterEdit.as_view(), name='edit_asesor_callcenter'),
     path('asesor_callcenter/list/delete/<int:pk>', views.delete_asesor_callcenter, name='delete_asesor_callcenter'),
-
+#director, callcenter, calidad
     path('psicologo/add/', PsicologoAdd.as_view(), name='add_psicologo'),
     path('psicologo/list/', views.list_psicologo, name='list_psicologo'),
     path('psicologo/ajax/list/', PsicologoAjaxList.as_view(), name='list_ajax_psicologo'),
