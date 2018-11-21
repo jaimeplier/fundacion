@@ -1,5 +1,12 @@
 {% extends 'config/base.html' %}
 {% load static %}
+{% block style %}
+    <style>
+    .card:hover{
+        background-color: #EF7F13 !important;
+    }
+    </style>
+{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col s12">
@@ -8,7 +15,8 @@
                     <a class="modal-trigger" href="#modalUsers">
                         <div class="card blue-grey darken-1">
                             <div class="card-content white-text">
-                                <span class="card-title">Usuarios</span>
+                                <span class="card-title text-center"><p><i
+                                        class="fas fa-users fa-2x"></i></p>Usuarios</span>
                             </div>
                         </div>
                     </a>
@@ -17,7 +25,7 @@
                     <a href="{% url 'administrador:catalogos' %}">
                         <div class="card blue-grey darken-1">
                             <div class="card-content white-text">
-                                <span class="card-title">Catálogos</span>
+                                <span class="card-title text-center"><p><i class="fas fa-book-open fa-2x"></i></p>Catálogos</span>
                             </div>
                         </div>
                     </a>
@@ -26,7 +34,7 @@
                     <a href="{% url 'administrador:list_acude_institucion' %}">
                         <div class="card blue-grey darken-1">
                             <div class="card-content white-text">
-                                <span class="card-title">Instituciones</span>
+                                <span class="card-title text-center"><p><i class="fas fa-building fa-2x"></i></p>Instituciones</span>
                             </div>
                         </div>
                     </a>
@@ -37,13 +45,16 @@
     <div id="modalUsers" class="modal">
         <div class="modal-content">
             <div class="row">
+                <div class="col s12 center">
+                    <h4>Usuarios</h4>
+                </div>
                 <div class="col s12">
                     <div class="row">
                         <div class="col s4 m4 l4">
                             <a href="{% url 'administrador:list_asesor_callcenter' %}">
                                 <div class="card blue-grey darken-1">
                                     <div class="card-content white-text">
-                                        <span class="card-title">Asesor</span>
+                                        <span class="card-title text-center text-bold">Asesor</span>
                                     </div>
                                 </div>
                             </a>
@@ -52,7 +63,7 @@
                             <a href="{% url 'administrador:list_psicologo' %}">
                                 <div class="card blue-grey darken-1">
                                     <div class="card-content white-text">
-                                        <span class="card-title">Psicólogo</span>
+                                        <span class="card-title text-center text-bold">Psicólogo</span>
                                     </div>
                                 </div>
                             </a>
@@ -61,25 +72,28 @@
                             <a href="{% url 'administrador:list_reportero' %}">
                                 <div class="card blue-grey darken-1">
                                     <div class="card-content white-text">
-                                        <span class="card-title">Supervisor</span>
+                                        <span class="card-title text-center text-bold">Supervisor</span>
                                     </div>
                                 </div>
                             </a>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col s4 m4 l4">
                             <a href="">
                                 <div class="card blue-grey darken-1">
                                     <div class="card-content white-text">
-                                        <span class="card-title">Director</span>
+                                        <span class="card-title text-center text-bold">Director</span>
                                     </div>
                                 </div>
                             </a>
                         </div>
+                        <div class="col s4 m4 l4"></div>
                         <div class="col s4 m4 l4">
                             <a href="">
                                 <div class="card blue-grey darken-1">
                                     <div class="card-content white-text">
-                                        <span class="card-title">Calidad</span>
+                                        <span class="card-title text-center text-bold">Calidad</span>
                                     </div>
                                 </div>
                             </a>
