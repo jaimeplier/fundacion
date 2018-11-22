@@ -1,16 +1,16 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
-    <label class="titulo_tabla">Institución</label><br/>
-    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_acude_institucion' %}"><i
+    <label class="titulo_tabla">Directorio</label><br/>
+    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_directorio' %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
 {% load static %}
 {% block campos %}
     <th>ID</th>
-    <th>Nombre</th>
-    <th data-orderable="false">Contactos</th>
+    <th>Usuario</th>
+    <th>Correo</th>
     <th data-orderable="false">Editar</th>
     <th data-orderable="false">Eliminar</th>
 {% endblock %}
@@ -35,5 +35,5 @@
     }
 {% endblock %}
 
-{% block url_ajax %}{% url 'administrador:list_ajax_acude_institucion' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_directorio' %}{% endblock %}
 

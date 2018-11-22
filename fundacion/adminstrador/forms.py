@@ -6,7 +6,7 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     Violentometro, ViveCon, ContactoInstitucion
 
 
-class AsesorCallcenterForm(ModelForm):
+class ConsejeroForm(ModelForm):
     class Meta:
         model = User
         fields = (
@@ -19,7 +19,7 @@ class AsesorCallcenterForm(ModelForm):
         widgets = {
             'password': PasswordInput(), }
 
-class PsicologoForm(ModelForm):
+class DirectorioForm(ModelForm):
     class Meta:
         model = User
         fields = (
@@ -32,7 +32,20 @@ class PsicologoForm(ModelForm):
         widgets = {
             'password': PasswordInput(), }
 
-class ReporteroForm(ModelForm):
+class SupervisorForm(ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+        )
+        widgets = {
+            'password': PasswordInput(), }
+
+class CalidadForm(ModelForm):
     class Meta:
         model = User
         fields = (

@@ -1,8 +1,8 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
-    <label class="titulo_tabla">Asesores Callcenter</label><br/>
-    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_asesor_callcenter' %}"><i
+    <label class="titulo_tabla">Consejeros</label><br/>
+    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_consejero' %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -35,5 +35,5 @@
     }
 {% endblock %}
 
-{% block url_ajax %}{% url 'administrador:list_ajax_asesor_callcenter' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_consejero' %}{% endblock %}
 

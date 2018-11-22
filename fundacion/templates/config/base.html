@@ -68,43 +68,26 @@
                         </div>
                     </div>
                 </li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
+                <li class="menu_redondo"><a href="#!">Resumen</a></li>
                 <li class="menu_redondo">
                     <ul class="collapsible collapsible-accordion">
                         <li class="img_flecha">
-                            <a class="collapsible-header">Texto <i class="material-icons"
+                            <a class="collapsible-header">Personal<i class="material-icons"
                                                                    style="float: right;margin: 0 0px 0 0; color: white;">chevron_right</i></a>
                             <div class="collapsible-body">
                                 <ul>
-                                    <li><a href="#!">Texto 1</a></li>
-                                    <li><a href="#!">Texto 2</a></li>
-                                    <li><a href="#!">Texto 3</a></li>
-                                    <li><a href="#!">Texto 4</a></li>
+                                    <li><a href="{% url 'administrador:list_supervisor' %}">Supervisores</a></li>
+                                    <li><a href="{% url 'administrador:list_consejero' %}">Consejeros</a></li>
+                                    <li><a href="{% url 'administrador:list_directorio' %}">Directorio</a></li>
+                                    <li><a href="{% url 'administrador:list_calidad' %}">Calidad</a></li>
                                 </ul>
                             </div>
                         </li>
                     </ul>
                 </li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo">
-                    <ul class="collapsible collapsible-accordion">
-                        <li>
-                            <a class="collapsible-header">Texto <i class="material-icons"
-                                                                   style="float: right;margin: 0 0px 0 0; color: white;">chevron_right</i></a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    <li><a href="#!">Texto 1</a></li>
-                                    <li><a href="#!">Texto 2</a></li>
-                                    <li><a href="#!">Texto 3</a></li>
-                                    <li><a href="#!">Texto 4</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
+                <li class="menu_redondo"><a href="#!">Reportes</a></li>
+                <li class="menu_redondo"><a href="{% url 'administrador:catalogos' %}">Catálogos</a></li>
+                <li class="menu_redondo"><a href="{% url 'administrador:list_acude_institucion' %}">Instituciones</a></li>
             </ul>
         </div>
         <div id="content">
