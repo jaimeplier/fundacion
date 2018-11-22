@@ -19,7 +19,7 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
 
 def logout_view(request):
     logout(request)
-    return redirect(reverse('administrador:index'))
+    return redirect(reverse('webapp:login'))
 
 def index(request):
     template_name = 'config/index.html'
