@@ -57,8 +57,8 @@
                                          width="100">
                                 </div>
                                 <div class="col s9 center" style="padding-top: 2%; margin-top: 0px;">
-                                    <p class="font_blanco negritas" style="margin-top: 0px;">Laura Patricia Flores
-                                        Cruz</p>
+                                    <p class="font_blanco negritas"
+                                       style="margin-top: 0px;">{{ user.get_full_name }}</p>
                                 </div>
                                 <div class="col s3 center" style="padding-top:0%;">
                                     <p><a class="font_naranja" href="#"><i class="material-icons">power_settings_new</i></a>
@@ -73,7 +73,7 @@
                     <ul class="collapsible collapsible-accordion">
                         <li class="img_flecha">
                             <a class="collapsible-header">Personal<i class="material-icons"
-                                                                   style="float: right;margin: 0 0px 0 0; color: white;">chevron_right</i></a>
+                                                                     style="float: right;margin: 0 0px 0 0; color: white;">chevron_right</i></a>
                             <div class="collapsible-body">
                                 <ul>
                                     <li><a href="{% url 'administrador:list_supervisor' %}">Supervisores</a></li>
@@ -87,7 +87,8 @@
                 </li>
                 <li class="menu_redondo"><a href="#!">Reportes</a></li>
                 <li class="menu_redondo"><a href="{% url 'administrador:catalogos' %}">Catálogos</a></li>
-                <li class="menu_redondo"><a href="{% url 'administrador:list_acude_institucion' %}">Instituciones</a></li>
+                <li class="menu_redondo"><a href="{% url 'administrador:list_acude_institucion' %}">Instituciones</a>
+                </li>
             </ul>
         </div>
         <div id="content">

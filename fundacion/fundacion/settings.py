@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'config.apps.ConfigConfig',
+    'webapp.apps.WebappConfig',
     'adminstrador.apps.AdminstradorConfig'
 ]
 
