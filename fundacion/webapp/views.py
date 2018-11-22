@@ -25,8 +25,6 @@ def login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             auth_login(request, user)
-            for p in user.user_permissions.all():
-                print(p)
             if request.POST.get('next') is not None:
                 return redirect(request.POST.get('next'))
             elif user.user_permissions.filter(codename='administrador').exists():
