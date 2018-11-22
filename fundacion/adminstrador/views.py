@@ -1,8 +1,7 @@
-from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User, Permission
+from django.contrib.gis.geos import Point
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-
 # Create your views here.
 from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
@@ -15,6 +14,7 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion
+
 
 def index(request):
     template_name = 'config/index.html'
