@@ -87,10 +87,10 @@ class ConsejeroAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_consejero',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"> </a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -208,10 +208,10 @@ class DirectorioAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_directorio',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -329,10 +329,10 @@ class SupervisorAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_supervisor',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -450,10 +450,10 @@ class CalidadAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_calidad',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -577,14 +577,14 @@ class AcudeInstitucionAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_acude_institucion',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'contacto':
             return '<a class="" href ="' + reverse('administrador:list_contacto_institucion',
                                                    kwargs={
-                                                       'institucion': row.pk}) + '"><i class="material-icons">contacts</i></a>'
+                                                       'institucion': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/usuario.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -693,10 +693,10 @@ class EstadoAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_estado',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -782,10 +782,10 @@ class PaisAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_pais',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -871,10 +871,10 @@ class EstadoCivilAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_estado_civil',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -960,10 +960,10 @@ class EstatusAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_estatus',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -1049,10 +1049,10 @@ class LenguaIndigenaAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_lengua_indigena',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -1138,10 +1138,10 @@ class MedioContactoAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_medio_contacto',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -1227,10 +1227,10 @@ class ModalidadViolenciaAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_modalidad_violencia',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -1316,10 +1316,10 @@ class MunicipioAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_municipio',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -1405,10 +1405,10 @@ class NivelEstudioAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_nivel_estudio',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -1494,10 +1494,10 @@ class NivelViolenciaAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_nivel_violencia',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -1583,10 +1583,10 @@ class OcupacionAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_ocupacion',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -1672,10 +1672,10 @@ class ReligionAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_religion',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png">></a>'
         elif column == 'id':
             return row.pk
 
@@ -1761,10 +1761,10 @@ class TipoCasoAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_tipo_caso',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -1850,10 +1850,10 @@ class TipoViolenciaAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_tipo_violencia',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -1939,10 +1939,10 @@ class ViolentometroAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_violentometro',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -2028,10 +2028,10 @@ class ViveConAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_vive_con',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 
@@ -2145,10 +2145,10 @@ class ContactoInstitucionAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_contacto_institucion',
                                                    kwargs={
-                                                       'pk': row.pk, 'institucion': self.kwargs['institucion']}) + '"><i class="material-icons">edit</i></a>'
+                                                       'pk': row.pk, 'institucion': self.kwargs['institucion']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
-                row.pk) + ')"><i class="material-icons">delete_forever</i></a>'
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
 

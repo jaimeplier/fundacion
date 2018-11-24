@@ -19,6 +19,12 @@ main {
     font-weight: bold !important;
 }
 
+
+.titulo_tabla{
+    text-align: center;
+    color:#EF7F13;
+}
+
 .fondo_gris {
     background-color: #f2f2f2;
 }
@@ -313,11 +319,11 @@ table.dataTable.no-footer {
 
 .border_rigth {
     border-right: 2px solid #C9CACB;
-    color: #C9CACB;
+    color: #737171;
 }
 
 .font_gris_tab {
-    color: #C9CACB;
+    color: #737171;
 }
 
 .fondo_tab_gris {
@@ -329,8 +335,8 @@ table.dataTable.no-footer {
 }
 
 div.dt-buttons {
-    position: relative;
-    float: right;
+    position: relative!important;
+    float: right!important;
 }
 
 .dataTables_wrapper .dataTables_filter {
@@ -435,3 +441,6 @@ div.dt-buttons {
 
 /* ********* */
 
+th{
+    background-color: white!important;
+}
