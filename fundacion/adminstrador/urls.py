@@ -20,6 +20,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
 
     path('', views.index, name='index'),
+    path('reportes/', views.reportes, name='reportes'),
+    path('resumen/', views.resumen, name='resumen'),
     path('catalogos/', views.catalogos, name='catalogos'),
     # Psicologos, Medicos, Abogados
     path('consejero/add/', ConsejeroAdd.as_view(), name='add_consejero'),

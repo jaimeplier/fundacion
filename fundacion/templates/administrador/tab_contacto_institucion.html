@@ -1,8 +1,8 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
-    <label class="titulo_tabla">Contactos</label><br/>
-    <a class="waves-effect waves-light btn btn_agregar" href="{% url 'administrador:add_contacto_institucion'  institucion.pk %}"><i
+    <h5 class="titulo_tabla">- Contactos -</h5>
+    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_contacto_institucion'  institucion.pk %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -33,6 +33,22 @@
     });
     }
 {% endblock %}
+
+<!-- Bloque para agregar las clases de las columnas en la tabla acorde al diseño -->
+ {% block columns %}
+
+ "columns": [
+                    { className: "center fondo_tab_gris border_rigth"},
+                    { className: "fondo_tab_crema border_rigth"},
+                    { className: "center fondo_tab_gris border_rigth"},
+                    { className: "center fondo_tab_crema "}
+
+                    ],
+
+ {% endblock %}
+
+<!-- *************************************************************************** -->
+
 
 {% block url_ajax %}{% url 'administrador:list_ajax_contacto_institucion' institucion.pk %}{% endblock %}
 

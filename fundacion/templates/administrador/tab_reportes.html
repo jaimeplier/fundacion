@@ -1,72 +1,79 @@
-<!--   SOFTIC SOLUTIONS   -->
 {% extends 'config/base.html' %}
 {% load static %}
 {% block style %}
-    <head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+    <style>
+        .input-field.col label {
+            left: 1.75rem;
+        }
 
-        <link rel="stylesheet" type="text/css"
-              href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
-        <style type="text/css">
-            .input-field.col label {
-                left: 1.75rem;
-            }
-        </style>
-    </head>
+        .textoReporte {
+            font-size: 1.2rem;
+            color: #000;
+        }
+
+        #titulo {
+            color: #EF7F13;
+            font-weight: bold;
+        }
+    </style>
 {% endblock %}
 {% block content %}
-    <!-- aquí va el contenido de la tabla -->
-    <main class="fondo_blanco">
-        <div class="fondo_blanco">
-            <div class="row fondo_blanco" style="padding-top: 5%;">
-                <div class="col s1 m1 l1"></div>
-                <div class="col s10 m10 l10" style="margin-top: 0px;">
-                    <!-- Corregir esta parte-->
-                    <div class="row">
-                        <div class="col s12" style="text-align: center;">
-                            {% block titulo_tabla %}{% endblock %}
-                        </div>
-
-                        <div class="col s12">
-                            <p class="font_gris"> {% block instrucciones_tabla %}{% endblock %}</p>
-                        </div>
-
-                        <div class="col s12" style="text-align: center; margin-top: 5%;">
-                            {% block btn_agregar %}{% endblock %}
-                        </div>
-                    </div>
-                    <!-- Hasta aqui-->
-
-                    <div class="row" style="padding: 1%;">
-                        <div class="col s12">
-                            <table id="tabla" class="display responsive-table" style="width:100%; padding-top: 5%;">
-                                <thead>
-                                <tr>
-                                    {% block campos %}{% endblock %}
-                                </tr>
-                                </thead>
-                                {% block datos_tabla %} {% endblock %}
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s1 m1 l1"></div>
-            </div>
+    <div class="row">
+        <div class="col s12 center">
+            <h4 id="titulo">- Reportes -</h4>
         </div>
-    </main>
-    <!-- Modal -->
-    {% block modal %}
-
-        <div id="modal1" class="modal">
-            <div class="modal-content">
-                <p>¿Seguro que deseas eliminarlo?</p>
-            </div>
-            <div class="modal-footer">
-                <a class="modal-action modal-close waves-effect btn-flat">Cancelar</a>
-                <a onclick="eliminar()" class="modal-action modal-close waves-effect btn-flat">Aceptar</a>
-            </div>
+    </div>
+    <div class="row" style="margin-top: 5%;">
+        <div class="col s4 m4 l4" style="margin-top: 1%;">
+            <label class="textoReporte">Selecciona el tipo de reporte</label>
         </div>
-    {% endblock %}
-    <!-- fin del modal -->
+        <div class="col s4 m4 l4">
+            <select>
+                <option value="" disabled selected>Seleccione</option>
+                <option value="1">Productividad</option>
+                <option value="2">Supervisor</option>
+            </select>
+        </div>
+        <div class="col s4 m4 l4"></div>
+    </div>
+    <div class="row">
+        <div class="col s4 m4 l4">
+            <label class="textoReporte">Seleccione el periodo de tiempo</label>
+        </div>
+        <div class="col s4 m4 l4">
+            <input name="group1" type="radio" id="test1"/>
+            <label for="test1">Día</label>
+            <input name="group1" type="radio" id="test2"/>
+            <label for="test2">Mes</label>
+            <input name="group1" type="radio" id="test3"/>
+            <label for="test3">Rango de días</label>
+        </div>
+        <div class="col s4 m4 l4">
+            <!--<input type="text">-->
+        </div>
+    </div>
+    <div class="row" style="padding: 1%;">
+        <div class="col s1"></div>
+        <div class="col s10">
+            <table id="tabla" class="display responsive-table" style="width:100%; padding-top: 5%;">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Consejero</th>
+                    <th># de servicios</th>
+                    <th>Login</th>
+                    <th>Logout</th>
+                    <th>Tiempo en servicio</th>
+                </tr>
+                </thead>
+                {% block datos_tabla %} {% endblock %}
+            </table>
+        </div>
+        <div class="col s1"></div>
+    </div>
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'js/crsfajax.js' %}"></script>
@@ -104,9 +111,6 @@
 
             $('#tabla').DataTable({
                 dom: 'Bfrtip',
-                {% block columns %}
-
-                {% endblock %}
                 buttons: [
                     {
                         extend: 'copyHtml5',
@@ -148,10 +152,7 @@
                 {% block order %}{% endblock %}
             });
 
-
-
         });
 
     </script>
 {% endblock %}
-

@@ -19,6 +19,12 @@ main {
     font-weight: bold !important;
 }
 
+
+.titulo_tabla{
+    text-align: center;
+    color:#EF7F13;
+}
+
 .fondo_gris {
     background-color: #f2f2f2;
 }
@@ -88,6 +94,15 @@ main {
 .sin_margin-bottom {
     margin-top: 0px;
 }
+/* estilos para el resumen del  día */
+/*-=-=-=-=-=-=-=-=-=-=-=- */
+/* Column Grids */
+/*-=-=-=-=-=-=-=-=-=-=-=- */
+.counter { background-color: #ffffff; padding: 20px 0; border-radius: 5px;}
+.count-title { font-size: 40px; font-weight: normal;  margin-top: 10px; margin-bottom: 0; text-align: center; }
+.count-text { margin-top: 5%; font-size: 1rem !important; text-align: center; }
+.fa-2x { margin: 0 auto; float: none; display: table; color: #EF7F13; }
+/*//// ///// //// */
 
 input:not([type]), input[type=text]:not(.browser-default), input[type=password]:not(.browser-default), input[type=email]:not(.browser-default), input[type=url]:not(.browser-default), input[type=time]:not(.browser-default), input[type=date]:not(.browser-default), input[type=datetime]:not(.browser-default), input[type=datetime-local]:not(.browser-default), input[type=tel]:not(.browser-default), input[type=number]:not(.browser-default), input[type=search]:not(.browser-default), textarea.materialize-textarea {
     border-radius: 101px 98px 95px 96px;
@@ -304,11 +319,11 @@ table.dataTable.no-footer {
 
 .border_rigth {
     border-right: 2px solid #C9CACB;
-    color: #C9CACB;
+    color: #737171;
 }
 
 .font_gris_tab {
-    color: #C9CACB;
+    color: #737171;
 }
 
 .fondo_tab_gris {
@@ -320,8 +335,8 @@ table.dataTable.no-footer {
 }
 
 div.dt-buttons {
-    position: relative;
-    float: right;
+    position: relative!important;
+    float: right!important;
 }
 
 .dataTables_wrapper .dataTables_filter {
@@ -426,3 +441,6 @@ div.dt-buttons {
 
 /* ********* */
 
+th{
+    background-color: white!important;
+}
