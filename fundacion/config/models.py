@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import Permission
 from django.contrib.gis.db import models
 
 
@@ -15,6 +17,132 @@ class Catalogo(models.Model):
 
     class Meta:
         abstract = True
+
+
+class UsuarioManager(BaseUserManager):
+
+    def create_user(self, correo, rol, password, nombre, a_paterno, celular, fecha_nac, genero):
+        if not correo:
+            raise ValueError('El usuario necesita un email')
+
+        user = self.model(
+            correo=self.normalize_email(correo)
+        )
+        user.set_password(password)
+        user.nombre = nombre
+        user.a_paterno = a_paterno
+        user.fecha_nac = fecha_nac
+        user.celular = celular
+        user.genero = genero
+        user.estatus = True
+        user.save(using=self._db)
+        user.roles.add(rol)
+        user.save()
+        return user
+
+    def create_superuser(self, correo, password, nombre, a_paterno, celular, fecha_nac, genero):
+        user = self.create_user(correo=correo, rol=Rol.objects.get(pk=1), password=password, nombre=nombre,
+                                a_paterno=a_paterno, celular=celular, fecha_nac=fecha_nac, genero=genero)
+        user.save(using=self._db)
+        return user
+
+    def get_queryset(self):
+        return super(UsuarioManager, self).get_queryset().filter(estatus=True)
+
+    def all_users(self):
+        return super(UsuarioManager, self).get_queryset().all()
+
+
+class Usuario(AbstractBaseUser):
+    correo = models.EmailField(unique=True, max_length=128)
+    nombre = models.CharField(max_length=50)
+    a_paterno = models.CharField(max_length=50)
+    password = models.CharField(max_length=256)
+    fecha_nac = models.DateField()
+    genero = models.ForeignKey('Sexo', models.DO_NOTHING, null=True)
+    roles = models.ManyToManyField('Rol')
+    estatus = models.BooleanField(default=False)
+    foto = models.FileField(db_column='foto', upload_to='usuarios/', null=True, blank=True)
+
+    objects = UsuarioManager()
+
+    USERNAME_FIELD = 'correo'
+    REQUIRED_FIELDS = ['nombre', 'a_paterno', 'celular', 'fecha_nac', 'genero']
+
+    def __str__(self):
+        return self.nombre + ' ' + self.a_paterno
+
+    def has_perm(self, perm, obj=None):
+        if self.is_superuser:
+            return True
+        p = perm.split('.')
+        if len(p) > 1:
+            per = self.roles.filter(permisos__codename=p[1]).count()
+        else:
+            per = self.roles.filter(permisos__codename=p[0]).count()
+        if per > 0:
+            return True
+        return False
+
+    def has_perms(self, perm, obj=None):
+        # Este válida
+        if self.is_superuser:
+            return True
+        for p in perm:
+            pr = p.split('.')
+            if len(pr) > 1:
+                per = self.roles.filter(permisos__codename=pr[1]).count()
+            else:
+                per = self.roles.filter(permisos__codename=pr[0]).count()
+            if per == 0:
+                return False
+        return True
+
+    def has_module_perms(self, app_label):
+        if self.is_superuser:
+            return True
+        if self.is_staff:
+            return True
+        if self.roles.filter(permisos__codename=app_label).count() > 0:
+            return True
+        return False
+
+    @property
+    def is_staff(self):
+        if self.roles.filter(pk=1):
+            return True
+        else:
+            return False
+
+    @property
+    def is_superuser(self):
+        if self.roles.filter(pk=1):
+            return True
+        else:
+            return False
+
+    @property
+    def is_admin(self):
+        if self.roles.filter(pk=2):
+            return True
+        else:
+            return False
+
+    @property
+    def is_active(self):
+        return self.estatus == 1
+
+    def get_full_name(self):
+        name = self.__str__()
+        return name.title()
+
+    def get_short_name(self):
+        return self.correo
+
+    class Meta:
+        managed = True
+        db_table = 'usuario'
+
 
 class AcudeInstitucion(Catalogo):
     dependencia = models.ForeignKey('Dependencia', on_delete=models.DO_NOTHING)
@@ -158,6 +286,23 @@ class Religion(Catalogo):
         db_table = 'religion'
 
 
+class Rol(Catalogo):
+    permisos = models.ManyToManyField(Permission, through='RolHasPermissions')
+
+    class Meta:
+        managed = True
+        db_table = 'rol'
+
+
+class RolHasPermissions(models.Model):
+    rol = models.ForeignKey(Rol, models.DO_NOTHING)
+    permission = models.ForeignKey(Permission, models.DO_NOTHING)
+
+    class Meta:
+        managed = True
+        db_table = 'rol_has_permissions'
+
+
 class Sexo(Catalogo):
     class Meta:
         managed = True
@@ -215,6 +360,7 @@ class Dependencia(Catalogo):
     class Meta:
         managed = True
         db_table = 'dependencia'
+
 
 class ContactoInstitucion(models.Model):
     nombre = models.CharField(max_length=256)
