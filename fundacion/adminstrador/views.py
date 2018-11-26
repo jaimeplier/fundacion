@@ -25,6 +25,14 @@ def index(request):
     template_name = 'config/index.html'
     return render(request, template_name)
 
+def reportes(request):
+    template_name = 'administrador/tab_reportes.html'
+    return render(request, template_name)
+
+def resumen(request):
+    template_name = 'administrador/resumen.html'
+    return render(request, template_name)
+
 def catalogos(request):
     template_name = 'administrador/catalogos.html'
     return render(request, template_name)
