@@ -35,9 +35,8 @@ class UsuarioManager(BaseUserManager):
         user.celular = celular
         user.genero = genero
         user.estatus = True
+        user.rol = rol
         user.save(using=self._db)
-        user.roles.add(rol)
-        user.save()
         return user
 
     def create_superuser(self, correo, password, nombre, a_paterno, celular, fecha_nac, genero):
@@ -60,7 +59,7 @@ class Usuario(AbstractBaseUser):
     password = models.CharField(max_length=256)
     fecha_nac = models.DateField()
     genero = models.ForeignKey('Sexo', models.DO_NOTHING, null=True)
-    roles = models.ManyToManyField('Rol')
+    rol = models.ForeignKey('Rol',models.DO_NOTHING)
     estatus = models.BooleanField(default=False)
     foto = models.FileField(db_column='foto', upload_to='usuarios/', null=True, blank=True)
 
