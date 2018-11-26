@@ -21,7 +21,7 @@ class Catalogo(models.Model):
 
 class UsuarioManager(BaseUserManager):
 
-    def create_user(self, correo, rol, password, nombre, a_paterno, celular, fecha_nac, genero):
+    def create_user(self, correo, rol, password, nombre, a_paterno, fecha_nac, genero):
         if not correo:
             raise ValueError('El usuario necesita un email')
 
@@ -32,16 +32,15 @@ class UsuarioManager(BaseUserManager):
         user.nombre = nombre
         user.a_paterno = a_paterno
         user.fecha_nac = fecha_nac
-        user.celular = celular
         user.genero = genero
         user.estatus = True
         user.rol = rol
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, correo, password, nombre, a_paterno, celular, fecha_nac, genero):
+    def create_superuser(self, correo, password, nombre, a_paterno, fecha_nac, genero):
         user = self.create_user(correo=correo, rol=Rol.objects.get(pk=1), password=password, nombre=nombre,
-                                a_paterno=a_paterno, celular=celular, fecha_nac=fecha_nac, genero=genero)
+                                a_paterno=a_paterno, fecha_nac=fecha_nac, genero=Sexo.objects.get(pk=genero))
         user.save(using=self._db)
         return user
 
@@ -66,7 +65,7 @@ class Usuario(AbstractBaseUser):
     objects = UsuarioManager()
 
     USERNAME_FIELD = 'correo'
-    REQUIRED_FIELDS = ['nombre', 'a_paterno', 'celular', 'fecha_nac', 'genero']
+    REQUIRED_FIELDS = ['nombre', 'a_paterno', 'fecha_nac', 'genero']
 
     def __str__(self):
         return self.nombre + ' ' + self.a_paterno
