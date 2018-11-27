@@ -8,7 +8,7 @@
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}" media="screen,projection"/>
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
@@ -39,8 +39,10 @@
     <div id="had-container">
         <div class="row fondo_gris datos_usuario">
             <div class="col s12 m2 l2 center">
+                <a href="{% url 'administrador:index' %}">
                 <img src="{% static 'imagenes/base/logo-origen.png' %}" class="responsive-img"
                      style="padding-top: 4%; max-width: 318px;">
+                </a>
             </div>
             <div class="col s12 m10 l10"></div>
         </div>
@@ -54,16 +56,23 @@
                         <div class="col s12">
                             <div class="row" style="margin-bottom: 0px;">
                                 <div class="col s12 center" style="padding-top:5%;">
-                                    <img src="{% static 'imagenes/foto.jpg' %}"
-                                         style="border: #EF7F13 3px solid; padding:3%;" alt="" class="circle foto"
-                                         width="100">
+                                    {% if user.foto %}
+                                        <img src="{{ user.foto.url }}"
+                                             style="border: #EF7F13 3px solid; padding:3%;" alt="" class="circle foto"
+                                             width="100">
+                                    {% else %}
+                                        <img src="{% static 'imagenes/foto.jpg' %}"
+                                             style="border: #EF7F13 3px solid; padding:3%;" alt="" class="circle foto"
+                                             width="100">
+                                    {% endif %}
                                 </div>
                                 <div class="col s9 center" style="padding-top: 2%; margin-top: 0px;">
                                     <p class="font_blanco negritas"
                                        style="margin-top: 0px;">{{ user.get_full_name }}</p>
                                 </div>
                                 <div class="col s3 center" style="padding-top:0%;">
-                                    <p><a class="font_naranja" href="{% url 'administrador:logout' %}"><i class="material-icons">power_settings_new</i></a>
+                                    <p><a class="font_naranja" href="{% url 'administrador:logout' %}"><i
+                                            class="material-icons">power_settings_new</i></a>
                                     </p>
                                 </div>
                             </div>
