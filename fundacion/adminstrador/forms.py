@@ -3,7 +3,7 @@ from django.forms import ModelForm, Select, PasswordInput, DateTimeField
 
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
-    Violentometro, ViveCon, ContactoInstitucion, Consejero
+    Violentometro, ViveCon, ContactoInstitucion, Consejero, Directorio
 
 
 class ConsejeroForm(ModelForm):
@@ -13,6 +13,7 @@ class ConsejeroForm(ModelForm):
         labels = {
             'tipo_usuario': 'Tipo de consejero',
             'a_paterno': 'Apellido paterno',
+            'a_materno': 'Apellido materno',
             'fecha_nac': 'Fecha de nacimiento'
         }
         widgets = {
@@ -21,16 +22,16 @@ class ConsejeroForm(ModelForm):
 
 class DirectorioForm(ModelForm):
     class Meta:
-        model = User
-        fields = (
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'password',
-        )
+        model = Directorio
+        exclude = ['rol', 'estatus', 'last_login']
+        labels = {
+            'a_paterno': 'Apellido paterno',
+            'a_materno': 'Apellido materno',
+            'fecha_nac': 'Fecha de nacimiento'
+        }
         widgets = {
-            'password': PasswordInput(), }
+            'password': PasswordInput()
+        }
 
 class SupervisorForm(ModelForm):
     class Meta:
