@@ -15,7 +15,7 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
-    Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio
+    Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor
 
 
 def logout_view(request):
@@ -110,7 +110,7 @@ class ConsejeroAjaxList(BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
                 correo__icontains=search)| qs.filter(a_paterno__icontains=search)| qs.filter(a_materno__icontains=search)
         return qs
 
@@ -230,7 +230,7 @@ class DirectorioAjaxList(BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
                 correo__icontains=search)| qs.filter(a_paterno__icontains=search)| qs.filter(a_materno__icontains=search)
         return qs
 
@@ -282,7 +282,7 @@ class SupervisorAdd(CreateView):
     login_url = '/login/'
     permission_required = 'add_supervisor'
 
-    model = User
+    model = Supervisor
     template_name = 'config/formulario_1Col.html'
     form_class = SupervisorForm
 
@@ -298,13 +298,12 @@ class SupervisorAdd(CreateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
-            permiso = Permission.objects.get(codename='supervisor')
-            user.save()
-            user.user_permissions.add(permiso)
+            rol = Rol.objects.get(pk=4)
+            user.rol = rol
             user.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
@@ -325,9 +324,9 @@ class SupervisorAjaxList(BaseDatatableView):
     login_url = '/login/'
     permission_required = 'change_supervisor'
 
-    model = User
-    columns = ['id', 'username', 'email', 'editar', 'eliminar']
-    order_columns = ['id', 'username', 'email']
+    model = Supervisor
+    columns = ['id', 'nombre', 'correo', 'editar', 'eliminar']
+    order_columns = ['id', 'a_paterno', 'correo']
     max_display_length = 100
 
     def render_column(self, row, column):
@@ -345,14 +344,13 @@ class SupervisorAjaxList(BaseDatatableView):
         return super(SupervisorAjaxList, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        permiso = Permission.objects.get(codename='supervisor')
-        return User.objects.all().filter(user_permissions=permiso)
+        return Supervisor.objects.all()
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(username__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
-                email__icontains=search)
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
+                correo__icontains=search)| qs.filter(a_paterno__icontains=search)| qs.filter(a_materno__icontains=search)
         return qs
 
 
@@ -362,7 +360,7 @@ class SupervisorEdit(UpdateView):
     permission_required = 'change_supervisor'
     success_url = '/administrador/supervisor/list'
 
-    model = User
+    model = Supervisor
     template_name = 'config/formulario_1Col.html'
     form_class = SupervisorForm
 
@@ -378,7 +376,7 @@ class SupervisorEdit(UpdateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        usuario = User.objects.get(pk=kwargs['pk'])
+        usuario = Supervisor.objects.get(pk=kwargs['pk'])
         form = self.form_class(request.POST, instance=usuario)
         if form.is_valid():
             user = form.save(commit=False)
@@ -394,7 +392,7 @@ class SupervisorEdit(UpdateView):
 
 # @permission_required(perm='delete_supervisor', login_url='/login/')
 def delete_supervisor(request, pk):
-    supervisor = get_object_or_404(User, pk=pk)
+    supervisor = get_object_or_404(Supervisor, pk=pk)
     supervisor.delete()
     return JsonResponse({'result': 1})
 
