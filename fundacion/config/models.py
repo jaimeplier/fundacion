@@ -58,8 +58,8 @@ class Usuario(AbstractBaseUser):
     password = models.CharField(max_length=256)
     fecha_nac = models.DateField()
     genero = models.ForeignKey('Sexo', models.DO_NOTHING, null=True)
-    rol = models.ForeignKey('Rol',models.DO_NOTHING)
-    estatus = models.BooleanField(default=True)
+    rol = models.ForeignKey('Rol', models.DO_NOTHING)
+    estatus = models.BooleanField(default=False)
     foto = models.FileField(db_column='foto', upload_to='usuarios/', null=True, blank=True)
 
     objects = UsuarioManager()
@@ -75,9 +75,9 @@ class Usuario(AbstractBaseUser):
             return True
         p = perm.split('.')
         if len(p) > 1:
-            per = self.roles.filter(permisos__codename=p[1]).count()
+            per = self.rol.permisos.filter(codename=p[1]).count()
         else:
-            per = self.roles.filter(permisos__codename=p[0]).count()
+            per = self.rol.permisos.filter(codename=p[0]).count()
         if per > 0:
             return True
         return False
@@ -89,9 +89,9 @@ class Usuario(AbstractBaseUser):
         for p in perm:
             pr = p.split('.')
             if len(pr) > 1:
-                per = self.roles.filter(permisos__codename=pr[1]).count()
+                per = self.rol.permisos.filter(codename=pr[1]).count()
             else:
-                per = self.roles.filter(permisos__codename=pr[0]).count()
+                per = self.rol.permisos.filter(codename=pr[0]).count()
             if per == 0:
                 return False
         return True
@@ -101,27 +101,27 @@ class Usuario(AbstractBaseUser):
             return True
         if self.is_staff:
             return True
-        if self.roles.filter(permisos__codename=app_label).count() > 0:
+        if self.rol.permisos.filter(codename=app_label).count() > 0:
             return True
         return False
 
     @property
     def is_staff(self):
-        if self.roles.filter(pk=1):
+        if self.rol.pk == 1:
             return True
         else:
             return False
 
     @property
     def is_superuser(self):
-        if self.roles.filter(pk=1):
+        if self.rol.pk == 1:
             return True
         else:
             return False
 
     @property
     def is_admin(self):
-        if self.roles.filter(pk=2):
+        if self.rol.pk == 2:
             return True
         else:
             return False
@@ -170,8 +170,10 @@ class Ayuda(Catalogo):
         managed = True
         db_table = 'ayuda'
 
+
 class Consejero(Usuario):
     tipo_usuario = models.ForeignKey('TipoUsuario', on_delete=models.DO_NOTHING)
+
     class Meta:
         managed = True
         db_table = 'consejero'
@@ -370,21 +372,24 @@ class ContactoInstitucion(models.Model):
         managed = True
         db_table = 'contacto_institucion'
 
-class TipoUsuario(Catalogo):
 
+class TipoUsuario(Catalogo):
     class Meta:
         managed = True
         db_table = 'tipo_usuario'
+
 
 class Supervisor(Usuario):
     class Meta:
         managed = True
         db_table = 'supervisor'
 
+
 class Directorio(Usuario):
     class Meta:
         managed = True
         db_table = 'directorio'
+
 
 class Calidad(Usuario):
     class Meta:

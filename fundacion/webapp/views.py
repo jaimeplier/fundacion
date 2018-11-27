@@ -1,7 +1,5 @@
 from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-
 
 # Create your views here.
 from django.urls import reverse
@@ -11,31 +9,22 @@ def login(request):
     error_message = ''
     context = {}
     if request.method == 'POST':
-        correo = request.POST['correo']
+        email = request.POST['correo']
         password = request.POST['password']
-        usuario = User.objects.filter(email=correo)
-        if usuario.exists():
-            username = usuario.first().username
-        else:
-            error_message = "Usuario y/o contraseña incorrectos"
-            context = {
-                'error_message': error_message, 'next': request.POST.get('next')
-            }
-            return render(request, 'config/login.html', context)
-        user = authenticate(username=username, password=password)
+        user = authenticate(correo=email, password=password)
         if user is not None:
             auth_login(request, user)
             if request.POST.get('next') is not None:
                 return redirect(request.POST.get('next'))
-            elif user.user_permissions.filter(codename='administrador').exists():
+            elif user.rol.nombre == 'administrador':
                 return redirect(reverse('administrador:index'))
-            elif user.user_permissions.filter(codename='directorio').exists():
+            elif user.rol.nombre == 'directorio':
                 return redirect(reverse('administrador:list_acude_institucion'))
-            elif user.user_permissions.filter(codename='consejero').exists():
+            elif user.rol.nombre == 'consejero':
                 return redirect(reverse('administrador:index'))
-            elif user.user_permissions.filter(codename='supervisor').exists():
+            elif user.rol.nombre == 'supervisor':
                 return redirect(reverse('administrador:index'))
-            elif user.user_permissions.filter(codename='calidad').exists():
+            elif user.rol.nombre == 'calidad':
                 return redirect(reverse('administrador:index'))
             return redirect(reverse('webapp:index'))
         else:
@@ -47,4 +36,3 @@ def login(request):
     if request.GET.get('next') is not None:
         context['next'] = request.GET.get('next')
     return render(request, 'config/login.html', context)
-
