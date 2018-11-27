@@ -15,7 +15,8 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
-    Violentometro, ViveCon, ContactoInstitucion
+    Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol
+
 
 def logout_view(request):
     logout(request)
@@ -42,7 +43,7 @@ class ConsejeroAdd(CreateView):
     login_url = '/login/'
     permission_required = 'add_consejero'
 
-    model = User
+    model = Consejero
     template_name = 'config/formulario_1Col.html'
     form_class = ConsejeroForm
 
@@ -58,13 +59,12 @@ class ConsejeroAdd(CreateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
-            permiso = Permission.objects.get(codename='consejero')
-            user.save()
-            user.user_permissions.add(permiso)
+            rol = Rol.objects.get(pk=3)
+            user.rol = rol
             user.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
@@ -85,9 +85,9 @@ class ConsejeroAjaxList(BaseDatatableView):
     login_url = '/login/'
     permission_required = 'change_consejero'
 
-    model = User
-    columns = ['id', 'username', 'email', 'editar', 'eliminar']
-    order_columns = ['id', 'username', 'email']
+    model = Consejero
+    columns = ['id', 'nombre', 'correo', 'editar', 'eliminar']
+    order_columns = ['id', 'a_paterno', 'correo']
     max_display_length = 100
 
     def render_column(self, row, column):
@@ -105,14 +105,13 @@ class ConsejeroAjaxList(BaseDatatableView):
         return super(ConsejeroAjaxList, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        permiso = Permission.objects.get(codename='consejero')
-        return User.objects.all().filter(user_permissions=permiso)
+        return Consejero.objects.all()
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(username__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
-                email__icontains=search)
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+                correo__icontains=search)| qs.filter(a_paterno__icontains=search)
         return qs
 
 
@@ -122,7 +121,7 @@ class ConsejeroEdit(UpdateView):
     permission_required = 'change_consejero'
     success_url = '/administrador/consejero/list'
 
-    model = User
+    model = Consejero
     template_name = 'config/formulario_1Col.html'
     form_class = ConsejeroForm
 
@@ -138,8 +137,8 @@ class ConsejeroEdit(UpdateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        usuario = User.objects.get(pk=kwargs['pk'])
-        form = self.form_class(request.POST, instance=usuario)
+        usuario = Consejero.objects.get(pk=kwargs['pk'])
+        form = self.form_class(request.POST, request.FILES,  instance=usuario)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
@@ -154,7 +153,7 @@ class ConsejeroEdit(UpdateView):
 
 # @permission_required(perm='delete_consejero', login_url='/login/')
 def delete_consejero(request, pk):
-    consejero = get_object_or_404(User, pk=pk)
+    consejero = get_object_or_404(Consejero, pk=pk)
     consejero.delete()
     return JsonResponse({'result': 1})
 

@@ -3,21 +3,21 @@ from django.forms import ModelForm, Select, PasswordInput, DateTimeField
 
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
-    Violentometro, ViveCon, ContactoInstitucion
+    Violentometro, ViveCon, ContactoInstitucion, Consejero
 
 
 class ConsejeroForm(ModelForm):
     class Meta:
-        model = User
-        fields = (
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'password',
-        )
+        model = Consejero
+        exclude = ['rol', 'estatus', 'last_login']
+        labels = {
+            'tipo_usuario': 'Tipo de consejero',
+            'a_paterno': 'Apellido paterno',
+            'fecha_nac': 'Fecha de nacimiento'
+        }
         widgets = {
-            'password': PasswordInput(), }
+            'password': PasswordInput()
+        }
 
 class DirectorioForm(ModelForm):
     class Meta:
