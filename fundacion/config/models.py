@@ -170,8 +170,8 @@ class Ayuda(Catalogo):
         managed = True
         db_table = 'ayuda'
 
-
-class Consejero(Catalogo):
+class Consejero(Usuario):
+    tipo_usuario = models.ForeignKey('TipoUsuario', on_delete=models.DO_NOTHING)
     class Meta:
         managed = True
         db_table = 'consejero'
@@ -369,3 +369,24 @@ class ContactoInstitucion(models.Model):
     class Meta:
         managed = True
         db_table = 'contacto_institucion'
+
+class TipoUsuario(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'tipo_usuario'
+
+class Supervisor(Usuario):
+    class Meta:
+        managed = True
+        db_table = 'supervisor'
+
+class Directorio(Usuario):
+    class Meta:
+        managed = True
+        db_table = 'directorio'
+
+class Calidad(Usuario):
+    class Meta:
+        managed = True
+        db_table = 'calidad'
