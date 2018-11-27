@@ -26,7 +26,7 @@ def login(request):
                 return redirect(reverse('administrador:index'))
             elif user.rol.nombre == 'calidad':
                 return redirect(reverse('administrador:index'))
-            return redirect(reverse('webapp:index'))
+            return redirect(reverse('administrador:index'))
         else:
             error_message = "Usuario y/o contraseña incorrectos"
             context = {
