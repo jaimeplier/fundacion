@@ -15,7 +15,7 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
-    Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor
+    Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad
 
 
 def logout_view(request):
@@ -401,7 +401,7 @@ class CalidadAdd(CreateView):
     login_url = '/login/'
     permission_required = 'add_calidad'
 
-    model = User
+    model = Calidad
     template_name = 'config/formulario_1Col.html'
     form_class = CalidadForm
 
@@ -410,20 +410,19 @@ class CalidadAdd(CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Agregar calidad'
+            context['titulo'] = 'Agregar personal de calidad (QA)'
         if 'instrucciones' not in context:
-            context['instrucciones'] = 'Completa todos los campos para registrar un calidad'
+            context['instrucciones'] = 'Completa todos los campos para registrar un personal de calidad'
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
-            permiso = Permission.objects.get(codename='calidad')
-            user.save()
-            user.user_permissions.add(permiso)
+            rol = Rol.objects.get(pk=6)
+            user.rol = rol
             user.save()
             return HttpResponseRedirect(self.get_success_url())
         else:
@@ -444,9 +443,9 @@ class CalidadAjaxList(BaseDatatableView):
     login_url = '/login/'
     permission_required = 'change_calidad'
 
-    model = User
-    columns = ['id', 'username', 'email', 'editar', 'eliminar']
-    order_columns = ['id', 'username', 'email']
+    model = Calidad
+    columns = ['id', 'nombre', 'correo', 'editar', 'eliminar']
+    order_columns = ['id', 'a_paterno', 'correo']
     max_display_length = 100
 
     def render_column(self, row, column):
@@ -464,14 +463,13 @@ class CalidadAjaxList(BaseDatatableView):
         return super(CalidadAjaxList, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        permiso = Permission.objects.get(codename='calidad')
-        return User.objects.all().filter(user_permissions=permiso)
+        return Calidad.objects.all()
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(username__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
-                email__icontains=search)
+            qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
+                correo__icontains=search)| qs.filter(a_paterno__icontains=search)| qs.filter(a_materno__icontains=search)
         return qs
 
 
@@ -481,7 +479,7 @@ class CalidadEdit(UpdateView):
     permission_required = 'change_calidad'
     success_url = '/administrador/calidad/list'
 
-    model = User
+    model = Calidad
     template_name = 'config/formulario_1Col.html'
     form_class = CalidadForm
 
@@ -497,8 +495,8 @@ class CalidadEdit(UpdateView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        usuario = User.objects.get(pk=kwargs['pk'])
-        form = self.form_class(request.POST, instance=usuario)
+        usuario = Calidad.objects.get(pk=kwargs['pk'])
+        form = self.form_class(request.POST, request.FILES, instance=usuario)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
@@ -513,7 +511,7 @@ class CalidadEdit(UpdateView):
 
 # @permission_required(perm='delete_calidad', login_url='/login/')
 def delete_calidad(request, pk):
-    calidad = get_object_or_404(User, pk=pk)
+    calidad = get_object_or_404(Calidad, pk=pk)
     calidad.delete()
     return JsonResponse({'result': 1})
 

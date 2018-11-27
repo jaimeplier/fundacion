@@ -1,9 +1,8 @@
-from django.contrib.auth.models import User
-from django.forms import ModelForm, Select, PasswordInput, DateTimeField
+from django.forms import ModelForm, Select, PasswordInput
 
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
-    Violentometro, ViveCon, ContactoInstitucion, Consejero, Directorio, Supervisor
+    Violentometro, ViveCon, ContactoInstitucion, Consejero, Directorio, Supervisor, Calidad
 
 
 class ConsejeroForm(ModelForm):
@@ -48,16 +47,16 @@ class SupervisorForm(ModelForm):
 
 class CalidadForm(ModelForm):
     class Meta:
-        model = User
-        fields = (
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'password',
-        )
+        model = Calidad
+        exclude = ['rol', 'estatus', 'last_login']
+        labels = {
+            'a_paterno': 'Apellido paterno',
+            'a_materno': 'Apellido materno',
+            'fecha_nac': 'Fecha de nacimiento'
+        }
         widgets = {
-            'password': PasswordInput(), }
+            'password': PasswordInput()
+        }
 
 class AcudeInstitucionForm(ModelForm):
     class Meta:
