@@ -377,7 +377,7 @@ class SupervisorEdit(UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         usuario = Supervisor.objects.get(pk=kwargs['pk'])
-        form = self.form_class(request.POST, instance=usuario)
+        form = self.form_class(request.POST, request.FILES, instance=usuario)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
