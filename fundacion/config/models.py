@@ -21,7 +21,7 @@ class Catalogo(models.Model):
 
 class UsuarioManager(BaseUserManager):
 
-    def create_user(self, correo, rol, password, nombre, a_paterno, fecha_nac, genero):
+    def create_user(self, correo, rol, password, nombre, a_paterno, a_materno, fecha_nac, genero):
         if not correo:
             raise ValueError('El usuario necesita un email')
 
@@ -31,6 +31,7 @@ class UsuarioManager(BaseUserManager):
         user.set_password(password)
         user.nombre = nombre
         user.a_paterno = a_paterno
+        user.a_materno = a_materno
         user.fecha_nac = fecha_nac
         user.genero = genero
         user.estatus = True
@@ -38,9 +39,9 @@ class UsuarioManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, correo, password, nombre, a_paterno, fecha_nac, genero):
+    def create_superuser(self, correo, password, nombre, a_paterno, a_materno, fecha_nac, genero):
         user = self.create_user(correo=correo, rol=Rol.objects.get(pk=1), password=password, nombre=nombre,
-                                a_paterno=a_paterno, fecha_nac=fecha_nac, genero=Sexo.objects.get(pk=genero))
+                                a_paterno=a_paterno, a_materno=a_materno, fecha_nac=fecha_nac, genero=Sexo.objects.get(pk=genero))
         user.save(using=self._db)
         return user
 
@@ -55,20 +56,21 @@ class Usuario(AbstractBaseUser):
     correo = models.EmailField(unique=True, max_length=128)
     nombre = models.CharField(max_length=50)
     a_paterno = models.CharField(max_length=50)
+    a_materno = models.CharField(max_length=50)
     password = models.CharField(max_length=256)
     fecha_nac = models.DateField()
     genero = models.ForeignKey('Sexo', models.DO_NOTHING, null=True)
     rol = models.ForeignKey('Rol', models.DO_NOTHING)
-    estatus = models.BooleanField(default=False)
+    estatus = models.BooleanField(default=True)
     foto = models.FileField(db_column='foto', upload_to='usuarios/', null=True, blank=True)
 
     objects = UsuarioManager()
 
     USERNAME_FIELD = 'correo'
-    REQUIRED_FIELDS = ['nombre', 'a_paterno', 'fecha_nac', 'genero']
+    REQUIRED_FIELDS = ['nombre', 'a_paterno', 'a_materno', 'fecha_nac', 'genero']
 
     def __str__(self):
-        return self.nombre + ' ' + self.a_paterno
+        return self.nombre + ' ' + self.a_paterno + ' ' + self.a_materno
 
     def has_perm(self, perm, obj=None):
         if self.is_superuser:
