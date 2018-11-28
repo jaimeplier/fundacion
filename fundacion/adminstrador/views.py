@@ -1,4 +1,3 @@
-from django.contrib.auth import logout
 from django.contrib.gis.geos import Point
 from django.contrib.auth.models import User, Permission
 from django.http import JsonResponse, HttpResponseRedirect
@@ -16,11 +15,6 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad
-
-
-def logout_view(request):
-    logout(request)
-    return redirect(reverse('webapp:login'))
 
 def index(request):
     template_name = 'config/index.html'

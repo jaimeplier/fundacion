@@ -17,7 +17,6 @@ from . import views
 app_name = 'administrador'
 
 urlpatterns = [
-    path('logout/', views.logout_view, name='logout'),
 
     path('', views.index, name='index'),
     path('reportes/', views.reportes, name='reportes'),

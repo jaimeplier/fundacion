@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -36,3 +36,7 @@ def login(request):
     if request.GET.get('next') is not None:
         context['next'] = request.GET.get('next')
     return render(request, 'config/login.html', context)
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('webapp:login'))

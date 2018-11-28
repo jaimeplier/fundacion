@@ -6,5 +6,6 @@ app_name = 'webapp'
 
 urlpatterns = [
     path('', views.login, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 
 ]
