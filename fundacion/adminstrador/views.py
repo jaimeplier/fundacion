@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.gis.geos import Point
 from django.contrib.auth.models import Permission
 from django.http import JsonResponse, HttpResponseRedirect
@@ -16,23 +18,26 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad
 
-
+@permission_required(perm='administrador', login_url='/')
 def reportes(request):
     template_name = 'administrador/tab_reportes.html'
     return render(request, template_name)
 
+@permission_required(perm='administrador', login_url='/')
 def resumen(request):
     template_name = 'administrador/resumen.html'
     return render(request, template_name)
 
+@permission_required(perm='administrador', login_url='/')
 def catalogos(request):
     template_name = 'administrador/catalogos.html'
     return render(request, template_name)
 
-class ConsejeroAdd(CreateView):
+
+class ConsejeroAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_consejero'
+    login_url = '/'
+    permission_required = 'administrador'
 
     model = Consejero
     template_name = 'config/formulario_1Col.html'
@@ -65,16 +70,16 @@ class ConsejeroAdd(CreateView):
         return reverse('administrador:list_consejero')
 
 
-# @permission_required(perm='change_consejero', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_consejero(request):
     template_name = 'administrador/tab_consejero.html'
     return render(request, template_name)
 
 
-class ConsejeroAjaxList(BaseDatatableView):
+class ConsejeroAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_consejero'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Consejero
     columns = ['id', 'nombre', 'correo', 'editar', 'eliminar']
@@ -102,14 +107,15 @@ class ConsejeroAjaxList(BaseDatatableView):
         search = self.request.GET.get(u'search[value]', None)
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
-                correo__icontains=search)| qs.filter(a_paterno__icontains=search)| qs.filter(a_materno__icontains=search)
+                correo__icontains=search) | qs.filter(a_paterno__icontains=search) | qs.filter(
+                a_materno__icontains=search)
         return qs
 
 
-class ConsejeroEdit(UpdateView):
+class ConsejeroEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_consejero'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/consejero/list'
 
     model = Consejero
@@ -129,7 +135,7 @@ class ConsejeroEdit(UpdateView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         usuario = Consejero.objects.get(pk=kwargs['pk'])
-        form = self.form_class(request.POST, request.FILES,  instance=usuario)
+        form = self.form_class(request.POST, request.FILES, instance=usuario)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
@@ -142,16 +148,17 @@ class ConsejeroEdit(UpdateView):
         return reverse('administrador:list_consejero')
 
 
-# @permission_required(perm='delete_consejero', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_consejero(request, pk):
     consejero = get_object_or_404(Consejero, pk=pk)
     consejero.delete()
     return JsonResponse({'result': 1})
 
-class DirectorioAdd(CreateView):
+
+class DirectorioAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_directorio'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Directorio
     template_name = 'config/formulario_1Col.html'
@@ -184,16 +191,16 @@ class DirectorioAdd(CreateView):
         return reverse('administrador:list_directorio')
 
 
-# @permission_required(perm='change_directorio', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_directorio(request):
     template_name = 'administrador/tab_directorio.html'
     return render(request, template_name)
 
 
-class DirectorioAjaxList(BaseDatatableView):
+class DirectorioAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_directorio'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Directorio
     columns = ['id', 'nombre', 'correo', 'editar', 'eliminar']
@@ -222,14 +229,15 @@ class DirectorioAjaxList(BaseDatatableView):
         search = self.request.GET.get(u'search[value]', None)
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
-                correo__icontains=search)| qs.filter(a_paterno__icontains=search)| qs.filter(a_materno__icontains=search)
+                correo__icontains=search) | qs.filter(a_paterno__icontains=search) | qs.filter(
+                a_materno__icontains=search)
         return qs
 
 
-class DirectorioEdit(UpdateView):
+class DirectorioEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_directorio'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/directorio/list'
 
     model = Directorio
@@ -262,16 +270,17 @@ class DirectorioEdit(UpdateView):
         return reverse('administrador:list_directorio')
 
 
-# @permission_required(perm='delete_directorio', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_directorio(request, pk):
     directorio = get_object_or_404(Directorio, pk=pk)
     directorio.delete()
     return JsonResponse({'result': 1})
 
-class SupervisorAdd(CreateView):
+
+class SupervisorAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_supervisor'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Supervisor
     template_name = 'config/formulario_1Col.html'
@@ -304,16 +313,16 @@ class SupervisorAdd(CreateView):
         return reverse('administrador:list_supervisor')
 
 
-# @permission_required(perm='change_supervisor', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_supervisor(request):
     template_name = 'administrador/tab_supervisor.html'
     return render(request, template_name)
 
 
-class SupervisorAjaxList(BaseDatatableView):
+class SupervisorAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_supervisor'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Supervisor
     columns = ['id', 'nombre', 'correo', 'editar', 'eliminar']
@@ -341,14 +350,15 @@ class SupervisorAjaxList(BaseDatatableView):
         search = self.request.GET.get(u'search[value]', None)
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
-                correo__icontains=search)| qs.filter(a_paterno__icontains=search)| qs.filter(a_materno__icontains=search)
+                correo__icontains=search) | qs.filter(a_paterno__icontains=search) | qs.filter(
+                a_materno__icontains=search)
         return qs
 
 
-class SupervisorEdit(UpdateView):
+class SupervisorEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_supervisor'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/supervisor/list'
 
     model = Supervisor
@@ -381,16 +391,17 @@ class SupervisorEdit(UpdateView):
         return reverse('administrador:list_supervisor')
 
 
-# @permission_required(perm='delete_supervisor', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_supervisor(request, pk):
     supervisor = get_object_or_404(Supervisor, pk=pk)
     supervisor.delete()
     return JsonResponse({'result': 1})
 
-class CalidadAdd(CreateView):
+
+class CalidadAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_calidad'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Calidad
     template_name = 'config/formulario_1Col.html'
@@ -423,16 +434,16 @@ class CalidadAdd(CreateView):
         return reverse('administrador:list_calidad')
 
 
-# @permission_required(perm='change_calidad', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_calidad(request):
     template_name = 'administrador/tab_calidad.html'
     return render(request, template_name)
 
 
-class CalidadAjaxList(BaseDatatableView):
+class CalidadAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_calidad'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Calidad
     columns = ['id', 'nombre', 'correo', 'editar', 'eliminar']
@@ -460,14 +471,15 @@ class CalidadAjaxList(BaseDatatableView):
         search = self.request.GET.get(u'search[value]', None)
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(id__icontains=search) | qs.filter(
-                correo__icontains=search)| qs.filter(a_paterno__icontains=search)| qs.filter(a_materno__icontains=search)
+                correo__icontains=search) | qs.filter(a_paterno__icontains=search) | qs.filter(
+                a_materno__icontains=search)
         return qs
 
 
-class CalidadEdit(UpdateView):
+class CalidadEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_calidad'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/calidad/list'
 
     model = Calidad
@@ -500,16 +512,17 @@ class CalidadEdit(UpdateView):
         return reverse('administrador:list_calidad')
 
 
-# @permission_required(perm='delete_calidad', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_calidad(request, pk):
     calidad = get_object_or_404(Calidad, pk=pk)
     calidad.delete()
     return JsonResponse({'result': 1})
 
-class AcudeInstitucionAdd(CreateView):
+
+class AcudeInstitucionAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_acude_institucion'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = AcudeInstitucion
     template_name = 'config/formMapa.html'
@@ -549,16 +562,16 @@ class AcudeInstitucionAdd(CreateView):
         return reverse('administrador:list_acude_institucion')
 
 
-# @permission_required(perm='change_acude_institucion', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_acude_institucion(request):
     template_name = 'administrador/tab_acude_institucion.html'
     return render(request, template_name)
 
 
-class AcudeInstitucionAjaxList(BaseDatatableView):
+class AcudeInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_acude_institucion'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = AcudeInstitucion
     columns = ['id', 'nombre', 'contacto', 'editar', 'eliminar']
@@ -593,10 +606,10 @@ class AcudeInstitucionAjaxList(BaseDatatableView):
         return qs
 
 
-class AcudeInstitucionEdit(UpdateView):
+class AcudeInstitucionEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_acude_institucion'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/acude_institucion/list'
 
     model = AcudeInstitucion
@@ -637,17 +650,17 @@ class AcudeInstitucionEdit(UpdateView):
         return reverse('administrador:list_acude_institucion')
 
 
-# @permission_required(perm='delete_acude_institucion', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_acude_institucion(request, pk):
     acude_institucion = get_object_or_404(AcudeInstitucion, pk=pk)
     acude_institucion.delete()
     return JsonResponse({'result': 1})
 
 
-class EstadoAdd(CreateView):
+class EstadoAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_estado'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Estado
     template_name = 'config/formulario_1Col.html'
@@ -665,16 +678,16 @@ class EstadoAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_estado', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_estado(request):
     template_name = 'administrador/tab_estado.html'
     return render(request, template_name)
 
 
-class EstadoAjaxList(BaseDatatableView):
+class EstadoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_estado'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Estado
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -705,10 +718,10 @@ class EstadoAjaxList(BaseDatatableView):
         return qs
 
 
-class EstadoEdit(UpdateView):
+class EstadoEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_estado'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/estado/list'
 
     model = Estado
@@ -726,17 +739,17 @@ class EstadoEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_estado', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_estado(request, pk):
     estado = get_object_or_404(Estado, pk=pk)
     estado.delete()
     return JsonResponse({'result': 1})
 
 
-class PaisAdd(CreateView):
+class PaisAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_pais'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Pais
     template_name = 'config/formulario_1Col.html'
@@ -754,16 +767,16 @@ class PaisAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_pais', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_pais(request):
     template_name = 'administrador/tab_pais.html'
     return render(request, template_name)
 
 
-class PaisAjaxList(BaseDatatableView):
+class PaisAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_pais'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Pais
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -794,10 +807,10 @@ class PaisAjaxList(BaseDatatableView):
         return qs
 
 
-class PaisEdit(UpdateView):
+class PaisEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_pais'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/pais/list'
 
     model = Pais
@@ -815,17 +828,17 @@ class PaisEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_pais', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_pais(request, pk):
     pais = get_object_or_404(Pais, pk=pk)
     pais.delete()
     return JsonResponse({'result': 1})
 
 
-class EstadoCivilAdd(CreateView):
+class EstadoCivilAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_estado_civil'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = EstadoCivil
     template_name = 'config/formulario_1Col.html'
@@ -843,16 +856,16 @@ class EstadoCivilAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_estado_civil', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_estado_civil(request):
     template_name = 'administrador/tab_estado_civil.html'
     return render(request, template_name)
 
 
-class EstadoCivilAjaxList(BaseDatatableView):
+class EstadoCivilAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_estado_civil'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = EstadoCivil
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -883,10 +896,10 @@ class EstadoCivilAjaxList(BaseDatatableView):
         return qs
 
 
-class EstadoCivilEdit(UpdateView):
+class EstadoCivilEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_estado_civil'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/estado_civil/list'
 
     model = EstadoCivil
@@ -904,17 +917,17 @@ class EstadoCivilEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_estado_civil', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_estado_civil(request, pk):
     estado_civil = get_object_or_404(EstadoCivil, pk=pk)
     estado_civil.delete()
     return JsonResponse({'result': 1})
 
 
-class EstatusAdd(CreateView):
+class EstatusAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_estatus'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Estatus
     template_name = 'config/formulario_1Col.html'
@@ -932,16 +945,16 @@ class EstatusAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_estatus', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_estatus(request):
     template_name = 'administrador/tab_estatus.html'
     return render(request, template_name)
 
 
-class EstatusAjaxList(BaseDatatableView):
+class EstatusAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_estatus'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Estatus
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -972,10 +985,10 @@ class EstatusAjaxList(BaseDatatableView):
         return qs
 
 
-class EstatusEdit(UpdateView):
+class EstatusEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_estatus'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/estatus/list'
 
     model = Estatus
@@ -993,17 +1006,17 @@ class EstatusEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_estatus', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_estatus(request, pk):
     estatus = get_object_or_404(Estatus, pk=pk)
     estatus.delete()
     return JsonResponse({'result': 1})
 
 
-class LenguaIndigenaAdd(CreateView):
+class LenguaIndigenaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_lengua_indigena'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = LenguaIndigena
     template_name = 'config/formulario_1Col.html'
@@ -1021,16 +1034,16 @@ class LenguaIndigenaAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_lengua_indigena', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_lengua_indigena(request):
     template_name = 'administrador/tab_lengua_indigena.html'
     return render(request, template_name)
 
 
-class LenguaIndigenaAjaxList(BaseDatatableView):
+class LenguaIndigenaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_lengua_indigena'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = LenguaIndigena
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1061,10 +1074,10 @@ class LenguaIndigenaAjaxList(BaseDatatableView):
         return qs
 
 
-class LenguaIndigenaEdit(UpdateView):
+class LenguaIndigenaEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_lengua_indigena'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/lengua_indigena/list'
 
     model = LenguaIndigena
@@ -1082,17 +1095,17 @@ class LenguaIndigenaEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_lengua_indigena', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_lengua_indigena(request, pk):
     lengua_indigena = get_object_or_404(LenguaIndigena, pk=pk)
     lengua_indigena.delete()
     return JsonResponse({'result': 1})
 
 
-class MedioContactoAdd(CreateView):
+class MedioContactoAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_medio_contacto'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = MedioContacto
     template_name = 'config/formulario_1Col.html'
@@ -1110,16 +1123,16 @@ class MedioContactoAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_medio_contacto', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_medio_contacto(request):
     template_name = 'administrador/tab_medio_contacto.html'
     return render(request, template_name)
 
 
-class MedioContactoAjaxList(BaseDatatableView):
+class MedioContactoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_medio_contacto'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = MedioContacto
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1150,10 +1163,10 @@ class MedioContactoAjaxList(BaseDatatableView):
         return qs
 
 
-class MedioContactoEdit(UpdateView):
+class MedioContactoEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_medio_contacto'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/medio_contacto/list'
 
     model = MedioContacto
@@ -1171,17 +1184,17 @@ class MedioContactoEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_medio_contacto', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_medio_contacto(request, pk):
     medio_contacto = get_object_or_404(MedioContacto, pk=pk)
     medio_contacto.delete()
     return JsonResponse({'result': 1})
 
 
-class ModalidadViolenciaAdd(CreateView):
+class ModalidadViolenciaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_modalidad_violencia'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = ModalidadViolencia
     template_name = 'config/formulario_1Col.html'
@@ -1199,16 +1212,16 @@ class ModalidadViolenciaAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_modalidad_violencia', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_modalidad_violencia(request):
     template_name = 'administrador/tab_modalidad_violencia.html'
     return render(request, template_name)
 
 
-class ModalidadViolenciaAjaxList(BaseDatatableView):
+class ModalidadViolenciaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_modalidad_violencia'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = ModalidadViolencia
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1239,10 +1252,10 @@ class ModalidadViolenciaAjaxList(BaseDatatableView):
         return qs
 
 
-class ModalidadViolenciaEdit(UpdateView):
+class ModalidadViolenciaEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_modalidad_violencia'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/modalidad_violencia/list'
 
     model = ModalidadViolencia
@@ -1260,17 +1273,17 @@ class ModalidadViolenciaEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_modalidad_violencia', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_modalidad_violencia(request, pk):
     modalidad_violencia = get_object_or_404(ModalidadViolencia, pk=pk)
     modalidad_violencia.delete()
     return JsonResponse({'result': 1})
 
 
-class MunicipioAdd(CreateView):
+class MunicipioAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_municipio'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Municipio
     template_name = 'config/formulario_1Col.html'
@@ -1288,16 +1301,16 @@ class MunicipioAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_municipio', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_municipio(request):
     template_name = 'administrador/tab_municipio.html'
     return render(request, template_name)
 
 
-class MunicipioAjaxList(BaseDatatableView):
+class MunicipioAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_municipio'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Municipio
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1328,10 +1341,10 @@ class MunicipioAjaxList(BaseDatatableView):
         return qs
 
 
-class MunicipioEdit(UpdateView):
+class MunicipioEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_municipio'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/municipio/list'
 
     model = Municipio
@@ -1349,17 +1362,17 @@ class MunicipioEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_municipio', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_municipio(request, pk):
     municipio = get_object_or_404(Municipio, pk=pk)
     municipio.delete()
     return JsonResponse({'result': 1})
 
 
-class NivelEstudioAdd(CreateView):
+class NivelEstudioAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_nivel_estudio'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = NivelEstudio
     template_name = 'config/formulario_1Col.html'
@@ -1377,16 +1390,16 @@ class NivelEstudioAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_nivel_estudio', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_nivel_estudio(request):
     template_name = 'administrador/tab_nivel_estudio.html'
     return render(request, template_name)
 
 
-class NivelEstudioAjaxList(BaseDatatableView):
+class NivelEstudioAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_nivel_estudio'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = NivelEstudio
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1417,10 +1430,10 @@ class NivelEstudioAjaxList(BaseDatatableView):
         return qs
 
 
-class NivelEstudioEdit(UpdateView):
+class NivelEstudioEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_nivel_estudio'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/nivel_estudio/list'
 
     model = NivelEstudio
@@ -1438,17 +1451,17 @@ class NivelEstudioEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_nivel_estudio', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_nivel_estudio(request, pk):
     nivel_estudio = get_object_or_404(NivelEstudio, pk=pk)
     nivel_estudio.delete()
     return JsonResponse({'result': 1})
 
 
-class NivelViolenciaAdd(CreateView):
+class NivelViolenciaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_nivel_violencia'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = NivelViolencia
     template_name = 'config/formulario_1Col.html'
@@ -1466,16 +1479,16 @@ class NivelViolenciaAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_nivel_violencia', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_nivel_violencia(request):
     template_name = 'administrador/tab_nivel_violencia.html'
     return render(request, template_name)
 
 
-class NivelViolenciaAjaxList(BaseDatatableView):
+class NivelViolenciaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_nivel_violencia'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = NivelViolencia
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1506,10 +1519,10 @@ class NivelViolenciaAjaxList(BaseDatatableView):
         return qs
 
 
-class NivelViolenciaEdit(UpdateView):
+class NivelViolenciaEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_nivel_violencia'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/nivel_violencia/list'
 
     model = NivelViolencia
@@ -1527,17 +1540,17 @@ class NivelViolenciaEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_nivel_violencia', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_nivel_violencia(request, pk):
     nivel_violencia = get_object_or_404(NivelViolencia, pk=pk)
     nivel_violencia.delete()
     return JsonResponse({'result': 1})
 
 
-class OcupacionAdd(CreateView):
+class OcupacionAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_ocupacion'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Ocupacion
     template_name = 'config/formulario_1Col.html'
@@ -1555,16 +1568,16 @@ class OcupacionAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_ocupacion', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_ocupacion(request):
     template_name = 'administrador/tab_ocupacion.html'
     return render(request, template_name)
 
 
-class OcupacionAjaxList(BaseDatatableView):
+class OcupacionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_ocupacion'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Ocupacion
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1595,10 +1608,10 @@ class OcupacionAjaxList(BaseDatatableView):
         return qs
 
 
-class OcupacionEdit(UpdateView):
+class OcupacionEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_ocupacion'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/ocupacion/list'
 
     model = Ocupacion
@@ -1616,17 +1629,17 @@ class OcupacionEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_ocupacion', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_ocupacion(request, pk):
     ocupacion = get_object_or_404(Ocupacion, pk=pk)
     ocupacion.delete()
     return JsonResponse({'result': 1})
 
 
-class ReligionAdd(CreateView):
+class ReligionAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_religion'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Religion
     template_name = 'config/formulario_1Col.html'
@@ -1644,16 +1657,16 @@ class ReligionAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_religion', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_religion(request):
     template_name = 'administrador/tab_religion.html'
     return render(request, template_name)
 
 
-class ReligionAjaxList(BaseDatatableView):
+class ReligionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_religion'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Religion
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1684,10 +1697,10 @@ class ReligionAjaxList(BaseDatatableView):
         return qs
 
 
-class ReligionEdit(UpdateView):
+class ReligionEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_religion'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/religion/list'
 
     model = Religion
@@ -1705,17 +1718,17 @@ class ReligionEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_religion', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_religion(request, pk):
     religion = get_object_or_404(Religion, pk=pk)
     religion.delete()
     return JsonResponse({'result': 1})
 
 
-class TipoCasoAdd(CreateView):
+class TipoCasoAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_tipo_caso'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = TipoCaso
     template_name = 'config/formulario_1Col.html'
@@ -1733,16 +1746,16 @@ class TipoCasoAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_tipo_caso', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_tipo_caso(request):
     template_name = 'administrador/tab_tipo_caso.html'
     return render(request, template_name)
 
 
-class TipoCasoAjaxList(BaseDatatableView):
+class TipoCasoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_tipo_caso'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = TipoCaso
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1773,10 +1786,10 @@ class TipoCasoAjaxList(BaseDatatableView):
         return qs
 
 
-class TipoCasoEdit(UpdateView):
+class TipoCasoEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_tipo_caso'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/tipo_caso/list'
 
     model = TipoCaso
@@ -1794,17 +1807,17 @@ class TipoCasoEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_tipo_caso', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_tipo_caso(request, pk):
     tipo_caso = get_object_or_404(TipoCaso, pk=pk)
     tipo_caso.delete()
     return JsonResponse({'result': 1})
 
 
-class TipoViolenciaAdd(CreateView):
+class TipoViolenciaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_tipo_violencia'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = TipoViolencia
     template_name = 'config/formulario_1Col.html'
@@ -1822,16 +1835,16 @@ class TipoViolenciaAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_tipo_violencia', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_tipo_violencia(request):
     template_name = 'administrador/tab_tipo_violencia.html'
     return render(request, template_name)
 
 
-class TipoViolenciaAjaxList(BaseDatatableView):
+class TipoViolenciaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_tipo_violencia'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = TipoViolencia
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1862,10 +1875,10 @@ class TipoViolenciaAjaxList(BaseDatatableView):
         return qs
 
 
-class TipoViolenciaEdit(UpdateView):
+class TipoViolenciaEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_tipo_violencia'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/tipo_violencia/list'
 
     model = TipoViolencia
@@ -1883,17 +1896,17 @@ class TipoViolenciaEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_tipo_violencia', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_tipo_violencia(request, pk):
     tipo_violencia = get_object_or_404(TipoViolencia, pk=pk)
     tipo_violencia.delete()
     return JsonResponse({'result': 1})
 
 
-class ViolentometroAdd(CreateView):
+class ViolentometroAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_violentometro'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Violentometro
     template_name = 'config/formulario_1Col.html'
@@ -1911,16 +1924,16 @@ class ViolentometroAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_violentometro', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_violentometro(request):
     template_name = 'administrador/tab_violentometro.html'
     return render(request, template_name)
 
 
-class ViolentometroAjaxList(BaseDatatableView):
+class ViolentometroAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_violentometro'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = Violentometro
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -1951,10 +1964,10 @@ class ViolentometroAjaxList(BaseDatatableView):
         return qs
 
 
-class ViolentometroEdit(UpdateView):
+class ViolentometroEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_violentometro'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/violentometro/list'
 
     model = Violentometro
@@ -1972,17 +1985,17 @@ class ViolentometroEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_violentometro', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_violentometro(request, pk):
     violentometro = get_object_or_404(Violentometro, pk=pk)
     violentometro.delete()
     return JsonResponse({'result': 1})
 
 
-class ViveConAdd(CreateView):
+class ViveConAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_vive_con'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = ViveCon
     template_name = 'config/formulario_1Col.html'
@@ -2000,16 +2013,16 @@ class ViveConAdd(CreateView):
         return context
 
 
-# @permission_required(perm='change_vive_con', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_vive_con(request):
     template_name = 'administrador/tab_vive_con.html'
     return render(request, template_name)
 
 
-class ViveConAjaxList(BaseDatatableView):
+class ViveConAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_vive_con'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = ViveCon
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -2040,10 +2053,10 @@ class ViveConAjaxList(BaseDatatableView):
         return qs
 
 
-class ViveConEdit(UpdateView):
+class ViveConEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_vive_con'
+    login_url='/'
+    permission_required = 'administrador'
     success_url = '/administrador/vive_con/list'
 
     model = ViveCon
@@ -2061,17 +2074,17 @@ class ViveConEdit(UpdateView):
         return context
 
 
-# @permission_required(perm='delete_vive_con', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_vive_con(request, pk):
     vive_con = get_object_or_404(ViveCon, pk=pk)
     vive_con.delete()
     return JsonResponse({'result': 1})
 
 
-class ContactoInstitucionAdd(CreateView):
+class ContactoInstitucionAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'add_contacto_institucion'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = ContactoInstitucion
     template_name = 'config/formulario_1Col.html'
@@ -2115,7 +2128,7 @@ class ContactoInstitucionAdd(CreateView):
         return reverse('administrador:list_contacto_institucion', kwargs={'institucion': self.kwargs['institucion']})
 
 
-# @permission_required(perm='change_contacto_institucion', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def list_contacto_institucion(request, institucion):
     template_name = 'administrador/tab_contacto_institucion.html'
     institucion = AcudeInstitucion.objects.get(pk=institucion)
@@ -2123,10 +2136,10 @@ def list_contacto_institucion(request, institucion):
     return render(request, template_name, context)
 
 
-class ContactoInstitucionAjaxList(BaseDatatableView):
+class ContactoInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_contacto_institucion'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = ContactoInstitucion
     columns = ['id', 'nombre', 'editar', 'eliminar']
@@ -2138,7 +2151,8 @@ class ContactoInstitucionAjaxList(BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_contacto_institucion',
                                                    kwargs={
-                                                       'pk': row.pk, 'institucion': self.kwargs['institucion']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+                                                       'pk': row.pk, 'institucion': self.kwargs[
+                                                           'institucion']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
                 row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
@@ -2148,7 +2162,7 @@ class ContactoInstitucionAjaxList(BaseDatatableView):
         return super(ContactoInstitucionAjaxList, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return ContactoInstitucion.objects.filter(institucion__pk= self.kwargs['institucion'])
+        return ContactoInstitucion.objects.filter(institucion__pk=self.kwargs['institucion'])
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
@@ -2157,10 +2171,10 @@ class ContactoInstitucionAjaxList(BaseDatatableView):
         return qs
 
 
-class ContactoInstitucionEdit(UpdateView):
+class ContactoInstitucionEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url = '/login/'
-    permission_required = 'change_contacto_institucion'
+    login_url='/'
+    permission_required = 'administrador'
 
     model = ContactoInstitucion
     template_name = 'config/formulario_1Col.html'
@@ -2180,7 +2194,7 @@ class ContactoInstitucionEdit(UpdateView):
         return reverse('administrador:list_contacto_institucion', kwargs={'institucion': self.kwargs['institucion']})
 
 
-# @permission_required(perm='delete_contacto_institucion', login_url='/login/')
+@permission_required(perm='administrador', login_url='/')
 def delete_contacto_institucion(request, pk):
     contacto_institucion = get_object_or_404(ContactoInstitucion, pk=pk)
     contacto_institucion.delete()
