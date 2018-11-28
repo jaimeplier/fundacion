@@ -23,6 +23,7 @@ from fundacion import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('administrador/', include('adminstrador.urls')),
+    path('supervisor/', include('supervisor.urls')),
     path('', include('webapp.urls')),
 ]
 

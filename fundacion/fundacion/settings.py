@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'config.apps.ConfigConfig',
     'webapp.apps.WebappConfig',
-    'adminstrador.apps.AdminstradorConfig'
+    'adminstrador.apps.AdminstradorConfig',
+    'supervisor.apps.SupervisorConfig',
 ]
 
 MIDDLEWARE = [
