@@ -62,7 +62,7 @@ class Usuario(AbstractBaseUser):
     genero = models.ForeignKey('Sexo', models.DO_NOTHING, null=True)
     rol = models.ForeignKey('Rol', models.DO_NOTHING)
     estatus = models.BooleanField(default=True)
-    foto = models.FileField(db_column='foto', upload_to='usuarios/', null=True, blank=True)
+    foto = models.FileField(db_column='foto', upload_to='usuarios/')
 
     objects = UsuarioManager()
 
