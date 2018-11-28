@@ -129,6 +129,34 @@ class Usuario(AbstractBaseUser):
             return False
 
     @property
+    def is_consejero(self):
+        if self.rol.pk == 3:
+            return True
+        else:
+            return False
+
+    @property
+    def is_supervisor(self):
+        if self.rol.pk == 4:
+            return True
+        else:
+            return False
+
+    @property
+    def is_directorio(self):
+        if self.rol.pk == 5:
+            return True
+        else:
+            return False
+
+    @property
+    def is_calidad(self):
+        if self.rol.pk == 6:
+            return True
+        else:
+            return False
+
+    @property
     def is_active(self):
         return self.estatus == 1
 
