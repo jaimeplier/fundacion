@@ -18,15 +18,18 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad
 
+
 @permission_required(perm='administrador', login_url='/')
 def reportes(request):
     template_name = 'administrador/tab_reportes.html'
     return render(request, template_name)
 
+
 @permission_required(perm='administrador', login_url='/')
 def resumen(request):
     template_name = 'administrador/resumen.html'
     return render(request, template_name)
+
 
 @permission_required(perm='administrador', login_url='/')
 def catalogos(request):
@@ -78,7 +81,7 @@ def list_consejero(request):
 
 class ConsejeroAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Consejero
@@ -114,7 +117,7 @@ class ConsejeroAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class ConsejeroEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/consejero/list'
 
@@ -157,7 +160,7 @@ def delete_consejero(request, pk):
 
 class DirectorioAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Directorio
@@ -199,7 +202,7 @@ def list_directorio(request):
 
 class DirectorioAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Directorio
@@ -236,7 +239,7 @@ class DirectorioAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class DirectorioEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/directorio/list'
 
@@ -279,7 +282,7 @@ def delete_directorio(request, pk):
 
 class SupervisorAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Supervisor
@@ -321,7 +324,7 @@ def list_supervisor(request):
 
 class SupervisorAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Supervisor
@@ -357,7 +360,7 @@ class SupervisorAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class SupervisorEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/supervisor/list'
 
@@ -400,7 +403,7 @@ def delete_supervisor(request, pk):
 
 class CalidadAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Calidad
@@ -442,7 +445,7 @@ def list_calidad(request):
 
 class CalidadAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Calidad
@@ -478,7 +481,7 @@ class CalidadAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class CalidadEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/calidad/list'
 
@@ -521,7 +524,7 @@ def delete_calidad(request, pk):
 
 class AcudeInstitucionAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = AcudeInstitucion
@@ -570,7 +573,7 @@ def list_acude_institucion(request):
 
 class AcudeInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = AcudeInstitucion
@@ -608,7 +611,7 @@ class AcudeInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class AcudeInstitucionEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/acude_institucion/list'
 
@@ -659,7 +662,7 @@ def delete_acude_institucion(request, pk):
 
 class EstadoAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Estado
@@ -686,7 +689,7 @@ def list_estado(request):
 
 class EstadoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Estado
@@ -720,7 +723,7 @@ class EstadoAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class EstadoEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/estado/list'
 
@@ -748,7 +751,7 @@ def delete_estado(request, pk):
 
 class PaisAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Pais
@@ -775,7 +778,7 @@ def list_pais(request):
 
 class PaisAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Pais
@@ -809,7 +812,7 @@ class PaisAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class PaisEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/pais/list'
 
@@ -837,7 +840,7 @@ def delete_pais(request, pk):
 
 class EstadoCivilAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = EstadoCivil
@@ -864,7 +867,7 @@ def list_estado_civil(request):
 
 class EstadoCivilAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = EstadoCivil
@@ -898,7 +901,7 @@ class EstadoCivilAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class EstadoCivilEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/estado_civil/list'
 
@@ -926,7 +929,7 @@ def delete_estado_civil(request, pk):
 
 class EstatusAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Estatus
@@ -953,7 +956,7 @@ def list_estatus(request):
 
 class EstatusAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Estatus
@@ -987,7 +990,7 @@ class EstatusAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class EstatusEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/estatus/list'
 
@@ -1015,7 +1018,7 @@ def delete_estatus(request, pk):
 
 class LenguaIndigenaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = LenguaIndigena
@@ -1042,7 +1045,7 @@ def list_lengua_indigena(request):
 
 class LenguaIndigenaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = LenguaIndigena
@@ -1076,7 +1079,7 @@ class LenguaIndigenaAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class LenguaIndigenaEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/lengua_indigena/list'
 
@@ -1104,7 +1107,7 @@ def delete_lengua_indigena(request, pk):
 
 class MedioContactoAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = MedioContacto
@@ -1131,7 +1134,7 @@ def list_medio_contacto(request):
 
 class MedioContactoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = MedioContacto
@@ -1165,7 +1168,7 @@ class MedioContactoAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class MedioContactoEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/medio_contacto/list'
 
@@ -1193,7 +1196,7 @@ def delete_medio_contacto(request, pk):
 
 class ModalidadViolenciaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = ModalidadViolencia
@@ -1220,7 +1223,7 @@ def list_modalidad_violencia(request):
 
 class ModalidadViolenciaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = ModalidadViolencia
@@ -1254,7 +1257,7 @@ class ModalidadViolenciaAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class ModalidadViolenciaEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/modalidad_violencia/list'
 
@@ -1282,7 +1285,7 @@ def delete_modalidad_violencia(request, pk):
 
 class MunicipioAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Municipio
@@ -1309,7 +1312,7 @@ def list_municipio(request):
 
 class MunicipioAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Municipio
@@ -1343,7 +1346,7 @@ class MunicipioAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class MunicipioEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/municipio/list'
 
@@ -1371,7 +1374,7 @@ def delete_municipio(request, pk):
 
 class NivelEstudioAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = NivelEstudio
@@ -1398,7 +1401,7 @@ def list_nivel_estudio(request):
 
 class NivelEstudioAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = NivelEstudio
@@ -1432,7 +1435,7 @@ class NivelEstudioAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class NivelEstudioEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/nivel_estudio/list'
 
@@ -1460,7 +1463,7 @@ def delete_nivel_estudio(request, pk):
 
 class NivelViolenciaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = NivelViolencia
@@ -1487,7 +1490,7 @@ def list_nivel_violencia(request):
 
 class NivelViolenciaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = NivelViolencia
@@ -1521,7 +1524,7 @@ class NivelViolenciaAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class NivelViolenciaEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/nivel_violencia/list'
 
@@ -1549,7 +1552,7 @@ def delete_nivel_violencia(request, pk):
 
 class OcupacionAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Ocupacion
@@ -1576,7 +1579,7 @@ def list_ocupacion(request):
 
 class OcupacionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Ocupacion
@@ -1610,7 +1613,7 @@ class OcupacionAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class OcupacionEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/ocupacion/list'
 
@@ -1638,7 +1641,7 @@ def delete_ocupacion(request, pk):
 
 class ReligionAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Religion
@@ -1665,7 +1668,7 @@ def list_religion(request):
 
 class ReligionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Religion
@@ -1699,7 +1702,7 @@ class ReligionAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class ReligionEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/religion/list'
 
@@ -1727,7 +1730,7 @@ def delete_religion(request, pk):
 
 class TipoCasoAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = TipoCaso
@@ -1754,7 +1757,7 @@ def list_tipo_caso(request):
 
 class TipoCasoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = TipoCaso
@@ -1788,7 +1791,7 @@ class TipoCasoAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class TipoCasoEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/tipo_caso/list'
 
@@ -1816,7 +1819,7 @@ def delete_tipo_caso(request, pk):
 
 class TipoViolenciaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = TipoViolencia
@@ -1843,7 +1846,7 @@ def list_tipo_violencia(request):
 
 class TipoViolenciaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = TipoViolencia
@@ -1877,7 +1880,7 @@ class TipoViolenciaAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class TipoViolenciaEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/tipo_violencia/list'
 
@@ -1905,7 +1908,7 @@ def delete_tipo_violencia(request, pk):
 
 class ViolentometroAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Violentometro
@@ -1932,7 +1935,7 @@ def list_violentometro(request):
 
 class ViolentometroAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = Violentometro
@@ -1966,7 +1969,7 @@ class ViolentometroAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class ViolentometroEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/violentometro/list'
 
@@ -1994,7 +1997,7 @@ def delete_violentometro(request, pk):
 
 class ViveConAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = ViveCon
@@ -2021,7 +2024,7 @@ def list_vive_con(request):
 
 class ViveConAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = ViveCon
@@ -2055,7 +2058,7 @@ class ViveConAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class ViveConEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
     success_url = '/administrador/vive_con/list'
 
@@ -2083,7 +2086,7 @@ def delete_vive_con(request, pk):
 
 class ContactoInstitucionAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = ContactoInstitucion
@@ -2138,7 +2141,7 @@ def list_contacto_institucion(request, institucion):
 
 class ContactoInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = ContactoInstitucion
@@ -2173,7 +2176,7 @@ class ContactoInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
 class ContactoInstitucionEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
-    login_url='/'
+    login_url = '/'
     permission_required = 'administrador'
 
     model = ContactoInstitucion
