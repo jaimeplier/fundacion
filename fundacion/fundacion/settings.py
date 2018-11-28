@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'webapp.apps.WebappConfig',
     'adminstrador.apps.AdminstradorConfig',
     'supervisor.apps.SupervisorConfig',
+    'directorio.apps.DirectorioConfig',
 ]
 
 MIDDLEWARE = [
