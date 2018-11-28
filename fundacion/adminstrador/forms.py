@@ -13,7 +13,8 @@ class ConsejeroForm(ModelForm):
             'tipo_usuario': 'Tipo de consejero',
             'a_paterno': 'Apellido paterno',
             'a_materno': 'Apellido materno',
-            'fecha_nac': 'Fecha de nacimiento'
+            'fecha_nac': 'Fecha de nacimiento',
+            'genero': 'Género',
         }
         widgets = {
             'password': PasswordInput()
@@ -26,7 +27,8 @@ class DirectorioForm(ModelForm):
         labels = {
             'a_paterno': 'Apellido paterno',
             'a_materno': 'Apellido materno',
-            'fecha_nac': 'Fecha de nacimiento'
+            'fecha_nac': 'Fecha de nacimiento',
+            'genero': 'Género',
         }
         widgets = {
             'password': PasswordInput()
@@ -39,7 +41,8 @@ class SupervisorForm(ModelForm):
         labels = {
             'a_paterno': 'Apellido paterno',
             'a_materno': 'Apellido materno',
-            'fecha_nac': 'Fecha de nacimiento'
+            'fecha_nac': 'Fecha de nacimiento',
+            'genero': 'Género',
         }
         widgets = {
             'password': PasswordInput()
@@ -52,7 +55,8 @@ class CalidadForm(ModelForm):
         labels = {
             'a_paterno': 'Apellido paterno',
             'a_materno': 'Apellido materno',
-            'fecha_nac': 'Fecha de nacimiento'
+            'fecha_nac': 'Fecha de nacimiento',
+            'genero': 'Género',
         }
         widgets = {
             'password': PasswordInput()
