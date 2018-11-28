@@ -1,5 +1,5 @@
 from django.contrib.gis.geos import Point
-from django.contrib.auth.models import User, Permission
+from django.contrib.auth.models import Permission
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -16,9 +16,6 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad
 
-def index(request):
-    template_name = 'config/index.html'
-    return render(request, template_name)
 
 def reportes(request):
     template_name = 'administrador/tab_reportes.html'

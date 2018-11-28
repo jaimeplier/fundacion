@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.urls import reverse
 
+def index(request):
+    template_name = 'config/index.html'
+    return render(request, template_name)
 
 def login(request):
     error_message = ''
@@ -17,16 +20,16 @@ def login(request):
             if request.POST.get('next') is not None:
                 return redirect(request.POST.get('next'))
             elif user.rol.nombre == 'administrador':
-                return redirect(reverse('administrador:index'))
+                return redirect(reverse('webapp:index'))
             elif user.rol.nombre == 'directorio':
                 return redirect(reverse('administrador:list_acude_institucion'))
             elif user.rol.nombre == 'consejero':
-                return redirect(reverse('administrador:index'))
+                return redirect(reverse('webapp:index'))
             elif user.rol.nombre == 'supervisor':
-                return redirect(reverse('administrador:index'))
+                return redirect(reverse('webapp:index'))
             elif user.rol.nombre == 'calidad':
-                return redirect(reverse('administrador:index'))
-            return redirect(reverse('administrador:index'))
+                return redirect(reverse('webapp:index'))
+            return redirect(reverse('webapp:index'))
         else:
             error_message = "Usuario y/o contraseña incorrectos"
             context = {

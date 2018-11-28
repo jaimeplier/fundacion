@@ -18,7 +18,6 @@ app_name = 'administrador'
 
 urlpatterns = [
 
-    path('', views.index, name='index'),
     path('reportes/', views.reportes, name='reportes'),
     path('resumen/', views.resumen, name='resumen'),
     path('catalogos/', views.catalogos, name='catalogos'),
