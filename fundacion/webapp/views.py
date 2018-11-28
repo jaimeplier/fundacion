@@ -26,7 +26,7 @@ def login(request):
             elif user.rol.nombre == 'consejero':
                 return redirect(reverse('webapp:index'))
             elif user.rol.nombre == 'supervisor':
-                return redirect(reverse('webapp:index'))
+                return redirect(reverse('supervisor:resumen'))
             elif user.rol.nombre == 'calidad':
                 return redirect(reverse('webapp:index'))
             return redirect(reverse('webapp:index'))
