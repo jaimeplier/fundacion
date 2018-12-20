@@ -11,7 +11,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, ConsejeroAdd, ConsejeroAjaxList, \
     ConsejeroEdit, DirectorioAdd, DirectorioAjaxList, DirectorioEdit, SupervisorAdd, SupervisorAjaxList, \
     SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit, CalidadAdd, \
-    CalidadAjaxList, CalidadEdit
+    CalidadAjaxList, CalidadEdit, LlamadaAjaxList
 from . import views
 
 app_name = 'administrador'
@@ -19,6 +19,8 @@ app_name = 'administrador'
 urlpatterns = [
 
     path('reportes/', views.reportes, name='reportes'),
+    path('reporte_llamada/ajax/list/', LlamadaAjaxList.as_view(), name='list_ajax_llamada'),
+
     path('resumen/', views.resumen, name='resumen'),
     path('catalogos/', views.catalogos, name='catalogos'),
     # Psicologos, Medicos, Abogados

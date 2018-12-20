@@ -16,13 +16,39 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
-    Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad
+    Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada
 
 
 @permission_required(perm='administrador', login_url='/')
 def reportes(request):
     template_name = 'administrador/tab_reportes.html'
     return render(request, template_name)
+
+class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'administrador'
+
+    model = Llamada
+    columns = ['id', 'victima.nombre', 'consejero.get_full_name', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_riesgo', 'tipo_violencia', 'institucion', 'estatus', 'medio_contacto']
+    order_columns = ['id', 'victima__nombre', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', 'estatus', 'institucion__nombre', 'estatus__nombre', 'medio_contacto']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'id':
+            return row.pk
+
+        return super(LlamadaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Llamada.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
 
 
 @permission_required(perm='administrador', login_url='/')
