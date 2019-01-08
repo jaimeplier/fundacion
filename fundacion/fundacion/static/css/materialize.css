@@ -5201,13 +5201,13 @@ small {
 
 .btn:focus, .btn-large:focus,
 .btn-floating:focus {
-  background-color: #CD6500;
+  background-color: #1d7d74;
 }
 
 .btn, .btn-large {
   text-decoration: none;
   color: #fff;
-  background-color: #EF7F13;
+  background-color: #26a69a;
   text-align: center;
   letter-spacing: .5px;
   -webkit-transition: .2s ease-out;
@@ -5216,7 +5216,7 @@ small {
 }
 
 .btn:hover, .btn-large:hover {
-  background-color: #FF3E00;
+  background-color: #2bbbad;
 }
 
 .btn-floating {
@@ -6594,12 +6594,12 @@ textarea.materialize-textarea.validate + label:not(.label-icon).active {
 [type="radio"]:checked + label:after,
 [type="radio"].with-gap:checked + label:before,
 [type="radio"].with-gap:checked + label:after {
-  border: 2px solid #EF7F13;
+  border: 2px solid #26a69a;
 }
 
 [type="radio"]:checked + label:after,
 [type="radio"].with-gap:checked + label:after {
-  background-color: #EF7F13;
+  background-color: #26a69a;
 }
 
 [type="radio"]:checked + label:after {

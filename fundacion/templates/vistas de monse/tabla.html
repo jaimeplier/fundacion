@@ -1,0 +1,309 @@
+{% load static %}
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+       <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+       <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+      
+      <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
+      <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <style type="text/css">
+        .input-field.col label {
+          left: 1.75rem;   
+        }
+
+       
+      </style>
+    </head>
+
+    <body>
+      <main class="fondo_blanco">
+        <div id="had-container">
+            <div class="row fondo_gris datos_usuario">
+              <div class="col s12 m2 l2 center">
+                <img src="{% static 'imagenes/base/logo-origen.png' %}" class="responsive-img" style="padding-top: 4%; max-width: 318px;">
+              </div>
+              <div class="col s12 m10 l10"></div>
+            </div>
+        </div>    
+        <div id="container" class="fondo_blanco"  style="margin-top: 72px;">
+            <div id="menu" class="fondo_negro">
+              <ul id="slide-out" class="side-nav fixed" >
+                <li class="txt_algn_center menu_redondo1 fondo_negro" style="padding-top: 15px;">
+                   <div class="row" style="margin-bottom: 0px;">
+                      <div class="col s12"></div>
+                      <div class="col s12">
+                        <div class="row" style="margin-bottom: 0px;">
+                          <div class="col s12 center" style="padding-top:5%;">
+                            <img src="{% static 'imagenes/foto.jpg' %}" style="border: #EF7F13 3px solid; padding:3%;" alt="" class="circle foto" width="100">
+                          </div>
+                          <div class="col s9 center" style="padding-top: 2%; margin-top: 0px;">
+                            <p class="font_blanco negritas" style="margin-top: 0px;">Laura Patricia Flores Cruz</p>
+                          </div>
+                          <div class="col s3 center" style="padding-top:0%;">
+                            <p><a class="font_naranja" href="#"><i class="material-icons">power_settings_new</i></a></p>
+                          </div>
+                        </div>
+                      </div>
+                   </div>
+                </li>
+                <li class="menu_redondo"><a href="#!">Texto</a></li>
+                <li class="menu_redondo">
+                  <ul class="collapsible collapsible-accordion">
+                    <li class="img_flecha">
+                      <a class="collapsible-header">Texto <i class="material-icons" style="float: right;margin: 0 0px 0 0; color: white;">chevron_right</i></a>
+                      <div class="collapsible-body">
+                        <ul>
+                          <li><a href="#!">Texto 1</a></li>
+                          <li><a href="#!">Texto 2</a></li>
+                          <li><a href="#!">Texto 3</a></li>
+                          <li><a href="#!">Texto 4</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu_redondo"><a href="#!">Texto</a></li>
+                <li class="menu_redondo"><a href="#!">Texto</a></li>
+                <li class="menu_redondo">
+                  <ul class="collapsible collapsible-accordion">
+                    <li >
+                      <a class="collapsible-header">Texto <i class="material-icons" style="float: right;margin: 0 0px 0 0; color: white;">chevron_right</i></a>
+                      <div class="collapsible-body">
+                        <ul>
+                          <li><a href="#!">Texto 1</a></li>
+                          <li><a href="#!">Texto 2</a></li>
+                          <li><a href="#!">Texto 3</a></li>
+                          <li><a href="#!">Texto 4</a></li>
+                        </ul>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li class="menu_redondo"><a href="#!">Texto</a></li>
+                <li class="menu_redondo"><a href="#!">Texto</a></li>
+              </ul>
+            </div>
+            <div id="content">
+              <div class="row fondo_naranja" style="margin-bottom: 0px;">
+                <div class="col s12" style="margin-left: 1%;">
+                    <a href="#" style="position: relative; top: 8px; right: 10px; color: white;" data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
+                    <a href="#!" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
+                    <a href="#!" class="breadcrumb font_blanco" style="font-size: 12px;">Texto</a>
+                    <a href="#!" class="breadcrumb font_blanco" style="font-size: 12px;">Texto</a>
+                </div>
+                
+              </div>
+
+              <div class="row fondo_blanco" style="padding-top: 10%;">
+              <div class="col s1 m1 l1"></div>
+              <div class="col s10 m10 l10" style="margin-top: 0px;">
+                 <div class="row" style="padding: 1%;">
+                  <div class="col s12">
+                    <table id="example" class="display responsive-table" style="width:100%; padding-top: 5%;">
+                        <thead>
+                            <tr>
+                                <th class="center border_rigth">Texto</th>
+                                <th class="center border_rigth">Texto</th>
+                                <th class="center border_rigth">editar</th>
+                                <th class="center border_rigth">eliminar</th>
+                                <th class="center border_rigth">aceptar</th>
+                                <th class="center font_gris_tab">rechazar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                           <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                            <tr class="border_rigth">
+                                <td class="fondo_tab_gris border_rigth"></td>
+                                <td class="fondo_tab_crema border_rigth"></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/editar.png' %}"></a></td>
+                                <td class="fondo_tab_crema center border_rigth"><a href="#"><img src="{% static 'imagenes/3/eliminar.png' %}"></a></td>
+                                <td class="fondo_tab_gris center border_rigth"><a href="#"><img src="{% static 'imagenes/3/aceptar.png' %}"></a></td>
+                                <td  class="fondo_tab_crema center"><a href="#"><img src="{% static 'imagenes/3/rechazar.png' %}"></a></td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+
+                  </div>
+               </div>
+              </div>
+              <div class="col s1 m1 l1"></div>
+            </div>
+            </div>
+         </div>   
+      </main> 
+
+       <div id="container" class="fondo_blanco">
+      <div class="row" style="margin-bottom: 0px; padding-bottom: 3%;">
+              <div class="col s12 center">
+                <img src="{% static 'imagenes/base/logo-gris.png' %}" class="responsive-img">
+              </div>
+            </div>
+      </div>    
+       <!--Import jQuery before materialize.js-->
+       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+       <script type="text/javascript" src="{% static 'DataTables/datatables.js' %}"></script>
+       <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+      <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+      <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+       <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+      
+       <script type="text/javascript">
+        $(document).ready(function() {
+          $('select').material_select();
+          $('.button-collapse').sideNav({
+            menuWidth: 300, // Default is 300
+            edge: 'left', // Choose the horizontal origin
+            closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+            draggable: true // Choose whether you can drag to open on touch screens,
+          }
+        );
+
+         $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+         {
+                extend:'copyHtml5',
+                copyTitle: 'Ajouté au presse-papiers',
+                copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',
+                copySuccess: {
+                    _: '%d lignes copiées',
+                    1: '1 ligne copiée'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                orientation: 'landscape',
+                pageSize: 'LEGAL'
+            },
+             {
+                extend: 'print',
+                text: 'Print all',
+                exportOptions: {
+                    modifier: {
+                        selected: null
+                    }
+                }
+            },
+             {
+            extend: 'excelHtml5',
+            customize: function( xlsx ) {
+                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+ 
+                $('row c[r^="C"]', sheet).attr( 's', '2' );
+            }
+        },
+
+         {
+                text: ' ',
+                className:'btn_agregar',
+                action: function ( e, dt, node, conf ) {
+                    alert( 'Aqui el codigo para agregar XD' );
+                }
+            }
+            
+
+        ]
+    } );  
+
+        });
+         
+       </script>
+   </body>
+  </html>
