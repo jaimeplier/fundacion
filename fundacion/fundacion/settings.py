@@ -26,7 +26,7 @@ DEBUG = True
 
 AUTH_USER_MODEL = 'config.Usuario'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ec2-34-221-30-40.us-west-2.compute.amazonaws.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ec2-34-221-30-40.us-west-2.compute.amazonaws.com', 'ec2-52-32-27-159.us-west-2.compute.amazonaws.com']
 
 # Application definition
 
