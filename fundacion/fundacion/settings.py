@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'adminstrador.apps.AdminstradorConfig',
     'supervisor.apps.SupervisorConfig',
     'directorio.apps.DirectorioConfig',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
