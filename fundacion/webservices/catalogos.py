@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, get_object_or_404
 
-from config.models import Sexo, Religion
+from config.models import Sexo, Religion, NivelEstudio
 from webservices.serializers import CatalogoSerializer
 
 
@@ -26,4 +26,14 @@ class ListReligion(ListAPIView):
 
     def get_queryset(self):
         queryset = Religion.objects.all()
+        return queryset
+
+class ListGradoEstudios(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = CatalogoSerializer
+
+    def get_queryset(self):
+        queryset = NivelEstudio.objects.all()
         return queryset
