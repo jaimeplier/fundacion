@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'webapp.apps.WebappConfig',
     'adminstrador.apps.AdminstradorConfig',
     'supervisor.apps.SupervisorConfig',
+    'consejero.apps.ConsejeroConfig',
     'directorio.apps.DirectorioConfig',
     'rest_framework',
     'rest_framework.authtoken',
