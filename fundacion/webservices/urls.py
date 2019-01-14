@@ -1,7 +1,7 @@
 from django.urls import path
 
 from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, ListOcupacion, ListViveCon, \
-    ListTipoLlamada, ListTipoCaso, ListTipoViolencia
+    ListTipoLlamada, ListTipoCaso, ListTipoViolencia, ListViolentometro
 from webservices.views import ResumenLlamada
 
 app_name = 'webservices'
@@ -20,5 +20,9 @@ urlpatterns = [
     path('list_tipificaciones/', ListTipoCaso.as_view(), name='list_tipificaciones'),
     # Modalidad
     path('list_tipos_violencia/', ListTipoViolencia.as_view(), name='list_tipos_violencia'),
+    # Fase de violencia
+    # Semaforo
+    path('list_violentometro/', ListViolentometro.as_view(), name='list_violentometro'),
+
 
 ]
