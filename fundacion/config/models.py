@@ -373,16 +373,18 @@ class TipoViolencia(Catalogo):
 
 
 class Victima(models.Model):
-    nombre = models.CharField(max_length=256, blank=True, null=True)
-    telefono = models.CharField(max_length=256, blank=True, null=True)
-    estado_civil = models.ForeignKey('EstadoCivil', models.DO_NOTHING)
-    municipio = models.ForeignKey('Municipio', models.DO_NOTHING)
-    ocupacion = models.ForeignKey('Ocupacion', models.DO_NOTHING)
-    religion = models.ForeignKey('Religion', models.DO_NOTHING)
-    vive_con = models.ForeignKey('ViveCon', models.DO_NOTHING)
-    sexo = models.ForeignKey('Sexo', models.DO_NOTHING)
-    nivel_estudio = models.ForeignKey('NivelEstudio', models.DO_NOTHING)
-    lengua_indigena = models.ForeignKey('LenguaIndigena', models.DO_NOTHING)
+    telefono = models.CharField(max_length=256)
+    nombre = models.CharField(max_length=256)
+    apellido_paterno = models.CharField(max_length=128, blank=True, null=True)
+    apellido_materno = models.CharField(max_length=128, blank=True, null=True)
+    estado_civil = models.ForeignKey('EstadoCivil', models.DO_NOTHING, blank=True, null=True)
+    municipio = models.ForeignKey('Municipio', models.DO_NOTHING, blank=True, null=True)
+    ocupacion = models.ForeignKey('Ocupacion', models.DO_NOTHING, blank=True, null=True)
+    religion = models.ForeignKey('Religion', models.DO_NOTHING, blank=True, null=True)
+    vive_con = models.ForeignKey('ViveCon', models.DO_NOTHING, blank=True, null=True)
+    sexo = models.ForeignKey('Sexo', models.DO_NOTHING, blank=True, null=True)
+    nivel_estudio = models.ForeignKey('NivelEstudio', models.DO_NOTHING, blank=True, null=True)
+    lengua_indigena = models.ForeignKey('LenguaIndigena', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = True
