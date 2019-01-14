@@ -1,6 +1,7 @@
 from django.urls import path
 
-from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, ListOcupacion, ListViveCon, ListTipoLlamada
+from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, ListOcupacion, ListViveCon, \
+    ListTipoLlamada, ListTipoCaso
 from webservices.views import ResumenLlamada
 
 app_name = 'webservices'
@@ -16,5 +17,6 @@ urlpatterns = [
     path('list_ocupaciones/', ListOcupacion.as_view(), name='list_ocupaciones'),
     path('list_redes_apoyo/', ListViveCon.as_view(), name='list_redes_apoyo'),
     path('list_tipos_de_llamada/', ListTipoLlamada.as_view(), name='list_tipos_de_llamada'),
+    path('list_tipificaciones/', ListTipoCaso.as_view(), name='list_tipificaciones'),
 
 ]
