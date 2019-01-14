@@ -15,5 +15,6 @@ urlpatterns = [
     path('list_grado_estudios/', ListGradoEstudios.as_view(), name='list_grado_estudios'),
     path('list_ocupaciones/', ListOcupacion.as_view(), name='list_ocupaciones'),
     path('list_redes_apoyo/', ListViveCon.as_view(), name='list_redes_apoyo'),
+    path('list_tipos_de_llamada/', ListTipoLlamada.as_view(), name='list_tipos_de_llamada'),
 
 ]

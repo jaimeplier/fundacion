@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, get_object_or_404
 
-from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon
+from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada
 from webservices.serializers import CatalogoSerializer
 
 
@@ -56,4 +56,14 @@ class ListViveCon(ListAPIView):
 
     def get_queryset(self):
         queryset = ViveCon.objects.all()
+        return queryset
+
+class ListTipoLlamada(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = CatalogoSerializer
+
+    def get_queryset(self):
+        queryset = TipoLlamada.objects.all()
         return queryset
