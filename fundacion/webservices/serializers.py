@@ -17,7 +17,7 @@ class CatalogoSerializer(serializers.Serializer):
 
 class PrimeraVezSerializer(serializers.Serializer):
     # victima
-    telefono = serializers.CharField(max_length=256)
+    telefono = serializers.IntegerField()
     nombre = serializers.CharField(max_length=256)
     apellido_paterno = serializers.CharField(max_length=128, allow_null=True, allow_blank=True, required=False)
     apellido_materno = serializers.CharField(max_length=128, allow_blank=True, allow_null=True, required=False)
