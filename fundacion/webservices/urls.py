@@ -1,6 +1,6 @@
 from django.urls import path
 
-from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, ListOcupacion, ListViveCon
+from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, ListOcupacion, ListViveCon, ListTipoLlamada
 from webservices.views import ResumenLlamada
 
 app_name = 'webservices'
