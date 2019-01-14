@@ -21,11 +21,13 @@ from rest_framework.documentation import include_docs_urls
 from fundacion import settings
 
 urlpatterns = [
+    path('docs/', include_docs_urls(title='Fundacion', public=True)),
     path('admin/', admin.site.urls),
     path('administrador/', include('adminstrador.urls')),
     path('supervisor/', include('supervisor.urls')),
     path('directorio/', include('directorio.urls')),
     path('', include('webapp.urls')),
+    path('ws/', include('webservices.urls')),
 ]
 
 if settings.DEBUG:
