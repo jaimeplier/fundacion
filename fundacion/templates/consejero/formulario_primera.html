@@ -1,530 +1,429 @@
+{% extends 'config/base.html' %}
 {% load static %}
-<html>
-<head>
-    <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}" media="screen,projection"/>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <style type="text/css">
-        .input-field.col label {
-            left: 1.75rem;
-        }
 
-        input.invalid:not([type]), input.invalid:not([type]):focus, input[type=text].invalid:not(.browser-default), input[type=text].invalid:not(.browser-default):focus, input[type=password].invalid:not(.browser-default), input[type=password].invalid:not(.browser-default):focus, input[type=email].invalid:not(.browser-default), input[type=email].invalid:not(.browser-default):focus, input[type=url].invalid:not(.browser-default), input[type=url].invalid:not(.browser-default):focus, input[type=time].invalid:not(.browser-default), input[type=time].invalid:not(.browser-default):focus, input[type=date].invalid:not(.browser-default), input[type=date].invalid:not(.browser-default):focus, input[type=datetime].invalid:not(.browser-default), input[type=datetime].invalid:not(.browser-default):focus, input[type=datetime-local].invalid:not(.browser-default), input[type=datetime-local].invalid:not(.browser-default):focus, input[type=tel].invalid:not(.browser-default), input[type=tel].invalid:not(.browser-default):focus, input[type=number].invalid:not(.browser-default), input[type=number].invalid:not(.browser-default):focus, input[type=search].invalid:not(.browser-default), input[type=search].invalid:not(.browser-default):focus, textarea.materialize-textarea.invalid, textarea.materialize-textarea.invalid:focus, .select-wrapper.invalid > input.select-dropdown {
-
-            background-image: url(imagenes/tache.png) !important;
-            background-repeat: no-repeat;
-            background-position: right;
-            background-size: 25px 25px;
-            background-origin: content-box;
-            padding-right: 3px;
-        }
-
-        [type="radio"]:not(:checked) + label, [type="radio"]:checked + label {
-            padding-left: 24px;
-            padding-right: 43px;
-        }
-
-        #datos_personales {
-            display: none;
-        }
-
-        #datos_sociode {
-            display: none;
-        }
-
-        [type="checkbox"] + label {
-            padding-left: 23px;
-            padding-right: 30px;
-        }
-
-        #datos_canalizacion {
-            display: none;
-        }
-
-
-    </style>
-</head>
-
-<body>
-<main class="fondo_blanco">
-    <div id="had-container">
-        <div class="row fondo_gris datos_usuario">
-            <div class="col s12 m2 l2 center">
-                <img src="{% static 'imagenes/base/logo-origen.png' %}" class="responsive-img"
-                     style="padding-top: 4%; max-width: 318px;">
-            </div>
-            <div class="col s12 m10 l10"></div>
-        </div>
-    </div>
-    <div id="container" class="fondo_blanco" style="margin-top: 72px;">
-        <div id="menu" class="fondo_negro">
-            <ul id="slide-out" class="side-nav fixed">
-                <li class="txt_algn_center menu_redondo1 fondo_negro" style="padding-top: 15px;">
-                    <div class="row" style="margin-bottom: 0px;">
-                        <div class="col s12"></div>
-                        <div class="col s12">
-                            <div class="row" style="margin-bottom: 0px;">
-                                <div class="col s12 center" style="padding-top:5%;">
-                                    <img src="{% static 'imagenes/foto.jpg' %}"
-                                         style="border: #EF7F13 3px solid; padding:3%;" alt="" class="circle foto"
-                                         width="100">
-                                </div>
-                                <div class="col s9 center" style="padding-top: 2%; margin-top: 0px;">
-                                    <p class="font_blanco negritas" style="margin-top: 0px;">Laura Patricia Flores
-                                        Cruz</p>
-                                </div>
-                                <div class="col s3 center" style="padding-top:0%;">
-                                    <p><a class="font_naranja" href="#"><i class="material-icons">power_settings_new</i></a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo">
-                    <ul class="collapsible collapsible-accordion">
-                        <li class="img_flecha">
-                            <a class="collapsible-header">Texto <i class="material-icons"
-                                                                   style="float: right;margin: 0 0px 0 0; color: white;">chevron_right</i></a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    <li><a href="#!">Texto 1</a></li>
-                                    <li><a href="#!">Texto 2</a></li>
-                                    <li><a href="#!">Texto 3</a></li>
-                                    <li><a href="#!">Texto 4</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo">
-                    <ul class="collapsible collapsible-accordion">
-                        <li>
-                            <a class="collapsible-header">Texto <i class="material-icons"
-                                                                   style="float: right;margin: 0 0px 0 0; color: white;">chevron_right</i></a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    <li><a href="#!">Texto 1</a></li>
-                                    <li><a href="#!">Texto 2</a></li>
-                                    <li><a href="#!">Texto 3</a></li>
-                                    <li><a href="#!">Texto 4</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-            </ul>
-        </div>
-        <div id="content">
-            <div class="row fondo_naranja" style="margin-bottom: 0px;">
-                <div class="col s12" style="margin-left: 1%;">
-                    <a href="#" style="position: relative; top: 8px; right: 10px; color: white;"
-                       data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
-                    <a href="#!" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}"
-                                                           class="responsive-img" style="position: relative; top: 5px;"></a>
-                    <a href="#!" class="breadcrumb font_blanco" style="font-size: 12px;">Texto</a>
-                    <a href="#!" class="breadcrumb font_blanco" style="font-size: 12px;">Texto</a>
+{% block content %}
+    <div class="row fondo_blanco" style="padding-top: 10%;">
+        <div class="col s1 m1 l1"></div>
+        <div class="col s10 m10 l10" style="margin-top: 0px;">
+            <div class="row">
+                <div class="col s12">
+                    <p class="negritas font_azul_verde center titulos">FORMULARIO <a href="#!"><img
+                            src="{% static 'imagenes/1/interrogacion.png' %}" class="responsive-img"></a></p>
                 </div>
-
             </div>
-
-            <div class="row fondo_blanco" style="padding-top: 10%;">
-                <div class="col s1 m1 l1"></div>
-                <div class="col s10 m10 l10" style="margin-top: 0px;">
-                    <div class="row">
+            <div class="row" style="padding: 1%;">
+                <form class="col s12">
+                    <div class="row sin_marg_bottom">
+                        <div class=" col s12 txt_algn_center">
+                            <p style="font-size: 20px; text-align: center;">¿Existe riesgo de vida?</p>
+                            <p style="text-align: center;">
+                                <input class="with-gap" name="group1" type="radio" id="rv1"/>
+                                <label for="rv1" style="font-size: 18px;">Sí</label>
+                                <input class="with-gap" name="group1" type="radio" id="rv2"/>
+                                <label for="rv2" style="font-size: 18px;">No</label>
+                            </p>
+                        </div>
                         <div class="col s12">
-                            <p class="negritas font_azul_verde center titulos">FORMULARIO <a href="#!" style="mar"
-                                                                                             2%;><img
-                                    src="{% static 'imagenes/1/interrogacion.png' %}" class="responsive-img"></a></p>
+                            <p>
+                                <input type="checkbox" id="datos_p"/>
+                                <label for="datos_p" style="color:#EF7F13!important">Datos personales</label>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="row sin_marg_bottom">
+                        <div class=" input-field col s12 m6 l6">
+                            <input id="texto" type="number" class="validate" required="required">
+                            <label for="texto">Teléfono</label>
+                        </div>
+                        <div class=" input-field col s12 m6 l6">
+                            <input id="texto" type="text" class="validate" required="required">
+                            <label for="texto"> Nombre o alias</label>
                         </div>
                     </div>
-                    <div class="row" style="padding: 1%;">
+                    <div id="datos_personales" class="row sin_marg_bottom">
+                        <div class=" input-field col s12 m4 l4">
+                            <input id="texto" type="text" class="validate" required="required">
+                            <label for="texto">Apellido Paterno</label>
+                        </div>
+                        <div class=" input-field col s12 m4 l4">
+                            <input id="texto" type="text" class="validate" required="required">
+                            <label for="texto">Apellido Materno</label>
+                        </div>
+                        <div class=" input-field col s12 m4 l4">
+                            <input type="text" class="datepicker" required="required">
+                            <label for="texto">Fecha Nacimiento</label>
+                        </div>
+                    </div>
+
+                    <div class="row sin_marg_bottom">
+                        <div class="input-field col s12 m4 l4">
+                            <select id="sexo">
+                            </select>
+                        </div>
+                        <div class=" input-field col s12 m4 l4">
+                            <input id="texto" type="number" class="validate" required="required">
+                            <label for="texto">Código Postal</label>
+                        </div>
+                        <div class="input-field col s12 m4 l4">
+                            <input id="texto" type="text" class="validate" required="required">
+                            <label for="texto"> Colonia</label>
+                        </div>
+                    </div>
+                    <div class="row sin_marg_bottom">
+                        <div class="col s12">
+                            <p>
+                                <input type="checkbox" id="datos_s"/>
+                                <label for="datos_s" style="color:#EF7F13!important">Datos
+                                    sociodemográficos</label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row sin_marg_bottom" id="datos_sociode">
+                        <div class="input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>Religión</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>Grado de estudios</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="col s12 m6 l6 txt_algn_center">
+                            <p style="margin-top: 0px;">Trabajo remunerado</p>
+                            <p style="margin-top: 0px;">
+                                <input class="with-gap" name="group2" type="radio" id="test1"/>
+                                <label for="test1">Sí</label>
+                                <input class="with-gap" name="group2" type="radio" id="test2"/>
+                                <label for="test2">No</label>
+                            </p>
+                        </div>
+                        <div class=" input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>Ocupación</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="row sin_marg_bottom">
+                        <div class="col s12">
+                            <p class="font_naranja">
+                                Línea Origen
+                            </p>
+                        </div>
+                        <div class="col s12 txt_algn_center">
+                            <p style="margin-top: 0px; text-align: center;">Tipo de Llamada</p>
+                            <p style="margin-top: 0px; text-align: center;">
+                                <input class="with-gap" name="group2" type="radio" id="tl1"/>
+                                <label for="tl1">Primera vez</label>
+                                <input class="with-gap" name="group2" type="radio" id="tl2"/>
+                                <label for="tl2">Recado</label>
+                                <input class="with-gap" name="group2" type="radio" id="tl3"/>
+                                <label for="tl3">Información</label>
+                                <input class="with-gap" name="group2" type="radio" id="tl4"/>
+                                <label for="tl4">Abandono Operativo</label>
+                            </p>
+                        </div>
+
                         <form class="col s12">
-                            <div class="row sin_marg_bottom">
-                                <div class=" col s12 txt_algn_center">
-                                    <p style="font-size: 20px; text-align: center;">¿Existe riesgo de vida?</p>
-                                    <p style="text-align: center;">
-                                        <input class="with-gap" name="group1" type="radio" id="rv1"/>
-                                        <label for="rv1" style="font-size: 18px;">Sí</label>
-                                        <input class="with-gap" name="group1" type="radio" id="rv2"/>
-                                        <label for="rv2" style="font-size: 18px;">No</label>
-                                    </p>
+                            <div class="row">
+                                <div class="col s12" style="padding-top: 15px;">
+                                    <p style="text-align: center;">Motivo de llamada</p>
                                 </div>
-                                <div class="col s12">
-                                    <p>
-                                        <input type="checkbox" id="datos_p"/>
-                                        <label for="datos_p" style="color:#EF7F13!important">Datos personales</label>
-                                    </p>
-                                </div>
-
-                            </div>
-                            <div class="row sin_marg_bottom">
-                                <div class=" input-field col s12 m6 l6">
-                                    <input id="texto" type="number" class="validate" required="required">
-                                    <label for="texto">Teléfono</label>
-                                </div>
-                                <div class=" input-field col s12 m6 l6">
-                                    <input id="texto" type="text" class="validate" required="required">
-                                    <label for="texto"> Nombre o alias</label>
-                                </div>
-                            </div>
-                            <div id="datos_personales" class="row sin_marg_bottom">
-                                <div class=" input-field col s12 m4 l4">
-                                    <input id="texto" type="text" class="validate" required="required">
-                                    <label for="texto">Apellido Paterno</label>
-                                </div>
-                                <div class=" input-field col s12 m4 l4">
-                                    <input id="texto" type="text" class="validate" required="required">
-                                    <label for="texto">Apellido Materno</label>
-                                </div>
-                                <div class=" input-field col s12 m4 l4">
-                                    <input type="text" class="datepicker" required="required">
-                                    <label for="texto">Fecha Nacimiento</label>
-                                </div>
-                            </div>
-
-                            <div class="row sin_marg_bottom">
-                                <div class="input-field col s12 m4 l4">
-                                    <select>
-                                        <option value="" disabled selected>Sexo</option>
-                                        <option value="1">Femenino</option>
-                                        <option value="2">Masculino</option>
-                                    </select>
-                                </div>
-                                <div class=" input-field col s12 m4 l4">
-                                    <input id="texto" type="number" class="validate" required="required">
-                                    <label for="texto">Código Postal</label>
-                                </div>
-                                <div class="input-field col s12 m4 l4">
-                                    <input id="texto" type="text" class="validate" required="required">
-                                    <label for="texto"> Colonia</label>
-                                </div>
-                            </div>
-                            <div class="row sin_marg_bottom">
-                                <div class="col s12">
-                                    <p>
-                                        <input type="checkbox" id="datos_s"/>
-                                        <label for="datos_s" style="color:#EF7F13!important">Datos
-                                            sociodemográficos</label>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="row sin_marg_bottom" id="datos_sociode">
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Religión</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Grado de estudios</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class="col s12 m6 l6 txt_algn_center">
-                                    <p style="margin-top: 0px;">Trabajo remunerado</p>
-                                    <p style="margin-top: 0px;">
-                                        <input class="with-gap" name="group2" type="radio" id="test1"/>
-                                        <label for="test1">Sí</label>
-                                        <input class="with-gap" name="group2" type="radio" id="test2"/>
-                                        <label for="test2">No</label>
-                                    </p>
-                                </div>
-                                <div class=" input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Ocupación</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="row sin_marg_bottom">
-                                <div class="col s12">
-                                    <p class="font_naranja">
-                                        Línea Origen
-                                    </p>
-                                </div>
-                                <div class="col s12 txt_algn_center">
-                                    <p style="margin-top: 0px; text-align: center;">Tipo de Llamada</p>
-                                    <p style="margin-top: 0px; text-align: center;">
-                                        <input class="with-gap" name="group2" type="radio" id="tl1"/>
-                                        <label for="tl1">Primera vez</label>
-                                        <input class="with-gap" name="group2" type="radio" id="tl2"/>
-                                        <label for="tl2">Recado</label>
-                                        <input class="with-gap" name="group2" type="radio" id="tl3"/>
-                                        <label for="tl3">Información</label>
-                                        <input class="with-gap" name="group2" type="radio" id="tl4"/>
-                                        <label for="tl4">Abandono Operativo</label>
-                                    </p>
-                                </div>
-
-                                <form class="col s12">
-                                    <div class="row">
-                                        <div class="col s12" style="padding-top: 15px;">
-                                            <p style="text-align: center;">Motivo de llamada</p>
-                                        </div>
-                                        <div class="input-field col s12">
+                                <div class="input-field col s12">
                                             <textarea id="textarea1" class="materialize-textarea"
                                                       placeholder="Causa de riesgo"
                                                       style="padding-left: 14px;"></textarea>
 
-                                        </div>
-                                    </div>
-                                </form>
-                                <div class="col s12 txt_algn_center">
-                                    <p style="margin-top: 0px; text-align: center;">
-                                        Tipificación
-                                    </p>
-                                    <form action="#">
-                                        <p style="text-align: center;">
-                                            <input type="checkbox" id="tp1"/>
-                                            <label for="tp1">Violencia</label>
-                                            <input type="checkbox" id="tp2"/>
-                                            <label for="tp2">Intento de suicidio</label>
-                                            <input type="checkbox" id="tp3"/>
-                                            <label for="tp3">Depresión</label>
-                                            <input type="checkbox" id="tp4"/>
-                                            <label for="tp4">Abuso Sexual</label>
-                                        </p>
-                                        <p style="text-align: center;">
-                                            <input type="checkbox" id="tp5"/>
-                                            <label for="tp5">Checkbox</label>
-                                            <input type="checkbox" id="tp6"/>
-                                            <label for="tp6">Checkbox</label>
-                                            <input type="checkbox" id="tp7"/>
-                                            <label for="tp7">Checkbox</label>
-                                            <input type="checkbox" id="tp8"/>
-                                            <label for="tp8">Checkbox</label>
-                                        </p>
-                                    </form>
                                 </div>
                             </div>
+                        </form>
+                        <div class="col s12 txt_algn_center">
+                            <p style="margin-top: 0px; text-align: center;">
+                                Tipificación
+                            </p>
+                            <form action="#">
+                                <p style="text-align: center;">
+                                    <input type="checkbox" id="tp1"/>
+                                    <label for="tp1">Violencia</label>
+                                    <input type="checkbox" id="tp2"/>
+                                    <label for="tp2">Intento de suicidio</label>
+                                    <input type="checkbox" id="tp3"/>
+                                    <label for="tp3">Depresión</label>
+                                    <input type="checkbox" id="tp4"/>
+                                    <label for="tp4">Abuso Sexual</label>
+                                </p>
+                                <p style="text-align: center;">
+                                    <input type="checkbox" id="tp5"/>
+                                    <label for="tp5">Checkbox</label>
+                                    <input type="checkbox" id="tp6"/>
+                                    <label for="tp6">Checkbox</label>
+                                    <input type="checkbox" id="tp7"/>
+                                    <label for="tp7">Checkbox</label>
+                                    <input type="checkbox" id="tp8"/>
+                                    <label for="tp8">Checkbox</label>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
 
 
-                            <div class="row sin_marg_bottom">
-                                <div class="col s12">
-                                    <p class=" negritas" style="font-size: 20px; text-align: center;">
-                                        Recomendaciones</p>
-                                    <p>1. ansdbmnbasdmasd</p>
-                                    <p>2. sndkjans,dnas,d</p>
-                                    <p>3. lakjsdlkasldasd</p>
+                    <div class="row sin_marg_bottom">
+                        <div class="col s12">
+                            <p class=" negritas" style="font-size: 20px; text-align: center;">
+                                Recomendaciones</p>
+                            <p>1. ansdbmnbasdmasd</p>
+                            <p>2. sndkjans,dnas,d</p>
+                            <p>3. lakjsdlkasldasd</p>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>Modalidad</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <select id="tipos_violencia">
+
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>Fase de violencia</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>Semáforo</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>Violentometro</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>Victimas</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>Agresor</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class=" input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>Redes de apoyo</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row sin_marg_bottom">
+                        <form class="col s12">
+                            <div class="row">
+                                <div class="col s12" style="padding-top: 15px;">
+                                    <p style="text-align: center;">¿Qué acciones tiene que realizar para la
+                                        siguiente llamada?</p>
                                 </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Modalidad</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Tipo de violencia</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Fase de violencia</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Semáforo</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Violentometro</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Victimas</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Agresor</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class=" input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Redes de apoyo</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row sin_marg_bottom">
-                                <form class="col s12">
-                                    <div class="row">
-                                        <div class="col s12" style="padding-top: 15px;">
-                                            <p style="text-align: center;">¿Qué acciones tiene que realizar para la
-                                                siguiente llamada?</p>
-                                        </div>
-                                        <div class="input-field col s12">
+                                <div class="input-field col s12">
                                             <textarea id="textarea1" class="materialize-textarea"
                                                       placeholder="Plan de acción"
                                                       style="padding-left: 14px;"></textarea>
 
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="row sin_marg_bottom">
-                                <div class="col s12">
-                                    <p style="text-align: center;">Tareas o actividades recomendadas</p>
-                                </div>
-                                <div class="input-field col s12">
-                                    <input id="texto" type="text" class="validate" required="required"
-                                           placeholder="Tarea 1">
-                                </div>
-                                <div class="input-field col s12">
-                                    <input id="texto" type="text" class="validate" required="required"
-                                           placeholder="Tarea 2">
-                                </div>
-                                <div class="input-field col s12">
-                                    <input id="texto" type="text" class="validate" required="required"
-                                           placeholder="Tarea 3">
                                 </div>
                             </div>
-
-                            <div class="row sin_marg_bottom">
-                                <div class="col s12">
-                                    <p>
-                                        <input type="checkbox" id="datos_c"/>
-                                        <label for="datos_c" style="color:#EF7F13!important">¿Requiere
-                                            canalización?</label>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="row sin_marg_bottom" id="datos_canalizacion">
-                                <div class="col s12">
-                                    <p style="text-align: center;">Canalizar a:</p>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>------</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>--------</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                            </div>
-
-
                         </form>
                     </div>
-                    <div class="row">
-                        <div class="col s12 center" style="margin-bottom: 5%;">
-                            <button class="btn fondo_naranja redondo" type="submit" name="action">Transferir</button>
-                            <button class="btn fondo_naranja redondo" type="submit" name="action">Guardar</button>
+                    <div class="row sin_marg_bottom">
+                        <div class="col s12">
+                            <p style="text-align: center;">Tareas o actividades recomendadas</p>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="texto" type="text" class="validate" required="required"
+                                   placeholder="Tarea 1">
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="texto" type="text" class="validate" required="required"
+                                   placeholder="Tarea 2">
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="texto" type="text" class="validate" required="required"
+                                   placeholder="Tarea 3">
                         </div>
                     </div>
-                </div>
-                <div class="col s1 m1 l1"></div>
+
+                    <div class="row sin_marg_bottom">
+                        <div class="col s12">
+                            <p>
+                                <input type="checkbox" id="datos_c"/>
+                                <label for="datos_c" style="color:#EF7F13!important">¿Requiere
+                                    canalización?</label>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row sin_marg_bottom" id="datos_canalizacion">
+                        <div class="col s12">
+                            <p style="text-align: center;">Canalizar a:</p>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>------</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <select>
+                                <option value="" disabled selected>--------</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                </form>
             </div>
-
-
+            <div class="row">
+                <div class="col s12 center" style="margin-bottom: 5%;">
+                    <button class="btn fondo_naranja redondo" type="submit" name="action">Transferir</button>
+                    <button class="btn fondo_naranja redondo" type="submit" name="action">Guardar</button>
+                </div>
+            </div>
         </div>
+        <div class="col s1 m1 l1"></div>
     </div>
-</main>
-<div id="container" class="fondo_blanco">
-    <div class="row" style="margin-bottom: 0px; padding-bottom: 3%;">
-        <div class="col s12 center">
-            <img src="imagenes/base/logo-gris.png" class="responsive-img">
-        </div>
-    </div>
-</div>
 
+{% endblock %}
 <!--Import jQuery before materialize.js-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('select').material_select();
-        $('.button-collapse').sideNav({
-                menuWidth: 300, // Default is 300
-                edge: 'left', // Choose the horizontal origin
-                closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-                draggable: true // Choose whether you can drag to open on touch screens,
-            }
-        );
+{% block scripts %}
 
-        $('.datepicker').pickadate({
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears: 100,
-            min: [1939, 1, 1],
-            max: [2019, 1, 31],
-            today: 'Today',
-            clear: 'Clear',
-            close: 'Ok',
-            closeOnSelect: false, // Close upon selecting a date,
-            container: undefined // ex. 'body' will append picker to body
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
+            $('select').material_select();
+            $('.button-collapse').sideNav({
+                    menuWidth: 300, // Default is 300
+                    edge: 'left', // Choose the horizontal origin
+                    closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                    draggable: true // Choose whether you can drag to open on touch screens,
+                }
+            );
+
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 100,
+                min: [1939, 1, 1],
+                max: [2019, 1, 31],
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: false, // Close upon selecting a date,
+                container: undefined // ex. 'body' will append picker to body
+            });
+
+
+            $('#datos_p').change(function () {
+                if (!$(this).prop('checked')) {
+                    $('#datos_personales').hide();
+                } else {
+                    $('#datos_personales').show();
+                }
+
+            })
+
+            $('#datos_s').change(function () {
+                if (!$(this).prop('checked')) {
+                    $('#datos_sociode').hide();
+                } else {
+                    $('#datos_sociode').show();
+                }
+
+            })
+
+            $('#datos_c').change(function () {
+                if (!$(this).prop('checked')) {
+                    $('#datos_canalizacion').hide();
+                } else {
+                    $('#datos_canalizacion').show();
+                }
+
+            })
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_sexos' %}",
+                cache: false,
+                success: function (json) {
+                    console.log(json)
+                    $("#sexo").empty().html(' ');
+                    $('#sexo').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Sexo")
+                    );
+                    for (i in json) {
+                        $('#sexo').append(
+                            $("<option></option>")
+                                .attr("value", json[i].id)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#sexo').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_tipos_violencia' %}",
+                cache: false,
+                success: function (json) {
+                    console.log(json)
+                    $("#tipos_violencia").empty().html(' ');
+                    $('#tipos_violencia').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Tipo de violencia")
+                    );
+                    for (i in json) {
+                        $('#tipos_violencia').append(
+                            $("<option></option>")
+                                .attr("value", json[i].id)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#tipos_violencia').material_select();
+                }
+            });
+
         });
 
-
-        $('#datos_p').change(function () {
-            if (!$(this).prop('checked')) {
-                $('#datos_personales').hide();
-            } else {
-                $('#datos_personales').show();
-            }
-
-        })
-
-        $('#datos_s').change(function () {
-            if (!$(this).prop('checked')) {
-                $('#datos_sociode').hide();
-            } else {
-                $('#datos_sociode').show();
-            }
-
-        })
-
-        $('#datos_c').change(function () {
-            if (!$(this).prop('checked')) {
-                $('#datos_canalizacion').hide();
-            } else {
-                $('#datos_canalizacion').show();
-            }
-
-        })
-
-    });
-
-</script>
+    </script>
+{% endblock %}
 </body>
 </html>
