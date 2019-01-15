@@ -102,6 +102,9 @@
                     <li class="menu_redondo"><a
                             href="{% url 'administrador:list_acude_institucion' %}">Instituciones</a>
                     </li>
+                    <li class="menu_redondo"><a href="#">Estadísticas</a></li>
+                    <li class="menu_redondo"><a href="#">Avisos</a></li>
+                    <li class="menu_redondo"><a href="#">Recados</a></li>
                 {% elif user.is_consejero %}
                     <li class="menu_redondo"><a href="#">Buscar usuario</a></li>
                     <li class="menu_redondo"><a href="{% url 'consejero:registro_primera_vez' %}">Primera vez</a></li>
@@ -114,6 +117,9 @@
                 {% elif user.is_supervisor %}
                     <li class="menu_redondo"><a href="{% url 'supervisor:resumen' %}">Resumen</a></li>
                     <li class="menu_redondo"><a href="{% url 'supervisor:reportes' %}">Reportes</a></li>
+                    <li class="menu_redondo"><a href="#">Estadísticas</a></li>
+                    <li class="menu_redondo"><a href="#">Avisos</a></li>
+                    <li class="menu_redondo"><a href="#">Recados</a></li>
                 {% elif user.is_directorio %}
                     <li class="menu_redondo"><a
                             href="{% url 'directorio:list_acude_institucion' %}">Instituciones</a>
