@@ -3,7 +3,7 @@ from django.forms import ModelForm, Select, PasswordInput
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Directorio, Supervisor, Calidad, Sexo, Ayuda, MotivoLLamada, \
-    EstatusLLamada, Dependencia, RedesApoyo
+    EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia
 
 
 class ConsejeroForm(ModelForm):
@@ -234,6 +234,13 @@ class DependenciaForm(ModelForm):
 class RedesApoyoForm(ModelForm):
     class Meta:
         model = RedesApoyo
+        exclude = ['fecha_alta', 'fecha_baja']
+        widgets = {
+            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
+class FaseViolenciaForm(ModelForm):
+    class Meta:
+        model = FaseViolencia
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }

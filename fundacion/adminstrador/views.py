@@ -14,11 +14,11 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
     OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, ConsejeroForm, \
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm, \
-    EstatusLLamadaForm, DependenciaForm, RedesApoyoForm
+    EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
-    MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo
+    MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -2757,4 +2757,92 @@ class RedesApoyoEdit(PermissionRequiredMixin, UpdateView):
 def delete_redes_apoyo(request, pk):
     redes_apoyo = get_object_or_404(RedesApoyo, pk=pk)
     redes_apoyo.delete()
+    return JsonResponse({'result': 1})
+
+class FaseViolenciaAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = FaseViolencia
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/fase_violencia/list'
+    form_class = FaseViolenciaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(FaseViolenciaAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un fase_violencia'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_fase_violencia(request):
+    template_name = 'administrador/tab_fase_violencia.html'
+    return render(request, template_name)
+
+
+class FaseViolenciaAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = FaseViolencia
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_fase_violencia',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(FaseViolenciaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return FaseViolencia.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class FaseViolenciaEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/fase_violencia/list'
+
+    model = FaseViolencia
+    template_name = 'config/formulario_1Col.html'
+    form_class = FaseViolenciaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(FaseViolenciaEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_fase_violencia(request, pk):
+    fase_violencia = get_object_or_404(FaseViolencia, pk=pk)
+    fase_violencia.delete()
     return JsonResponse({'result': 1})

@@ -14,7 +14,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit, AyudaAdd, AyudaAjaxList, AyudaEdit, \
     MotivoLLamadaAdd, MotivoLLamadaAjaxList, MotivoLLamadaEdit, EstatusLLamadaAdd, EstatusLLamadaAjaxList, \
     EstatusLLamadaEdit, DependenciaAdd, DependenciaAjaxList, DependenciaEdit, RedesApoyoAdd, RedesApoyoAjaxList, \
-    RedesApoyoEdit
+    RedesApoyoEdit, FaseViolenciaAdd, FaseViolenciaAjaxList, FaseViolenciaEdit
 from . import views
 
 app_name = 'administrador'
@@ -195,4 +195,10 @@ urlpatterns = [
     path('redes_apoyo/ajax/list/', RedesApoyoAjaxList.as_view(), name='list_ajax_redes_apoyo'),
     path('redes_apoyo/edit/<int:pk>', RedesApoyoEdit.as_view(), name='edit_redes_apoyo'),
     path('redes_apoyo/list/delete/<int:pk>', views.delete_redes_apoyo, name='delete_redes_apoyo'),
+
+    path('fase_violencia/add/', FaseViolenciaAdd.as_view(), name='add_fase_violencia'),
+    path('fase_violencia/list/', views.list_fase_violencia, name='list_fase_violencia'),
+    path('fase_violencia/ajax/list/', FaseViolenciaAjaxList.as_view(), name='list_ajax_fase_violencia'),
+    path('fase_violencia/edit/<int:pk>', FaseViolenciaEdit.as_view(), name='edit_fase_violencia'),
+    path('fase_violencia/list/delete/<int:pk>', views.delete_fase_violencia, name='delete_fase_violencia'),
 ]
