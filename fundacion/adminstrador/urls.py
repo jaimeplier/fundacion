@@ -16,7 +16,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     EstatusLLamadaEdit, DependenciaAdd, DependenciaAjaxList, DependenciaEdit, RedesApoyoAdd, RedesApoyoAjaxList, \
     RedesApoyoEdit, FaseViolenciaAdd, FaseViolenciaAjaxList, FaseViolenciaEdit, SemaforoAdd, SemaforoAjaxList, \
     SemaforoEdit, VictimaInvolucradaAdd, VictimaInvolucradaAjaxList, VictimaInvolucradaEdit, AgresorAdd, \
-    AgresorAjaxList, AgresorEdit, MedioComunicacionAdd, MedioComunicacionAjaxList, MedioComunicacionEdit
+    AgresorAjaxList, AgresorEdit, MedioComunicacionAdd, MedioComunicacionAjaxList, MedioComunicacionEdit, \
+    ComoSeEnteroAdd, ComoSeEnteroAjaxList, ComoSeEnteroEdit
 from . import views
 
 app_name = 'administrador'
@@ -235,4 +236,10 @@ urlpatterns = [
     path('medio_comunicacion/ajax/list/', MedioComunicacionAjaxList.as_view(), name='list_ajax_medio_comunicacion'),
     path('medio_comunicacion/edit/<int:pk>', MedioComunicacionEdit.as_view(), name='edit_medio_comunicacion'),
     path('medio_comunicacion/list/delete/<int:pk>', views.delete_medio_comunicacion, name='delete_medio_comunicacion'),
+
+    path('como_se_entero/add/', ComoSeEnteroAdd.as_view(), name='add_como_se_entero'),
+    path('como_se_entero/list/', views.list_como_se_entero, name='list_como_se_entero'),
+    path('como_se_entero/ajax/list/', ComoSeEnteroAjaxList.as_view(), name='list_ajax_como_se_entero'),
+    path('como_se_entero/edit/<int:pk>', ComoSeEnteroEdit.as_view(), name='edit_como_se_entero'),
+    path('como_se_entero/list/delete/<int:pk>', views.delete_como_se_entero, name='delete_como_se_entero'),
 ]

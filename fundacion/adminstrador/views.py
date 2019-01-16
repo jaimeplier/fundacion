@@ -15,12 +15,12 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, ConsejeroForm, \
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm, \
     EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm, \
-    AgresorForm, MedioComunicacionForm
+    AgresorForm, MedioComunicacionForm, ComoSeEnteroForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
     MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
-    MedioComunicacion
+    MedioComunicacion, ComoSeEntero
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -3212,4 +3212,92 @@ class MedioComunicacionEdit(PermissionRequiredMixin, UpdateView):
 def delete_medio_comunicacion(request, pk):
     medio_comunicacion = get_object_or_404(MedioComunicacion, pk=pk)
     medio_comunicacion.delete()
+    return JsonResponse({'result': 1})
+
+class ComoSeEnteroAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = ComoSeEntero
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/como_se_entero/list'
+    form_class = ComoSeEnteroForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ComoSeEnteroAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un como_se_entero'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_como_se_entero(request):
+    template_name = 'administrador/tab_como_se_entero.html'
+    return render(request, template_name)
+
+
+class ComoSeEnteroAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = ComoSeEntero
+    columns = ['id', 'nombre', 'medio.nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre', 'medio__nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_como_se_entero',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(ComoSeEnteroAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return ComoSeEntero.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class ComoSeEnteroEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/como_se_entero/list'
+
+    model = ComoSeEntero
+    template_name = 'config/formulario_1Col.html'
+    form_class = ComoSeEnteroForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ComoSeEnteroEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_como_se_entero(request, pk):
+    como_se_entero = get_object_or_404(ComoSeEntero, pk=pk)
+    como_se_entero.delete()
     return JsonResponse({'result': 1})
