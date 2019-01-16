@@ -13,7 +13,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit, CalidadAdd, \
     CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit, AyudaAdd, AyudaAjaxList, AyudaEdit, \
     MotivoLLamadaAdd, MotivoLLamadaAjaxList, MotivoLLamadaEdit, EstatusLLamadaAdd, EstatusLLamadaAjaxList, \
-    EstatusLLamadaEdit
+    EstatusLLamadaEdit, DependenciaAdd, DependenciaAjaxList, DependenciaEdit
 from . import views
 
 app_name = 'administrador'
@@ -182,4 +182,10 @@ urlpatterns = [
     path('estatus_llamada/ajax/list/', EstatusLLamadaAjaxList.as_view(), name='list_ajax_estatus_llamada'),
     path('estatus_llamada/edit/<int:pk>', EstatusLLamadaEdit.as_view(), name='edit_estatus_llamada'),
     path('estatus_llamada/list/delete/<int:pk>', views.delete_estatus_llamada, name='delete_estatus_llamada'),
+
+    path('dependencia/add/', DependenciaAdd.as_view(), name='add_dependencia'),
+    path('dependencia/list/', views.list_dependencia, name='list_dependencia'),
+    path('dependencia/ajax/list/', DependenciaAjaxList.as_view(), name='list_ajax_dependencia'),
+    path('dependencia/edit/<int:pk>', DependenciaEdit.as_view(), name='edit_dependencia'),
+    path('dependencia/list/delete/<int:pk>', views.delete_dependencia, name='delete_dependencia'),
 ]
