@@ -253,6 +253,7 @@ class Llamada(models.Model):
     posible_solucion = models.CharField(max_length=4096, blank=True, null=True)
     vida_en_riesgo = models.BooleanField(default=False)
     tipo_llamada = models.ForeignKey('TipoLlamada', models.DO_NOTHING, blank= True, null= True)
+    motivo = models.ForeignKey('MotivoLLamada', models.DO_NOTHING, blank=True, null=True)
     estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
@@ -264,6 +265,12 @@ class EstatusLLamada(Catalogo):
     class Meta:
         managed = True
         db_table = 'estatus_llamada'
+
+class MotivoLLamada(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'motivo_llamada'
 
 class TipoLlamada(Catalogo):
 
