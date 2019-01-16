@@ -16,7 +16,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     EstatusLLamadaEdit, DependenciaAdd, DependenciaAjaxList, DependenciaEdit, RedesApoyoAdd, RedesApoyoAjaxList, \
     RedesApoyoEdit, FaseViolenciaAdd, FaseViolenciaAjaxList, FaseViolenciaEdit, SemaforoAdd, SemaforoAjaxList, \
     SemaforoEdit, VictimaInvolucradaAdd, VictimaInvolucradaAjaxList, VictimaInvolucradaEdit, AgresorAdd, \
-    AgresorAjaxList, AgresorEdit
+    AgresorAjaxList, AgresorEdit, MedioComunicacionAdd, MedioComunicacionAjaxList, MedioComunicacionEdit
 from . import views
 
 app_name = 'administrador'
@@ -229,4 +229,10 @@ urlpatterns = [
     path('agresor/ajax/list/', AgresorAjaxList.as_view(), name='list_ajax_agresor'),
     path('agresor/edit/<int:pk>', AgresorEdit.as_view(), name='edit_agresor'),
     path('agresor/list/delete/<int:pk>', views.delete_agresor, name='delete_agresor'),
+
+    path('medio_comunicacion/add/', MedioComunicacionAdd.as_view(), name='add_medio_comunicacion'),
+    path('medio_comunicacion/list/', views.list_medio_comunicacion, name='list_medio_comunicacion'),
+    path('medio_comunicacion/ajax/list/', MedioComunicacionAjaxList.as_view(), name='list_ajax_medio_comunicacion'),
+    path('medio_comunicacion/edit/<int:pk>', MedioComunicacionEdit.as_view(), name='edit_medio_comunicacion'),
+    path('medio_comunicacion/list/delete/<int:pk>', views.delete_medio_comunicacion, name='delete_medio_comunicacion'),
 ]
