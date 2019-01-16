@@ -11,7 +11,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, ConsejeroAdd, ConsejeroAjaxList, \
     ConsejeroEdit, DirectorioAdd, DirectorioAjaxList, DirectorioEdit, SupervisorAdd, SupervisorAjaxList, \
     SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit, CalidadAdd, \
-    CalidadAjaxList, CalidadEdit, LlamadaAjaxList
+    CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit
 from . import views
 
 app_name = 'administrador'
@@ -29,7 +29,7 @@ urlpatterns = [
     path('consejero/ajax/list/', ConsejeroAjaxList.as_view(), name='list_ajax_consejero'),
     path('consejero/edit/<int:pk>', ConsejeroEdit.as_view(), name='edit_consejero'),
     path('consejero/list/delete/<int:pk>', views.delete_consejero, name='delete_consejero'),
-
+    #Directorio
     path('directorio/add/', DirectorioAdd.as_view(), name='add_directorio'),
     path('directorio/list/', views.list_directorio, name='list_directorio'),
     path('directorio/ajax/list/', DirectorioAjaxList.as_view(), name='list_ajax_directorio'),
@@ -41,13 +41,14 @@ urlpatterns = [
     path('supervisor/ajax/list/', SupervisorAjaxList.as_view(), name='list_ajax_supervisor'),
     path('supervisor/edit/<int:pk>', SupervisorEdit.as_view(), name='edit_supervisor'),
     path('supervisor/list/delete/<int:pk>', views.delete_supervisor, name='delete_supervisor'),
-
+    #Calidad
     path('calidad/add/', CalidadAdd.as_view(), name='add_calidad'),
     path('calidad/list/', views.list_calidad, name='list_calidad'),
     path('calidad/ajax/list/', CalidadAjaxList.as_view(), name='list_ajax_calidad'),
     path('calidad/edit/<int:pk>', CalidadEdit.as_view(), name='edit_calidad'),
     path('calidad/list/delete/<int:pk>', views.delete_calidad, name='delete_calidad'),
 
+    # Catalogos
     path('acude_institucion/add/', AcudeInstitucionAdd.as_view(), name='add_acude_institucion'),
     path('acude_institucion/list/', views.list_acude_institucion, name='list_acude_institucion'),
     path('acude_institucion/ajax/list/', AcudeInstitucionAjaxList.as_view(), name='list_ajax_acude_institucion'),
@@ -155,4 +156,10 @@ urlpatterns = [
     path('contacto_institucion/ajax/list/<int:institucion>', ContactoInstitucionAjaxList.as_view(), name='list_ajax_contacto_institucion'),
     path('contacto_institucion/edit/<int:pk>/<int:institucion>', ContactoInstitucionEdit.as_view(), name='edit_contacto_institucion'),
     path('contacto_institucion/list/delete/<int:pk>', views.delete_contacto_institucion, name='delete_contacto_institucion'),
+
+    path('sexo/add/', SexoAdd.as_view(), name='add_sexo'),
+    path('sexo/list/', views.list_sexo, name='list_sexo'),
+    path('sexo/ajax/list/', SexoAjaxList.as_view(), name='list_ajax_sexo'),
+    path('sexo/edit/<int:pk>', SexoEdit.as_view(), name='edit_sexo'),
+    path('sexo/list/delete/<int:pk>', views.delete_sexo, name='delete_sexo'),
 ]
