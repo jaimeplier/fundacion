@@ -13,11 +13,11 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
     OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, ConsejeroForm, \
-    DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, EstatusLLamadaForm
+    DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
-    EstatusLLamada
+    MotivoLLamada
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -2406,39 +2406,39 @@ def delete_ayuda(request, pk):
     ayuda.delete()
     return JsonResponse({'result': 1})
 
-class EstatusLLamadaAdd(PermissionRequiredMixin, CreateView):
+class MotivoLLamadaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
     login_url = '/'
     permission_required = 'catalogo'
 
-    model = EstatusLLamada
+    model = MotivoLLamada
     template_name = 'config/formulario_1Col.html'
-    success_url = '/administrador/estatus_llamada/list'
-    form_class = EstatusLLamadaForm
+    success_url = '/administrador/motivo_llamada/list'
+    form_class = MotivoLLamadaForm
 
     def get_context_data(self, **kwargs):
-        context = super(EstatusLLamadaAdd, self).get_context_data(**kwargs)
+        context = super(MotivoLLamadaAdd, self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Agregar un estatus_llamada'
+            context['titulo'] = 'Agregar un motivo_llamada'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Completa todos los campos para registrar un'
         return context
 
 
 @permission_required(perm='catalogo', login_url='/')
-def list_estatus_llamada(request):
-    template_name = 'administrador/tab_estatus_llamada.html'
+def list_motivo_llamada(request):
+    template_name = 'administrador/tab_motivo_llamada.html'
     return render(request, template_name)
 
 
-class EstatusLLamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
+class MotivoLLamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
     login_url = '/'
     permission_required = 'catalogo'
 
-    model = EstatusLLamada
+    model = MotivoLLamada
     columns = ['id', 'nombre', 'editar', 'eliminar']
     order_columns = ['id', 'nombre']
     max_display_length = 100
@@ -2446,7 +2446,7 @@ class EstatusLLamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     def render_column(self, row, column):
 
         if column == 'editar':
-            return '<a class="" href ="' + reverse('administrador:edit_estatus_llamada',
+            return '<a class="" href ="' + reverse('administrador:edit_motivo_llamada',
                                                    kwargs={
                                                        'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
@@ -2455,10 +2455,10 @@ class EstatusLLamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'id':
             return row.pk
 
-        return super(EstatusLLamadaAjaxList, self).render_column(row, column)
+        return super(MotivoLLamadaAjaxList, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return EstatusLLamada.objects.all()
+        return MotivoLLamada.objects.all()
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
@@ -2467,18 +2467,18 @@ class EstatusLLamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
         return qs
 
 
-class EstatusLLamadaEdit(PermissionRequiredMixin, UpdateView):
+class MotivoLLamadaEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
     login_url = '/'
     permission_required = 'catalogo'
-    success_url = '/administrador/estatus_llamada/list'
+    success_url = '/administrador/motivo_llamada/list'
 
-    model = EstatusLLamada
+    model = MotivoLLamada
     template_name = 'config/formulario_1Col.html'
-    form_class = EstatusLLamadaForm
+    form_class = MotivoLLamadaForm
 
     def get_context_data(self, **kwargs):
-        context = super(EstatusLLamadaEdit, self).get_context_data(**kwargs)
+        context = super(MotivoLLamadaEdit, self).get_context_data(**kwargs)
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -2489,7 +2489,7 @@ class EstatusLLamadaEdit(PermissionRequiredMixin, UpdateView):
 
 
 @permission_required(perm='catalogo', login_url='/')
-def delete_estatus_llamada(request, pk):
-    estatus_llamada = get_object_or_404(EstatusLLamada, pk=pk)
-    estatus_llamada.delete()
+def delete_motivo_llamada(request, pk):
+    motivo_llamada = get_object_or_404(MotivoLLamada, pk=pk)
+    motivo_llamada.delete()
     return JsonResponse({'result': 1})

@@ -12,7 +12,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     ConsejeroEdit, DirectorioAdd, DirectorioAjaxList, DirectorioEdit, SupervisorAdd, SupervisorAjaxList, \
     SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit, CalidadAdd, \
     CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit, AyudaAdd, AyudaAjaxList, AyudaEdit, \
-    EstatusLLamadaAdd, EstatusLLamadaAjaxList, EstatusLLamadaEdit
+    MotivoLLamadaAdd, MotivoLLamadaAjaxList, MotivoLLamadaEdit
 from . import views
 
 app_name = 'administrador'
@@ -170,9 +170,9 @@ urlpatterns = [
     path('ayuda/edit/<int:pk>', AyudaEdit.as_view(), name='edit_ayuda'),
     path('ayuda/list/delete/<int:pk>', views.delete_ayuda, name='delete_ayuda'),
 
-    path('estatus_llamada/add/', EstatusLLamadaAdd.as_view(), name='add_estatus_llamada'),
-    path('estatus_llamada/list/', views.list_estatus_llamada, name='list_estatus_llamada'),
-    path('estatus_llamada/ajax/list/', EstatusLLamadaAjaxList.as_view(), name='list_ajax_estatus_llamada'),
-    path('estatus_llamada/edit/<int:pk>', EstatusLLamadaEdit.as_view(), name='edit_estatus_llamada'),
-    path('estatus_llamada/list/delete/<int:pk>', views.delete_estatus_llamada, name='delete_estatus_llamada'),
+    path('motivo_llamada/add/', MotivoLLamadaAdd.as_view(), name='add_motivo_llamada'),
+    path('motivo_llamada/list/', views.list_motivo_llamada, name='list_motivo_llamada'),
+    path('motivo_llamada/ajax/list/', MotivoLLamadaAjaxList.as_view(), name='list_ajax_motivo_llamada'),
+    path('motivo_llamada/edit/<int:pk>', MotivoLLamadaEdit.as_view(), name='edit_motivo_llamada'),
+    path('motivo_llamada/list/delete/<int:pk>', views.delete_motivo_llamada, name='delete_motivo_llamada'),
 ]

@@ -1,8 +1,8 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
-    <h5 class="titulo_tabla">- Estatus de llamada -</h5>
-    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_estatus_llamada' %}"><i
+    <h5 class="titulo_tabla">- Motivo de llamada -</h5>
+    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_motivo_llamada' %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -51,5 +51,5 @@
 
 
 
-{% block url_ajax %}{% url 'administrador:list_ajax_estatus_llamada' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_motivo_llamada' %}{% endblock %}
 
