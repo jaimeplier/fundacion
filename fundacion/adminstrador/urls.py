@@ -17,7 +17,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     RedesApoyoEdit, FaseViolenciaAdd, FaseViolenciaAjaxList, FaseViolenciaEdit, SemaforoAdd, SemaforoAjaxList, \
     SemaforoEdit, VictimaInvolucradaAdd, VictimaInvolucradaAjaxList, VictimaInvolucradaEdit, AgresorAdd, \
     AgresorAjaxList, AgresorEdit, MedioComunicacionAdd, MedioComunicacionAjaxList, MedioComunicacionEdit, \
-    ComoSeEnteroAdd, ComoSeEnteroAjaxList, ComoSeEnteroEdit
+    ComoSeEnteroAdd, ComoSeEnteroAjaxList, ComoSeEnteroEdit, EstadoMentalAdd, EstadoMentalAjaxList, EstadoMentalEdit
 from . import views
 
 app_name = 'administrador'
@@ -242,4 +242,10 @@ urlpatterns = [
     path('como_se_entero/ajax/list/', ComoSeEnteroAjaxList.as_view(), name='list_ajax_como_se_entero'),
     path('como_se_entero/edit/<int:pk>', ComoSeEnteroEdit.as_view(), name='edit_como_se_entero'),
     path('como_se_entero/list/delete/<int:pk>', views.delete_como_se_entero, name='delete_como_se_entero'),
+
+    path('estado_mental/add/', EstadoMentalAdd.as_view(), name='add_estado_mental'),
+    path('estado_mental/list/', views.list_estado_mental, name='list_estado_mental'),
+    path('estado_mental/ajax/list/', EstadoMentalAjaxList.as_view(), name='list_ajax_estado_mental'),
+    path('estado_mental/edit/<int:pk>', EstadoMentalEdit.as_view(), name='edit_estado_mental'),
+    path('estado_mental/list/delete/<int:pk>', views.delete_estado_mental, name='delete_estado_mental'),
 ]
