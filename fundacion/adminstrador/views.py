@@ -27,14 +27,17 @@ def reportes(request):
     template_name = 'administrador/tab_reportes.html'
     return render(request, template_name)
 
+
 class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
     login_url = '/'
     permission_required = 'administrador'
 
     model = Llamada
-    columns = ['id', 'victima.nombre', 'consejero.get_full_name', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_riesgo', 'tipo_violencia', 'institucion', 'estatus', 'medio_contacto']
-    order_columns = ['id', 'victima__nombre', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', 'estatus', 'institucion__nombre', 'estatus__nombre', 'medio_contacto']
+    columns = ['id', 'victima.nombre', 'consejero.get_full_name', 'hora_inicio', 'hora_fin', 'duracion_llamada',
+               'vida_riesgo', 'tipo_violencia', 'institucion', 'estatus', 'medio_contacto']
+    order_columns = ['id', 'victima__nombre', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo',
+                     'tipo_violencia', 'estatus', 'institucion__nombre', 'estatus__nombre', 'medio_contacto']
     max_display_length = 100
 
     def render_column(self, row, column):
@@ -2232,6 +2235,7 @@ def delete_contacto_institucion(request, pk):
     contacto_institucion.delete()
     return JsonResponse({'result': 1})
 
+
 class SexoAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
     login_url = '/'
@@ -2319,6 +2323,7 @@ def delete_sexo(request, pk):
     sexo = get_object_or_404(Sexo, pk=pk)
     sexo.delete()
     return JsonResponse({'result': 1})
+
 
 class AyudaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
@@ -2408,6 +2413,7 @@ def delete_ayuda(request, pk):
     ayuda.delete()
     return JsonResponse({'result': 1})
 
+
 class MotivoLLamadaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
     login_url = '/'
@@ -2495,6 +2501,7 @@ def delete_motivo_llamada(request, pk):
     motivo_llamada = get_object_or_404(MotivoLLamada, pk=pk)
     motivo_llamada.delete()
     return JsonResponse({'result': 1})
+
 
 class EstatusLLamadaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
@@ -2584,6 +2591,7 @@ def delete_estatus_llamada(request, pk):
     estatus_llamada.delete()
     return JsonResponse({'result': 1})
 
+
 class DependenciaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
     login_url = '/'
@@ -2671,6 +2679,7 @@ def delete_dependencia(request, pk):
     dependencia = get_object_or_404(Dependencia, pk=pk)
     dependencia.delete()
     return JsonResponse({'result': 1})
+
 
 class RedesApoyoAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
@@ -2760,6 +2769,7 @@ def delete_redes_apoyo(request, pk):
     redes_apoyo.delete()
     return JsonResponse({'result': 1})
 
+
 class FaseViolenciaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
     login_url = '/'
@@ -2847,6 +2857,7 @@ def delete_fase_violencia(request, pk):
     fase_violencia = get_object_or_404(FaseViolencia, pk=pk)
     fase_violencia.delete()
     return JsonResponse({'result': 1})
+
 
 class SemaforoAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
@@ -2936,6 +2947,7 @@ def delete_semaforo(request, pk):
     semaforo.delete()
     return JsonResponse({'result': 1})
 
+
 class VictimaInvolucradaAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
     login_url = '/'
@@ -3023,6 +3035,7 @@ def delete_victimas_involucradas(request, pk):
     victimas_involucradas = get_object_or_404(VictimaInvolucrada, pk=pk)
     victimas_involucradas.delete()
     return JsonResponse({'result': 1})
+
 
 class AgresorAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'
