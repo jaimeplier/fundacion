@@ -21,6 +21,7 @@ class ConsejeroForm(ModelForm):
             'password': PasswordInput()
         }
 
+
 class DirectorioForm(ModelForm):
     class Meta:
         model = Directorio
@@ -34,6 +35,7 @@ class DirectorioForm(ModelForm):
         widgets = {
             'password': PasswordInput()
         }
+
 
 class SupervisorForm(ModelForm):
     class Meta:
@@ -49,6 +51,7 @@ class SupervisorForm(ModelForm):
             'password': PasswordInput()
         }
 
+
 class CalidadForm(ModelForm):
     class Meta:
         model = Calidad
@@ -63,6 +66,7 @@ class CalidadForm(ModelForm):
             'password': PasswordInput()
         }
 
+
 class AcudeInstitucionForm(ModelForm):
     class Meta:
         model = AcudeInstitucion
@@ -75,12 +79,14 @@ class AcudeInstitucionForm(ModelForm):
             'convenio': Select(choices=[[True, 'Sí'], [False, 'No']]),
         }
 
+
 class EstadoForm(ModelForm):
     class Meta:
         model = Estado
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class PaisForm(ModelForm):
     class Meta:
@@ -89,12 +95,14 @@ class PaisForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class EstadoCivilForm(ModelForm):
     class Meta:
         model = EstadoCivil
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class EstatusForm(ModelForm):
     class Meta:
@@ -103,12 +111,14 @@ class EstatusForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class LenguaIndigenaForm(ModelForm):
     class Meta:
         model = LenguaIndigena
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class MedioContactoForm(ModelForm):
     class Meta:
@@ -117,12 +127,14 @@ class MedioContactoForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class ModalidadViolenciaForm(ModelForm):
     class Meta:
         model = ModalidadViolencia
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class MunicipioForm(ModelForm):
     class Meta:
@@ -131,12 +143,14 @@ class MunicipioForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class NivelEstudioForm(ModelForm):
     class Meta:
         model = NivelEstudio
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class NivelViolenciaForm(ModelForm):
     class Meta:
@@ -145,12 +159,14 @@ class NivelViolenciaForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class OcupacionForm(ModelForm):
     class Meta:
         model = Ocupacion
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class ReligionForm(ModelForm):
     class Meta:
@@ -159,12 +175,14 @@ class ReligionForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class TipoCasoForm(ModelForm):
     class Meta:
         model = TipoCaso
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class TipoViolenciaForm(ModelForm):
     class Meta:
@@ -173,6 +191,7 @@ class TipoViolenciaForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class ViolentometroForm(ModelForm):
     class Meta:
         model = Violentometro
@@ -180,12 +199,14 @@ class ViolentometroForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class ViveConForm(ModelForm):
     class Meta:
         model = ViveCon
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class ContactoInstitucionForm(ModelForm):
     class Meta:
@@ -196,12 +217,14 @@ class ContactoInstitucionForm(ModelForm):
             'extension': 'Extensión'
         }
 
+
 class SexoForm(ModelForm):
     class Meta:
         model = Sexo
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class AyudaForm(ModelForm):
     class Meta:
@@ -210,12 +233,14 @@ class AyudaForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class MotivoLLamadaForm(ModelForm):
     class Meta:
         model = MotivoLLamada
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class EstatusLLamadaForm(ModelForm):
     class Meta:
@@ -224,12 +249,14 @@ class EstatusLLamadaForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class DependenciaForm(ModelForm):
     class Meta:
         model = Dependencia
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class RedesApoyoForm(ModelForm):
     class Meta:
@@ -238,12 +265,14 @@ class RedesApoyoForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class FaseViolenciaForm(ModelForm):
     class Meta:
         model = FaseViolencia
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class SemaforoForm(ModelForm):
     class Meta:
@@ -252,12 +281,14 @@ class SemaforoForm(ModelForm):
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+
 class VictimaInvolucradaForm(ModelForm):
     class Meta:
         model = VictimaInvolucrada
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
 
 class AgresorForm(ModelForm):
     class Meta:

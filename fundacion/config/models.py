@@ -41,7 +41,8 @@ class UsuarioManager(BaseUserManager):
 
     def create_superuser(self, correo, password, nombre, a_paterno, a_materno, fecha_nac, genero):
         user = self.create_user(correo=correo, rol=Rol.objects.get(pk=1), password=password, nombre=nombre,
-                                a_paterno=a_paterno, a_materno=a_materno, fecha_nac=fecha_nac, genero=Sexo.objects.get(pk=genero))
+                                a_paterno=a_paterno, a_materno=a_materno, fecha_nac=fecha_nac,
+                                genero=Sexo.objects.get(pk=genero))
         user.save(using=self._db)
         return user
 
@@ -252,7 +253,7 @@ class Llamada(models.Model):
     institucion = models.ForeignKey('AcudeInstitucion', models.DO_NOTHING, blank=True, null=True)
     posible_solucion = models.CharField(max_length=4096, blank=True, null=True)
     vida_en_riesgo = models.BooleanField(default=False)
-    tipo_llamada = models.ForeignKey('TipoLlamada', models.DO_NOTHING, blank= True, null= True)
+    tipo_llamada = models.ForeignKey('TipoLlamada', models.DO_NOTHING, blank=True, null=True)
     motivo = models.ForeignKey('MotivoLLamada', models.DO_NOTHING, blank=True, null=True)
     estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
 
@@ -260,20 +261,20 @@ class Llamada(models.Model):
         managed = True
         db_table = 'llamada'
 
-class EstatusLLamada(Catalogo):
 
+class EstatusLLamada(Catalogo):
     class Meta:
         managed = True
         db_table = 'estatus_llamada'
 
-class MotivoLLamada(Catalogo):
 
+class MotivoLLamada(Catalogo):
     class Meta:
         managed = True
         db_table = 'motivo_llamada'
 
-class TipoLlamada(Catalogo):
 
+class TipoLlamada(Catalogo):
     class Meta:
         managed = True
         db_table = 'tipo_llamada'
@@ -415,30 +416,36 @@ class Dependencia(Catalogo):
         managed = True
         db_table = 'dependencia'
 
+
 class RedesApoyo(Catalogo):
     class Meta:
         managed = True
         db_table = 'redes_de_apoyo'
+
 
 class FaseViolencia(Catalogo):
     class Meta:
         managed = True
         db_table = 'fase_de_violencia'
 
+
 class Semaforo(Catalogo):
     class Meta:
         managed = True
         db_table = 'semaforo'
+
 
 class VictimaInvolucrada(Catalogo):
     class Meta:
         managed = True
         db_table = 'victima_involucrada'
 
+
 class Agresor(Catalogo):
     class Meta:
         managed = True
         db_table = 'agresor'
+
 
 class ContactoInstitucion(models.Model):
     nombre = models.CharField(max_length=256)
@@ -474,13 +481,16 @@ class Calidad(Usuario):
         managed = True
         db_table = 'calidad'
 
+
 class MedioComunicacion(Catalogo):
     class Meta:
         managed = True
         db_table = 'medio_de_comunicacion'
 
+
 class ComoSeEntero(Catalogo):
     medio = models.ForeignKey('MedioComunicacion', models.DO_NOTHING)
+
     class Meta:
         managed = True
         db_table = 'como_se_entero'

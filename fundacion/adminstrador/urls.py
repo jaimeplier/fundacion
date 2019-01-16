@@ -34,19 +34,19 @@ urlpatterns = [
     path('consejero/ajax/list/', ConsejeroAjaxList.as_view(), name='list_ajax_consejero'),
     path('consejero/edit/<int:pk>', ConsejeroEdit.as_view(), name='edit_consejero'),
     path('consejero/list/delete/<int:pk>', views.delete_consejero, name='delete_consejero'),
-    #Directorio
+    # Directorio
     path('directorio/add/', DirectorioAdd.as_view(), name='add_directorio'),
     path('directorio/list/', views.list_directorio, name='list_directorio'),
     path('directorio/ajax/list/', DirectorioAjaxList.as_view(), name='list_ajax_directorio'),
     path('directorio/edit/<int:pk>', DirectorioEdit.as_view(), name='edit_directorio'),
     path('directorio/list/delete/<int:pk>', views.delete_directorio, name='delete_directorio'),
-    #Reportes
+    # Reportes
     path('supervisor/add/', SupervisorAdd.as_view(), name='add_supervisor'),
     path('supervisor/list/', views.list_supervisor, name='list_supervisor'),
     path('supervisor/ajax/list/', SupervisorAjaxList.as_view(), name='list_ajax_supervisor'),
     path('supervisor/edit/<int:pk>', SupervisorEdit.as_view(), name='edit_supervisor'),
     path('supervisor/list/delete/<int:pk>', views.delete_supervisor, name='delete_supervisor'),
-    #Calidad
+    # Calidad
     path('calidad/add/', CalidadAdd.as_view(), name='add_calidad'),
     path('calidad/list/', views.list_calidad, name='list_calidad'),
     path('calidad/ajax/list/', CalidadAjaxList.as_view(), name='list_ajax_calidad'),
@@ -100,7 +100,8 @@ urlpatterns = [
     path('modalidad_violencia/list/', views.list_modalidad_violencia, name='list_modalidad_violencia'),
     path('modalidad_violencia/ajax/list/', ModalidadViolenciaAjaxList.as_view(), name='list_ajax_modalidad_violencia'),
     path('modalidad_violencia/edit/<int:pk>', ModalidadViolenciaEdit.as_view(), name='edit_modalidad_violencia'),
-    path('modalidad_violencia/list/delete/<int:pk>', views.delete_modalidad_violencia, name='delete_modalidad_violencia'),
+    path('modalidad_violencia/list/delete/<int:pk>', views.delete_modalidad_violencia,
+         name='delete_modalidad_violencia'),
 
     path('municipio/add/', MunicipioAdd.as_view(), name='add_municipio'),
     path('municipio/list/', views.list_municipio, name='list_municipio'),
@@ -156,11 +157,16 @@ urlpatterns = [
     path('vive_con/edit/<int:pk>', ViveConEdit.as_view(), name='edit_vive_con'),
     path('vive_con/list/delete/<int:pk>', views.delete_vive_con, name='delete_vive_con'),
 
-    path('contacto_institucion/add/<int:institucion>', ContactoInstitucionAdd.as_view(), name='add_contacto_institucion'),
-    path('contacto_institucion/list/<int:institucion>', views.list_contacto_institucion, name='list_contacto_institucion'),
-    path('contacto_institucion/ajax/list/<int:institucion>', ContactoInstitucionAjaxList.as_view(), name='list_ajax_contacto_institucion'),
-    path('contacto_institucion/edit/<int:pk>/<int:institucion>', ContactoInstitucionEdit.as_view(), name='edit_contacto_institucion'),
-    path('contacto_institucion/list/delete/<int:pk>', views.delete_contacto_institucion, name='delete_contacto_institucion'),
+    path('contacto_institucion/add/<int:institucion>', ContactoInstitucionAdd.as_view(),
+         name='add_contacto_institucion'),
+    path('contacto_institucion/list/<int:institucion>', views.list_contacto_institucion,
+         name='list_contacto_institucion'),
+    path('contacto_institucion/ajax/list/<int:institucion>', ContactoInstitucionAjaxList.as_view(),
+         name='list_ajax_contacto_institucion'),
+    path('contacto_institucion/edit/<int:pk>/<int:institucion>', ContactoInstitucionEdit.as_view(),
+         name='edit_contacto_institucion'),
+    path('contacto_institucion/list/delete/<int:pk>', views.delete_contacto_institucion,
+         name='delete_contacto_institucion'),
 
     path('sexo/add/', SexoAdd.as_view(), name='add_sexo'),
     path('sexo/list/', views.list_sexo, name='list_sexo'),
@@ -212,9 +218,11 @@ urlpatterns = [
 
     path('victimas_involucradas/add/', VictimaInvolucradaAdd.as_view(), name='add_victimas_involucradas'),
     path('victimas_involucradas/list/', views.list_victimas_involucradas, name='list_victimas_involucradas'),
-    path('victimas_involucradas/ajax/list/', VictimaInvolucradaAjaxList.as_view(), name='list_ajax_victimas_involucradas'),
+    path('victimas_involucradas/ajax/list/', VictimaInvolucradaAjaxList.as_view(),
+         name='list_ajax_victimas_involucradas'),
     path('victimas_involucradas/edit/<int:pk>', VictimaInvolucradaEdit.as_view(), name='edit_victimas_involucradas'),
-    path('victimas_involucradas/list/delete/<int:pk>', views.delete_victimas_involucradas, name='delete_victimas_involucradas'),
+    path('victimas_involucradas/list/delete/<int:pk>', views.delete_victimas_involucradas,
+         name='delete_victimas_involucradas'),
 
     path('agresor/add/', AgresorAdd.as_view(), name='add_agresor'),
     path('agresor/list/', views.list_agresor, name='list_agresor'),
