@@ -415,6 +415,30 @@ class Dependencia(Catalogo):
         managed = True
         db_table = 'dependencia'
 
+class RedesApoyo(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'redes_de_apoyo'
+
+class FaseViolencia(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'fase_de_violencia'
+
+class Semaforo(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'semaforo'
+
+class VictimaInvolucrada(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'victima_involucrada'
+
+class Agresor(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'agresor'
 
 class ContactoInstitucion(models.Model):
     nombre = models.CharField(max_length=256)
