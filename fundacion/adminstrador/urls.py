@@ -11,7 +11,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, ConsejeroAdd, ConsejeroAjaxList, \
     ConsejeroEdit, DirectorioAdd, DirectorioAjaxList, DirectorioEdit, SupervisorAdd, SupervisorAjaxList, \
     SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit, CalidadAdd, \
-    CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit
+    CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit, AyudaAdd, AyudaAjaxList, AyudaEdit
 from . import views
 
 app_name = 'administrador'
@@ -162,4 +162,10 @@ urlpatterns = [
     path('sexo/ajax/list/', SexoAjaxList.as_view(), name='list_ajax_sexo'),
     path('sexo/edit/<int:pk>', SexoEdit.as_view(), name='edit_sexo'),
     path('sexo/list/delete/<int:pk>', views.delete_sexo, name='delete_sexo'),
+
+    path('ayuda/add/', AyudaAdd.as_view(), name='add_ayuda'),
+    path('ayuda/list/', views.list_ayuda, name='list_ayuda'),
+    path('ayuda/ajax/list/', AyudaAjaxList.as_view(), name='list_ajax_ayuda'),
+    path('ayuda/edit/<int:pk>', AyudaEdit.as_view(), name='edit_ayuda'),
+    path('ayuda/list/delete/<int:pk>', views.delete_ayuda, name='delete_ayuda'),
 ]

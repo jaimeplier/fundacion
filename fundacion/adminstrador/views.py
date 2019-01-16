@@ -13,10 +13,10 @@ from django_datatables_view.base_datatable_view import BaseDatatableView
 from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, EstadoCivilForm, EstatusForm, \
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
     OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, ConsejeroForm, \
-    DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm
+    DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
-    Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo
+    Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -2315,4 +2315,92 @@ class SexoEdit(PermissionRequiredMixin, UpdateView):
 def delete_sexo(request, pk):
     sexo = get_object_or_404(Sexo, pk=pk)
     sexo.delete()
+    return JsonResponse({'result': 1})
+
+class AyudaAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Ayuda
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/ayuda/list'
+    form_class = AyudaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AyudaAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un ayuda'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_ayuda(request):
+    template_name = 'administrador/tab_ayuda.html'
+    return render(request, template_name)
+
+
+class AyudaAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Ayuda
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_ayuda',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(AyudaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Ayuda.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class AyudaEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/ayuda/list'
+
+    model = Ayuda
+    template_name = 'config/formulario_1Col.html'
+    form_class = AyudaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AyudaEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_ayuda(request, pk):
+    ayuda = get_object_or_404(Ayuda, pk=pk)
+    ayuda.delete()
     return JsonResponse({'result': 1})
