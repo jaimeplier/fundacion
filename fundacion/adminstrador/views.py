@@ -15,12 +15,12 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, ConsejeroForm, \
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm, \
     EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm, \
-    AgresorForm, MedioComunicacionForm, ComoSeEnteroForm, EstadoMentalForm
+    AgresorForm, MedioComunicacionForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
     MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
-    MedioComunicacion, ComoSeEntero, EstadoMental
+    MedioComunicacion, ComoSeEntero, EstadoMental, NivelRiesgo
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -3388,4 +3388,92 @@ class EstadoMentalEdit(PermissionRequiredMixin, UpdateView):
 def delete_estado_mental(request, pk):
     estado_mental = get_object_or_404(EstadoMental, pk=pk)
     estado_mental.delete()
+    return JsonResponse({'result': 1})
+
+class NivelRiesgoAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = NivelRiesgo
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/nivel_riesgo/list'
+    form_class = NivelRiesgoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(NivelRiesgoAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un nivel_riesgo'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_nivel_riesgo(request):
+    template_name = 'administrador/tab_nivel_riesgo.html'
+    return render(request, template_name)
+
+
+class NivelRiesgoAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = NivelRiesgo
+    columns = ['id', 'nombre', 'medio.nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre', 'medio__nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_nivel_riesgo',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(NivelRiesgoAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return NivelRiesgo.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class NivelRiesgoEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/nivel_riesgo/list'
+
+    model = NivelRiesgo
+    template_name = 'config/formulario_1Col.html'
+    form_class = NivelRiesgoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(NivelRiesgoEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_nivel_riesgo(request, pk):
+    nivel_riesgo = get_object_or_404(NivelRiesgo, pk=pk)
+    nivel_riesgo.delete()
     return JsonResponse({'result': 1})

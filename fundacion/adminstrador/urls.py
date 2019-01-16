@@ -17,7 +17,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     RedesApoyoEdit, FaseViolenciaAdd, FaseViolenciaAjaxList, FaseViolenciaEdit, SemaforoAdd, SemaforoAjaxList, \
     SemaforoEdit, VictimaInvolucradaAdd, VictimaInvolucradaAjaxList, VictimaInvolucradaEdit, AgresorAdd, \
     AgresorAjaxList, AgresorEdit, MedioComunicacionAdd, MedioComunicacionAjaxList, MedioComunicacionEdit, \
-    ComoSeEnteroAdd, ComoSeEnteroAjaxList, ComoSeEnteroEdit, EstadoMentalAdd, EstadoMentalAjaxList, EstadoMentalEdit
+    ComoSeEnteroAdd, ComoSeEnteroAjaxList, ComoSeEnteroEdit, EstadoMentalAdd, EstadoMentalAjaxList, EstadoMentalEdit, \
+    NivelRiesgoAdd, NivelRiesgoAjaxList, NivelRiesgoEdit
 from . import views
 
 app_name = 'administrador'
@@ -248,4 +249,10 @@ urlpatterns = [
     path('estado_mental/ajax/list/', EstadoMentalAjaxList.as_view(), name='list_ajax_estado_mental'),
     path('estado_mental/edit/<int:pk>', EstadoMentalEdit.as_view(), name='edit_estado_mental'),
     path('estado_mental/list/delete/<int:pk>', views.delete_estado_mental, name='delete_estado_mental'),
+
+    path('nivel_riesgo/add/', NivelRiesgoAdd.as_view(), name='add_nivel_riesgo'),
+    path('nivel_riesgo/list/', views.list_nivel_riesgo, name='list_nivel_riesgo'),
+    path('nivel_riesgo/ajax/list/', NivelRiesgoAjaxList.as_view(), name='list_ajax_nivel_riesgo'),
+    path('nivel_riesgo/edit/<int:pk>', NivelRiesgoEdit.as_view(), name='edit_nivel_riesgo'),
+    path('nivel_riesgo/list/delete/<int:pk>', views.delete_nivel_riesgo, name='delete_nivel_riesgo'),
 ]
