@@ -14,11 +14,12 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
     OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, ConsejeroForm, \
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm, \
-    EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm
+    EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm, \
+    AgresorForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
-    MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada
+    MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -2950,7 +2951,7 @@ class VictimaInvolucradaAdd(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Agregar un semáforo'
+            context['titulo'] = 'Agregar una víctima involucrada'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Completa todos los campos para registrar un'
         return context
@@ -3021,4 +3022,92 @@ class VictimaInvolucradaEdit(PermissionRequiredMixin, UpdateView):
 def delete_victimas_involucradas(request, pk):
     victimas_involucradas = get_object_or_404(VictimaInvolucrada, pk=pk)
     victimas_involucradas.delete()
+    return JsonResponse({'result': 1})
+
+class AgresorAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Agresor
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/agresor/list'
+    form_class = AgresorForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AgresorAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un agresor'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_agresor(request):
+    template_name = 'administrador/tab_agresor.html'
+    return render(request, template_name)
+
+
+class AgresorAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Agresor
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_agresor',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(AgresorAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Agresor.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class AgresorEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/agresor/list'
+
+    model = Agresor
+    template_name = 'config/formulario_1Col.html'
+    form_class = AgresorForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AgresorEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_agresor(request, pk):
+    agresor = get_object_or_404(Agresor, pk=pk)
+    agresor.delete()
     return JsonResponse({'result': 1})
