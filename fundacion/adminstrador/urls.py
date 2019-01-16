@@ -14,7 +14,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit, AyudaAdd, AyudaAjaxList, AyudaEdit, \
     MotivoLLamadaAdd, MotivoLLamadaAjaxList, MotivoLLamadaEdit, EstatusLLamadaAdd, EstatusLLamadaAjaxList, \
     EstatusLLamadaEdit, DependenciaAdd, DependenciaAjaxList, DependenciaEdit, RedesApoyoAdd, RedesApoyoAjaxList, \
-    RedesApoyoEdit, FaseViolenciaAdd, FaseViolenciaAjaxList, FaseViolenciaEdit
+    RedesApoyoEdit, FaseViolenciaAdd, FaseViolenciaAjaxList, FaseViolenciaEdit, SemaforoAdd, SemaforoAjaxList, \
+    SemaforoEdit
 from . import views
 
 app_name = 'administrador'
@@ -201,4 +202,10 @@ urlpatterns = [
     path('fase_violencia/ajax/list/', FaseViolenciaAjaxList.as_view(), name='list_ajax_fase_violencia'),
     path('fase_violencia/edit/<int:pk>', FaseViolenciaEdit.as_view(), name='edit_fase_violencia'),
     path('fase_violencia/list/delete/<int:pk>', views.delete_fase_violencia, name='delete_fase_violencia'),
+
+    path('semaforo/add/', SemaforoAdd.as_view(), name='add_semaforo'),
+    path('semaforo/list/', views.list_semaforo, name='list_semaforo'),
+    path('semaforo/ajax/list/', SemaforoAjaxList.as_view(), name='list_ajax_semaforo'),
+    path('semaforo/edit/<int:pk>', SemaforoEdit.as_view(), name='edit_semaforo'),
+    path('semaforo/list/delete/<int:pk>', views.delete_semaforo, name='delete_semaforo'),
 ]
