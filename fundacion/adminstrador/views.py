@@ -14,11 +14,11 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     LenguaIndigenaForm, MedioContactoForm, ModalidadViolenciaForm, MunicipioForm, NivelEstudioForm, NivelViolenciaForm, \
     OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, ConsejeroForm, \
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm, \
-    EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm
+    EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
-    MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo
+    MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -2933,4 +2933,92 @@ class SemaforoEdit(PermissionRequiredMixin, UpdateView):
 def delete_semaforo(request, pk):
     semaforo = get_object_or_404(Semaforo, pk=pk)
     semaforo.delete()
+    return JsonResponse({'result': 1})
+
+class VictimaInvolucradaAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = VictimaInvolucrada
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/victimas_involucradas/list'
+    form_class = VictimaInvolucradaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(VictimaInvolucradaAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un semáforo'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_victimas_involucradas(request):
+    template_name = 'administrador/tab_victimas_involucradas.html'
+    return render(request, template_name)
+
+
+class VictimaInvolucradaAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = VictimaInvolucrada
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_victimas_involucradas',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(VictimaInvolucradaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return VictimaInvolucrada.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class VictimaInvolucradaEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/victimas_involucradas/list'
+
+    model = VictimaInvolucrada
+    template_name = 'config/formulario_1Col.html'
+    form_class = VictimaInvolucradaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(VictimaInvolucradaEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_victimas_involucradas(request, pk):
+    victimas_involucradas = get_object_or_404(VictimaInvolucrada, pk=pk)
+    victimas_involucradas.delete()
     return JsonResponse({'result': 1})

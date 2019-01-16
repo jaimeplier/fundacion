@@ -15,7 +15,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     MotivoLLamadaAdd, MotivoLLamadaAjaxList, MotivoLLamadaEdit, EstatusLLamadaAdd, EstatusLLamadaAjaxList, \
     EstatusLLamadaEdit, DependenciaAdd, DependenciaAjaxList, DependenciaEdit, RedesApoyoAdd, RedesApoyoAjaxList, \
     RedesApoyoEdit, FaseViolenciaAdd, FaseViolenciaAjaxList, FaseViolenciaEdit, SemaforoAdd, SemaforoAjaxList, \
-    SemaforoEdit
+    SemaforoEdit, VictimaInvolucradaAdd, VictimaInvolucradaAjaxList, VictimaInvolucradaEdit
 from . import views
 
 app_name = 'administrador'
@@ -208,4 +208,10 @@ urlpatterns = [
     path('semaforo/ajax/list/', SemaforoAjaxList.as_view(), name='list_ajax_semaforo'),
     path('semaforo/edit/<int:pk>', SemaforoEdit.as_view(), name='edit_semaforo'),
     path('semaforo/list/delete/<int:pk>', views.delete_semaforo, name='delete_semaforo'),
+
+    path('victimas_involucradas/add/', VictimaInvolucradaAdd.as_view(), name='add_victimas_involucradas'),
+    path('victimas_involucradas/list/', views.list_victimas_involucradas, name='list_victimas_involucradas'),
+    path('victimas_involucradas/ajax/list/', VictimaInvolucradaAjaxList.as_view(), name='list_ajax_victimas_involucradas'),
+    path('victimas_involucradas/edit/<int:pk>', VictimaInvolucradaEdit.as_view(), name='edit_victimas_involucradas'),
+    path('victimas_involucradas/list/delete/<int:pk>', views.delete_victimas_involucradas, name='delete_victimas_involucradas'),
 ]
