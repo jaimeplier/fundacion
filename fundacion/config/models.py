@@ -248,13 +248,17 @@ class Llamada(models.Model):
     d = models.CharField(max_length=4096, blank=True, null=True)
     medio_contacto = models.ForeignKey('MedioContacto', models.DO_NOTHING)
     violentometro = models.ForeignKey('Violentometro', models.DO_NOTHING, blank=True, null=True)
-    tipo_caso = models.ForeignKey('TipoCaso', models.DO_NOTHING, blank=True, null=True)
+    tipo_caso = models.TextField(max_length=1024)
+    tipo_ayuda = models.TextField(max_length=1024)
     tipo_violencia = models.ForeignKey('TipoViolencia', models.DO_NOTHING, blank=True, null=True)
     institucion = models.ForeignKey('AcudeInstitucion', models.DO_NOTHING, blank=True, null=True)
     posible_solucion = models.CharField(max_length=4096, blank=True, null=True)
     vida_en_riesgo = models.BooleanField(default=False)
     tipo_llamada = models.ForeignKey('TipoLlamada', models.DO_NOTHING, blank=True, null=True)
     motivo = models.ForeignKey('MotivoLLamada', models.DO_NOTHING, blank=True, null=True)
+    vive_con = models.ManyToManyField('ViveCon')
+    estado_mental = models.ForeignKey('EstadoMental', models.DO_NOTHING)
+    nivel_riesgo = models.ForeignKey('NivelRiesgo', models.DO_NOTHING)
     estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
