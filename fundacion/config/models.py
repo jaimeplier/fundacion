@@ -494,3 +494,15 @@ class ComoSeEntero(Catalogo):
     class Meta:
         managed = True
         db_table = 'como_se_entero'
+
+class EstadoMental(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'estado_mental'
+
+class NivelRiesgo(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'nivel_de_riesgo'
