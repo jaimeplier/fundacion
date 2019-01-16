@@ -13,7 +13,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit, CalidadAdd, \
     CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit, AyudaAdd, AyudaAjaxList, AyudaEdit, \
     MotivoLLamadaAdd, MotivoLLamadaAjaxList, MotivoLLamadaEdit, EstatusLLamadaAdd, EstatusLLamadaAjaxList, \
-    EstatusLLamadaEdit, DependenciaAdd, DependenciaAjaxList, DependenciaEdit
+    EstatusLLamadaEdit, DependenciaAdd, DependenciaAjaxList, DependenciaEdit, RedesApoyoAdd, RedesApoyoAjaxList, \
+    RedesApoyoEdit
 from . import views
 
 app_name = 'administrador'
@@ -188,4 +189,10 @@ urlpatterns = [
     path('dependencia/ajax/list/', DependenciaAjaxList.as_view(), name='list_ajax_dependencia'),
     path('dependencia/edit/<int:pk>', DependenciaEdit.as_view(), name='edit_dependencia'),
     path('dependencia/list/delete/<int:pk>', views.delete_dependencia, name='delete_dependencia'),
+
+    path('redes_apoyo/add/', RedesApoyoAdd.as_view(), name='add_redes_apoyo'),
+    path('redes_apoyo/list/', views.list_redes_apoyo, name='list_redes_apoyo'),
+    path('redes_apoyo/ajax/list/', RedesApoyoAjaxList.as_view(), name='list_ajax_redes_apoyo'),
+    path('redes_apoyo/edit/<int:pk>', RedesApoyoEdit.as_view(), name='edit_redes_apoyo'),
+    path('redes_apoyo/list/delete/<int:pk>', views.delete_redes_apoyo, name='delete_redes_apoyo'),
 ]

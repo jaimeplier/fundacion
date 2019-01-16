@@ -1,0 +1,54 @@
+<!--   SOFTIC SOLUTIONS   -->
+{% extends "config/tab_base.html" %}
+{% block titulo_tabla %}
+    <h5 class="titulo_tabla">- Redes de apoyo -</h5>
+    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;"  href="{% url 'administrador:add_redes_apoyo' %}"><i
+            class="material-icons left">add</i>Agregar</a>
+
+{% endblock %}
+{% load static %}
+{% block campos %}
+    <th>ID</th>
+    <th>Nombre</th>
+    <th data-orderable="false">Editar</th>
+    <th data-orderable="false">Eliminar</th>
+{% endblock %}
+
+{% block scripts_tabla %}
+
+
+    function eliminar() {
+    $.ajax({
+    url: "delete/" + id,
+    type: "POST", // http method
+    // handle a successful response
+    success: function (aData) {
+    $('#tabla').dataTable()._fnAjaxUpdate();
+    },
+
+    // handle a non-successful response
+    error: function (xhr, errmsg, err) {
+    alert("Ocurrio un error");
+    }
+    });
+    }
+{% endblock %}
+
+<!-- Bloque para agregar las clases de las columnas en la tabla acorde al diseño -->
+ {% block columns %}
+
+ "columns": [
+                    { className: "center fondo_tab_gris border_rigth"},
+                    { className: "fondo_tab_crema border_rigth"},
+                    { className: "center fondo_tab_gris border_rigth"},
+                    { className: "center fondo_tab_crema "}
+
+                    ],
+
+ {% endblock %}
+
+<!-- *************************************************************************** -->
+
+
+{% block url_ajax %}{% url 'administrador:list_ajax_redes_apoyo' %}{% endblock %}
+
