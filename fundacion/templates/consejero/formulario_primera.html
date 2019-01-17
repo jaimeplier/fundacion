@@ -289,6 +289,12 @@
                         </div>
                     </div>
 
+                    <div class="col s12 txt_algn_center">
+                        <p style="margin-top: 0px; text-align: center;">Estatus de la llamada</p>
+                        <p style="margin-top: 0px; text-align: center;" id="estatus_llamada">
+                        </p>
+                    </div>
+
 
                 </form>
             </div>
@@ -704,6 +710,18 @@
                         );
                     }
                     $('#instituciones').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_estatus_llamada' %}",
+                cache: false,
+                success: function (json) {
+
+                    for (i in json) {
+                        $('#estatus_llamada').append('<input class="with-gap" name="group4" type="radio" id="ell' + json[i].pk + '"/><label for="ell' + json[i].pk + '">' + json[i].nombre + '</label>');
+                    }
                 }
             });
 
