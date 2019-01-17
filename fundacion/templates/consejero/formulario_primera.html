@@ -211,10 +211,7 @@
                             </select>
                         </div>
                         <div class="input-field col s12 m6 l6">
-                            <select>
-                                <option value="" disabled selected>Fase de violencia</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                            <select id="fase_violencia">
                             </select>
                         </div>
                         <div class="input-field col s12 m6 l6">
@@ -571,6 +568,29 @@
                         );
                     }
                     $('#modalidad_violencia').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_fases_violencia' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#fase_violencia").empty().html(' ');
+                    $('#fase_violencia').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Fase de violencia")
+                    );
+                    for (i in json) {
+                        $('#fase_violencia').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#fase_violencia').material_select();
                 }
             });
 
