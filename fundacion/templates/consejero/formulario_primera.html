@@ -223,10 +223,7 @@
                             </select>
                         </div>
                         <div class="input-field col s12 m6 l6">
-                            <select>
-                                <option value="" disabled selected>Victimas</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                            <select id="victimas">
                             </select>
                         </div>
                         <div class="input-field col s12 m6 l6">
@@ -634,6 +631,28 @@
                 }
             });
 
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_victimas' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#victimas").empty().html(' ');
+                    $('#victimas').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Victimas")
+                    );
+                    for (i in json) {
+                        $('#victimas').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#victimas').material_select();
+                }
+            });
 
 
         });
