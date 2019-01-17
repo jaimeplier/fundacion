@@ -481,7 +481,7 @@
                 url: "{% url 'webservices:list_motivo_de_llamada' %}",
                 cache: false,
                 success: function (json) {
-                    console.log(json)
+
                     for (i in json) {
                         $('#tipo_llamada').append('<input class="with-gap" name="group1" type="radio" id="tl' + json[i].pk + '"/><label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>');
                     }
@@ -516,7 +516,7 @@
                 url: "{% url 'webservices:list_tipificaciones_categorias' %}",
                 cache: false,
                 success: function (json) {
-                    console.log(json)
+
                     for (i in json) {
                         $('#categoria_tipificacion').append('<input class="with-gap" name="group3" type="radio" id="tic' + json[i].pk + '"/><label for="tic' + json[i].pk + '">' + json[i].nombre + '</label>');
                     }
