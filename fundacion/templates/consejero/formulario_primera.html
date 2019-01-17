@@ -108,17 +108,11 @@
                     </div>
                     <div class="row sin_marg_bottom" id="datos_sociode">
                         <div class="input-field col s12 m6 l6">
-                            <select>
-                                <option value="" disabled selected>Religión</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                            <select id="religion">
                             </select>
                         </div>
                         <div class="input-field col s12 m6 l6">
-                            <select>
-                                <option value="" disabled selected>Grado de estudios</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                            <select id="grado_estudios">
                             </select>
                         </div>
                         <div class="col s12 m6 l6 txt_algn_center">
@@ -422,6 +416,52 @@
                         );
                     }
                     $('#sexo').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_religiones' %}",
+                cache: false,
+                success: function (json) {
+                    console.log(json)
+                    $("#religion").empty().html(' ');
+                    $('#religion').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Religión")
+                    );
+                    for (i in json) {
+                        $('#religion').append(
+                            $("<option></option>")
+                                .attr("value", json[i].id)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#religion').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_grado_estudios' %}",
+                cache: false,
+                success: function (json) {
+                    console.log(json)
+                    $("#grado_estudios").empty().html(' ');
+                    $('#grado_estudios').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Grado de estudios")
+                    );
+                    for (i in json) {
+                        $('#grado_estudios').append(
+                            $("<option></option>")
+                                .attr("value", json[i].id)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#grado_estudios').material_select();
                 }
             });
 
