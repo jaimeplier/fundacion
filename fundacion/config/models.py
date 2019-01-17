@@ -256,7 +256,6 @@ class Llamada(models.Model):
     vida_en_riesgo = models.BooleanField(default=False)
     tipo_llamada = models.ForeignKey('TipoLlamada', models.DO_NOTHING, blank=True, null=True)
     motivo = models.ForeignKey('MotivoLLamada', models.DO_NOTHING, blank=True, null=True)
-    vive_con = models.ManyToManyField('ViveCon')
     estado_mental = models.ForeignKey('EstadoMental', models.DO_NOTHING)
     nivel_riesgo = models.ForeignKey('NivelRiesgo', models.DO_NOTHING)
     estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
