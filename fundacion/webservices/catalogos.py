@@ -6,7 +6,7 @@ from rest_framework.generics import ListAPIView, get_object_or_404
 
 from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoCaso, TipoViolencia, \
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
-    FaseViolencia, Semaforo, VictimaInvolucrada
+    FaseViolencia, Semaforo, VictimaInvolucrada, Agresor
 from webservices.serializers import CatalogoSerializer
 
 
@@ -168,6 +168,16 @@ class ListVictimas(ListAPIView):
 
     def get_queryset(self):
         queryset = VictimaInvolucrada.objects.all()
+        return queryset
+
+class ListAgresor(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = CatalogoSerializer
+
+    def get_queryset(self):
+        queryset = Agresor.objects.all()
         return queryset
 
 class ListAcudeInstitucion(ListAPIView):
