@@ -48,7 +48,6 @@ class PrimeraVezSerializer(serializers.Serializer):
     posible_solucion = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     vida_en_riesgo = serializers.BooleanField(default=False)
     motivo_llamada = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    vive_con = serializers.ListField()
     estado_mental = serializers.IntegerField(min_value=1)
     nivel_riesgo = serializers.IntegerField(min_value=1)
     estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
