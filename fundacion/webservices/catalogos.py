@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, get_object_or_404
 
 from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoCaso, TipoViolencia, \
-    Violentometro, AcudeInstitucion
+    Violentometro, AcudeInstitucion, MotivoLLamada
 from webservices.serializers import CatalogoSerializer
 
 
@@ -67,6 +67,16 @@ class ListTipoLlamada(ListAPIView):
 
     def get_queryset(self):
         queryset = TipoLlamada.objects.all()
+        return queryset
+
+class ListMotivoLlamada(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = CatalogoSerializer
+
+    def get_queryset(self):
+        queryset = MotivoLLamada.objects.all()
         return queryset
 
 class ListTipoCaso(ListAPIView):
