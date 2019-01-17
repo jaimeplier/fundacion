@@ -202,10 +202,7 @@
                             <p>3. lakjsdlkasldasd</p>
                         </div>
                         <div class="input-field col s12 m6 l6">
-                            <select>
-                                <option value="" disabled selected>Modalidad</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                            <select id="modalidad_violencia">
                             </select>
                         </div>
                         <div class="input-field col s12 m6 l6">
@@ -551,6 +548,29 @@
                     for (i in json) {
                         $('#categoria_tipificacion').append('<input class="with-gap" name="group3" type="radio" id="tic' + json[i].pk + '"/><label for="tic' + json[i].pk + '">' + json[i].nombre + '</label>');
                     }
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_modalidad_violencia' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#modalidad_violencia").empty().html(' ');
+                    $('#modalidad_violencia').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Modalidad")
+                    );
+                    for (i in json) {
+                        $('#modalidad_violencia').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#modalidad_violencia').material_select();
                 }
             });
 
