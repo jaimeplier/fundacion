@@ -4,7 +4,7 @@ from webservices.Consejeros import PrimerRegistro
 from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, ListOcupacion, ListViveCon, \
     ListTipoLlamada, ListTipoCaso, ListTipoViolencia, ListViolentometro, ListAcudeInstitucion, ListMotivoLlamada, \
     ListTipificaciones, ListTipificacionesCategorias, ListModalidadViolencia, ListFaseViolencia, ListSemaforo, \
-    ListVictimas, ListAgresor
+    ListVictimas, ListAgresor, ListRedesApoyo
 from webservices.views import ResumenLlamada
 
 app_name = 'webservices'
@@ -34,6 +34,7 @@ urlpatterns = [
     path('list_violentometro/', ListViolentometro.as_view(), name='list_violentometro'),
     path('list_victimas/', ListVictimas.as_view(), name='list_victimas'),
     path('list_agresor/', ListAgresor.as_view(), name='list_agresor'),
+    path('list_redes_apoyo/', ListRedesApoyo.as_view(), name='list_redes_apoyo'),
     path('list_instituciones/', ListAcudeInstitucion.as_view(), name='list_instituciones'),
 
 
