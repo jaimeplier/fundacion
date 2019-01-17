@@ -139,15 +139,7 @@
                         </div>
                         <div class="col s12 txt_algn_center">
                             <p style="margin-top: 0px; text-align: center;">Tipo de Llamada</p>
-                            <p style="margin-top: 0px; text-align: center;">
-                                <input class="with-gap" name="group2" type="radio" id="tl1"/>
-                                <label for="tl1">Primera vez</label>
-                                <input class="with-gap" name="group2" type="radio" id="tl2"/>
-                                <label for="tl2">Recado</label>
-                                <input class="with-gap" name="group2" type="radio" id="tl3"/>
-                                <label for="tl3">Información</label>
-                                <input class="with-gap" name="group2" type="radio" id="tl4"/>
-                                <label for="tl4">Abandono Operativo</label>
+                            <p style="margin-top: 0px; text-align: center;" id="tipo_llamada">
                             </p>
                         </div>
 
@@ -398,7 +390,7 @@
                 url: "{% url 'webservices:list_sexos' %}",
                 cache: false,
                 success: function (json) {
-                    console.log(json)
+                    
                     $("#sexo").empty().html(' ');
                     $('#sexo').append(
                         $("<option></option>")
@@ -421,7 +413,7 @@
                 url: "{% url 'webservices:list_religiones' %}",
                 cache: false,
                 success: function (json) {
-                    console.log(json)
+                    
                     $("#religion").empty().html(' ');
                     $('#religion').append(
                         $("<option></option>")
@@ -444,7 +436,7 @@
                 url: "{% url 'webservices:list_grado_estudios' %}",
                 cache: false,
                 success: function (json) {
-                    console.log(json)
+                    
                     $("#grado_estudios").empty().html(' ');
                     $('#grado_estudios').append(
                         $("<option></option>")
@@ -467,7 +459,7 @@
                 url: "{% url 'webservices:list_ocupaciones' %}",
                 cache: false,
                 success: function (json) {
-                    console.log(json)
+                    
                     $("#ocupaciones").empty().html(' ');
                     $('#ocupaciones').append(
                         $("<option></option>")
@@ -490,7 +482,7 @@
                 url: "{% url 'webservices:list_tipos_violencia' %}",
                 cache: false,
                 success: function (json) {
-                    console.log(json)
+
                     $("#tipos_violencia").empty().html(' ');
                     $('#tipos_violencia').append(
                         $("<option></option>")
@@ -505,6 +497,18 @@
                         );
                     }
                     $('#tipos_violencia').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_motivo_de_llamada' %}",
+                cache: false,
+                success: function (json) {
+                    console.log(json)
+                    for (i in json) {
+                        $('#tipo_llamada').append('<input class="with-gap" name="group1" type="radio" id="tl'+json[i].pk+'"/><label for="tl'+json[i].pk+'">'+json[i].nombre+'</label>');
+                    }
                 }
             });
 
