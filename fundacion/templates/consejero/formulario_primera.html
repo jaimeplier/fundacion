@@ -160,26 +160,21 @@
                             <p style="margin-top: 0px; text-align: center;">
                                 Tipificación
                             </p>
+                            <div class="row">
+                            <div class=" input-field col s12 m12 l12">
+                                <select id="tipificaciones">
+                                </select>
+                            </div>
+                            </div>
                             <form action="#">
-                                <p style="text-align: center;">
-                                    <input type="checkbox" id="tp1"/>
-                                    <label for="tp1">Violencia</label>
-                                    <input type="checkbox" id="tp2"/>
-                                    <label for="tp2">Intento de suicidio</label>
-                                    <input type="checkbox" id="tp3"/>
-                                    <label for="tp3">Depresión</label>
-                                    <input type="checkbox" id="tp4"/>
-                                    <label for="tp4">Abuso Sexual</label>
+                                <p style="text-align: center;" id="categoria_tipificacion">
+
                                 </p>
                                 <p style="text-align: center;">
+                                    <!--
                                     <input type="checkbox" id="tp5"/>
                                     <label for="tp5">Checkbox</label>
-                                    <input type="checkbox" id="tp6"/>
-                                    <label for="tp6">Checkbox</label>
-                                    <input type="checkbox" id="tp7"/>
-                                    <label for="tp7">Checkbox</label>
-                                    <input type="checkbox" id="tp8"/>
-                                    <label for="tp8">Checkbox</label>
+                                    -->
                                 </p>
                             </form>
                         </div>
@@ -390,7 +385,7 @@
                 url: "{% url 'webservices:list_sexos' %}",
                 cache: false,
                 success: function (json) {
-                    
+
                     $("#sexo").empty().html(' ');
                     $('#sexo').append(
                         $("<option></option>")
@@ -413,7 +408,7 @@
                 url: "{% url 'webservices:list_religiones' %}",
                 cache: false,
                 success: function (json) {
-                    
+
                     $("#religion").empty().html(' ');
                     $('#religion').append(
                         $("<option></option>")
@@ -436,7 +431,7 @@
                 url: "{% url 'webservices:list_grado_estudios' %}",
                 cache: false,
                 success: function (json) {
-                    
+
                     $("#grado_estudios").empty().html(' ');
                     $('#grado_estudios').append(
                         $("<option></option>")
@@ -459,7 +454,7 @@
                 url: "{% url 'webservices:list_ocupaciones' %}",
                 cache: false,
                 success: function (json) {
-                    
+
                     $("#ocupaciones").empty().html(' ');
                     $('#ocupaciones').append(
                         $("<option></option>")
@@ -507,7 +502,42 @@
                 success: function (json) {
                     console.log(json)
                     for (i in json) {
-                        $('#tipo_llamada').append('<input class="with-gap" name="group1" type="radio" id="tl'+json[i].pk+'"/><label for="tl'+json[i].pk+'">'+json[i].nombre+'</label>');
+                        $('#tipo_llamada').append('<input class="with-gap" name="group1" type="radio" id="tl' + json[i].pk + '"/><label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>');
+                    }
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_tipificaciones' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#tipificaciones").empty().html(' ');
+                    $('#tipificaciones').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Tipificaciones")
+                    );
+                    for (i in json) {
+                        $('#tipificaciones').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#tipificaciones').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_tipificaciones_categorias' %}",
+                cache: false,
+                success: function (json) {
+                    console.log(json)
+                    for (i in json) {
+                        $('#categoria_tipificacion').append('<input class="with-gap" name="group3" type="radio" id="tic' + json[i].pk + '"/><label for="tic' + json[i].pk + '">' + json[i].nombre + '</label>');
                     }
                 }
             });
