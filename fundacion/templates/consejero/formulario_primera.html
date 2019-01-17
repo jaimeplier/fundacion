@@ -215,10 +215,7 @@
                             </select>
                         </div>
                         <div class="input-field col s12 m6 l6">
-                            <select>
-                                <option value="" disabled selected>Semáforo</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                            <select id="semaforo">
                             </select>
                         </div>
                         <div class="input-field col s12 m6 l6">
@@ -591,6 +588,29 @@
                         );
                     }
                     $('#fase_violencia').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_semaforo' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#semaforo").empty().html(' ');
+                    $('#semaforo').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Semáforo")
+                    );
+                    for (i in json) {
+                        $('#semaforo').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#semaforo').material_select();
                 }
             });
 
