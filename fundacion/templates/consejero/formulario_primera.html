@@ -125,10 +125,7 @@
                             </p>
                         </div>
                         <div class=" input-field col s12 m6 l6">
-                            <select>
-                                <option value="" disabled selected>Ocupación</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                            <select id="ocupaciones">
                             </select>
                         </div>
 
@@ -462,6 +459,29 @@
                         );
                     }
                     $('#grado_estudios').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_ocupaciones' %}",
+                cache: false,
+                success: function (json) {
+                    console.log(json)
+                    $("#ocupaciones").empty().html(' ');
+                    $('#ocupaciones').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Ocupación")
+                    );
+                    for (i in json) {
+                        $('#ocupaciones').append(
+                            $("<option></option>")
+                                .attr("value", json[i].id)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#ocupaciones').material_select();
                 }
             });
 
