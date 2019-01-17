@@ -408,7 +408,7 @@
                     for (i in json) {
                         $('#sexo').append(
                             $("<option></option>")
-                                .attr("value", json[i].id)
+                                .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
@@ -431,7 +431,7 @@
                     for (i in json) {
                         $('#religion').append(
                             $("<option></option>")
-                                .attr("value", json[i].id)
+                                .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
@@ -454,7 +454,7 @@
                     for (i in json) {
                         $('#grado_estudios').append(
                             $("<option></option>")
-                                .attr("value", json[i].id)
+                                .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
@@ -477,7 +477,7 @@
                     for (i in json) {
                         $('#ocupaciones').append(
                             $("<option></option>")
-                                .attr("value", json[i].id)
+                                .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
@@ -500,7 +500,7 @@
                     for (i in json) {
                         $('#tipos_violencia').append(
                             $("<option></option>")
-                                .attr("value", json[i].id)
+                                .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
