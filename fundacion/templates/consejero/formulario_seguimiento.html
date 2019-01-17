@@ -1,6 +1,41 @@
 {% extends 'config/base.html' %}
 {% load static %}
 
+{% block style %}
+    <style type="text/css">
+        [type="radio"]:not(:checked) + label, [type="radio"]:checked + label {
+            padding-left: 24px;
+            padding-right: 43px;
+        }
+
+
+        [type="checkbox"] + label {
+            padding-left: 23px;
+            padding-right: 30px;
+        }
+
+        #datos_canalizacion {
+            display: none;
+        }
+
+        .tabs .tab a {
+            border: solid 1px #EF7F13;
+            color: black;
+        }
+
+        .tabs .tab a.active {
+            background-color: #EF7F13;
+            color: white;
+        }
+
+        .tabs .tab a:hover {
+            background-color: #6E6D6D;
+            color: white;
+            border: none;
+        }
+
+    </style>
+{% endblock %}
 {% block content %}
 
 

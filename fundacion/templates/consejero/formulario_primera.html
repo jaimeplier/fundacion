@@ -1,6 +1,33 @@
 {% extends 'config/base.html' %}
 {% load static %}
 
+{% block style %}
+    <style type="text/css">
+
+        [type="radio"]:not(:checked) + label, [type="radio"]:checked + label {
+            padding-left: 24px;
+            padding-right: 43px;
+        }
+
+        #datos_personales {
+            display: none;
+        }
+
+        #datos_sociode {
+            display: none;
+        }
+
+        [type="checkbox"] + label {
+            padding-left: 23px;
+            padding-right: 30px;
+        }
+
+        #datos_canalizacion {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
     <div class="row fondo_blanco" style="padding-top: 10%;">
         <div class="col s1 m1 l1"></div>
