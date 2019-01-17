@@ -510,3 +510,23 @@ class NivelRiesgo(Catalogo):
     class Meta:
         managed = True
         db_table = 'nivel_de_riesgo'
+
+class Tipificacion(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'tipificacion'
+
+class CategoriaTipificacion(Catalogo):
+    tipificacion = models.ForeignKey('Tipificacion', models.DO_NOTHING)
+    class Meta:
+        managed = True
+        db_table = 'categoria_tipificacion'
+
+class TipificacionLLamada(models.Model):
+    llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
+    categoria_tipificacion = models.ForeignKey('CategoriaTipificacion', models.DO_NOTHING)
+    descripcion = models.TextField(max_length=512)
+    class Meta:
+        managed = True
+        db_table = 'tipificacion_llamada'
