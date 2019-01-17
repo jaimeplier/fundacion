@@ -231,10 +231,7 @@
                             </select>
                         </div>
                         <div class=" input-field col s12 m6 l6">
-                            <select>
-                                <option value="" disabled selected>Redes de apoyo</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                            <select id="redes_apoyo">
                             </select>
                         </div>
                     </div>
@@ -671,6 +668,29 @@
                         );
                     }
                     $('#agresor').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_redes_apoyo' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#redes_apoyo").empty().html(' ');
+                    $('#redes_apoyo').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Redes de apoyo")
+                    );
+                    for (i in json) {
+                        $('#redes_apoyo').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#redes_apoyo').material_select();
                 }
             });
 
