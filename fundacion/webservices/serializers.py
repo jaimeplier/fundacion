@@ -31,10 +31,10 @@ class PrimeraVezSerializer(serializers.Serializer):
     lengua_indigena = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Llamada
-    hora_inicio = serializers.TimeField()
-    hora_fin = serializers.TimeField()
-    consejero = serializers.IntegerField()
-    victima = serializers.IntegerField()
+    #hora_inicio = serializers.TimeField()
+    #hora_fin = serializers.TimeField()
+    #consejero = serializers.IntegerField()
+    #victima = serializers.IntegerField()
     f = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     o = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     d = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
