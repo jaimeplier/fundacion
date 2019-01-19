@@ -44,9 +44,9 @@
                         <div class=" col s12 txt_algn_center">
                             <p style="font-size: 20px; text-align: center;">¿Existe riesgo de vida?</p>
                             <p style="text-align: center;">
-                                <input class="with-gap" name="group1" type="radio" id="rv1"/>
+                                <input class="with-gap" name="riesgo" type="radio" id="rv1" value="1"/>
                                 <label for="rv1" style="font-size: 18px;">Sí</label>
-                                <input class="with-gap" name="group1" type="radio" id="rv2"/>
+                                <input class="with-gap" name="riesgo" type="radio" id="rv2" value="0"/>
                                 <label for="rv2" style="font-size: 18px;">No</label>
                             </p>
                         </div>
@@ -60,26 +60,26 @@
                     </div>
                     <div class="row sin_marg_bottom">
                         <div class=" input-field col s12 m6 l6">
-                            <input id="texto" type="number" class="validate" required="required">
-                            <label for="texto">Teléfono</label>
+                            <input id="telefono" type="number" class="validate" required="required">
+                            <label for="telefono">Teléfono</label>
                         </div>
                         <div class=" input-field col s12 m6 l6">
-                            <input id="texto" type="text" class="validate" required="required">
-                            <label for="texto"> Nombre o alias</label>
+                            <input id="nombre_alias" type="text" class="validate" required="required">
+                            <label for="nombre_alias"> Nombre o alias</label>
                         </div>
                     </div>
                     <div id="datos_personales" class="row sin_marg_bottom">
                         <div class=" input-field col s12 m4 l4">
-                            <input id="texto" type="text" class="validate" required="required">
-                            <label for="texto">Apellido Paterno</label>
+                            <input id="a_paterno" type="text" class="validate" required="required">
+                            <label for="a_paterno">Apellido Paterno</label>
                         </div>
                         <div class=" input-field col s12 m4 l4">
-                            <input id="texto" type="text" class="validate" required="required">
-                            <label for="texto">Apellido Materno</label>
+                            <input id="a_materno" type="text" class="validate" required="required">
+                            <label for="a_materno">Apellido Materno</label>
                         </div>
                         <div class=" input-field col s12 m4 l4">
-                            <input type="text" class="datepicker" required="required">
-                            <label for="texto">Fecha Nacimiento</label>
+                            <input type="text" class="datepicker" required="required" id="fecha_nac">
+                            <label for="fecha_nac">Fecha Nacimiento</label>
                         </div>
                     </div>
 
@@ -89,12 +89,12 @@
                             </select>
                         </div>
                         <div class=" input-field col s12 m4 l4">
-                            <input id="texto" type="number" class="validate" required="required">
-                            <label for="texto">Código Postal</label>
+                            <input id="cp" type="number" class="validate" required="required">
+                            <label for="cp">Código Postal</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            <input id="texto" type="text" class="validate" required="required">
-                            <label for="texto"> Colonia</label>
+                            <input id="colonia" type="text" class="validate" required="required">
+                            <label for="colonia"> Colonia</label>
                         </div>
                     </div>
                     <div class="row sin_marg_bottom">
@@ -118,9 +118,9 @@
                         <div class="col s12 m6 l6 txt_algn_center">
                             <p style="margin-top: 0px;">Trabajo remunerado</p>
                             <p style="margin-top: 0px;">
-                                <input class="with-gap" name="group2" type="radio" id="test1"/>
+                                <input class="with-gap" name="trab_remunerado" type="radio" id="test1" value="1"/>
                                 <label for="test1">Sí</label>
-                                <input class="with-gap" name="group2" type="radio" id="test2"/>
+                                <input class="with-gap" name="trab_remunerado" type="radio" id="test2" value="0"/>
                                 <label for="test2">No</label>
                             </p>
                         </div>
@@ -149,7 +149,7 @@
                                     <p style="text-align: center;">Motivo de llamada</p>
                                 </div>
                                 <div class="input-field col s12">
-                                            <textarea id="textarea1" class="materialize-textarea"
+                                            <textarea id="causa_riesgo" class="materialize-textarea"
                                                       placeholder="Causa de riesgo"
                                                       style="padding-left: 14px;"></textarea>
 
@@ -162,7 +162,7 @@
                             </p>
                             <div class="row">
                                 <div class=" input-field col s12 m12 l12">
-                                    <select id="tipificaciones">
+                                    <select id="tipificaciones" onchange="CargarCatTipificacion()">
                                     </select>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@
                                         <p style="text-align: center;">Descripción de la tipificación</p>
                                     </div>
                                     <div class="input-field col s12">
-                                            <textarea id="ta_descrip_tipificacion" class="materialize-textarea"
+                                            <textarea id="descrip_tipificacion" class="materialize-textarea"
                                                       placeholder="Descripción de la tipificación"
                                                       style="padding-left: 14px;"></textarea>
 
@@ -243,7 +243,7 @@
                                         siguiente llamada?</p>
                                 </div>
                                 <div class="input-field col s12">
-                                            <textarea id="textarea1" class="materialize-textarea"
+                                            <textarea id="plan_accion" class="materialize-textarea"
                                                       placeholder="Plan de acción"
                                                       style="padding-left: 14px;"></textarea>
 
@@ -301,7 +301,7 @@
             <div class="row">
                 <div class="col s12 center" style="margin-bottom: 5%;">
                     <button class="btn fondo_naranja redondo" type="submit" name="action">Transferir</button>
-                    <button class="btn fondo_naranja redondo" type="submit" name="action">Guardar</button>
+                    <button class="btn fondo_naranja redondo" name="action" onclick="GuardarLLamada()">Guardar</button>
                 </div>
             </div>
         </div>
@@ -332,6 +332,7 @@
                 selectYears: 100,
                 min: [1939, 1, 1],
                 max: [2019, 1, 31],
+                format: 'yyyy-mm-dd',
                 today: 'Today',
                 clear: 'Clear',
                 close: 'Ok',
@@ -489,7 +490,7 @@
                 success: function (json) {
 
                     for (i in json) {
-                        $('#tipo_llamada').append('<input class="with-gap" name="group1" type="radio" id="tl' + json[i].pk + '"/><label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>');
+                        $('#tipo_llamada').append('<input class="with-gap" name="motivo_llamada" type="radio" value"' + json[i].pk + '" id="tl' + json[i].pk + '"/><label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>');
                     }
                 }
             });
@@ -517,17 +518,6 @@
                 }
             });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_tipificaciones_categorias' %}",
-                cache: false,
-                success: function (json) {
-
-                    for (i in json) {
-                        $('#categoria_tipificacion').append('<input class="with-gap" name="group3" type="radio" id="tic' + json[i].pk + '"/><label for="tic' + json[i].pk + '">' + json[i].nombre + '</label>');
-                    }
-                }
-            });
 
             $.ajax({
                 method: "GET",
@@ -720,13 +710,116 @@
                 success: function (json) {
 
                     for (i in json) {
-                        $('#estatus_llamada').append('<input class="with-gap" name="group4" type="radio" id="ell' + json[i].pk + '"/><label for="ell' + json[i].pk + '">' + json[i].nombre + '</label>');
+                        $('#estatus_llamada').append('<input class="with-gap" name="estatus_llamada" type="radio" value"' + json[i].pk + '" id="ell' + json[i].pk + '"/><label for="ell' + json[i].pk + '">' + json[i].nombre + '</label>');
                     }
                 }
             });
 
 
         });
+
+        function CargarCatTipificacion() {
+            var tipificacion = $('#tipificaciones').val();
+            $('#categoria_tipificacion').empty().html(' ');
+            if (tipificacion !== '') {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_tipificaciones_categorias' %}?tipificacion=" + tipificacion,
+                    cache: false,
+                    success: function (json) {
+
+                        for (i in json) {
+                            $('#categoria_tipificacion').append('<input class="with-gap" name="categoria_tipificacion" type="radio" value"' + json[i].pk + '" id="tic' + json[i].pk + '"/><label for="tic' + json[i].pk + '">' + json[i].nombre + '</label>');
+                        }
+                    }
+                });
+            }
+        }
+
+        function GuardarLLamada() {
+            var vida_riesgo = $("input[name='riesgo']:checked").val();
+            var datos_personales = $('#datos_p').prop('checked'); //Esta seleccionado datos personales?
+            if (datos_personales) {
+                var a_paterno = $('#a_paterno').val();
+                var a_materno = $('#a_materno').val();
+                var fecha_nac = $('#fecha_nac').val();
+            }
+            var tel = $('#telefono').val();
+            var nombre = $('#nombre_alias').val();
+            var sexo = $('#sexo').val();
+            var cp = $('#cp').val();
+            var col = $('#colonia').val();
+            var datos_sociodemograficos = $('#datos_s').prop('checked'); //Esta seleccionado datos sociodemograficos?
+            if (datos_sociodemograficos) {
+                var religion = $('#religion').val();
+                var grado_estudios = $('#grado_estudios').val();
+                var ocupacion = $('#ocupaciones').val();
+                var trab_remunerado = $("input[name='trab_remunerado']:checked").val();
+            }
+            var motivo_llamada = $("input[name='motivo_llamada']:checked").val();
+            var causa_riesgo = $('#causa_riesgo').val();
+            var tipificacion = $('#tipificaciones').val();
+            var categoria_tipificacion = $("input[name='categoria_tipificacion']:checked").val();
+            var descrip_tipificacion = $('#descrip_tipificacion').val();
+            var modalidad_violencia = $('#modalidad_violencia').val();
+            var tipo_violencia = $('#tipos_violencia').val();
+            var fase_violencia = $('#fase_violencia').val();
+            var semaforo = $('#semaforo').val();
+            var violentometro = $('#violentometro').val();
+            var victimas = $('#victimas').val();
+            var agresor = $('#agresor').val();
+            var redes_apoyo = $('#redes_apoyo').val();
+            var plan_accion = $('#plan_accion').val();
+            var datos_canalizacion = $('#datos_c').prop('checked'); //Esta seleccionado datos sociodemograficos?
+            if (datos_canalizacion) {
+                var institucion = $('#instituciones').val();
+            }
+            var estatus_llamada = $("input[name='estatus_llamada']:checked").val();
+
+
+            $.ajax({
+                method: "POST",
+                url: "{% url 'webservices:registro_primera_vez' %}",
+                cache: false,
+                data: {
+                    vida_en_riesgo: vida_riesgo,
+                    apellido_paterno: a_paterno,
+                    apellido_materno: a_materno,
+                    fecha_nac: fecha_nac,
+                    telefono: tel,
+                    nombre: nombre,
+                    sexo: sexo,
+                    cp: cp,
+                    colonia: col,
+                    religion: religion,
+                    nivel_estudio: grado_estudios,
+                    ocupacion: ocupacion,
+                    trab_remunerado: trab_remunerado,
+                    motivo_llamada: motivo_llamada,
+                    causa_riesgo: causa_riesgo,
+                    categoria_tipificacion: categoria_tipificacion,
+                    descripcion_tipificacion: descrip_tipificacion,
+                    modalidad_violencia: modalidad_violencia,
+                    tipo_violencia: tipo_violencia,
+                    fase_violencia: fase_violencia,
+                    semaforo: semaforo,
+                    violentometro: violentometro,
+                    victimas: victimas,
+                    agresor: agresor,
+                    redes_apoyo: redes_apoyo,
+                    posible_solucion: plan_accion,
+                    institucion: institucion,
+                    estatus: estatus_llamada
+                },
+                success: function (json) {
+                    window.location.href = "{% url 'consejero:busqueda_usuario' %}";
+                },
+                error: function (request) {
+                    alert('Algo salió mal al registrar los datos');
+                }
+            });
+
+        }
 
     </script>
 {% endblock %}
