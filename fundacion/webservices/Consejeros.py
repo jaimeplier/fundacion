@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
-    MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada
+    MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada
 from webservices.serializers import PrimeraVezSerializer
 
 
@@ -54,6 +54,11 @@ class PrimerRegistro(APIView):
             nivel_riesgo = NivelRiesgo.objects.get(pk=serializer.validated_data['nivel_riesgo'])
             estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
 
+            # ---> DATOS DE LA TIPIFICACION <---
+
+            cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
+            descripcion_tipificacion = serializer.validated_data['descripcion_tipificacion']
+
         except:
             response_data = {}
             response_data['error'] = 'Datos erroneos'
@@ -66,7 +71,7 @@ class PrimerRegistro(APIView):
                                          municipio=municipio, ocupacion=ocupacion, religion=religion, vive_con=vive_con,
                                          sexo=sexo, nivel_estudio=nivel_estudio, lengua_indigena=lengua_indigena)
 
-        # ---> REGISTRO DE VICTIMA <---
+        # ---> REGISTRO DE LLAMADA <---
 
         llamada = Llamada.objects.create(hora_inicio=hora_inicio, hora_fin=hora_fin, consejero=consejero,
                                          victima=victima, f=f, o=o, d=d, a=a, medio_contacto=medio_contacto,
@@ -75,6 +80,11 @@ class PrimerRegistro(APIView):
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo_llamada=motivo_llamada,
                                          estado_mental=estado_mental, nivel_riesgo=nivel_riesgo, estatus=estatus)
+
+        # ---> REGISTRO DE LLAMADA TIPIFICACION <---
+
+        llamada_tipifificacion = TipificacionLLamada.objects.create(llamada=llamada, cat_tipificacion=cat_tipificacion,
+                                                                    descripcion=descripcion_tipificacion)
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
 

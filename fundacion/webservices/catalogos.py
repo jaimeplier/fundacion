@@ -97,7 +97,10 @@ class ListTipificacionesCategorias(ListAPIView):
     serializer_class = CatalogoSerializer
 
     def get_queryset(self):
-        queryset = CategoriaTipificacion.objects.all()
+        tipificacion = self.request.query_params.get('tipificacion', None)
+        queryset = CategoriaTipificacion.objects.none()
+        if tipificacion is not None:
+            queryset = CategoriaTipificacion.objects.filter(tipificacion__pk=tipificacion)
         return queryset
 
 class ListTipoCaso(ListAPIView):
