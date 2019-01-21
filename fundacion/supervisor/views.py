@@ -25,7 +25,7 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'supervisor'
 
     model = Llamada
-    columns = ['id', 'victima.nombre', 'consejero.get_full_name', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_riesgo', 'tipo_violencia', 'institucion', 'estatus', 'medio_contacto']
+    columns = ['id', 'victima.nombre', 'nombre', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'institucion', 'estatus', 'medio_contacto']
     order_columns = ['id', 'victima__nombre', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', 'estatus', 'institucion__nombre', 'estatus__nombre', 'medio_contacto']
     max_display_length = 100
 
@@ -33,6 +33,12 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
         if column == 'id':
             return row.pk
+        elif column == 'nombre':
+            return  row.consejero.get_full_name()
+        elif column == 'vida_en_riesgo':
+            if row.vida_en_riesgo:
+                return 'Sí'
+            return 'No'
 
         return super(LlamadaAjaxList, self).render_column(row, column)
 
