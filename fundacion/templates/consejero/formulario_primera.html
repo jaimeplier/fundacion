@@ -319,6 +319,7 @@
 {% block scripts %}
 
 
+    <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.collapsible').collapsible();
@@ -494,7 +495,7 @@
                 success: function (json) {
 
                     for (i in json) {
-                        $('#tipo_llamada').append('<input class="with-gap" name="motivo_llamada" type="radio" value"' + json[i].pk + '" id="tl' + json[i].pk + '"/><label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>');
+                        $('#tipo_llamada').append('<input class="with-gap" name="motivo_llamada" type="radio" value="' + json[i].pk + '" id="tl' + json[i].pk + '"/><label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>');
                     }
                 }
             });
@@ -737,7 +738,7 @@
                 success: function (json) {
 
                     for (i in json) {
-                        $('#estatus_llamada').append('<input class="with-gap" name="estatus_llamada" type="radio" value"' + json[i].pk + '" id="ell' + json[i].pk + '"/><label for="ell' + json[i].pk + '">' + json[i].nombre + '</label>');
+                        $('#estatus_llamada').append('<input class="with-gap" name="estatus_llamada" type="radio" value="' + json[i].pk + '" id="ell' + json[i].pk + '"/><label for="ell' + json[i].pk + '">' + json[i].nombre + '</label>');
                     }
                 }
             });
@@ -756,7 +757,7 @@
                     success: function (json) {
 
                         for (i in json) {
-                            $('#categoria_tipificacion').append('<input class="with-gap" name="categoria_tipificacion" type="radio" value"' + json[i].pk + '" id="tic' + json[i].pk + '"/><label for="tic' + json[i].pk + '">' + json[i].nombre + '</label>');
+                            $('#categoria_tipificacion').append('<input class="with-gap" name="categoria_tipificacion" type="radio" value="' + json[i].pk + '" id="tic' + json[i].pk + '"/><label for="tic' + json[i].pk + '">' + json[i].nombre + '</label>');
                         }
                     }
                 });
@@ -796,6 +797,7 @@
             var victimas = $('#victimas').val();
             var agresor = $('#agresor').val();
             var redes_apoyo = $('#redes_apoyo').val();
+            var medio_conatacto = $('#medio_contacto').val();
             var plan_accion = $('#plan_accion').val();
             var datos_canalizacion = $('#datos_c').prop('checked'); //Esta seleccionado datos sociodemograficos?
             if (datos_canalizacion) {
@@ -834,6 +836,7 @@
                     victimas: victimas,
                     agresor: agresor,
                     redes_apoyo: redes_apoyo,
+                    medio_contacto: medio_conatacto,
                     posible_solucion: plan_accion,
                     institucion: institucion,
                     estatus: estatus_llamada
