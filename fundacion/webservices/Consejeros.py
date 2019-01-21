@@ -15,54 +15,54 @@ class PrimerRegistro(APIView):
         serializer = PrimeraVezSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        try:
-            # ---> DATOS VICTIMA <---
+        # try:
+        # ---> DATOS VICTIMA <---
 
-            telefono = serializer.validated_data['telefono']
-            nombre = serializer.validated_data['nombre']
-            apellido_paterno = serializer.data['apellido_paterno']
-            apellido_materno = serializer.data['apellido_materno']
-            estado_civil = EstadoCivil.objects.filter(pk=serializer.data['estado_civil']).first()
-            municipio = Municipio.objects.filter(pk=serializer.data['municipio']).first()
-            ocupacion = Ocupacion.objects.filter(pk=serializer.data['ocupacion']).first()
-            religion = Religion.objects.filter(pk=serializer.data['religion']).first()
-            vive_con = ViveCon.objects.filter(pk=serializer.data['vive_con']).first()
-            sexo = Sexo.objects.filter(pk=serializer.data['sexo']).first()
-            nivel_estudio = NivelEstudio.objects.filter(pk=serializer.data['nivel_estudio']).first()
-            lengua_indigena = LenguaIndigena.objects.filter(pk=serializer.data['lengua_indigena']).first()
+        telefono = serializer.validated_data['telefono']
+        nombre = serializer.validated_data['nombre']
+        apellido_paterno = serializer.data['apellido_paterno']
+        apellido_materno = serializer.data['apellido_materno']
+        estado_civil = EstadoCivil.objects.filter(pk=serializer.data['estado_civil']).first()
+        municipio = Municipio.objects.filter(pk=serializer.data['municipio']).first()
+        ocupacion = Ocupacion.objects.filter(pk=serializer.data['ocupacion']).first()
+        religion = Religion.objects.filter(pk=serializer.data['religion']).first()
+        vive_con = ViveCon.objects.filter(pk=serializer.data['vive_con']).first()
+        sexo = Sexo.objects.filter(pk=serializer.data['sexo']).first()
+        nivel_estudio = NivelEstudio.objects.filter(pk=serializer.data['nivel_estudio']).first()
+        lengua_indigena = LenguaIndigena.objects.filter(pk=serializer.data['lengua_indigena']).first()
 
-            # ---> DATOS DE LA LLAMADA <---
+        # ---> DATOS DE LA LLAMADA <---
 
-            hora_inicio = '14:00'
-            hora_fin = '14:20'
-            consejero = Consejero.objects.get(pk=self.request.user.pk)
-            f = serializer.data['f']
-            o = serializer.data['o']
-            d = serializer.data['d']
-            a = serializer.data['a']
-            medio_contacto = MedioContacto.objects.get(pk=serializer.validated_data['medio_contacto'])
-            violentometro = Violentometro.objects.filter(pk=serializer.validated_data['violentometro']).first()
-            tipo_caso = serializer.validated_data['tipo_caso']
-            tipo_ayuda = serializer.validated_data['tipo_ayuda']
-            tipo_violencia = TipoViolencia.objects.filter(pk=serializer.validated_data['tipo_violencia']).first()
-            institucion = AcudeInstitucion.objects.filter(serializer.validated_data['institucion']).first()
-            posible_solucion = serializer.data['posible_solucion']
-            vida_en_riesgo = serializer.validated_data['vida_en_riesgo']
-            tipo_llamada = TipoLlamada.objects.get(pk=1)  # llamada de primera vez
-            motivo_llamada = MotivoLLamada.objects.filter(pk=serializer.validated_data['motivo_llamada']).first()
-            estado_mental = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental'])
-            nivel_riesgo = NivelRiesgo.objects.get(pk=serializer.validated_data['nivel_riesgo'])
-            estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
+        hora_inicio = '14:00'
+        hora_fin = '14:20'
+        consejero = Consejero.objects.get(pk=self.request.user.pk)
+        f = serializer.data['f']
+        o = serializer.data['o']
+        d = serializer.data['d']
+        a = serializer.data['a']
+        medio_contacto = MedioContacto.objects.get(pk=serializer.validated_data['medio_contacto'])
+        violentometro = Violentometro.objects.filter(pk=serializer.validated_data['violentometro']).first()
+        tipo_caso = serializer.validated_data['tipo_caso']
+        tipo_ayuda = serializer.validated_data['tipo_ayuda']
+        tipo_violencia = TipoViolencia.objects.filter(pk=serializer.validated_data['tipo_violencia']).first()
+        institucion = AcudeInstitucion.objects.filter(serializer.validated_data['institucion']).first()
+        posible_solucion = serializer.data['posible_solucion']
+        vida_en_riesgo = serializer.validated_data['vida_en_riesgo']
+        tipo_llamada = TipoLlamada.objects.get(pk=1)  # llamada de primera vez
+        motivo_llamada = MotivoLLamada.objects.filter(pk=serializer.validated_data['motivo_llamada']).first()
+        estado_mental = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental'])
+        nivel_riesgo = NivelRiesgo.objects.get(pk=serializer.validated_data['nivel_riesgo'])
+        estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
 
-            # ---> DATOS DE LA TIPIFICACION <---
+        # ---> DATOS DE LA TIPIFICACION <---
 
-            cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
-            descripcion_tipificacion = serializer.validated_data['descripcion_tipificacion']
+        cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
+        descripcion_tipificacion = serializer.validated_data['descripcion_tipificacion']
 
-        except:
-            response_data = {}
-            response_data['error'] = 'Datos erroneos'
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        # except:
+        #     response_data = {}
+        #     response_data['error'] = 'Datos erroneos'
+        #     return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
         # ---> REGISTRO DE VICTIMA <---
 
