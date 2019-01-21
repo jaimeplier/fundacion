@@ -815,7 +815,8 @@
                     window.location.href = "{% url 'consejero:registro_primera_vez' %}";
                 },
                 error: function (request) {
-                    alert('Algo salió mal al registrar los datos');
+                    alert(request.responseText);
+                    var error = request
                 }
             });
 
