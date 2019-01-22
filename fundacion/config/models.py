@@ -258,6 +258,10 @@ class Llamada(models.Model):
     motivo = models.ForeignKey('MotivoLLamada', models.DO_NOTHING, blank=True, null=True)
     estado_mental = models.ForeignKey('EstadoMental', models.DO_NOTHING, blank=True, null=True)
     nivel_riesgo = models.ForeignKey('NivelRiesgo', models.DO_NOTHING, blank=True, null=True)
+    fecha_nacimiento = models.DateField(blank=True, null=True)
+    cp = models.CharField(max_length=10, null=True, blank=True)
+    colonia = models.CharField(max_length=512, null=True, blank=True)
+    trabajo_remunerado = models.BooleanField(null=True, blank=True)
     estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
