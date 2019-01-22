@@ -1,4 +1,5 @@
 {% extends 'config/base.html' %}
+{% load widget_tweaks %}
 {% load static %}
 
 {% block style %}
@@ -46,10 +47,8 @@
             <div class="col s10 m10 l10" style="margin-top: 0px;">
                 <div class="row">
                     <div class="col s12">
-                        <p class="negritas font_azul_verde center titulos">FORMULARIO SEGUIMIENTO <a href="#!"
-                                                                                                     style="mar"
-                                                                                                     2%;><img
-                                src="{% static 'imagenes/1/interrogacion.png' %}" class="responsive-img"></a></p>
+                        <p class="negritas font_azul_verde center titulos">FORMULARIO SEGUIMIENTO <a href="#!">
+                            <img src="{% static 'imagenes/1/interrogacion.png' %}" class="responsive-img"></a></p>
                     </div>
                 </div>
                 <div class="row" style="padding: 1%;">
@@ -60,58 +59,55 @@
                             <li class="tab col s4"><a href="#test3">Histórico</a></li>
                         </ul>
                     </div>
-                    <form class="col s12">
+                    <form class="col s12" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div id="test1" class="col s12" style="margin-top: 40px;">
                             <div class="row sin_marg_bottom">
                                 <div class="col s12" style="margin-bottom: 20px;">
                                     <h5 class="font_gris_oscuro" style="text-align: center;">Datos Personales</h5>
                                 </div>
                                 <div class=" input-field col s12 m6 l6">
-                                    <input id="texto" type="number" class="validate" required="required">
-                                    <label for="texto">Teléfono</label>
+                                    {% render_field form.telefono %}
+                                    <label for="{{ form.telefono.auto_id }}">Teléfono</label>
                                 </div>
                                 <div class=" input-field col s12 m6 l6">
-                                    <input id="texto" type="text" class="validate" required="required">
-                                    <label for="texto"> Nombre</label>
+                                    {% render_field form.nombre %}
+                                    <label for="{{ form.nombre.auto_id }}"> Nombre</label>
                                 </div>
                             </div>
                             <div class="row sin_marg_bottom">
                                 <div class=" input-field col s12 m6 l6">
-                                    <input id="texto" type="text" class="validate" required="required">
-                                    <label for="texto">Apellido Paterno</label>
+                                    {% render_field form.apellido_paterno %}
+                                    <label for="{{ form.apellido_paterno.auto_id }}">Apellido Paterno</label>
                                 </div>
                                 <div class=" input-field col s12 m6 l6">
-                                    <input id="texto" type="text" class="validate" required="required">
-                                    <label for="texto">Apellido Materno</label>
+                                    {% render_field form.apellido_materno %}
+                                    <label for="{{ form.apellido_materno.auto_id }}">Apellido Materno</label>
                                 </div>
                                 <div class=" input-field col s12 m6 l6">
                                     <input type="text" class="datepicker" required="required">
                                     <label for="texto">Fecha Nacimiento</label>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
-                                    <select>
-                                        <option value="" disabled selected>Sexo</option>
-                                        <option value="1">Femenino</option>
-                                        <option value="2">Masculino</option>
-                                    </select>
+                                    {% render_field form.sexo %}
                                 </div>
                             </div>
                             <div class="row sin_marg_bottom">
                                 <div class=" input-field col s12 m6 l6">
-                                    <input id="texto" type="number" class="validate" required="required">
+                                    <input id="texto" type="number">
                                     <label for="texto">Código Postal</label>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
-                                    <input id="texto" type="text" class="validate" required="required">
+                                    <input id="texto" type="text">
                                     <label for="texto"> Colonia</label>
                                 </div>
                                 <div class=" input-field col s12 m6 l6">
-                                    <input id="texto" type="text" class="validate" required="required">
-                                    <label for="texto">Religión</label>
+                                   {% render_field form.religion %}
+                                    <label for="{{ form.religion.auto_id }}">Religión</label>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
-                                    <input id="texto" type="text" class="validate" required="required">
-                                    <label for="texto">Grado de estudios</label>
+                                    {% render_field form.nivel_estudio %}
+                                    <label for="{{ form.nivel_estudio.auto_id }}">Grado de estudios</label>
                                 </div>
 
                                 <div class="col s12" style="text-align: center; margin-top: 20px;">
@@ -121,6 +117,7 @@
 
                             </div>
                         </div>
+                    </form>
                         <div id="test3" class="col s12" style="margin-top: 40px;">
                             <div class="row sin_marg_bottom">
                                 <div class="col s12" style="margin-bottom: 20px;">
@@ -180,7 +177,6 @@
                                     <p style="margin-top: 0px; text-align: center;" class="font_naranja negritas">
                                         Tareas completas
                                     </p>
-                                    <form action="#">
                                         <p>
                                             <input type="checkbox" id="tc1" checked="checked"/>
                                             <label for="tc1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -196,8 +192,6 @@
                                             <label for="tc3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                                 Aenean euismod bibendum laoreet</label>
                                         </p>
-
-                                    </form>
                                 </div>
                                 <hr>
                             </div>
@@ -236,7 +230,6 @@
                                     <p style="margin-top: 0px; text-align: center;" class="font_naranja negritas">
                                         Tareas completas
                                     </p>
-                                    <form action="#">
                                         <p>
                                             <input type="checkbox" id="tc4" checked="checked"/>
                                             <label for="tc4">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -252,8 +245,6 @@
                                             <label for="tc6">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                                 Aenean euismod bibendum laoreet</label>
                                         </p>
-
-                                    </form>
                                 </div>
                                 <hr>
                             </div>
@@ -281,7 +272,7 @@
                                     </p>
                                 </div>
 
-                                <form class="col s12">
+
                                     <div class="row">
                                         <div class="col s12" style="padding-top: 15px;">
                                             <p class="font_gris_oscuro negritas">Motivo de llamada</p>
@@ -293,7 +284,7 @@
 
                                         </div>
                                     </div>
-                                </form>
+
 
                                 <div class="col s12 txt_algn_center">
                                     <p style="margin-top: 0px;" class="negritas font_gris_oscuro">Problemática a
@@ -309,7 +300,7 @@
                                     </p>
                                 </div>
 
-                                <form class="col s12">
+
                                     <div class="row">
                                         <div class="input-field col s12">
                                             <textarea id="textarea1" class="materialize-textarea"
@@ -317,14 +308,14 @@
 
                                         </div>
                                     </div>
-                                </form>
+
 
 
                                 <div class="col s12 txt_algn_center">
                                     <p style="margin-top: 0px;" class="negritas font_gris_oscuro">
                                         Tipificación
                                     </p>
-                                    <form action="#">
+
                                         <p>
                                             <input type="checkbox" id="tp1"/>
                                             <label for="tp1">Checkbox</label>
@@ -345,11 +336,11 @@
                                             <input type="checkbox" id="tp8"/>
                                             <label for="tp8">Checkbox</label>
                                         </p>
-                                    </form>
+
                                 </div>
                             </div>
                             <div class="row sin_marg_bottom" style="margin-bottom: 0px;">
-                                <form class="col s12">
+
                                     <div class="row">
                                         <div class="col s12" style="padding-top: 15px;">
                                             <p class="negritas font_gris_oscuro">¿Qué acciones tiene que realizar para
@@ -362,7 +353,7 @@
 
                                         </div>
                                     </div>
-                                </form>
+
                             </div>
                             <div class="row sin_marg_bottom">
                                 <div class="col s12">
@@ -416,7 +407,7 @@
                             </div>
                         </div>
 
-                    </form>
+
                 </div>
 
             </div>
