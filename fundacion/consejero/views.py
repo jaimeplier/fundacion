@@ -43,6 +43,8 @@ class SeguimientoEdit(PermissionRequiredMixin, UpdateView):
             context['titulo'] = 'Editar '
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        if 'victima' not in context:
+            context['victima'] = self.model.pk
         return context
 
     def get_success_url(self):

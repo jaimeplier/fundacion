@@ -68,3 +68,40 @@ class PrimeraVezSerializer(serializers.Serializer):
     # Tipificacion Categoria
     categoria_tipificacion = serializers.IntegerField(min_value=1)
     descripcion_tipificacion = serializers.CharField(max_length=512)
+
+class SeguimientoSerializer(serializers.Serializer):
+
+    # Llamada
+    #hora_inicio = serializers.TimeField()
+    #hora_fin = serializers.TimeField()
+    #consejero = serializers.IntegerField()
+    victima = serializers.IntegerField()
+    f = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
+    o = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
+    d = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
+    a = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
+    medio_contacto = serializers.IntegerField()
+    violentometro = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    tipo_caso = serializers.CharField(max_length=1024, allow_blank=True, allow_null=True, required=False)
+    tipo_ayuda = serializers.CharField(max_length=1024, allow_blank=True, allow_null=True, required=False)
+    tipo_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    institucion = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    posible_solucion = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
+    vida_en_riesgo = serializers.BooleanField(default=False)
+    motivo_llamada = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    estado_mental = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    nivel_riesgo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    #Causa de riesgo
+    #Modalidad violencia
+    #Tipo de violencia
+    #Fase de violencia
+    #semaforo
+    #victimas involucradas
+    #agresor
+    #Redes de apoyo
+
+
+    # Tipificacion Categoria
+    categoria_tipificacion = serializers.IntegerField(min_value=1)
+    descripcion_tipificacion = serializers.CharField(max_length=512)

@@ -9,7 +9,7 @@ from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, R
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada
 from config.permissions import ConsejeroPermission
-from webservices.serializers import PrimeraVezSerializer
+from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer
 
 
 class PrimerRegistro(APIView):
@@ -100,3 +100,62 @@ class PrimerRegistro(APIView):
 
     def get_serializer(self):
         return PrimeraVezSerializer()
+
+class SeguimientoRegistro(APIView):
+    permission_classes = (IsAuthenticated, ConsejeroPermission)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    def post(self, request):
+        serializer = SeguimientoSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        # ---> DATOS DE LA LLAMADA <---
+
+        hora_inicio = '14:00'
+        hora_fin = '14:20'
+        consejero = Consejero.objects.get(pk=self.request.user.pk)
+        victima = Victima.objects.get(pk=serializer.validated_data['victima'])
+        f = serializer.data['f']
+        o = serializer.data['o']
+        d = serializer.data['d']
+        a = serializer.data['a']
+        medio_contacto = MedioContacto.objects.get(pk=serializer.validated_data['medio_contacto'])
+        violentometro = Violentometro.objects.filter(pk=serializer.validated_data['violentometro']).first()
+        tipo_caso = serializer.data['tipo_caso']
+        tipo_ayuda = serializer.data['tipo_ayuda']
+        tipo_violencia = TipoViolencia.objects.filter(pk=serializer.validated_data['tipo_violencia']).first()
+        institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
+        posible_solucion = serializer.data['posible_solucion']
+        vida_en_riesgo = serializer.validated_data['vida_en_riesgo']
+        tipo_llamada = TipoLlamada.objects.get(pk=1)  # llamada de primera vez
+        motivo_llamada = MotivoLLamada.objects.filter(pk=serializer.validated_data['motivo_llamada']).first()
+        estado_mental = EstadoMental.objects.filter(pk=serializer.data['estado_mental']).first()
+        nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
+        estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
+
+        # ---> DATOS DE LA TIPIFICACION <---
+
+        cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
+        descripcion_tipificacion = serializer.validated_data['descripcion_tipificacion']
+
+
+        # ---> REGISTRO DE LLAMADA <---
+
+        llamada = Llamada.objects.create(hora_inicio=hora_inicio, hora_fin=hora_fin, consejero=consejero,
+                                         victima=victima, f=f, o=o, d=d, a=a, medio_contacto=medio_contacto,
+                                         violentometro=violentometro, tipo_caso=tipo_caso, tipo_ayuda=tipo_ayuda,
+                                         tipo_violencia=tipo_violencia, institucion=institucion,
+                                         posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
+                                         tipo_llamada=tipo_llamada, motivo=motivo_llamada,
+                                         estado_mental=estado_mental, nivel_riesgo=nivel_riesgo, estatus=estatus)
+
+        # ---> REGISTRO DE LLAMADA TIPIFICACION <---
+
+        llamada_tipifificacion = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion,
+                                                                    descripcion=descripcion_tipificacion)
+
+        return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
+
+
+    def get_serializer(self):
+        return SeguimientoSerializer()
