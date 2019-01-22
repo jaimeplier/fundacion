@@ -258,10 +258,6 @@ class Llamada(models.Model):
     motivo = models.ForeignKey('MotivoLLamada', models.DO_NOTHING, blank=True, null=True)
     estado_mental = models.ForeignKey('EstadoMental', models.DO_NOTHING, blank=True, null=True)
     nivel_riesgo = models.ForeignKey('NivelRiesgo', models.DO_NOTHING, blank=True, null=True)
-    fecha_nacimiento = models.DateField(blank=True, null=True)
-    cp = models.CharField(max_length=10, null=True, blank=True)
-    colonia = models.CharField(max_length=512, null=True, blank=True)
-    trabajo_remunerado = models.BooleanField(null=True, blank=True)
     estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
@@ -400,6 +396,10 @@ class Victima(models.Model):
     sexo = models.ForeignKey('Sexo', models.DO_NOTHING, blank=True, null=True)
     nivel_estudio = models.ForeignKey('NivelEstudio', models.DO_NOTHING, blank=True, null=True)
     lengua_indigena = models.ForeignKey('LenguaIndigena', models.DO_NOTHING, blank=True, null=True)
+    fecha_nacimiento = models.DateField(blank=True, null=True)
+    cp = models.CharField(max_length=10, null=True, blank=True)
+    colonia = models.CharField(max_length=512, null=True, blank=True)
+    trabajo_remunerado = models.BooleanField(null=True, blank=True)
 
     class Meta:
         managed = True
