@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from config.models import Consejero
+
 
 class FechaSerializer(serializers.Serializer):
     tipo = serializers.CharField(max_length=20)
@@ -105,3 +107,8 @@ class SeguimientoSerializer(serializers.Serializer):
     # Tipificacion Categoria
     categoria_tipificacion = serializers.IntegerField(min_value=1)
     descripcion_tipificacion = serializers.CharField(max_length=512)
+
+class ConsejeroSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Consejero
+        fields = ['pk', 'get_full_name']

@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from rest_framework.generics import get_object_or_404
+from rest_framework.generics import get_object_or_404, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,7 +9,7 @@ from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, R
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada
 from config.permissions import ConsejeroPermission
-from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer
+from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer
 
 
 class PrimerRegistro(APIView):
@@ -159,3 +159,17 @@ class SeguimientoRegistro(APIView):
 
     def get_serializer(self):
         return SeguimientoSerializer()
+
+class ListConsejerosVictima(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = ConsejeroSerializer
+
+    def get_queryset(self):
+        victima = self.request.query_params.get('victima', None)
+        queryset = Consejero.objects.none()
+        if victima is not None:
+            consejeros_list = Llamada.objects.filter(victima__pk=victima).values_list('consejero__pk', flat=True)
+            queryset = Consejero.objects.filter(pk__in=consejeros_list)
+        return queryset

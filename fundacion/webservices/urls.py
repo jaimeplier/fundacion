@@ -1,6 +1,6 @@
 from django.urls import path
 
-from webservices.Consejeros import PrimerRegistro, SeguimientoRegistro
+from webservices.Consejeros import PrimerRegistro, SeguimientoRegistro, ListConsejerosVictima
 from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, ListOcupacion, ListViveCon, \
     ListTipoLlamada, ListTipoCaso, ListTipoViolencia, ListViolentometro, ListAcudeInstitucion, ListMotivoLlamada, \
     ListTipificaciones, ListTipificacionesCategorias, ListModalidadViolencia, ListFaseViolencia, ListSemaforo, \
@@ -13,6 +13,7 @@ urlpatterns = [
     # Consejeros:
     path('registro_primera_vez/', PrimerRegistro.as_view(), name='registro_primera_vez'),
     path('registro_seguimiento/', SeguimientoRegistro.as_view(), name='registro_seguimiento'),
+    path('list_consejeros_victima/', ListConsejerosVictima.as_view(), name='list_consejeros_victima'),
 
     # Supervisores:
     path('resumenLlamada/', ResumenLlamada.as_view(), name='resumen_puntos_mes'),
