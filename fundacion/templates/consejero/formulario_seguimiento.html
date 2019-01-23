@@ -124,10 +124,7 @@
                                 <h5 class="font_gris_oscuro" style="text-align: center;">Histórico</h5>
                             </div>
                             <div class="input-field col s12 m4 l4">
-                                <select>
-                                    <option value="" disabled selected>Consejeros</option>
-                                    <option value="1">Juan</option>
-                                    <option value="2">Carlos</option>
+                                <select id="consejeros">
                                 </select>
                             </div>
                             <div class=" input-field col s12 m4 l4">
@@ -767,6 +764,30 @@
                     for (i in json) {
                         $('#estatus_llamada').append('<input class="with-gap" name="estatus_llamada" type="radio" value="' + json[i].pk + '" id="ell' + json[i].pk + '"/><label for="ell' + json[i].pk + '">' + json[i].nombre + '</label>');
                     }
+                }
+            });
+
+            // Carga de consejeros de la victima
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_consejeros_victima' %}?victima=" + victima,
+                cache: false,
+                success: function (json) {
+                    console.log(json)
+                    $("#consejeros").empty().html(' ');
+                    $('#consejeros').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Consejeros")
+                    );
+                    for (i in json) {
+                        $('#consejeros').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].get_full_name)
+                        );
+                    }
+                    $('#consejeros').material_select();
                 }
             });
 
