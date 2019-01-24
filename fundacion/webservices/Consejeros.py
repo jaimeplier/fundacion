@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
-    MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada
+    MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer
 
@@ -20,7 +20,6 @@ class PrimerRegistro(APIView):
         serializer = PrimeraVezSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # try:
         # ---> DATOS VICTIMA <---
 
         telefono = serializer.validated_data['telefono']
@@ -35,6 +34,7 @@ class PrimerRegistro(APIView):
         sexo = Sexo.objects.filter(pk=serializer.data['sexo']).first()
         nivel_estudio = NivelEstudio.objects.filter(pk=serializer.data['nivel_estudio']).first()
         lengua_indigena = LenguaIndigena.objects.filter(pk=serializer.data['lengua_indigena']).first()
+        redes_apoyo = RedesApoyo.objects.filter(pk=serializer.data['redes_apoyo']).first()
 
         # ---> DATOS DE LA LLAMADA <---
 
@@ -65,17 +65,13 @@ class PrimerRegistro(APIView):
         cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
         descripcion_tipificacion = serializer.validated_data['descripcion_tipificacion']
 
-        # except:
-        #     response_data = {}
-        #     response_data['error'] = 'Datos erroneos'
-        #     return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
         # ---> REGISTRO DE VICTIMA <---
 
         victima = Victima.objects.create(nombre=nombre, telefono=telefono, apellido_paterno=apellido_paterno,
                                          apellido_materno=apellido_materno, estado_civil=estado_civil,
                                          municipio=municipio, ocupacion=ocupacion, religion=religion, vive_con=vive_con,
-                                         sexo=sexo, nivel_estudio=nivel_estudio, lengua_indigena=lengua_indigena)
+                                         sexo=sexo, nivel_estudio=nivel_estudio, lengua_indigena=lengua_indigena, redes_apoyo=redes_apoyo)
 
         # ---> REGISTRO DE LLAMADA <---
 
@@ -95,10 +91,6 @@ class PrimerRegistro(APIView):
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
 
-    # else:
-    # response_data = {}
-    # response_data['error'] = 'Datos erroneos'
-    # return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
     def get_serializer(self):
         return PrimeraVezSerializer()
