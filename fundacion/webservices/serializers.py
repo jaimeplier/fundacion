@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from config.models import Consejero
+from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, EstatusLLamada
 
 
 class FechaSerializer(serializers.Serializer):
@@ -112,3 +112,34 @@ class ConsejeroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consejero
         fields = ['pk', 'get_full_name']
+
+class VictimaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Victima
+        fields = ['pk','nombre', 'apellido_paterno', 'apellido_materno', 'telefono']
+
+class MotivoLLamadaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MotivoLLamada
+        fields = '__all__'
+
+class TipoLLamadaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TipoLlamada
+        fields = '__all__'
+
+class EstatusLLamadaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EstatusLLamada
+        fields = '__all__'
+
+class LLamadaSerializer(serializers.ModelSerializer):
+    victima = VictimaSerializer(read_only=True, many=False)
+    consejero = ConsejeroSerializer(read_only=True, many=False)
+    motivo = MotivoLLamadaSerializer(read_only=True, many=False)
+    tipo_llamada = TipoLLamadaSerializer(read_only=True, many=False)
+    estatus = EstatusLLamadaSerializer(read_only=True, many=False)
+
+    class Meta:
+        model = Llamada
+        fields = '__all__'
