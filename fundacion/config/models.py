@@ -253,6 +253,7 @@ class Llamada(models.Model):
     tipo_violencia = models.ForeignKey('TipoViolencia', models.DO_NOTHING, blank=True, null=True)
     institucion = models.ForeignKey('AcudeInstitucion', models.DO_NOTHING, blank=True, null=True)
     posible_solucion = models.CharField(max_length=4096, blank=True, null=True)
+    causa_riesgo = models.CharField(max_length=4096, blank=True, null=True)
     vida_en_riesgo = models.BooleanField(default=False)
     tipo_llamada = models.ForeignKey('TipoLlamada', models.DO_NOTHING, blank=True, null=True)
     motivo = models.ForeignKey('MotivoLLamada', models.DO_NOTHING, blank=True, null=True)
