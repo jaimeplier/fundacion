@@ -139,7 +139,7 @@
                         </div>
                         <div class="row sin_marg_bottom">
                             <div class="col s12">
-                                <p><span class="font_naranja negritas">Última Llamada: </span> XXXX </p>
+                                <p><span class="font_naranja negritas">Última Llamada: </span> <span id="ultima_llamada"></span> </p>
                             </div>
                         </div>
                         <div id="historial">
@@ -353,7 +353,6 @@
     <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
     <script type="text/javascript">
         var victima = {{ victima.pk }}
-            console.log(victima)
         $(document).ready(function () {
             $('select').material_select();
             $('.button-collapse').sideNav({
@@ -673,7 +672,6 @@
                 url: "{% url 'webservices:list_consejeros_victima' %}?victima=" + victima,
                 cache: false,
                 success: function (json) {
-                    console.log(json)
                     $("#consejeros").empty().html(' ');
                     $('#consejeros').append(
                         $("<option></option>")
@@ -688,6 +686,17 @@
                         );
                     }
                     $('#consejeros').material_select();
+                }
+            });
+
+            //Ultima llamada
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:ultima_llamada' %}?victima=" + victima,
+                cache: false,
+                success: function (json) {
+                    $("#ultima_llamada").empty().html(' ');
+                    $('#ultima_llamada').html(json[0].fecha);
                 }
             });
 
@@ -782,7 +791,6 @@
                 url: "{% url 'webservices:list_historial_llamada' %}?victima=" + victima + '&consejero=' + consejero + '&f_inicio=' + f_inicio + '&f_fin=' + f_fin,
                 cache: false,
                 success: function (json) {
-                    console.log(json)
                     $("#historial").empty();
                     for (i in json) {
                     llamada = {

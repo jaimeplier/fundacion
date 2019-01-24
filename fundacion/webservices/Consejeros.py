@@ -194,3 +194,17 @@ class ListHistorialLLamada(ListAPIView):
             consejeros_list = Llamada.objects.filter(victima__pk=victima).values_list('consejero__pk', flat=True)
             queryset = Llamada.objects.filter(victima__pk=victima, consejero=consejero, fecha__range=[f_inicio, f_fin])
         return queryset
+
+class UltimaLLamada(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = LLamadaSerializer
+
+    def get_queryset(self):
+        victima = self.request.query_params.get('victima', None)
+        queryset = Llamada.objects.none()
+        if victima is not None:
+            ultima_llamada = Llamada.objects.filter(victima__pk=victima).order_by('-fecha').first()
+            queryset = Llamada.objects.filter(pk=ultima_llamada.pk)
+        return queryset
