@@ -401,6 +401,7 @@ class Victima(models.Model):
     cp = models.CharField(max_length=10, null=True, blank=True)
     colonia = models.CharField(max_length=512, null=True, blank=True)
     trabajo_remunerado = models.BooleanField(null=True, blank=True)
+    redes_apoyo = models.ForeignKey('RedesApoyo', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = True
