@@ -792,10 +792,7 @@
                         id: json[i].id,
                         estatus: json[i].estatus.nombre,
                         plan_accion: json[i].posible_solucion,
-
-
-
-
+                        causa_riesgo: json[i].causa_riesgo,
                     }
                         $('#historial').append(`<div class="row sin_marg_bottom">
                                     <div class="col s12 l6 m6">
@@ -818,10 +815,7 @@
                             <div class="col s12" style="margin-top: 20px;">
                                 <p class="font_naranja negritas" style="text-align: center;">Motivo de Llamada </p>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum
-                                    laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo.
-                                    Proin sodales pulvinar sic tempor. Sociis natoque penatibus et magnis dis
-                                    parturient montes, nascetur ridiculus mus.
+                                    ${llamada.causa_riesgo}
                                 </p>
                             </div>
                             <div class="col s12" style="margin-top: 20px;">
