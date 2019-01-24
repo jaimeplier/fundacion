@@ -3335,8 +3335,8 @@ class EstadoMentalAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'catalogo'
 
     model = EstadoMental
-    columns = ['id', 'nombre', 'medio.nombre', 'editar', 'eliminar']
-    order_columns = ['id', 'nombre', 'medio__nombre']
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
     max_display_length = 100
 
     def render_column(self, row, column):
@@ -3423,8 +3423,8 @@ class NivelRiesgoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'catalogo'
 
     model = NivelRiesgo
-    columns = ['id', 'nombre', 'medio.nombre', 'editar', 'eliminar']
-    order_columns = ['id', 'nombre', 'medio__nombre']
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
     max_display_length = 100
 
     def render_column(self, row, column):
