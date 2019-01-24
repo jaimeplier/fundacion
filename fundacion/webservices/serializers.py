@@ -57,7 +57,7 @@ class PrimeraVezSerializer(serializers.Serializer):
     estado_mental = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     nivel_riesgo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    #Causa de riesgo
+    causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False )
     #Modalidad violencia
     #Tipo de violencia
     #Fase de violencia
@@ -94,7 +94,7 @@ class SeguimientoSerializer(serializers.Serializer):
     estado_mental = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     nivel_riesgo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    #Causa de riesgo
+    causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     #Modalidad violencia
     #Tipo de violencia
     #Fase de violencia

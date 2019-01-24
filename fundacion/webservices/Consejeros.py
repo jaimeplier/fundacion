@@ -58,6 +58,7 @@ class PrimerRegistro(APIView):
         estado_mental = EstadoMental.objects.filter(pk=serializer.data['estado_mental']).first()
         nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
         estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
+        causa_riesgo = serializer.data['causa_riesgo']
 
         # ---> DATOS DE LA TIPIFICACION <---
 
@@ -84,7 +85,8 @@ class PrimerRegistro(APIView):
                                          tipo_violencia=tipo_violencia, institucion=institucion,
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
-                                         estado_mental=estado_mental, nivel_riesgo=nivel_riesgo, estatus=estatus)
+                                         estado_mental=estado_mental, nivel_riesgo=nivel_riesgo, estatus=estatus,
+                                         causa_riesgo=causa_riesgo)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
@@ -132,6 +134,7 @@ class SeguimientoRegistro(APIView):
         estado_mental = EstadoMental.objects.filter(pk=serializer.data['estado_mental']).first()
         nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
         estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
+        causa_riesgo = serializer.data['causa_riesgo']
 
         # ---> DATOS DE LA TIPIFICACION <---
 
@@ -147,7 +150,8 @@ class SeguimientoRegistro(APIView):
                                          tipo_violencia=tipo_violencia, institucion=institucion,
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
-                                         estado_mental=estado_mental, nivel_riesgo=nivel_riesgo, estatus=estatus)
+                                         estado_mental=estado_mental, nivel_riesgo=nivel_riesgo, estatus=estatus,
+                                         causa_riesgo=causa_riesgo)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
