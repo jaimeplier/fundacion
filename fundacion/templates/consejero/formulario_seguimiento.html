@@ -109,6 +109,10 @@
                                     {% render_field form.nivel_estudio %}
                                     <label for="{{ form.nivel_estudio.auto_id }}">Grado de estudios</label>
                                 </div>
+                                <div class="input-field col s12 m6 l6">
+                                    {% render_field form.vive_con %}
+                                    <label for="{{ form.vive_con.auto_id }}">Vive con</label>
+                                </div>
 
                                 <div class="col s12" style="text-align: center; margin-top: 20px;">
                                     <button class="btn fondo_naranja redondo" type="submit" name="action">Guardar
@@ -170,7 +174,7 @@
                                 <form class="col s12">
                                     <div class="row">
                                         <div class="col s12" style="padding-top: 15px;">
-                                            <p style="text-align: center;">Motivo de llamada</p>
+                                            <p style="text-align: center;">Motivo latente y manifiesto</p>
                                         </div>
                                         <div class="input-field col s12">
                                             <textarea id="causa_riesgo" class="materialize-textarea"
@@ -252,10 +256,6 @@
                                 </div>
                                 <div class="input-field col s12 m6 l6">
                                     <select id="agresor">
-                                    </select>
-                                </div>
-                                <div class=" input-field col s12 m6 l6">
-                                    <select id="redes_apoyo">
                                     </select>
                                 </div>
                                 <div class=" input-field col s12 m6 l6">
@@ -585,28 +585,6 @@
                 }
             });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_redes_apoyo' %}",
-                cache: false,
-                success: function (json) {
-
-                    $("#redes_apoyo").empty().html(' ');
-                    $('#redes_apoyo').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Redes de apoyo")
-                    );
-                    for (i in json) {
-                        $('#redes_apoyo').append(
-                            $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
-                        );
-                    }
-                    $('#redes_apoyo').material_select();
-                }
-            });
 
             $.ajax({
                 method: "GET",
@@ -735,7 +713,6 @@
             var violentometro = $('#violentometro').val();
             var victimas = $('#victimas').val();
             var agresor = $('#agresor').val();
-            var redes_apoyo = $('#redes_apoyo').val();
             var medio_conatacto = $('#medio_contacto').val();
             var plan_accion = $('#plan_accion').val();
             var datos_canalizacion = $('#datos_c').prop('checked');
@@ -760,7 +737,6 @@
                     violentometro: violentometro,
                     victimas: victimas,
                     agresor: agresor,
-                    redes_apoyo: redes_apoyo,
                     medio_contacto: medio_conatacto,
                     posible_solucion: plan_accion,
                     institucion: institucion,

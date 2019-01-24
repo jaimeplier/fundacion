@@ -71,7 +71,7 @@ class PrimerRegistro(APIView):
         victima = Victima.objects.create(nombre=nombre, telefono=telefono, apellido_paterno=apellido_paterno,
                                          apellido_materno=apellido_materno, estado_civil=estado_civil,
                                          municipio=municipio, ocupacion=ocupacion, religion=religion, vive_con=vive_con,
-                                         sexo=sexo, nivel_estudio=nivel_estudio, lengua_indigena=lengua_indigena, redes_apoyo=redes_apoyo)
+                                         sexo=sexo, nivel_estudio=nivel_estudio, lengua_indigena=lengua_indigena)
 
         # ---> REGISTRO DE LLAMADA <---
 
