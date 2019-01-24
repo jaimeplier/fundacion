@@ -185,6 +185,12 @@
 
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <select id="nivel_riesgo">
+                                        </select>
+                                    </div>
+                                </div>
                                 <p style="text-align: center;">
                                     <!--
                                     <input type="checkbox" id="tp5"/>
@@ -523,6 +529,29 @@
                 }
             });
 
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_nivel_riesgo' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#nivel_riesgo").empty().html(' ');
+                    $('#nivel_riesgo').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Nivel de riesgo")
+                    );
+                    for (i in json) {
+                        $('#nivel_riesgo').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#nivel_riesgo').material_select();
+                }
+            });
+
 
             $.ajax({
                 method: "GET",
@@ -768,9 +797,9 @@
             var vida_riesgo = $("input[name='riesgo']:checked").val();
             var datos_personales = $('#datos_p').prop('checked'); //Esta seleccionado datos personales?
             //if (datos_personales) {
-                var a_paterno = $('#a_paterno').val();
-                var a_materno = $('#a_materno').val();
-                var fecha_nac = $('#fecha_nac').val();
+            var a_paterno = $('#a_paterno').val();
+            var a_materno = $('#a_materno').val();
+            var fecha_nac = $('#fecha_nac').val();
             //}
             var tel = $('#telefono').val();
             var nombre = $('#nombre_alias').val();
@@ -779,16 +808,17 @@
             var col = $('#colonia').val();
             var datos_sociodemograficos = $('#datos_s').prop('checked'); //Esta seleccionado datos sociodemograficos?
             //if (datos_sociodemograficos) {
-                var religion = $('#religion').val();
-                var grado_estudios = $('#grado_estudios').val();
-                var ocupacion = $('#ocupaciones').val();
-                var trab_remunerado = $("input[name='trab_remunerado']:checked").val();
+            var religion = $('#religion').val();
+            var grado_estudios = $('#grado_estudios').val();
+            var ocupacion = $('#ocupaciones').val();
+            var trab_remunerado = $("input[name='trab_remunerado']:checked").val();
             //}
             var motivo_llamada = $("input[name='motivo_llamada']:checked").val();
             var causa_riesgo = $('#causa_riesgo').val();
             var tipificacion = $('#tipificaciones').val();
             var categoria_tipificacion = $("input[name='categoria_tipificacion']:checked").val();
             var descrip_tipificacion = $('#descrip_tipificacion').val();
+            var nivel_riesgo = $('#nivel_riesgo').val();
             var modalidad_violencia = $('#modalidad_violencia').val();
             var tipo_violencia = $('#tipos_violencia').val();
             var fase_violencia = $('#fase_violencia').val();
@@ -801,7 +831,7 @@
             var plan_accion = $('#plan_accion').val();
             var datos_canalizacion = $('#datos_c').prop('checked'); //Esta seleccionado datos sociodemograficos?
             //if (datos_canalizacion) {
-                var institucion = $('#instituciones').val();
+            var institucion = $('#instituciones').val();
             //}
             var estatus_llamada = $("input[name='estatus_llamada']:checked").val();
 
@@ -828,6 +858,7 @@
                     causa_riesgo: causa_riesgo,
                     categoria_tipificacion: categoria_tipificacion,
                     descripcion_tipificacion: descrip_tipificacion,
+                    nivel_riesgo: nivel_riesgo,
                     modalidad_violencia: modalidad_violencia,
                     tipo_violencia: tipo_violencia,
                     fase_violencia: fase_violencia,

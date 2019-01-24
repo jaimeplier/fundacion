@@ -132,10 +132,12 @@
                                 </select>
                             </div>
                             <div class=" input-field col s12 m4 l4">
-                                <input id="fecha_inicio" type="text" class="datepicker" required="required" placeholder="DE">
+                                <input id="fecha_inicio" type="text" class="datepicker" required="required"
+                                       placeholder="DE">
                             </div>
                             <div class=" input-field col s12 m4 l4">
-                                <input id="fecha_fin" type="text" class="datepicker" required="required" placeholder="A">
+                                <input id="fecha_fin" type="text" class="datepicker" required="required"
+                                       placeholder="A">
                             </div>
                             <div class=" input-field col s12 m4 l4">
                                 <button class="btn fondo_naranja redondo" onclick="BusquedaHistorial()">Buscar</button>
@@ -143,7 +145,8 @@
                         </div>
                         <div class="row sin_marg_bottom">
                             <div class="col s12">
-                                <p><span class="font_naranja negritas">Última Llamada: </span> <span id="ultima_llamada"></span> </p>
+                                <p><span class="font_naranja negritas">Última Llamada: </span> <span
+                                        id="ultima_llamada"></span></p>
                             </div>
                         </div>
                         <div id="historial">
@@ -207,6 +210,12 @@
                                                       placeholder="Descripción de la tipificación"
                                                       style="padding-left: 14px;"></textarea>
 
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <select id="nivel_riesgo">
+                                                </select>
                                             </div>
                                         </div>
                                         <p style="text-align: center;">
@@ -353,332 +362,355 @@
     <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
     <script type="text/javascript">
         var victima = {{ victima.pk }}
-        $(document).ready(function () {
-            $('select').material_select();
-            $('.button-collapse').sideNav({
-                    menuWidth: 300, // Default is 300
-                    edge: 'left', // Choose the horizontal origin
-                    closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-                    draggable: true // Choose whether you can drag to open on touch screens,
-                }
-            );
+            $(document).ready(function () {
+                $('select').material_select();
+                $('.button-collapse').sideNav({
+                        menuWidth: 300, // Default is 300
+                        edge: 'left', // Choose the horizontal origin
+                        closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                        draggable: true // Choose whether you can drag to open on touch screens,
+                    }
+                );
 
-            $('.datepicker').pickadate({
-                selectMonths: true, // Creates a dropdown to control month
-                selectYears: 100,
-                min: [1939, 1, 1],
-                max: [2019, 1, 31],
-                format: 'yyyy-mm-dd',
-                today: 'Today',
-                clear: 'Clear',
-                close: 'Ok',
-                closeOnSelect: false, // Close upon selecting a date,
-                container: undefined // ex. 'body' will append picker to body
-            });
+                $('.datepicker').pickadate({
+                    selectMonths: true, // Creates a dropdown to control month
+                    selectYears: 100,
+                    min: [1939, 1, 1],
+                    max: [2019, 1, 31],
+                    format: 'yyyy-mm-dd',
+                    today: 'Today',
+                    clear: 'Clear',
+                    close: 'Ok',
+                    closeOnSelect: false, // Close upon selecting a date,
+                    container: undefined // ex. 'body' will append picker to body
+                });
 
-            $('ul.tabs').tabs();
+                $('ul.tabs').tabs();
 
 
-            $('#datos_c').change(function () {
-                if (!$(this).prop('checked')) {
-                    $('#datos_canalizacion').hide();
-                } else {
-                    $('#datos_canalizacion').show();
-                }
+                $('#datos_c').change(function () {
+                    if (!$(this).prop('checked')) {
+                        $('#datos_canalizacion').hide();
+                    } else {
+                        $('#datos_canalizacion').show();
+                    }
 
-            })
+                })
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_tipos_violencia' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_tipos_violencia' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#tipos_violencia").empty().html(' ');
-                    $('#tipos_violencia').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Tipo de violencia")
-                    );
-                    for (i in json) {
+                        $("#tipos_violencia").empty().html(' ');
                         $('#tipos_violencia').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Tipo de violencia")
                         );
+                        for (i in json) {
+                            $('#tipos_violencia').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#tipos_violencia').material_select();
                     }
-                    $('#tipos_violencia').material_select();
-                }
-            });
+                });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_motivo_de_llamada' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_motivo_de_llamada' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    for (i in json) {
-                        $('#tipo_llamada').append('<input class="with-gap" name="motivo_llamada" type="radio" value="' + json[i].pk + '" id="tl' + json[i].pk + '"/><label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>');
+                        for (i in json) {
+                            $('#tipo_llamada').append('<input class="with-gap" name="motivo_llamada" type="radio" value="' + json[i].pk + '" id="tl' + json[i].pk + '"/><label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>');
+                        }
                     }
-                }
-            });
+                });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_tipificaciones' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_tipificaciones' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#tipificaciones").empty().html(' ');
-                    $('#tipificaciones').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Tipificaciones")
-                    );
-                    for (i in json) {
+                        $("#tipificaciones").empty().html(' ');
                         $('#tipificaciones').append(
                             $("<option></option>")
+                                .attr("value", "")
+                                .text("Tipificaciones")
+                        );
+                        for (i in json) {
+                            $('#tipificaciones').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#tipificaciones').material_select();
+                    }
+                });
+
+                $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_nivel_riesgo' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#nivel_riesgo").empty().html(' ');
+                    $('#nivel_riesgo').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Nivel de riesgo")
+                    );
+                    for (i in json) {
+                        $('#nivel_riesgo').append(
+                            $("<option></option>")
                                 .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
-                    $('#tipificaciones').material_select();
+                    $('#nivel_riesgo').material_select();
                 }
             });
 
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_modalidad_violencia' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_modalidad_violencia' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#modalidad_violencia").empty().html(' ');
-                    $('#modalidad_violencia').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Modalidad")
-                    );
-                    for (i in json) {
+                        $("#modalidad_violencia").empty().html(' ');
                         $('#modalidad_violencia').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Modalidad")
                         );
+                        for (i in json) {
+                            $('#modalidad_violencia').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#modalidad_violencia').material_select();
                     }
-                    $('#modalidad_violencia').material_select();
-                }
-            });
+                });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_fases_violencia' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_fases_violencia' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#fase_violencia").empty().html(' ');
-                    $('#fase_violencia').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Fase de violencia")
-                    );
-                    for (i in json) {
+                        $("#fase_violencia").empty().html(' ');
                         $('#fase_violencia').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Fase de violencia")
                         );
+                        for (i in json) {
+                            $('#fase_violencia').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#fase_violencia').material_select();
                     }
-                    $('#fase_violencia').material_select();
-                }
-            });
+                });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_semaforo' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_semaforo' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#semaforo").empty().html(' ');
-                    $('#semaforo').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Semáforo")
-                    );
-                    for (i in json) {
+                        $("#semaforo").empty().html(' ');
                         $('#semaforo').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Semáforo")
                         );
+                        for (i in json) {
+                            $('#semaforo').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#semaforo').material_select();
                     }
-                    $('#semaforo').material_select();
-                }
-            });
+                });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_violentometro' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_violentometro' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#violentometro").empty().html(' ');
-                    $('#violentometro').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Violentometro")
-                    );
-                    for (i in json) {
+                        $("#violentometro").empty().html(' ');
                         $('#violentometro').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Violentometro")
                         );
+                        for (i in json) {
+                            $('#violentometro').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#violentometro').material_select();
                     }
-                    $('#violentometro').material_select();
-                }
-            });
+                });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_victimas' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_victimas' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#victimas").empty().html(' ');
-                    $('#victimas').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Victimas")
-                    );
-                    for (i in json) {
+                        $("#victimas").empty().html(' ');
                         $('#victimas').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Victimas")
                         );
+                        for (i in json) {
+                            $('#victimas').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#victimas').material_select();
                     }
-                    $('#victimas').material_select();
-                }
-            });
+                });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_agresor' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_agresor' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#agresor").empty().html(' ');
-                    $('#agresor').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Agresor")
-                    );
-                    for (i in json) {
+                        $("#agresor").empty().html(' ');
                         $('#agresor').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Agresor")
                         );
+                        for (i in json) {
+                            $('#agresor').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#agresor').material_select();
                     }
-                    $('#agresor').material_select();
-                }
-            });
+                });
 
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_medio_contacto' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_medio_contacto' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#medio_contacto").empty().html(' ');
-                    $('#medio_contacto').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Medio de contacto")
-                    );
-                    for (i in json) {
+                        $("#medio_contacto").empty().html(' ');
                         $('#medio_contacto').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Medio de contacto")
                         );
+                        for (i in json) {
+                            $('#medio_contacto').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#medio_contacto').material_select();
                     }
-                    $('#medio_contacto').material_select();
-                }
-            });
+                });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_instituciones' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_instituciones' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#instituciones").empty().html(' ');
-                    $('#instituciones').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Institución")
-                    );
-                    for (i in json) {
+                        $("#instituciones").empty().html(' ');
                         $('#instituciones').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Institución")
                         );
+                        for (i in json) {
+                            $('#instituciones').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#instituciones').material_select();
                     }
-                    $('#instituciones').material_select();
-                }
-            });
+                });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_estatus_llamada' %}",
-                cache: false,
-                success: function (json) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_estatus_llamada' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    for (i in json) {
-                        $('#estatus_llamada').append('<input class="with-gap" name="estatus_llamada" type="radio" value="' + json[i].pk + '" id="ell' + json[i].pk + '"/><label for="ell' + json[i].pk + '">' + json[i].nombre + '</label>');
+                        for (i in json) {
+                            $('#estatus_llamada').append('<input class="with-gap" name="estatus_llamada" type="radio" value="' + json[i].pk + '" id="ell' + json[i].pk + '"/><label for="ell' + json[i].pk + '">' + json[i].nombre + '</label>');
+                        }
                     }
-                }
-            });
+                });
 
-            // Carga de consejeros de la victima
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_consejeros_victima' %}?victima=" + victima,
-                cache: false,
-                success: function (json) {
-                    $("#consejeros").empty().html(' ');
-                    $('#consejeros').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Consejeros")
-                    );
-                    for (i in json) {
+                // Carga de consejeros de la victima
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_consejeros_victima' %}?victima=" + victima,
+                    cache: false,
+                    success: function (json) {
+                        $("#consejeros").empty().html(' ');
                         $('#consejeros').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].get_full_name)
+                                .attr("value", "")
+                                .text("Consejeros")
                         );
+                        for (i in json) {
+                            $('#consejeros').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].get_full_name)
+                            );
+                        }
+                        $('#consejeros').material_select();
                     }
-                    $('#consejeros').material_select();
-                }
-            });
+                });
 
-            //Ultima llamada
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:ultima_llamada' %}?victima=" + victima,
-                cache: false,
-                success: function (json) {
-                    $("#ultima_llamada").empty().html(' ');
-                    $('#ultima_llamada').html(json[0].fecha);
-                }
-            });
+                //Ultima llamada
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:ultima_llamada' %}?victima=" + victima,
+                    cache: false,
+                    success: function (json) {
+                        $("#ultima_llamada").empty().html(' ');
+                        $('#ultima_llamada').html(json[0].fecha);
+                    }
+                });
 
-        });
+            });
 
 
         function CargarCatTipificacion() {
@@ -706,6 +738,7 @@
             var tipificacion = $('#tipificaciones').val();
             var categoria_tipificacion = $("input[name='categoria_tipificacion']:checked").val();
             var descrip_tipificacion = $('#descrip_tipificacion').val();
+            var nivel_riesgo = $('#nivel_riesgo').val();
             var modalidad_violencia = $('#modalidad_violencia').val();
             var tipo_violencia = $('#tipos_violencia').val();
             var fase_violencia = $('#fase_violencia').val();
@@ -730,6 +763,7 @@
                     causa_riesgo: causa_riesgo,
                     categoria_tipificacion: categoria_tipificacion,
                     descripcion_tipificacion: descrip_tipificacion,
+                    nivel_riesgo: nivel_riesgo,
                     modalidad_violencia: modalidad_violencia,
                     tipo_violencia: tipo_violencia,
                     fase_violencia: fase_violencia,
@@ -755,7 +789,7 @@
 
         function BusquedaHistorial() {
             var mensaje_error = validarBusqueda()
-            if (mensaje_error!=='Revisa los datos introducidos de:'){
+            if (mensaje_error !== 'Revisa los datos introducidos de:') {
                 alert(mensaje_error);
                 return
             }
@@ -769,15 +803,15 @@
                 success: function (json) {
                     $("#historial").empty();
                     for (i in json) {
-                    llamada = {
-                        victima:  json[i].victima.nombre + ' ' + json[i].victima.apellido_paterno + ' ' + json[i].victima.apellido_materno,
-                        consejero: json[i].consejero.get_full_name,
-                        motivo_llamada: json[i].motivo.nombre,
-                        id: json[i].id,
-                        estatus: json[i].estatus.nombre,
-                        plan_accion: json[i].posible_solucion,
-                        causa_riesgo: json[i].causa_riesgo,
-                    }
+                        llamada = {
+                            victima: json[i].victima.nombre + ' ' + json[i].victima.apellido_paterno + ' ' + json[i].victima.apellido_materno,
+                            consejero: json[i].consejero.get_full_name,
+                            motivo_llamada: json[i].motivo.nombre,
+                            id: json[i].id,
+                            estatus: json[i].estatus.nombre,
+                            plan_accion: json[i].posible_solucion,
+                            causa_riesgo: json[i].causa_riesgo,
+                        }
                         $('#historial').append(`<div class="row sin_marg_bottom">
                                     <div class="col s12 l6 m6">
                                 <p><span class="font_naranja negritas">Nombre: </span>${llamada.victima}</p>
@@ -841,23 +875,21 @@
             var f_inicio = $('#fecha_inicio').val();
             var f_fin = $('#fecha_fin').val();
             var mensaje_error = 'Revisa los datos introducidos de:';
-            if (consejero == ''){
+            if (consejero == '') {
                 mensaje_error += '\nSelecciona un Consejero';
             }
-            if (f_inicio == ''){
+            if (f_inicio == '') {
                 mensaje_error += '\nFecha inicial';
-            }
-            else{
+            } else {
                 var inicial = new Date(f_inicio)
             }
-            if (f_fin == ''){
+            if (f_fin == '') {
                 mensaje_error += '\nFecha final';
-            }
-            else {
+            } else {
                 var final = new Date(f_fin)
             }
-            if (f_inicio !== '' && f_fin !== ''){
-                if (inicial > final){
+            if (f_inicio !== '' && f_fin !== '') {
+                if (inicial > final) {
                     mensaje_error += '\nLa fecha inicial es mayor a la final'
                 }
             }
