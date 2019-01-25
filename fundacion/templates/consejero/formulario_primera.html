@@ -192,49 +192,48 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;">Fortalezas</p>
-                                            </div>
-                                            <div class="input-field col s12">
+                                    <div class="col s12" style="padding-top: 15px;">
+                                        <p style="text-align: center;">Fortalezas</p>
+                                    </div>
+                                    <div class="input-field col s12">
                                             <textarea id="f" class="materialize-textarea"
                                                       placeholder="Fortalezas"
                                                       style="padding-left: 14px;" maxlength="4096"></textarea>
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;">Oportunidades</p>
-                                            </div>
-                                            <div class="input-field col s12">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12" style="padding-top: 15px;">
+                                        <p style="text-align: center;">Oportunidades</p>
+                                    </div>
+                                    <div class="input-field col s12">
                                             <textarea id="o" class="materialize-textarea"
                                                       placeholder="Oportunidades"
                                                       style="padding-left: 14px;" maxlength="4096"></textarea>
 
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;">Debilidades</p>
-                                            </div>
-                                            <div class="input-field col s12">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12" style="padding-top: 15px;">
+                                        <p style="text-align: center;">Debilidades</p>
+                                    </div>
+                                    <div class="input-field col s12">
                                             <textarea id="d" class="materialize-textarea"
                                                       placeholder="Debilidades"
                                                       style="padding-left: 14px;" maxlength="4096"></textarea>
 
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;">Amenazas</p>
-                                            </div>
-                                            <div class="input-field col s12">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12" style="padding-top: 15px;">
+                                        <p style="text-align: center;">Amenazas</p>
+                                    </div>
+                                    <div class="input-field col s12">
                                             <textarea id="a" class="materialize-textarea"
                                                       placeholder="Amenazas"
                                                       style="padding-left: 14px;" maxlength="4096"></textarea>
 
-                                            </div>
-                                        </div>
+                                    </div>
+                                </div>
                                 <p style="text-align: center;">
                                     <!--
                                     <input type="checkbox" id="tp5"/>
@@ -863,7 +862,10 @@
             var categoria_tipificacion = $("input[name='categoria_tipificacion']:checked").val();
             var descrip_tipificacion = $('#descrip_tipificacion').val();
             var nivel_riesgo = $('#nivel_riesgo').val();
-
+            var f = $('#f').val();
+            var o = $('#o').val();
+            var d = $('#d').val();
+            var a = $('#a').val();
             var modalidad_violencia = $('#modalidad_violencia').val();
             var tipo_violencia = $('#tipos_violencia').val();
             var fase_violencia = $('#fase_violencia').val();
@@ -904,7 +906,10 @@
                     categoria_tipificacion: categoria_tipificacion,
                     descripcion_tipificacion: descrip_tipificacion,
                     nivel_riesgo: nivel_riesgo,
-//# TODO completar envio de FODA
+                    f: f,
+                    o: o,
+                    d: d,
+                    a: a,
                     modalidad_violencia: modalidad_violencia,
                     tipo_violencia: tipo_violencia,
                     fase_violencia: fase_violencia,
