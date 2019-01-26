@@ -44,5 +44,6 @@ urlpatterns = [
     path('list_instituciones/', ListAcudeInstitucion.as_view(), name='list_instituciones'),
     path('list_estatus_llamada/', ListEstatusLLamada.as_view(), name='list_estatus_llamada'),
     path('list_nivel_riesgo/', ListNivelRiesgo.as_view(), name='list_nivel_riesgo'),
+    path('list_recomendaciones_riesgo/', ListRecomendacionesRiesgo.as_view(), name='list_recomendaciones_riesgo'),
 
 ]
