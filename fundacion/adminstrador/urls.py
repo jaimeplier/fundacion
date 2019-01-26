@@ -18,7 +18,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     SemaforoEdit, VictimaInvolucradaAdd, VictimaInvolucradaAjaxList, VictimaInvolucradaEdit, AgresorAdd, \
     AgresorAjaxList, AgresorEdit, MedioComunicacionAdd, MedioComunicacionAjaxList, MedioComunicacionEdit, \
     ComoSeEnteroAdd, ComoSeEnteroAjaxList, ComoSeEnteroEdit, EstadoMentalAdd, EstadoMentalAjaxList, EstadoMentalEdit, \
-    NivelRiesgoAdd, NivelRiesgoAjaxList, NivelRiesgoEdit
+    NivelRiesgoAdd, NivelRiesgoAjaxList, NivelRiesgoEdit, RecomendacionRiesgoAdd, RecomendacionRiesgoAjaxList, \
+    RecomendacionRiesgoEdit
 from . import views
 
 app_name = 'administrador'
@@ -255,4 +256,10 @@ urlpatterns = [
     path('nivel_riesgo/ajax/list/', NivelRiesgoAjaxList.as_view(), name='list_ajax_nivel_riesgo'),
     path('nivel_riesgo/edit/<int:pk>', NivelRiesgoEdit.as_view(), name='edit_nivel_riesgo'),
     path('nivel_riesgo/list/delete/<int:pk>', views.delete_nivel_riesgo, name='delete_nivel_riesgo'),
+
+    path('recomendacion_riesgo/add/', RecomendacionRiesgoAdd.as_view(), name='add_recomendacion_riesgo'),
+    path('recomendacion_riesgo/list/', views.list_recomendacion_riesgo, name='list_recomendacion_riesgo'),
+    path('recomendacion_riesgo/ajax/list/', RecomendacionRiesgoAjaxList.as_view(), name='list_ajax_recomendacion_riesgo'),
+    path('recomendacion_riesgo/edit/<int:pk>', RecomendacionRiesgoEdit.as_view(), name='edit_recomendacion_riesgo'),
+    path('recomendacion_riesgo/list/delete/<int:pk>', views.delete_recomendacion_riesgo, name='delete_recomendacion_riesgo'),
 ]

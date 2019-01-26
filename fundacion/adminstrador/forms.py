@@ -4,7 +4,7 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Directorio, Supervisor, Calidad, Sexo, Ayuda, MotivoLLamada, \
     EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, MedioComunicacion, \
-    ComoSeEntero, EstadoMental, NivelRiesgo
+    ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo
 
 
 class ConsejeroForm(ModelForm):
@@ -323,6 +323,13 @@ class EstadoMentalForm(ModelForm):
 class NivelRiesgoForm(ModelForm):
     class Meta:
         model = NivelRiesgo
+        exclude = ['fecha_alta', 'fecha_baja']
+        widgets = {
+            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
+class RecomendacionRiesgoForm(ModelForm):
+    class Meta:
+        model = RecomendacionRiesgo
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
