@@ -535,3 +535,9 @@ class TipificacionLLamada(models.Model):
     class Meta:
         managed = True
         db_table = 'tipificacion_llamada'
+
+class RecomendacionRiesgo(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'recomendacion_riesgo'
