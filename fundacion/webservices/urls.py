@@ -6,7 +6,7 @@ from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, Lis
     ListTipoLlamada, ListTipoCaso, ListTipoViolencia, ListViolentometro, ListAcudeInstitucion, ListMotivoLlamada, \
     ListTipificaciones, ListTipificacionesCategorias, ListModalidadViolencia, ListFaseViolencia, ListSemaforo, \
     ListVictimas, ListAgresor, ListRedesApoyo, ListEstatusLLamada, ListMedioContacto, ListNivelRiesgo, \
-    ListRecomendacionesRiesgo
+    ListRecomendacionesRiesgo, ListFaseCambio
 from webservices.views import ResumenLlamada
 
 app_name = 'webservices'
@@ -46,5 +46,6 @@ urlpatterns = [
     path('list_estatus_llamada/', ListEstatusLLamada.as_view(), name='list_estatus_llamada'),
     path('list_nivel_riesgo/', ListNivelRiesgo.as_view(), name='list_nivel_riesgo'),
     path('list_recomendaciones_riesgo/', ListRecomendacionesRiesgo.as_view(), name='list_recomendaciones_riesgo'),
+    path('list_fase_cambio/', ListFaseCambio.as_view(), name='list_fase_cambio'),
 
 ]
