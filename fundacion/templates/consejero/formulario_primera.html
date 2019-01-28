@@ -249,6 +249,12 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                                    <div class="input-field col s12">
+                                        <select id="fase_cambio">
+                                        </select>
+                                    </div>
+                                </div>
 
                     <div class="row sin_marg_bottom">
                         <div class="input-field col s12 m6 l6">
@@ -589,6 +595,29 @@
                         );
                     }
                     $('#nivel_riesgo').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_fase_cambio' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#fase_cambio").empty().html(' ');
+                    $('#fase_cambio').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Fase de cambio")
+                    );
+                    for (i in json) {
+                        $('#fase_cambio').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#fase_cambio').material_select();
                 }
             });
 
