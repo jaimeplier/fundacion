@@ -541,3 +541,9 @@ class RecomendacionRiesgo(Catalogo):
     class Meta:
         managed = True
         db_table = 'recomendacion_riesgo'
+
+class FaseCambio(Catalogo):
+
+    class Meta:
+        managed = True
+        db_table = 'fase_cambio'
