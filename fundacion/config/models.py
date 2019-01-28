@@ -257,7 +257,6 @@ class Llamada(models.Model):
     vida_en_riesgo = models.BooleanField(default=False)
     tipo_llamada = models.ForeignKey('TipoLlamada', models.DO_NOTHING, blank=True, null=True)
     motivo = models.ForeignKey('MotivoLLamada', models.DO_NOTHING, blank=True, null=True)
-    estado_mental = models.ForeignKey('EstadoMental', models.DO_NOTHING, blank=True, null=True)
     nivel_riesgo = models.ForeignKey('NivelRiesgo', models.DO_NOTHING, blank=True, null=True)
     fase_cambio = models.ForeignKey('FaseCambio', models.DO_NOTHING, blank=True, null=True)
     estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
@@ -504,6 +503,18 @@ class ComoSeEntero(Catalogo):
     class Meta:
         managed = True
         db_table = 'como_se_entero'
+
+class ExamenMental(models.Model):
+    llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
+    ute = models.ForeignKey('EstadoMental', models.DO_NOTHING, related_name='ute')
+    p = models.ForeignKey('EstadoMental', models.DO_NOTHING, related_name='p')
+    l = models.ForeignKey('EstadoMental', models.DO_NOTHING, related_name='l')
+    m = models.ForeignKey('EstadoMental', models.DO_NOTHING, related_name='m')
+    a = models.ForeignKey('EstadoMental', models.DO_NOTHING, related_name='a')
+
+    class Meta:
+        managed = True
+        db_table = 'examen_mental'
 
 class EstadoMental(Catalogo):
 
