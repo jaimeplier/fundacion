@@ -15,12 +15,13 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     OcupacionForm, ReligionForm, TipoCasoForm, TipoViolenciaForm, ViolentometroForm, ViveConForm, ConsejeroForm, \
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm, \
     EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm, \
-    AgresorForm, MedioComunicacionForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm, RecomendacionRiesgoForm
+    AgresorForm, MedioComunicacionForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm, RecomendacionRiesgoForm, \
+    FaseCambioForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
     MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
-    MedioComunicacion, ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo
+    MedioComunicacion, ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -3564,4 +3565,92 @@ class RecomendacionRiesgoEdit(PermissionRequiredMixin, UpdateView):
 def delete_recomendacion_riesgo(request, pk):
     recomendacion_riesgo = get_object_or_404(RecomendacionRiesgo, pk=pk)
     recomendacion_riesgo.delete()
+    return JsonResponse({'result': 1})
+
+class FaseCambioAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = FaseCambio
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/fase_cambio/list'
+    form_class = FaseCambioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(FaseCambioAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un fase_cambio'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_fase_cambio(request):
+    template_name = 'administrador/tab_fase_cambio.html'
+    return render(request, template_name)
+
+
+class FaseCambioAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = FaseCambio
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_fase_cambio',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(FaseCambioAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return FaseCambio.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class FaseCambioEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/fase_cambio/list'
+
+    model = FaseCambio
+    template_name = 'config/formulario_1Col.html'
+    form_class = FaseCambioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(FaseCambioEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_fase_cambio(request, pk):
+    fase_cambio = get_object_or_404(FaseCambio, pk=pk)
+    fase_cambio.delete()
     return JsonResponse({'result': 1})
