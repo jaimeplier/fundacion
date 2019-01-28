@@ -44,9 +44,9 @@
                         <div class=" col s12 txt_algn_center">
                             <p style="font-size: 20px; text-align: center;">¿Existe riesgo de vida?</p>
                             <p style="text-align: center;">
-                                <input class="with-gap" name="riesgo" type="radio" id="rv1" value="1"/>
+                                <input class="with-gap" name="riesgo" type="radio" id="rv1" value="1" onclick="MuestraRiesgo(true)"/>
                                 <label for="rv1" style="font-size: 18px;">Sí</label>
-                                <input class="with-gap" name="riesgo" type="radio" id="rv2" value="0"/>
+                                <input class="with-gap" name="riesgo" type="radio" id="rv2" value="0" onclick="MuestraRiesgo(false)"/>
                                 <label for="rv2" style="font-size: 18px;">No</label>
                             </p>
                         </div>
@@ -184,6 +184,10 @@
                                                       style="padding-left: 14px;"></textarea>
 
                                     </div>
+                                    <div class="col s12" id="recomendaciones" hidden>
+                                        <p class=" negritas" style="font-size: 20px; text-align: center;">
+                                            Recomendaciones</p>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s12">
@@ -247,13 +251,6 @@
 
 
                     <div class="row sin_marg_bottom">
-                        <div class="col s12">
-                            <p class=" negritas" style="font-size: 20px; text-align: center;">
-                                Recomendaciones</p>
-                            <p>1. ansdbmnbasdmasd</p>
-                            <p>2. sndkjans,dnas,d</p>
-                            <p>3. lakjsdlkasldasd</p>
-                        </div>
                         <div class="input-field col s12 m6 l6">
                             <select id="modalidad_violencia">
                             </select>
@@ -815,6 +812,19 @@
                 }
             });
 
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_recomendaciones_riesgo' %}",
+                cache: false,
+                success: function (json) {
+
+
+                    for (i in json) {
+                        $('#recomendaciones').append('<p>'+(i)+'.- '+ json[i].nombre+'</p>');
+                    }
+                }
+            });
+
 
         });
 
@@ -932,6 +942,15 @@
                 }
             });
 
+        }
+
+        function MuestraRiesgo(valor) {
+            if (valor==true){
+            $("#recomendaciones").show()
+            }
+            else {
+            $("#recomendaciones").hide()
+            }
         }
 
     </script>
