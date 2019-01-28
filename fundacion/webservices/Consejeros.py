@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
-    MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo
+    MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
+    FaseCambio
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer
 
@@ -45,6 +46,7 @@ class PrimerRegistro(APIView):
         o = serializer.data['o']
         d = serializer.data['d']
         a = serializer.data['a']
+        fase_cambio = FaseCambio.objects.get(pk=serializer.data['fase_cambio'])
         medio_contacto = MedioContacto.objects.get(pk=serializer.validated_data['medio_contacto'])
         violentometro = Violentometro.objects.filter(pk=serializer.validated_data['violentometro']).first()
         tipo_caso = serializer.data['tipo_caso']
@@ -82,7 +84,7 @@ class PrimerRegistro(APIView):
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
                                          estado_mental=estado_mental, nivel_riesgo=nivel_riesgo, estatus=estatus,
-                                         causa_riesgo=causa_riesgo)
+                                         causa_riesgo=causa_riesgo, fase_cambio=fase_cambio)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
@@ -113,6 +115,7 @@ class SeguimientoRegistro(APIView):
         o = serializer.data['o']
         d = serializer.data['d']
         a = serializer.data['a']
+        fase_cambio = FaseCambio.objects.get(pk=serializer.data['fase_cambio'])
         medio_contacto = MedioContacto.objects.get(pk=serializer.validated_data['medio_contacto'])
         violentometro = Violentometro.objects.filter(pk=serializer.validated_data['violentometro']).first()
         tipo_caso = serializer.data['tipo_caso']
@@ -143,7 +146,7 @@ class SeguimientoRegistro(APIView):
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
                                          estado_mental=estado_mental, nivel_riesgo=nivel_riesgo, estatus=estatus,
-                                         causa_riesgo=causa_riesgo)
+                                         causa_riesgo=causa_riesgo, fase_cambio=fase_cambio)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
