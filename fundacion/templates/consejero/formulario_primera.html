@@ -818,9 +818,10 @@
                 cache: false,
                 success: function (json) {
 
-
+                    var indice = 1;
                     for (i in json) {
-                        $('#recomendaciones').append('<p>'+(i)+'.- '+ json[i].nombre+'</p>');
+                        $('#recomendaciones').append('<p>'+(indice)+'.- '+ json[i].nombre+'</p>');
+                        indice = indice+1;
                     }
                 }
             });
