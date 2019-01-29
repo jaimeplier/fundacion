@@ -158,3 +158,8 @@ class LLamadaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Llamada
         fields = '__all__'
+
+class BusquedaSerializer(serializers.Serializer):
+    tipo_busqueda = serializers.IntegerField(min_value=0, max_value=1)
+    nombre = serializers.CharField(max_length=512, required=False)
+    telefono = serializers.IntegerField(required=False)

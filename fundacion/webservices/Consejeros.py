@@ -10,7 +10,8 @@ from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, R
     MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
     FaseCambio, ExamenMental
 from config.permissions import ConsejeroPermission
-from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer
+from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
+    BusquedaSerializer, VictimaSerializer
 
 
 class PrimerRegistro(APIView):
@@ -225,3 +226,34 @@ class UltimaLLamada(ListAPIView):
             ultima_llamada = Llamada.objects.filter(victima__pk=victima).order_by('-fecha').first()
             queryset = Llamada.objects.filter(pk=ultima_llamada.pk)
         return queryset
+
+class BusquedaUsuario(ListAPIView):
+    """
+    Tipo de busqueda
+
+    0: Busqueda por teléfono
+
+    1: Busqueda por nombre
+    """
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = VictimaSerializer
+
+    def get_queryset(self):
+        tipo_busqueda = self.request.query_params.get('tipo_busqueda', None)
+
+        # tipo de busqueda:
+        # 0: telefono
+        # 1: nombre
+        queryset = Victima.objects.none()
+        if tipo_busqueda == '0':
+            telefono = self.request.query_params.get('telefono', None)
+            if telefono is not None:
+                queryset = Victima.objects.filter(telefono__icontains=telefono)
+        if tipo_busqueda == '1':
+            nombre = self.request.query_params.get('nombre', None)
+            if nombre is not None:
+                queryset = Victima.objects.filter(nombre__icontains=nombre) | Victima.objects.filter(apellido_materno__icontains=nombre) | Victima.objects.filter(apellido_paterno__icontains=nombre)
+        return queryset
+
