@@ -1,4 +1,5 @@
 from django.db.models import Max
+from django.http import Http404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.generics import get_object_or_404, ListAPIView
@@ -250,14 +251,14 @@ class BusquedaUsuario(ListAPIView):
 
     3. telefono: teléfono de la victima
 
-    4. filtros:
+    4. filtro:
         - 1: para hábilitar filtros en la búsqueda
 
     5. consejero: ID del consejero
 
-    6. fecha_inicio: fecha de inicio en la busqueda
+    6. fecha_inicio: fecha de inicio en la busqueda (yyyy-mm-dd)
 
-    7. fecha_fin: fecha de fin en la busqueda de llamadas
+    7. fecha_fin: fecha de fin en la busqueda de llamadas (yyyy-mm-dd)
 
     """
     permission_classes = (IsAuthenticated,)
@@ -267,6 +268,10 @@ class BusquedaUsuario(ListAPIView):
 
     def get_queryset(self):
         tipo_busqueda = self.request.query_params.get('tipo_busqueda', None)
+        filtro = self.request.query_params.get('filtro', None)
+        consejero = self.request.query_params.get('consejero', None)
+        fecha_inicio = self.request.query_params.get('fecha_inicio', None)
+        fecha_fin = self.request.query_params.get('fecha_fin', None)
 
         queryset = Llamada.objects.none()
         if tipo_busqueda == '0':
@@ -281,5 +286,20 @@ class BusquedaUsuario(ListAPIView):
                 list_last_llamadas = Victima.objects.filter(nombre__icontains=nombre) | Victima.objects.filter(apellido_materno__icontains=nombre) | Victima.objects.filter(apellido_paterno__icontains=nombre)
                 list_last_llamadas = list_last_llamadas.annotate(pk_llamada=Max('llamada__pk')).values_list('pk_llamada', flat=True)
                 queryset = Llamada.objects.filter(pk__in=list_last_llamadas)
+        if filtro == '1':
+            if consejero is not None:
+                try:
+                    consejero = Consejero.objects.get(pk=consejero)
+                    queryset = queryset.filter(consejero=consejero)
+                except Consejero.DoesNotExist:
+                    raise Http404("No existe el consejero")
+            if fecha_inicio is not None and fecha_fin is not None:
+                queryset = queryset.filter(fecha__range=[fecha_inicio, fecha_fin])
+            elif fecha_inicio is not None:
+                queryset = queryset.filter(fecha__gte=fecha_inicio)
+            elif fecha_fin is not None:
+                queryset = queryset.filter(fecha__lte=fecha_fin)
+        queryset.order_by('-fecha')
         return queryset
+
 
