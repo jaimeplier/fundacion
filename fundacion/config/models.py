@@ -559,3 +559,17 @@ class FaseCambio(Catalogo):
     class Meta:
         managed = True
         db_table = 'fase_cambio'
+
+class Evaluacion(Catalogo):
+    valor = models.IntegerField()
+    class Meta:
+        managed = True
+        db_table = 'evaluacion_servicio'
+
+class CalificacionLlamada(models.Model):
+    llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
+    rubro = models.ForeignKey('Evaluacion', models.DO_NOTHING)
+    estatus_rubro = models.BooleanField(default=False)
+    class Meta:
+        managed = True
+        db_table = 'calificacion_llamada'
