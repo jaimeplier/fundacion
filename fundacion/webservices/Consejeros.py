@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
-    FaseCambio
+    FaseCambio, ExamenMental
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer
 
@@ -57,7 +57,6 @@ class PrimerRegistro(APIView):
         vida_en_riesgo = serializer.validated_data['vida_en_riesgo']
         tipo_llamada = TipoLlamada.objects.get(pk=1)  # llamada de primera vez
         motivo_llamada = MotivoLLamada.objects.filter(pk=serializer.validated_data['motivo_llamada']).first()
-        estado_mental = EstadoMental.objects.filter(pk=serializer.data['estado_mental']).first()
         nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
         estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
         causa_riesgo = serializer.data['causa_riesgo']
@@ -66,6 +65,14 @@ class PrimerRegistro(APIView):
 
         cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
         descripcion_tipificacion = serializer.validated_data['descripcion_tipificacion']
+
+        # ---> Datos del examen mental <---
+
+        em_ute = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_ute'])
+        em_p = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_p'])
+        em_l = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_l'])
+        em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_m'])
+        em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_a'])
 
 
         # ---> REGISTRO DE VICTIMA <---
@@ -83,13 +90,17 @@ class PrimerRegistro(APIView):
                                          tipo_violencia=tipo_violencia, institucion=institucion,
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
-                                         estado_mental=estado_mental, nivel_riesgo=nivel_riesgo, estatus=estatus,
+                                         nivel_riesgo=nivel_riesgo, estatus=estatus,
                                          causa_riesgo=causa_riesgo, fase_cambio=fase_cambio)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
         llamada_tipifificacion = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion,
                                                                     descripcion=descripcion_tipificacion)
+
+        # ---> REGISTRO DE EXAMEN MENTAL <---
+
+        examen_mental = ExamenMental.objects.create(ute=em_ute, p=em_p, l=em_l, m=em_m, a=em_a, llamada=llamada)
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
 
@@ -126,7 +137,6 @@ class SeguimientoRegistro(APIView):
         vida_en_riesgo = serializer.validated_data['vida_en_riesgo']
         tipo_llamada = TipoLlamada.objects.get(pk=1)  # llamada de primera vez
         motivo_llamada = MotivoLLamada.objects.filter(pk=serializer.validated_data['motivo_llamada']).first()
-        estado_mental = EstadoMental.objects.filter(pk=serializer.data['estado_mental']).first()
         nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
         estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
         causa_riesgo = serializer.data['causa_riesgo']
@@ -135,6 +145,14 @@ class SeguimientoRegistro(APIView):
 
         cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
         descripcion_tipificacion = serializer.validated_data['descripcion_tipificacion']
+
+        # ---> Datos del examen mental <---
+
+        em_ute = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_ute'])
+        em_p = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_p'])
+        em_l = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_l'])
+        em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_m'])
+        em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_a'])
 
 
         # ---> REGISTRO DE LLAMADA <---
@@ -145,13 +163,17 @@ class SeguimientoRegistro(APIView):
                                          tipo_violencia=tipo_violencia, institucion=institucion,
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
-                                         estado_mental=estado_mental, nivel_riesgo=nivel_riesgo, estatus=estatus,
+                                         nivel_riesgo=nivel_riesgo, estatus=estatus,
                                          causa_riesgo=causa_riesgo, fase_cambio=fase_cambio)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
         llamada_tipifificacion = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion,
                                                                     descripcion=descripcion_tipificacion)
+
+        # ---> REGISTRO DE EXAMEN MENTAL <---
+
+        examen_mental = ExamenMental.objects.create(ute=em_ute, p=em_p, l=em_l, m=em_m, a=em_a, llamada=llamada)
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
 

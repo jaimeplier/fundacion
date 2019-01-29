@@ -273,6 +273,39 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <select id="fase_cambio">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s12" style="padding-top: 15px;">
+                                    <p style="text-align: center;">Examen de salud mental</p>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select id="em_ute">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select id="em_p">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select id="em_l">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select id="em_m">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select id="em_a">
+                                    </select>
+                                </div>
+                            </div>
+
 
                             <div class="row sin_marg_bottom">
                                 <div class="input-field col s12 m6 l6">
@@ -493,27 +526,135 @@
                 });
 
                 $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_nivel_riesgo' %}",
-                cache: false,
-                success: function (json) {
+                    method: "GET",
+                    url: "{% url 'webservices:list_nivel_riesgo' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#nivel_riesgo").empty().html(' ');
-                    $('#nivel_riesgo').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Nivel de riesgo")
-                    );
-                    for (i in json) {
+                        $("#nivel_riesgo").empty().html(' ');
                         $('#nivel_riesgo').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Nivel de riesgo")
                         );
+                        for (i in json) {
+                            $('#nivel_riesgo').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#nivel_riesgo').material_select();
                     }
-                    $('#nivel_riesgo').material_select();
-                }
-            });
+                });
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_fase_cambio' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#fase_cambio").empty().html(' ');
+                        $('#fase_cambio').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Fase de cambio")
+                        );
+                        for (i in json) {
+                            $('#fase_cambio').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#fase_cambio').material_select();
+                    }
+                });
+
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_estado_mental' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#em_ute").empty().html(' ');
+                        $("#em_p").empty().html(' ');
+                        $("#em_l").empty().html(' ');
+                        $("#em_m").empty().html(' ');
+                        $("#em_a").empty().html(' ');
+
+                        $('#em_ute').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("UTE")
+                        );
+                        for (i in json) {
+                            $('#em_ute').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+
+                        $('#em_p').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("P")
+                        );
+                        for (i in json) {
+                            $('#em_p').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+
+                        $('#em_l').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("L")
+                        );
+                        for (i in json) {
+                            $('#em_l').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+
+                        $('#em_m').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("M")
+                        );
+                        for (i in json) {
+                            $('#em_m').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+
+                        $('#em_a').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("A")
+                        );
+                        for (i in json) {
+                            $('#em_a').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#em_ute').material_select();
+                        $('#em_p').material_select();
+                        $('#em_l').material_select();
+                        $('#em_m').material_select();
+                        $('#em_a').material_select();
+                    }
+                });
 
 
                 $.ajax({
@@ -780,6 +921,11 @@
             var o = $('#o').val();
             var d = $('#d').val();
             var a = $('#a').val();
+            var estado_metal_ute = $('#em_ute').val();
+            var estado_metal_p = $('#em_p').val();
+            var estado_metal_l = $('#em_l').val();
+            var estado_metal_m = $('#em_m').val();
+            var estado_metal_a = $('#em_a').val();
             var modalidad_violencia = $('#modalidad_violencia').val();
             var tipo_violencia = $('#tipos_violencia').val();
             var fase_violencia = $('#fase_violencia').val();
@@ -809,6 +955,11 @@
                     o: o,
                     d: d,
                     a: a,
+                    estado_metal_ute: estado_mental_ute,
+                    estado_metal_p: estado_mental_p,
+                    estado_metal_l: estado_mental_l,
+                    estado_metal_m: estado_mental_m,
+                    estado_metal_a: estado_mental_a,
                     modalidad_violencia: modalidad_violencia,
                     tipo_violencia: tipo_violencia,
                     fase_violencia: fase_violencia,

@@ -44,9 +44,11 @@
                         <div class=" col s12 txt_algn_center">
                             <p style="font-size: 20px; text-align: center;">¿Existe riesgo de vida?</p>
                             <p style="text-align: center;">
-                                <input class="with-gap" name="riesgo" type="radio" id="rv1" value="1" onclick="MuestraRiesgo(true)"/>
+                                <input class="with-gap" name="riesgo" type="radio" id="rv1" value="1"
+                                       onclick="MuestraRiesgo(true)"/>
                                 <label for="rv1" style="font-size: 18px;">Sí</label>
-                                <input class="with-gap" name="riesgo" type="radio" id="rv2" value="0" onclick="MuestraRiesgo(false)"/>
+                                <input class="with-gap" name="riesgo" type="radio" id="rv2" value="0"
+                                       onclick="MuestraRiesgo(false)"/>
                                 <label for="rv2" style="font-size: 18px;">No</label>
                             </p>
                         </div>
@@ -250,11 +252,37 @@
                     </div>
 
                     <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="fase_cambio">
-                                        </select>
-                                    </div>
-                                </div>
+                        <div class="input-field col s12">
+                            <select id="fase_cambio">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12" style="padding-top: 15px;">
+                            <p style="text-align: center;">Examen de salud mental</p>
+                        </div>
+                        <div class="input-field col s12">
+                            <select id="em_ute">
+                            </select>
+                        </div>
+                        <div class="input-field col s12">
+                            <select id="em_p">
+                            </select>
+                        </div>
+                        <div class="input-field col s12">
+                            <select id="em_l">
+                            </select>
+                        </div>
+                        <div class="input-field col s12">
+                            <select id="em_m">
+                            </select>
+                        </div>
+                        <div class="input-field col s12">
+                            <select id="em_a">
+                            </select>
+                        </div>
+                    </div>
 
                     <div class="row sin_marg_bottom">
                         <div class="input-field col s12 m6 l6">
@@ -621,6 +649,90 @@
                 }
             });
 
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_estado_mental' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#em_ute").empty().html(' ');
+                    $("#em_p").empty().html(' ');
+                    $("#em_l").empty().html(' ');
+                    $("#em_m").empty().html(' ');
+                    $("#em_a").empty().html(' ');
+
+                    $('#em_ute').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("UTE")
+                    );
+                    for (i in json) {
+                        $('#em_ute').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+
+                    $('#em_p').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("P")
+                    );
+                    for (i in json) {
+                        $('#em_p').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+
+                    $('#em_l').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("L")
+                    );
+                    for (i in json) {
+                        $('#em_l').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+
+                    $('#em_m').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("M")
+                    );
+                    for (i in json) {
+                        $('#em_m').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+
+                    $('#em_a').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("A")
+                    );
+                    for (i in json) {
+                        $('#em_a').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#em_ute').material_select();
+                    $('#em_p').material_select();
+                    $('#em_l').material_select();
+                    $('#em_m').material_select();
+                    $('#em_a').material_select();
+                }
+            });
+
 
             $.ajax({
                 method: "GET",
@@ -849,8 +961,8 @@
 
                     var indice = 1;
                     for (i in json) {
-                        $('#recomendaciones').append('<p>'+(indice)+'.- '+ json[i].nombre+'</p>');
-                        indice = indice+1;
+                        $('#recomendaciones').append('<p>' + (indice) + '.- ' + json[i].nombre + '</p>');
+                        indice = indice + 1;
                     }
                 }
             });
@@ -906,6 +1018,11 @@
             var o = $('#o').val();
             var d = $('#d').val();
             var a = $('#a').val();
+            var estado_metal_ute = $('#em_ute').val();
+            var estado_metal_p = $('#em_p').val();
+            var estado_metal_l = $('#em_l').val();
+            var estado_metal_m = $('#em_m').val();
+            var estado_metal_a = $('#em_a').val();
             var fase_cambio = $('#fase_cambio').val();
             var modalidad_violencia = $('#modalidad_violencia').val();
             var tipo_violencia = $('#tipos_violencia').val();
@@ -951,6 +1068,11 @@
                     o: o,
                     d: d,
                     a: a,
+                    estado_metal_ute: estado_mental_ute,
+                    estado_metal_p: estado_mental_p,
+                    estado_metal_l: estado_mental_l,
+                    estado_metal_m: estado_mental_m,
+                    estado_metal_a: estado_mental_a,
                     fase_cambio: fase_cambio,
                     modalidad_violencia: modalidad_violencia,
                     tipo_violencia: tipo_violencia,
@@ -977,11 +1099,10 @@
         }
 
         function MuestraRiesgo(valor) {
-            if (valor==true){
-            $("#recomendaciones").show()
-            }
-            else {
-            $("#recomendaciones").hide()
+            if (valor == true) {
+                $("#recomendaciones").show()
+            } else {
+                $("#recomendaciones").hide()
             }
         }
 

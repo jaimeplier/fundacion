@@ -72,6 +72,14 @@ class PrimeraVezSerializer(serializers.Serializer):
     categoria_tipificacion = serializers.IntegerField(min_value=1)
     descripcion_tipificacion = serializers.CharField(max_length=512)
 
+
+    # Examen mental
+    estado_metal_ute = serializers.IntegerField(min_value=1)
+    estado_metal_p = serializers.IntegerField(min_value=1)
+    estado_metal_l = serializers.IntegerField(min_value=1)
+    estado_metal_m = serializers.IntegerField(min_value=1)
+    estado_metal_a = serializers.IntegerField(min_value=1)
+
 class SeguimientoSerializer(serializers.Serializer):
 
     # Llamada
@@ -107,6 +115,13 @@ class SeguimientoSerializer(serializers.Serializer):
     # Tipificacion Categoria
     categoria_tipificacion = serializers.IntegerField(min_value=1)
     descripcion_tipificacion = serializers.CharField(max_length=512)
+
+    # Examen mental
+    estado_metal_ute = serializers.IntegerField(min_value=1)
+    estado_metal_p = serializers.IntegerField(min_value=1)
+    estado_metal_l = serializers.IntegerField(min_value=1)
+    estado_metal_m = serializers.IntegerField(min_value=1)
+    estado_metal_a = serializers.IntegerField(min_value=1)
 
 class ConsejeroSerializer(serializers.ModelSerializer):
     class Meta:
