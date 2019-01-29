@@ -1,3 +1,4 @@
+from django.db.models import Max
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.generics import get_object_or_404, ListAPIView
@@ -229,31 +230,56 @@ class UltimaLLamada(ListAPIView):
 
 class BusquedaUsuario(ListAPIView):
     """
-    Tipo de busqueda
+    **Búsqueda básica**
 
-    0: Busqueda por teléfono
+    1. tipo_busqueda:
+        - 0: busqueda por teléfono
+        - 1: busqueda por nombre
 
-    1: Busqueda por nombre
+    2. nombre: nombre de la victima
+
+    3. telefono: teléfono de la victima
+
+    **Búsqueda por filtros**
+
+    1. tipo_busqueda:
+        - 0: busqueda por teléfono
+        - 1: busqueda por nombre
+
+    2. nombre: nombre de la victima
+
+    3. telefono: teléfono de la victima
+
+    4. filtros:
+        - 1: para hábilitar filtros en la búsqueda
+
+    5. consejero: ID del consejero
+
+    6. fecha_inicio: fecha de inicio en la busqueda
+
+    7. fecha_fin: fecha de fin en la busqueda de llamadas
+
     """
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication, SessionAuthentication)
 
-    serializer_class = VictimaSerializer
+    serializer_class = LLamadaSerializer
 
     def get_queryset(self):
         tipo_busqueda = self.request.query_params.get('tipo_busqueda', None)
 
-        # tipo de busqueda:
-        # 0: telefono
-        # 1: nombre
-        queryset = Victima.objects.none()
+        queryset = Llamada.objects.none()
         if tipo_busqueda == '0':
             telefono = self.request.query_params.get('telefono', None)
             if telefono is not None:
-                queryset = Victima.objects.filter(telefono__icontains=telefono)
+                list_last_llamadas = Victima.objects.filter(telefono__icontains=telefono)
+                list_last_llamadas = list_last_llamadas.annotate(pk_llamada=Max('llamada__pk')).values_list('pk_llamada', flat=True)
+                queryset = Llamada.objects.filter(pk__in=list_last_llamadas)
         if tipo_busqueda == '1':
             nombre = self.request.query_params.get('nombre', None)
             if nombre is not None:
-                queryset = Victima.objects.filter(nombre__icontains=nombre) | Victima.objects.filter(apellido_materno__icontains=nombre) | Victima.objects.filter(apellido_paterno__icontains=nombre)
+                list_last_llamadas = Victima.objects.filter(nombre__icontains=nombre) | Victima.objects.filter(apellido_materno__icontains=nombre) | Victima.objects.filter(apellido_paterno__icontains=nombre)
+                list_last_llamadas = list_last_llamadas.annotate(pk_llamada=Max('llamada__pk')).values_list('pk_llamada', flat=True)
+                queryset = Llamada.objects.filter(pk__in=list_last_llamadas)
         return queryset
 
