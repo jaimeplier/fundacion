@@ -7,7 +7,7 @@ from rest_framework.generics import ListAPIView, get_object_or_404
 from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoCaso, TipoViolencia, \
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, RedesApoyo, EstatusLLamada, MedioContacto, NivelRiesgo, \
-    RecomendacionRiesgo, FaseCambio
+    RecomendacionRiesgo, FaseCambio, EstadoMental
 from webservices.serializers import CatalogoSerializer
 
 
@@ -252,4 +252,14 @@ class ListFaseCambio(ListAPIView):
 
     def get_queryset(self):
         queryset = FaseCambio.objects.all()
+        return queryset
+
+class ListEstadoMental(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = CatalogoSerializer
+
+    def get_queryset(self):
+        queryset = EstadoMental.objects.all()
         return queryset
