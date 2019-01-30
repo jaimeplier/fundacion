@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'supervisor.apps.SupervisorConfig',
     'consejero.apps.ConsejeroConfig',
     'directorio.apps.DirectorioConfig',
+    'calidad.apps.CalidadConfig',
     'rest_framework',
     'rest_framework.authtoken',
 ]
