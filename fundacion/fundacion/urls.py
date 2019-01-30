@@ -27,6 +27,7 @@ urlpatterns = [
     path('supervisor/', include('supervisor.urls')),
     path('directorio/', include('directorio.urls')),
     path('consejero/', include('consejero.urls')),
+    path('calidad/', include('calidad.urls')),
     path('', include('webapp.urls')),
     path('ws/', include('webservices.urls')),
 ]
