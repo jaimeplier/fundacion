@@ -260,6 +260,7 @@ class Llamada(models.Model):
     nivel_riesgo = models.ForeignKey('NivelRiesgo', models.DO_NOTHING, blank=True, null=True)
     fase_cambio = models.ForeignKey('FaseCambio', models.DO_NOTHING, blank=True, null=True)
     estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
+    calificada = models.BooleanField(default=False)
 
     class Meta:
         managed = True
