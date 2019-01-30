@@ -129,6 +129,7 @@
                             href="{% url 'directorio:list_acude_institucion' %}">Instituciones</a>
                     </li>
                 {% elif user.is_calidad %}
+                    <li class="menu_redondo"><a href="{% url 'calidad:list_evaluacion' %}">Rubros de evaluación</a></li>
                 {% endif %}
             </ul>
         </div>
