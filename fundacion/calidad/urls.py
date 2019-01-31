@@ -1,6 +1,6 @@
 from django.urls import path
 
-from calidad.views import EvaluacionAdd, EvaluacionAjaxList, EvaluacionEdit, LlamadaAjaxList
+from calidad.views import EvaluacionAdd, EvaluacionAjaxList, EvaluacionEdit, LlamadaAjaxList, CalificarServicio
 from . import views
 
 app_name = 'calidad'
@@ -15,5 +15,7 @@ urlpatterns = [
 
     path('llamada/list/', views.list_llamada, name='list_llamada'),
     path('llamada/ajax/list/', LlamadaAjaxList.as_view(), name='list_ajax_llamada'),
+
+    path('calificar_servicio/<int:pk>', CalificarServicio.as_view(), name='calificar_servicio'),
 
     ]

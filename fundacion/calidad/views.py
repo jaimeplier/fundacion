@@ -5,11 +5,11 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView,DetailView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from calidad.forms import EvaluacionForm
-from config.models import Evaluacion, Llamada, TipificacionLLamada
+from config.models import Evaluacion, Llamada, TipificacionLLamada, ExamenMental
 
 
 class EvaluacionAdd(PermissionRequiredMixin, CreateView):
@@ -160,3 +160,22 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
         return qs
+
+class CalificarServicio(PermissionRequiredMixin, DetailView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'calidad'
+    model = Llamada
+    template_name = 'calidad/calificar_servicio.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CalificarServicio, self).get_context_data(**kwargs)
+        servicio = Llamada.objects.get(pk=self.kwargs['pk'])
+        tipificacion = TipificacionLLamada.objects.filter(llamada=servicio).first()
+        examen_mental = ExamenMental.objects.filter(llamada=servicio).first()
+        rubros = Evaluacion.objects.all()
+        context['servicio'] = servicio
+        context['tipificacion'] = tipificacion
+        context['examen_mental'] = examen_mental
+        context['rubros'] = rubros
+        return context
