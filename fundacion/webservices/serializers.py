@@ -126,7 +126,7 @@ class SeguimientoSerializer(serializers.Serializer):
 class ConsejeroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consejero
-        fields = ['pk', 'get_full_name']
+        fields = ['pk', 'get_full_name', 'nombre', 'a_paterno', 'a_materno']
 
 class VictimaSerializer(serializers.ModelSerializer):
     class Meta:

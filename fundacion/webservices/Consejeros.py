@@ -302,4 +302,13 @@ class BusquedaUsuario(ListAPIView):
         queryset.order_by('-fecha')
         return queryset
 
+class ListConsejeros(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = ConsejeroSerializer
+
+    def get_queryset(self):
+        queryset = Consejero.objects.all()
+        return queryset
 
