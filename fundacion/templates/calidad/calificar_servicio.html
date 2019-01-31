@@ -82,19 +82,19 @@
                                 <table>
                                     <tr>
                                         <th>Rubro</th>
-                                        <th>Valor</th>
                                         <th>Check</th>
                                     </tr>
                                     {% for rubro in rubros %}
                                         <tr>
                                             <td>{{ rubro.nombre }}</td>
-                                            <td>{{ rubro.valor }}</td>
-                                            <td><div>
-    <p>
-      <input type="checkbox" id="rubro{{ rubro.pk }}" />
-      <label for="rubro{{ rubro.pk }}"></label>
-    </p>
-  </div></td>
+                                            <td>
+                                                <div>
+                                                    <p>
+                                                        <input type="checkbox" id="rubro{{ rubro.pk }}"/>
+                                                        <label for="rubro{{ rubro.pk }}"></label>
+                                                    </p>
+                                                </div>
+                                            </td>
                                         </tr>
                                     {% endfor %}
 

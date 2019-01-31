@@ -562,7 +562,6 @@ class FaseCambio(Catalogo):
         db_table = 'fase_cambio'
 
 class Evaluacion(Catalogo):
-    valor = models.IntegerField()
     class Meta:
         managed = True
         db_table = 'evaluacion_servicio'
