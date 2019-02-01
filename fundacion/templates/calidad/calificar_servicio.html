@@ -75,33 +75,37 @@
                             <li class="tab col s4"><a href="#test3">Servicio</a></li>
                         </ul>
                     </div>
-                    <form class="col s12" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div id="test1" class="col s12" style="margin-top: 40px;">
-                            <div class="row sin_marg_bottom">
-                                <table>
-                                    <tr>
-                                        <th>Rubro</th>
-                                        <th>Check</th>
-                                    </tr>
-                                    {% for rubro in rubros %}
-                                        <tr>
-                                            <td>{{ rubro.nombre }}</td>
-                                            <td>
-                                                <div>
-                                                    <p>
-                                                        <input type="checkbox" id="rubro{{ rubro.pk }}"/>
-                                                        <label for="rubro{{ rubro.pk }}"></label>
-                                                    </p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
 
-                                </table>
-                            </div>
+                    <div id="test1" class="col s12" style="margin-top: 40px;">
+                        <div class="row sin_marg_bottom">
+                            <table>
+                                <tr>
+                                    <th>Rubro</th>
+                                    <th>Check</th>
+                                </tr>
+                                {% for rubro in rubros %}
+                                    <tr>
+                                        <td>{{ rubro.nombre }}</td>
+                                        <td>
+                                            <div>
+                                                <p>
+                                                    <input type="checkbox" id="rubro{{ rubro.pk }}"
+                                                           value="{{ rubro.pk }}" class="rubro"/>
+                                                    <label for="rubro{{ rubro.pk }}"></label>
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                            </table>
                         </div>
-                    </form>
+                    </div>
+                    <div class="row sin_marg_bottom">
+                        <button class="btn waves-effect waves-light col-lg-12" onclick="GuardarEvaluacion()">Guardar
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
                     <div id="test2" class="col s12" style="margin-top: 40px;">
                         <div class="row sin_marg_bottom">
                             <div class="col s12" style="margin-bottom: 20px;">
@@ -511,7 +515,10 @@
                                     .text(json[i].nombre)
                             );
                         }
-                        $("#nivel_riesgo").val({{ object.nivel_riesgo_id }})
+                        if ('{{ object.nivel_riesgo_id }}' == 'None') {
+                        } else {
+                            $("#nivel_riesgo").val({{ object.nivel_riesgo_id }})
+                        }
                         $('#nivel_riesgo').material_select();
                     }
                 });
@@ -551,7 +558,11 @@
                                     .text(json[i].nombre)
                             );
                         }
-                        $("#fase_cambio").val({{ object.fase_cambio_id }})
+                        if ('{{ object.fase_cambio_id }}' == 'None') {
+                        } else {
+
+                            $("#fase_cambio").val({{ object.fase_cambio_id }})
+                        }
                         $('#fase_cambio').material_select();
                     }
                 });
@@ -908,71 +919,30 @@
             }
         }
 
-        function GuardarLLamada() {
-            //var vida_riesgo = $("input[name='riesgo']:checked").val();
-            var motivo_llamada = $("input[name='motivo_llamada']:checked").val();
-            var causa_riesgo = $('#causa_riesgo').val();
-            var tipificacion = $('#tipificaciones').val();
-            var categoria_tipificacion = $("input[name='categoria_tipificacion']:checked").val();
-            var descrip_tipificacion = $('#descrip_tipificacion').val();
-            var nivel_riesgo = $('#nivel_riesgo').val();
-            var f = $('#f').val();
-            var o = $('#o').val();
-            var d = $('#d').val();
-            var a = $('#a').val();
-            var estado_metal_ute = $('#em_ute').val();
-            var estado_metal_p = $('#em_p').val();
-            var estado_metal_l = $('#em_l').val();
-            var estado_metal_m = $('#em_m').val();
-            var estado_metal_a = $('#em_a').val();
-            var modalidad_violencia = $('#modalidad_violencia').val();
-            var tipo_violencia = $('#tipos_violencia').val();
-            var fase_violencia = $('#fase_violencia').val();
-            var semaforo = $('#semaforo').val();
-            var violentometro = $('#violentometro').val();
-            var victimas = $('#victimas').val();
-            var agresor = $('#agresor').val();
-            var medio_conatacto = $('#medio_contacto').val();
-            var plan_accion = $('#plan_accion').val();
-            var datos_canalizacion = $('#datos_c').prop('checked');
-            var institucion = $('#instituciones').val();
-            var estatus_llamada = $("input[name='estatus_llamada']:checked").val();
+        function GuardarEvaluacion() {
+            var llamada = {{ object.pk }}
+            var num_totales = $('.rubro').length;
+            var num_rubros_cumplidos = $('.rubro:checkbox:checked').length;
+            var rubros_cumplidos = $('.rubro:checkbox:checked');
+            var array_rubros = []
+            for (i = 0; i < num_rubros_cumplidos; i++) {
+                console.log(i);
+                array_rubros.push(parseInt(rubros_cumplidos[i].value))
+            }
 
 
             $.ajax({
+                data_type: 'json',
+                traditional: true,
                 method: "POST",
-                url: "{% url 'webservices:registro_seguimiento' %}",
+                url: "{% url 'webservices:evaluar_servicio' %}",
                 cache: false,
                 data: {
-                    victima: victima,
-                    motivo_llamada: motivo_llamada,
-                    causa_riesgo: causa_riesgo,
-                    categoria_tipificacion: categoria_tipificacion,
-                    descripcion_tipificacion: descrip_tipificacion,
-                    nivel_riesgo: nivel_riesgo,
-                    f: f,
-                    o: o,
-                    d: d,
-                    a: a,
-                    estado_metal_ute: estado_mental_ute,
-                    estado_metal_p: estado_mental_p,
-                    estado_metal_l: estado_mental_l,
-                    estado_metal_m: estado_mental_m,
-                    estado_metal_a: estado_mental_a,
-                    modalidad_violencia: modalidad_violencia,
-                    tipo_violencia: tipo_violencia,
-                    fase_violencia: fase_violencia,
-                    semaforo: semaforo,
-                    violentometro: violentometro,
-                    victimas: victimas,
-                    agresor: agresor,
-                    medio_contacto: medio_conatacto,
-                    posible_solucion: plan_accion,
-                    institucion: institucion,
-                    estatus: estatus_llamada
+                    llamada: llamada,
+                    rubros: array_rubros,
                 },
                 success: function (json) {
-                    window.location.href = "{% url 'consejero:registro_seguimiento' 3 %}";
+                    alert('La evaluación ha sido guardada correctamente');
                 },
                 error: function (request) {
                     alert(request.responseText);
