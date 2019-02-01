@@ -132,7 +132,6 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
             h2 = str(row.hora_fin.hour) + ':' + str(row.hora_fin.minute) + ':' + str(row.hora_fin.second)
             h1 = datetime.strptime(h1, formato)
             h2 = datetime.strptime(h2, formato)
-            r= h2-h1
             return str(h2-h1)
         elif column == 'vida_en_riesgo':
             if row.vida_en_riesgo:
@@ -146,9 +145,9 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
                 return row.medio_contacto.nombre
             return 'Sin medio de contacto'
         elif column == 'calificacion':
-            if row.calificada:
-                return 'Sí'
-            return 'No'
+            if row.calificacion is not None:
+                return row.calificacion
+            return '<a href="'+ reverse('calidad:calificar_servicio', kwargs={'pk': row.pk}) +'"> Calificar</a>'
 
         return super(LlamadaAjaxList, self).render_column(row, column)
 
