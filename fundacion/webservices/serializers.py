@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, EstatusLLamada
+from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, EstatusLLamada, Evaluacion, \
+    CalificacionLlamada
 
 
 class FechaSerializer(serializers.Serializer):
@@ -163,3 +164,34 @@ class BusquedaSerializer(serializers.Serializer):
     tipo_busqueda = serializers.IntegerField(min_value=0, max_value=1)
     nombre = serializers.CharField(max_length=512, required=False)
     telefono = serializers.IntegerField(required=False)
+
+class RubrosSerializer(serializers.Serializer):
+    llamada = serializers.IntegerField(min_value=1)
+    rubros = serializers.ListField(
+        child=serializers.IntegerField(), allow_empty=True, allow_null=True, required=False)
+
+    def create(self, validated_data):
+        llamada = Llamada.objects.get(pk=validated_data.get('llamada'))
+        cantidad_rubros = Evaluacion.objects.all().count()
+        evaluacion = Evaluacion.objects.exclude(pk__in=validated_data.get('rubros'))
+        rubros = Evaluacion.objects.filter(pk__in=validated_data.get('rubros'))
+        if validated_data.get('rubros') is not None and len(validated_data.get('rubros')) > 0:
+            evaluaciones = CalificacionLlamada.objects.filter(llamada=llamada).delete()
+            for rubro in rubros:
+                e = CalificacionLlamada.objects.create(llamada=llamada, rubro=rubro, estatus_rubro=True)
+            for rubro in evaluacion:
+                e = CalificacionLlamada.objects.create(llamada=llamada, rubro=rubro, estatus_rubro=False)
+            try:
+                calificacion = (rubros.count() * 10) / cantidad_rubros
+                llamada.calificacion = calificacion
+                llamada.save()
+            except Exception as e:
+                pass
+        else:
+            evaluaciones = CalificacionLlamada.objects.filter(llamada=llamada).delete()
+            for rubro in evaluacion:
+                e = CalificacionLlamada.objects.create(llamada=llamada, rubro=rubro, estatus_rubro=False)
+            llamada.calificacion = 0.0
+            llamada.save()
+
+        return rubros
