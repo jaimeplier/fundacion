@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
-    FaseCambio, ExamenMental, ModalidadViolencia, FaseViolencia, Semaforo, Agresor, ComoSeEntero
+    FaseCambio, ExamenMental, ModalidadViolencia, FaseViolencia, Semaforo, Agresor, ComoSeEntero, TareaLLamada
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
     BusquedaSerializer, VictimaSerializer
@@ -70,6 +70,11 @@ class PrimerRegistro(APIView):
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
 
+        # Tareas
+        tarea1 = serializer.data['tarea1']
+        tarea2 = serializer.data['tarea2']
+        tarea3 = serializer.data['tarea3']
+
         # ---> DATOS DE LA TIPIFICACION <---
 
         cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
@@ -104,6 +109,15 @@ class PrimerRegistro(APIView):
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
                                          semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
                                          como_se_entero=como_se_entero)
+        if tarea1 != '':
+            tarea = TareaLLamada.objects.create(nombre=tarea1)
+            llamada.tareas.add(tarea1)
+        if tarea2 != '':
+            tarea = TareaLLamada.objects.create(nombre=tarea2)
+            llamada.tareas.add(tarea2)
+        if tarea3 != '':
+            tarea = TareaLLamada.objects.create(nombre=tarea3)
+            llamada.tareas.add(tarea3)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
@@ -159,6 +173,11 @@ class SeguimientoRegistro(APIView):
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
 
+        # Tareas
+        tarea1 = serializer.data['tarea1']
+        tarea2 = serializer.data['tarea2']
+        tarea3 = serializer.data['tarea3']
+
         # ---> DATOS DE LA TIPIFICACION <---
 
         cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
@@ -186,6 +205,16 @@ class SeguimientoRegistro(APIView):
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
                                          semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
                                          como_se_entero=como_se_entero)
+
+        if tarea1 != '':
+            tarea = TareaLLamada.objects.create(nombre=tarea1)
+            llamada.tareas.add(tarea1)
+        if tarea2 != '':
+            tarea = TareaLLamada.objects.create(nombre=tarea2)
+            llamada.tareas.add(tarea2)
+        if tarea3 != '':
+            tarea = TareaLLamada.objects.create(nombre=tarea3)
+            llamada.tareas.add(tarea3)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 

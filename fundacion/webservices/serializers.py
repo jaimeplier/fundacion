@@ -68,6 +68,11 @@ class PrimeraVezSerializer(serializers.Serializer):
     redes_apoyo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     como_se_entero = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
+    # Tareas asiganadas a la llamada
+    tarea1 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
+    tarea2 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
+    tarea3 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
+
     # Tipificacion Categoria
     categoria_tipificacion = serializers.IntegerField(min_value=1)
     descripcion_tipificacion = serializers.CharField(max_length=512)
@@ -112,6 +117,10 @@ class SeguimientoSerializer(serializers.Serializer):
     causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     como_se_entero = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
+    # Tareas asiganadas a la llamada
+    tarea1 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
+    tarea2 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
+    tarea3 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
 
     # Tipificacion Categoria
     categoria_tipificacion = serializers.IntegerField(min_value=1)
