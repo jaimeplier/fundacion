@@ -340,15 +340,15 @@
                             <p style="text-align: center;">Tareas o actividades recomendadas</p>
                         </div>
                         <div class="input-field col s12">
-                            <input id="texto" type="text" class="validate" required="required"
+                            <input id="tarea1" type="text" class="validate" required="required"
                                    placeholder="Tarea 1">
                         </div>
                         <div class="input-field col s12">
-                            <input id="texto" type="text" class="validate" required="required"
+                            <input id="tarea2" type="text" class="validate" required="required"
                                    placeholder="Tarea 2">
                         </div>
                         <div class="input-field col s12">
-                            <input id="texto" type="text" class="validate" required="required"
+                            <input id="tarea3" type="text" class="validate" required="required"
                                    placeholder="Tarea 3">
                         </div>
                     </div>
@@ -1073,6 +1073,11 @@
             //}
             var como_se_entero = $('#como_se_entero').val();
             var estatus_llamada = $("input[name='estatus_llamada']:checked").val();
+            //Registro temporal de tareas
+            var tarea1 = $('#tarea1').val();
+            var tarea2 = $('#tarea2').val();
+            var tarea3 = $('#tarea3').val();
+
 
 
             $.ajax({
@@ -1120,6 +1125,9 @@
                     posible_solucion: plan_accion,
                     institucion: institucion,
                     como_se_entero: como_se_entero,
+                    tarea1: tarea1,
+                    tarea1: tarea2,
+                    tarea1: tarea3,
                     estatus: estatus_llamada
                 },
                 success: function (json) {
