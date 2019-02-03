@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
-    FaseCambio, ExamenMental
+    FaseCambio, ExamenMental, ModalidadViolencia, FaseViolencia, Semaforo, Agresor
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
     BusquedaSerializer, VictimaSerializer
@@ -63,6 +63,11 @@ class PrimerRegistro(APIView):
         nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
         estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
         causa_riesgo = serializer.data['causa_riesgo']
+        modalidad_violencia = ModalidadViolencia.objects.get(pk=serializer.data['modalidad_violencia'])
+        fase_violencia = FaseViolencia.objects.get(pk=serializer.data['fase_violencia'])
+        semaforo = Semaforo.objects.get(pk=serializer.data['semaforo'])
+        victimas = Victima.objects.get(pk=serializer.data['victimas'])
+        agresor = Agresor.objects.get(pk=serializer.data['agresor'])
 
         # ---> DATOS DE LA TIPIFICACION <---
 
@@ -94,7 +99,9 @@ class PrimerRegistro(APIView):
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
                                          nivel_riesgo=nivel_riesgo, estatus=estatus,
-                                         causa_riesgo=causa_riesgo, fase_cambio=fase_cambio)
+                                         causa_riesgo=causa_riesgo, fase_cambio=fase_cambio,
+                                         modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
+                                         semaforo=semaforo, victima_involucrada=victimas, agresor=agresor)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
@@ -143,6 +150,11 @@ class SeguimientoRegistro(APIView):
         nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
         estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
         causa_riesgo = serializer.data['causa_riesgo']
+        modalidad_violencia = ModalidadViolencia.objects.get(pk=serializer.data['modalidad_violencia'])
+        fase_violencia = FaseViolencia.objects.get(pk=serializer.data['fase_violencia'])
+        semaforo = Semaforo.objects.get(pk=serializer.data['semaforo'])
+        victimas = Victima.objects.get(pk=serializer.data['victimas'])
+        agresor = Agresor.objects.get(pk=serializer.data['agresor'])
 
         # ---> DATOS DE LA TIPIFICACION <---
 
@@ -167,7 +179,9 @@ class SeguimientoRegistro(APIView):
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
                                          nivel_riesgo=nivel_riesgo, estatus=estatus,
-                                         causa_riesgo=causa_riesgo, fase_cambio=fase_cambio)
+                                         causa_riesgo=causa_riesgo, fase_cambio=fase_cambio,
+                                         modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
+                                         semaforo=semaforo, victima_involucrada=victimas, agresor=agresor)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 

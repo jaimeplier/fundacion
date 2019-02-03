@@ -55,19 +55,17 @@ class PrimeraVezSerializer(serializers.Serializer):
     posible_solucion = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     vida_en_riesgo = serializers.BooleanField(default=False)
     fase_cambio = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    modalidad_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    fase_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    semaforo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    victimas = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    agresor = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     motivo_llamada = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     estado_mental = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     nivel_riesgo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False )
     redes_apoyo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    #Modalidad violencia
-    #Tipo de violencia
-    #Fase de violencia
-    #semaforo
-    #victimas involucradas
-    #agresor
-
 
     # Tipificacion Categoria
     categoria_tipificacion = serializers.IntegerField(min_value=1)
@@ -100,17 +98,17 @@ class SeguimientoSerializer(serializers.Serializer):
     institucion = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     posible_solucion = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     vida_en_riesgo = serializers.BooleanField(default=False)
+    fase_cambio = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    modalidad_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    fase_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    semaforo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    victimas = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    agresor = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     motivo_llamada = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     estado_mental = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     nivel_riesgo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
-    #Modalidad violencia
-    #Tipo de violencia
-    #Fase de violencia
-    #semaforo
-    #victimas involucradas
-    #agresor
 
 
     # Tipificacion Categoria

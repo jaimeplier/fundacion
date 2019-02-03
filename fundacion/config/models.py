@@ -261,6 +261,11 @@ class Llamada(models.Model):
     fase_cambio = models.ForeignKey('FaseCambio', models.DO_NOTHING, blank=True, null=True)
     estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
     calificacion = models.FloatField(null=True, blank=True)
+    modalidad_violencia = models.ForeignKey('ModalidadViolencia', models.DO_NOTHING, blank=True, null=True)
+    fase_violencia = models.ForeignKey('FaseViolencia', models.DO_NOTHING, blank=True, null=True)
+    semaforo = models.ForeignKey('Semaforo', models.DO_NOTHING, blank=True, null=True)
+    victima_involucrada = models.ForeignKey('VictimaInvolucrada', models.DO_NOTHING, blank=True, null=True)
+    agresor = models.ForeignKey('Agresor', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = True
