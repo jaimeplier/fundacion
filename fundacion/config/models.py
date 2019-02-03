@@ -492,14 +492,7 @@ class Calidad(Usuario):
         db_table = 'calidad'
 
 
-class MedioComunicacion(Catalogo):
-    class Meta:
-        managed = True
-        db_table = 'medio_de_comunicacion'
-
-
 class ComoSeEntero(Catalogo):
-    medio = models.ForeignKey('MedioComunicacion', models.DO_NOTHING)
 
     class Meta:
         managed = True
