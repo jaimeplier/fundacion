@@ -379,6 +379,16 @@
                         </p>
                     </div>
 
+                    <div class="col s12 txt_algn_center">
+                        <div class="col s12">
+                            <p style="text-align: center;">Cómo se enteró</p>
+                        </div>
+                        <div class="input-field col s12 m12 l12">
+                            <select id="como_se_entero">
+                            </select>
+                        </div>
+                    </div>
+
 
                 </form>
             </div>
@@ -967,6 +977,29 @@
                 }
             });
 
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_como_se_entero' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#como_se_entero").empty().html(' ');
+                    $('#como_se_entero').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Cómo se enteró")
+                    );
+                    for (i in json) {
+                        $('#como_se_entero').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#como_se_entero').material_select();
+                }
+            });
+
 
         });
 
@@ -1038,6 +1071,7 @@
             //if (datos_canalizacion) {
             var institucion = $('#instituciones').val();
             //}
+            var como_se_entero = $('#como_se_entero').val();
             var estatus_llamada = $("input[name='estatus_llamada']:checked").val();
 
 
@@ -1085,6 +1119,7 @@
                     medio_contacto: medio_conatacto,
                     posible_solucion: plan_accion,
                     institucion: institucion,
+                    como_se_entero: como_se_entero,
                     estatus: estatus_llamada
                 },
                 success: function (json) {
