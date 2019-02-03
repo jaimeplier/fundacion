@@ -322,18 +322,12 @@
                                 <div class="col s12">
                                     <p style="text-align: center;">Tareas o actividades recomendadas</p>
                                 </div>
-                                <div class="input-field col s12">
-                                    <input id="texto" type="text" class="validate" required="required"
-                                           placeholder="Tarea 1">
-                                </div>
-                                <div class="input-field col s12">
-                                    <input id="texto" type="text" class="validate" required="required"
-                                           placeholder="Tarea 2">
-                                </div>
-                                <div class="input-field col s12">
-                                    <input id="texto" type="text" class="validate" required="required"
-                                           placeholder="Tarea 3">
-                                </div>
+                                {% for tarea in tareas %}
+                                    <div class="input-field col s12">
+                                        <input id="{{ tarea.nombre }}{{ tarea.pk }}" type="text"
+                                               placeholder="Tarea {{ tarea.nombre }}">
+                                    </div>
+                                {% endfor %}
                             </div>
 
                             <div class="row sin_marg_bottom">
@@ -360,6 +354,16 @@
                                 <p style="margin-top: 0px; text-align: center;">Estatus de la llamada</p>
                                 <p style="margin-top: 0px; text-align: center;" id="estatus_llamada">
                                 </p>
+                            </div>
+
+                            <div class="col s12 txt_algn_center">
+                                <div class="col s12">
+                                    <p style="text-align: center;">Cómo se enteró</p>
+                                </div>
+                                <div class="input-field col s12 m12 l12">
+                                    <select id="como_se_entero">
+                                    </select>
+                                </div>
                             </div>
 
 
@@ -697,6 +701,11 @@
                                     .text(json[i].nombre)
                             );
                         }
+                        try {
+                            $("#modalidad_violencia").val({{ object.modalidad_violencia_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
                         $('#modalidad_violencia').material_select();
                     }
                 });
@@ -721,6 +730,11 @@
                                     .text(json[i].nombre)
                             );
                         }
+                        try {
+                            $("#fase_violencia").val({{ object.fase_violencia_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
                         $('#fase_violencia').material_select();
                     }
                 });
@@ -743,6 +757,11 @@
                                     .attr("value", json[i].pk)
                                     .text(json[i].nombre)
                             );
+                        }
+                        try {
+                            $("#semaforo").val({{ object.semaforo_id }});
+                        } catch (e) {
+                            console.log(e.message)
                         }
                         $('#semaforo').material_select();
                     }
@@ -795,6 +814,11 @@
                                     .text(json[i].nombre)
                             );
                         }
+                        try {
+                            $("#victimas").val({{ object.victima_involucrada_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
                         $('#victimas').material_select();
                     }
                 });
@@ -817,6 +841,11 @@
                                     .attr("value", json[i].pk)
                                     .text(json[i].nombre)
                             );
+                        }
+                        try {
+                            $("#agresor").val({{ object.agresor_id }});
+                        } catch (e) {
+                            console.log(e.message)
                         }
                         $('#agresor').material_select();
                     }
@@ -897,6 +926,34 @@
                     }
                 });
 
+                $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_como_se_entero' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#como_se_entero").empty().html(' ');
+                    $('#como_se_entero').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Cómo se enteró")
+                    );
+                    for (i in json) {
+                        $('#como_se_entero').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    try {
+                            $("#como_se_entero").val({{ object.como_se_entero_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                    $('#como_se_entero').material_select();
+                }
+            });
+
 
             });
 
@@ -920,7 +977,8 @@
         }
 
         function GuardarEvaluacion() {
-            var llamada = {{ object.pk }}
+            var llamada =
+            {{ object.pk }}
             var num_totales = $('.rubro').length;
             var num_rubros_cumplidos = $('.rubro:checkbox:checked').length;
             var rubros_cumplidos = $('.rubro:checkbox:checked');

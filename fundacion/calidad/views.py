@@ -177,4 +177,5 @@ class CalificarServicio(PermissionRequiredMixin, DetailView):
         context['tipificacion'] = tipificacion
         context['examen_mental'] = examen_mental
         context['rubros'] = rubros
+        context['tareas'] = servicio.tareas.all()
         return context
