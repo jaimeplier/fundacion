@@ -266,6 +266,7 @@ class Llamada(models.Model):
     semaforo = models.ForeignKey('Semaforo', models.DO_NOTHING, blank=True, null=True)
     victima_involucrada = models.ForeignKey('VictimaInvolucrada', models.DO_NOTHING, blank=True, null=True)
     agresor = models.ForeignKey('Agresor', models.DO_NOTHING, blank=True, null=True)
+    como_se_entero = models.ForeignKey('ComoSeEntero', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = True

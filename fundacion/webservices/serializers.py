@@ -66,6 +66,7 @@ class PrimeraVezSerializer(serializers.Serializer):
     estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False )
     redes_apoyo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    como_se_entero = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Tipificacion Categoria
     categoria_tipificacion = serializers.IntegerField(min_value=1)
@@ -109,6 +110,7 @@ class SeguimientoSerializer(serializers.Serializer):
     nivel_riesgo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
+    como_se_entero = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
 
     # Tipificacion Categoria

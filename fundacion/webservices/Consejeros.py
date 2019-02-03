@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
-    FaseCambio, ExamenMental, ModalidadViolencia, FaseViolencia, Semaforo, Agresor
+    FaseCambio, ExamenMental, ModalidadViolencia, FaseViolencia, Semaforo, Agresor, ComoSeEntero
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
     BusquedaSerializer, VictimaSerializer
@@ -68,6 +68,7 @@ class PrimerRegistro(APIView):
         semaforo = Semaforo.objects.get(pk=serializer.data['semaforo'])
         victimas = Victima.objects.get(pk=serializer.data['victimas'])
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
+        como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
 
         # ---> DATOS DE LA TIPIFICACION <---
 
@@ -101,7 +102,8 @@ class PrimerRegistro(APIView):
                                          nivel_riesgo=nivel_riesgo, estatus=estatus,
                                          causa_riesgo=causa_riesgo, fase_cambio=fase_cambio,
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
-                                         semaforo=semaforo, victima_involucrada=victimas, agresor=agresor)
+                                         semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
+                                         como_se_entero=como_se_entero)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
@@ -155,6 +157,7 @@ class SeguimientoRegistro(APIView):
         semaforo = Semaforo.objects.get(pk=serializer.data['semaforo'])
         victimas = Victima.objects.get(pk=serializer.data['victimas'])
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
+        como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
 
         # ---> DATOS DE LA TIPIFICACION <---
 
@@ -181,7 +184,8 @@ class SeguimientoRegistro(APIView):
                                          nivel_riesgo=nivel_riesgo, estatus=estatus,
                                          causa_riesgo=causa_riesgo, fase_cambio=fase_cambio,
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
-                                         semaforo=semaforo, victima_involucrada=victimas, agresor=agresor)
+                                         semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
+                                         como_se_entero=como_se_entero)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
