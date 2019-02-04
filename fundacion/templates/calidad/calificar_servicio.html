@@ -100,11 +100,11 @@
 
                             </table>
                         </div>
-                    </div>
                     <div class="row sin_marg_bottom">
                         <button class="btn waves-effect waves-light col-lg-12" onclick="GuardarEvaluacion()">Guardar
                             <i class="material-icons right">send</i>
                         </button>
+                    </div>
                     </div>
                     <div id="test2" class="col s12" style="margin-top: 40px;">
                         <div class="row sin_marg_bottom">
@@ -325,7 +325,7 @@
                                 {% for tarea in tareas %}
                                     <div class="input-field col s12">
                                         <input id="{{ tarea.nombre }}{{ tarea.pk }}" type="text"
-                                               placeholder="Tarea {{ tarea.nombre }}">
+                                               placeholder="Tarea {{ tarea.nombre }}" value="{{ tarea.nombre }}">
                                     </div>
                                 {% endfor %}
                             </div>
@@ -977,8 +977,7 @@
         }
 
         function GuardarEvaluacion() {
-            var llamada =
-            {{ object.pk }}
+            var llamada ={{ object.pk }}
             var num_totales = $('.rubro').length;
             var num_rubros_cumplidos = $('.rubro:checkbox:checked').length;
             var rubros_cumplidos = $('.rubro:checkbox:checked');
