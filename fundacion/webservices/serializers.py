@@ -79,11 +79,11 @@ class PrimeraVezSerializer(serializers.Serializer):
 
 
     # Examen mental
-    estado_metal_ute = serializers.IntegerField(min_value=1)
-    estado_metal_p = serializers.IntegerField(min_value=1)
-    estado_metal_l = serializers.IntegerField(min_value=1)
-    estado_metal_m = serializers.IntegerField(min_value=1)
-    estado_metal_a = serializers.IntegerField(min_value=1)
+    estado_mental_ute = serializers.IntegerField(min_value=1)
+    estado_mental_p = serializers.IntegerField(min_value=1)
+    estado_mental_l = serializers.IntegerField(min_value=1)
+    estado_mental_m = serializers.IntegerField(min_value=1)
+    estado_mental_a = serializers.IntegerField(min_value=1)
 
 class SeguimientoSerializer(serializers.Serializer):
 
@@ -127,11 +127,11 @@ class SeguimientoSerializer(serializers.Serializer):
     descripcion_tipificacion = serializers.CharField(max_length=512)
 
     # Examen mental
-    estado_metal_ute = serializers.IntegerField(min_value=1)
-    estado_metal_p = serializers.IntegerField(min_value=1)
-    estado_metal_l = serializers.IntegerField(min_value=1)
-    estado_metal_m = serializers.IntegerField(min_value=1)
-    estado_metal_a = serializers.IntegerField(min_value=1)
+    estado_mental_ute = serializers.IntegerField(min_value=1)
+    estado_mental_p = serializers.IntegerField(min_value=1)
+    estado_mental_l = serializers.IntegerField(min_value=1)
+    estado_mental_m = serializers.IntegerField(min_value=1)
+    estado_mental_a = serializers.IntegerField(min_value=1)
 
 class ConsejeroSerializer(serializers.ModelSerializer):
     class Meta:

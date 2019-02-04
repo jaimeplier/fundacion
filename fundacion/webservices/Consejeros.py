@@ -10,7 +10,8 @@ from rest_framework.views import APIView
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
-    FaseCambio, ExamenMental, ModalidadViolencia, FaseViolencia, Semaforo, Agresor, ComoSeEntero, TareaLLamada
+    FaseCambio, ExamenMental, ModalidadViolencia, FaseViolencia, Semaforo, Agresor, ComoSeEntero, TareaLLamada, \
+    VictimaInvolucrada
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
     BusquedaSerializer, VictimaSerializer
@@ -66,7 +67,7 @@ class PrimerRegistro(APIView):
         modalidad_violencia = ModalidadViolencia.objects.get(pk=serializer.data['modalidad_violencia'])
         fase_violencia = FaseViolencia.objects.get(pk=serializer.data['fase_violencia'])
         semaforo = Semaforo.objects.get(pk=serializer.data['semaforo'])
-        victimas = Victima.objects.get(pk=serializer.data['victimas'])
+        victimas = VictimaInvolucrada.objects.get(pk=serializer.data['victimas'])
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
 
@@ -82,11 +83,11 @@ class PrimerRegistro(APIView):
 
         # ---> Datos del examen mental <---
 
-        em_ute = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_ute'])
-        em_p = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_p'])
-        em_l = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_l'])
-        em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_m'])
-        em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_a'])
+        em_ute = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_ute'])
+        em_p = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_p'])
+        em_l = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_l'])
+        em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_m'])
+        em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_a'])
 
 
         # ---> REGISTRO DE VICTIMA <---
@@ -109,15 +110,15 @@ class PrimerRegistro(APIView):
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
                                          semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
                                          como_se_entero=como_se_entero)
-        if tarea1 != '':
+        if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)
-            llamada.tareas.add(tarea1)
-        if tarea2 != '':
+            llamada.tareas.add(tarea)
+        if tarea2 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea2)
-            llamada.tareas.add(tarea2)
-        if tarea3 != '':
+            llamada.tareas.add(tarea)
+        if tarea3 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea3)
-            llamada.tareas.add(tarea3)
+            llamada.tareas.add(tarea)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
@@ -169,7 +170,7 @@ class SeguimientoRegistro(APIView):
         modalidad_violencia = ModalidadViolencia.objects.get(pk=serializer.data['modalidad_violencia'])
         fase_violencia = FaseViolencia.objects.get(pk=serializer.data['fase_violencia'])
         semaforo = Semaforo.objects.get(pk=serializer.data['semaforo'])
-        victimas = Victima.objects.get(pk=serializer.data['victimas'])
+        victimas = VictimaInvolucrada.objects.get(pk=serializer.data['victimas'])
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
 
@@ -185,11 +186,11 @@ class SeguimientoRegistro(APIView):
 
         # ---> Datos del examen mental <---
 
-        em_ute = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_ute'])
-        em_p = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_p'])
-        em_l = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_l'])
-        em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_m'])
-        em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_metal_a'])
+        em_ute = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_ute'])
+        em_p = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_p'])
+        em_l = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_l'])
+        em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_m'])
+        em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_a'])
 
 
         # ---> REGISTRO DE LLAMADA <---
@@ -206,15 +207,15 @@ class SeguimientoRegistro(APIView):
                                          semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
                                          como_se_entero=como_se_entero)
 
-        if tarea1 != '':
+        if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)
-            llamada.tareas.add(tarea1)
-        if tarea2 != '':
+            llamada.tareas.add(tarea)
+        if tarea2 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea2)
-            llamada.tareas.add(tarea2)
-        if tarea3 != '':
+            llamada.tareas.add(tarea)
+        if tarea3 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea3)
-            llamada.tareas.add(tarea3)
+            llamada.tareas.add(tarea)
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
