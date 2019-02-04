@@ -1039,6 +1039,7 @@
                 cache: false,
                 success: function (json) {
                     $("#historial").empty();
+                    console.log(json);
                     for (i in json) {
                         llamada = {
                             victima: json[i].victima.nombre + ' ' + json[i].victima.apellido_paterno + ' ' + json[i].victima.apellido_materno,
@@ -1048,7 +1049,16 @@
                             estatus: json[i].estatus.nombre,
                             plan_accion: json[i].posible_solucion,
                             causa_riesgo: json[i].causa_riesgo,
+                            tareas: json[i].tareas,
                         }
+                        var text_tareas = ''
+                        for (i = 0; i < llamada.tareas.length; i++) {
+                                  text_tareas+=`<p>
+                                    <input type="checkbox" id="tarea${llamada.tareas[i].id}" checked="checked"/>
+                                    <label for="tc1">${llamada.tareas[i].nombre}</label>
+                                </p>`
+                                }
+                        console.log(text_tareas)
                         $('#historial').append(`<div class="row sin_marg_bottom">
                                     <div class="col s12 l6 m6">
                                 <p><span class="font_naranja negritas">Nombre: </span>${llamada.victima}</p>
@@ -1083,21 +1093,7 @@
                                 <p style="margin-top: 0px; text-align: center;" class="font_naranja negritas">
                                     Tareas completas
                                 </p>
-                                <p>
-                                    <input type="checkbox" id="tc1" checked="checked"/>
-                                    <label for="tc1">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Aenean euismod bibendum laoreet</label>
-                                </p>
-                                <p>
-                                    <input type="checkbox" id="tc2"/>
-                                    <label for="tc2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Aenean euismod bibendum laoreet</label>
-                                </p>
-                                <p>
-                                    <input type="checkbox" id="tc3"/>
-                                    <label for="tc3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Aenean euismod bibendum laoreet</label>
-                                </p>
+                                ${text_tareas}
                             </div>
                             <hr></div>`
                         );

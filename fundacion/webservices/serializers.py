@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, EstatusLLamada, Evaluacion, \
-    CalificacionLlamada
+    CalificacionLlamada, TareaLLamada
 
 
 class FechaSerializer(serializers.Serializer):
@@ -158,12 +158,18 @@ class EstatusLLamadaSerializer(serializers.ModelSerializer):
         model = EstatusLLamada
         fields = '__all__'
 
+class TareasLLamadaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TareaLLamada
+        fields = '__all__'
+
 class LLamadaSerializer(serializers.ModelSerializer):
     victima = VictimaSerializer(read_only=True, many=False)
     consejero = ConsejeroSerializer(read_only=True, many=False)
     motivo = MotivoLLamadaSerializer(read_only=True, many=False)
     tipo_llamada = TipoLLamadaSerializer(read_only=True, many=False)
     estatus = EstatusLLamadaSerializer(read_only=True, many=False)
+    tareas = TareasLLamadaSerializer(read_only=True,many=True)
 
     class Meta:
         model = Llamada
