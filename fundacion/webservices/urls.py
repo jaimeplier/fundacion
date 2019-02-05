@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers, views as vtoken
 
 from webservices.Calidad import EvaluarServicio
 from webservices.Consejeros import PrimerRegistro, SeguimientoRegistro, ListConsejerosVictima, ListHistorialLLamada, \
@@ -9,10 +10,16 @@ from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, Lis
     ListVictimas, ListAgresor, ListRedesApoyo, ListEstatusLLamada, ListMedioContacto, ListNivelRiesgo, \
     ListRecomendacionesRiesgo, ListFaseCambio, ListEstadoMental, ListComoSeEntero
 from webservices.views import ResumenLlamada
+from . import views
 
 app_name = 'webservices'
 
+router = routers.DefaultRouter()
+router.register(r'mensajes', views.MensajesViewSet)
+router.register(r'recados', views.RecadosViewSet)
+
 urlpatterns = [
+    path('', include(router.urls)),
     # Consejeros:
     path('registro_primera_vez/', PrimerRegistro.as_view(), name='registro_primera_vez'),
     path('registro_seguimiento/', SeguimientoRegistro.as_view(), name='registro_seguimiento'),

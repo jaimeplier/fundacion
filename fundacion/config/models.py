@@ -581,3 +581,32 @@ class TareaLLamada(models.Model):
     class Meta:
         managed = True
         db_table = 'tarea_llamada'
+
+class Archivo(models.Model):
+    file = models.FileField(upload_to='adjuntos/')
+
+    class Meta:
+        managed = True
+        db_table = 'archivo'
+
+class Mensaje(models.Model):
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
+    fecha = models.DateTimeField(auto_now_add=True)
+    titulo = models.CharField(max_length=150)
+    cuerpo = models.CharField(max_length=500)
+    destinatarios = models.ManyToManyField(Usuario, related_name='recibidos', related_query_name='recibidos')
+    archivos = models.ManyToManyField(Archivo)
+
+    class Meta:
+        managed = True
+        db_table = 'mensaje'
+
+class Recado(models.Model):
+    usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
+    fecha = models.DateTimeField(auto_now_add=True)
+    cuerpo = models.CharField(max_length=500)
+    destinatarios = models.ManyToManyField(Usuario, related_name='recados', related_query_name='recados')
+
+    class Meta:
+        managed = True
+        db_table = 'recado'

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, EstatusLLamada, Evaluacion, \
-    CalificacionLlamada, TareaLLamada
+    CalificacionLlamada, TareaLLamada, Archivo, Usuario, Rol, Mensaje, Recado
 
 
 class FechaSerializer(serializers.Serializer):
@@ -210,3 +210,45 @@ class RubrosSerializer(serializers.Serializer):
             llamada.save()
 
         return rubros
+
+class ArchivoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Archivo
+        fields = '__all__'
+
+class UsuarioSerializer(serializers.ModelSerializer):
+    rol = serializers.PrimaryKeyRelatedField(many=False, queryset=Rol.objects.filter(pk__gt=1), read_only=False)
+    genero = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+
+    class Meta:
+        model = Usuario
+        fields = (
+            'id', 'correo', 'nombre', 'a_paterno', 'a_materno', 'foto', 'estatus',
+            'rol', 'genero')
+
+class MensajeSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer(many=False, read_only=True)
+    archivos = ArchivoSerializer(many=True, read_only=True)
+    destinatarios = UsuarioSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Mensaje
+        fields = ('id', 'usuario', 'fecha', 'titulo', 'cuerpo', 'archivos', 'destinatarios')
+
+class MensajeSerializerPk(serializers.ModelSerializer):
+    class Meta:
+        model = Mensaje
+        fields = ('titulo', 'cuerpo', 'destinatarios')
+
+class RecadoSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer(many=False, read_only=True)
+    destinatarios = UsuarioSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Recado
+        fields = ('id', 'usuario', 'fecha', 'cuerpo', 'destinatarios')
+
+class RecadoSerializerPk(serializers.ModelSerializer):
+    class Meta:
+        model = Recado
+        fields = ('cuerpo', 'destinatarios')

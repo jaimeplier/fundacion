@@ -1,9 +1,12 @@
-from rest_framework import status
+from rest_framework import status, viewsets
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Llamada
-from webservices.serializers import FechaSerializer
+from config.models import Llamada, Mensaje, Recado
+from webservices.serializers import FechaSerializer, MensajeSerializer, MensajeSerializerPk, RecadoSerializer, \
+    RecadoSerializerPk
 
 
 class ResumenLlamada(APIView):
@@ -35,3 +38,51 @@ class ResumenLlamada(APIView):
 
     def get_serializer(self):
         return FechaSerializer()
+
+class MensajesViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = Mensaje.objects.all()
+
+    def list(self, request):
+        qs = Mensaje.objects.filter(usuario=self.request.user) | Mensaje.objects.filter(
+            destinatarios=self.request.user)
+        serializer = MensajeSerializer(qs, many=True)
+        return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = MensajeSerializerPk(data=self.request.data)
+        if serializer.is_valid():
+            serializer.save(usuario=self.request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_serializer_class(self):
+        if self.request is None or self.request.method == 'POST':
+            return MensajeSerializerPk
+        else:
+            return MensajeSerializer
+
+class RecadosViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
+    queryset = Recado.objects.all()
+
+    def list(self, request):
+        qs = Recado.objects.filter(usuario=self.request.user) | Recado.objects.filter(
+            destinatarios=self.request.user)
+        serializer = RecadoSerializer(qs, many=True)
+        return Response(serializer.data)
+
+    def create(self, request, *args, **kwargs):
+        serializer = RecadoSerializerPk(data=self.request.data)
+        if serializer.is_valid():
+            serializer.save(usuario=self.request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_serializer_class(self):
+        if self.request is None or self.request.method == 'POST':
+            return RecadoSerializerPk
+        else:
+            return RecadoSerializer
