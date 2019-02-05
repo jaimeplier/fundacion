@@ -40,7 +40,7 @@ class ResumenLlamada(APIView):
         return FechaSerializer()
 
 class MensajesViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated)
+    permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     queryset = Mensaje.objects.all()
 
