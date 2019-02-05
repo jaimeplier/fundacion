@@ -1,5 +1,6 @@
 from django.urls import path, include
-from rest_framework import routers, views as vtoken
+from rest_framework import routers
+from rest_framework.authtoken import views as vtoken
 
 from webservices.Calidad import EvaluarServicio
 from webservices.Consejeros import PrimerRegistro, SeguimientoRegistro, ListConsejerosVictima, ListHistorialLLamada, \
@@ -20,6 +21,7 @@ router.register(r'recados', views.RecadosViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('api-token-auth/', vtoken.obtain_auth_token),
     # Consejeros:
     path('registro_primera_vez/', PrimerRegistro.as_view(), name='registro_primera_vez'),
     path('registro_seguimiento/', SeguimientoRegistro.as_view(), name='registro_seguimiento'),
