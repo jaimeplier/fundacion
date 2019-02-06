@@ -27,7 +27,7 @@ class EvaluacionAdd(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Agregar un evaluacion'
+            context['titulo'] = 'Agregar un rubro de evaluación'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Completa todos los campos para registrar un'
         return context
@@ -45,8 +45,8 @@ class EvaluacionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'calidad'
 
     model = Evaluacion
-    columns = ['id', 'nombre', 'valor', 'editar', 'eliminar']
-    order_columns = ['id', 'nombre', 'valor']
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
     max_display_length = 100
 
     def render_column(self, row, column):
