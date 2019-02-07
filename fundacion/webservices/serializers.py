@@ -246,12 +246,12 @@ class RecadoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recado
-        fields = ('id', 'usuario', 'fecha', 'cuerpo', 'destinatarios')
+        fields = ('id', 'usuario', 'fecha', 'cuerpo', 'destinatarios', 'asunto')
 
 class RecadoSerializerPk(serializers.ModelSerializer):
     class Meta:
         model = Recado
-        fields = ('cuerpo', 'destinatarios')
+        fields = ('cuerpo', 'destinatarios', 'asunto')
 
 class ComentarioLlamadaSerializer(serializers.Serializer):
     llamada_pk = serializers.IntegerField(min_value=1)

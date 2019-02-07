@@ -63,6 +63,7 @@ class Usuario(AbstractBaseUser):
     genero = models.ForeignKey('Sexo', models.DO_NOTHING, null=True)
     rol = models.ForeignKey('Rol', models.DO_NOTHING)
     estatus = models.BooleanField(default=True)
+    estatus_actividad = models.ForeignKey('EstatusUsuario', models.DO_NOTHING)
     foto = models.FileField(db_column='foto', upload_to='usuarios/')
 
     objects = UsuarioManager()
@@ -604,6 +605,7 @@ class Mensaje(models.Model):
 class Recado(models.Model):
     usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
     fecha = models.DateTimeField(auto_now_add=True)
+    asunto = models.CharField(max_length=150)
     cuerpo = models.CharField(max_length=500)
     destinatarios = models.ManyToManyField(Usuario, related_name='recados', related_query_name='recados')
 
@@ -625,3 +627,7 @@ class CompromisoLlamada(models.Model):
         managed = True
         db_table = 'compromiso_llamada'
 
+class EstatusUsuario(Catalogo):
+    class Meta:
+        managed = True
+        db_table = 'estatus_usuario'
