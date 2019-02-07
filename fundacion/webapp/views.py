@@ -49,7 +49,7 @@ def avisos(request):
     return render(request, template_name)
 
 def recados(request):
-    template_name = 'config/index.html'
+    template_name = 'config/enviar_recados.html'
     return render(request, template_name)
 
 def ver_avisos(request, pk):

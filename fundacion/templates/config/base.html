@@ -106,12 +106,7 @@
                     <li class="menu_redondo"><a href="#">Avisos</a></li>
                     <li class="menu_redondo"><a href="#">Recados</a></li>
                 {% elif user.is_consejero %}
-                    <li class="menu_redondo"><a href="#">Buscar usuario</a></li>
-                    <li class="menu_redondo"><a href="{% url 'consejero:registro_primera_vez' %}">Primera vez</a></li>
-                    <li class="menu_redondo"><a href="{% url 'consejero:registro_seguimiento' 11 %}">Seguimiento</a></li>
-                    <li class="menu_redondo"><a href="#">Llamada</a></li>
-                    <li class="menu_redondo"><a href="#">Historial</a></li>
-                    <li class="menu_redondo"><a href="#">Recados</a></li>
+                    <li class="menu_redondo"><a href="{% url 'consejero:busqueda_usuario' %}">Buscar usuario</a></li>
                     <li class="menu_redondo"><a href="#">Avisos</a></li>
 
                 {% elif user.is_supervisor %}
@@ -132,6 +127,8 @@
                     <li class="menu_redondo"><a href="{% url 'calidad:list_evaluacion' %}">Rubros de evaluación</a></li>
                     <li class="menu_redondo"><a href="{% url 'calidad:list_llamada' %}">Servicios</a></li>
                 {% endif %}
+                <li class="menu_redondo"><a href="{% url 'webapp:recados' %}">Recados</a></li>
+
             </ul>
         </div>
         <div id="content">
