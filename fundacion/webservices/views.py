@@ -1,12 +1,13 @@
 from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Llamada, Mensaje, Recado
+from config.models import Llamada, Mensaje, Recado, Usuario
 from webservices.serializers import FechaSerializer, MensajeSerializer, MensajeSerializerPk, RecadoSerializer, \
-    RecadoSerializerPk
+    RecadoSerializerPk, UsuarioSerializer
 
 
 class ResumenLlamada(APIView):
@@ -86,3 +87,13 @@ class RecadosViewSet(viewsets.ModelViewSet):
             return RecadoSerializerPk
         else:
             return RecadoSerializer
+
+class ListUsuarios(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = UsuarioSerializer
+
+    def get_queryset(self):
+        queryset = Usuario.objects.all()
+        return queryset
