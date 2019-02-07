@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from rest_framework.authtoken import views as vtoken
 
-from webservices.Calidad import EvaluarServicio
+from webservices.Calidad import EvaluarServicio, ComentarioServicio
 from webservices.Consejeros import PrimerRegistro, SeguimientoRegistro, ListConsejerosVictima, ListHistorialLLamada, \
     UltimaLLamada, BusquedaUsuario, ListConsejeros
 from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, ListOcupacion, ListViveCon, \
@@ -33,6 +33,7 @@ urlpatterns = [
 
     # Calidad:
     path('evaluar_servicio/', EvaluarServicio.as_view(), name='evaluar_servicio'),
+    path('comentarios_servicio/', ComentarioServicio.as_view(), name='comentarios_servicio'),
 
     # Supervisores:
     path('resumenLlamada/', ResumenLlamada.as_view(), name='resumen_puntos_mes'),

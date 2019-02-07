@@ -610,3 +610,18 @@ class Recado(models.Model):
     class Meta:
         managed = True
         db_table = 'recado'
+
+class ComentarioLlamada(models.Model):
+    llamada = models.ForeignKey("Llamada", models.DO_NOTHING)
+    comentario = models.TextField(max_length=3000)
+    compromisos = models.ManyToManyField('CompromisoLlamada', related_name='compromisos', related_query_name='compromisos')
+    class Meta:
+        managed = True
+        db_table = 'comentario_llamada'
+
+class CompromisoLlamada(models.Model):
+    nombre = models.CharField(max_length=512)
+    class Meta:
+        managed = True
+        db_table = 'compromiso_llamada'
+

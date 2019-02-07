@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, EstatusLLamada, Evaluacion, \
-    CalificacionLlamada, TareaLLamada, Archivo, Usuario, Rol, Mensaje, Recado
+    CalificacionLlamada, TareaLLamada, Archivo, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada
 
 
 class FechaSerializer(serializers.Serializer):
@@ -252,3 +252,23 @@ class RecadoSerializerPk(serializers.ModelSerializer):
     class Meta:
         model = Recado
         fields = ('cuerpo', 'destinatarios')
+
+class ComentarioLlamadaSerializer(serializers.Serializer):
+    llamada_pk = serializers.IntegerField(min_value=1)
+    comentario = serializers.CharField(max_length=3000)
+    compromisos = serializers.ListField(
+        child=serializers.CharField(max_length=512), allow_empty=True, allow_null=True, required=False)
+
+    def create(self, validated_data):
+        llamada = Llamada.objects.get(pk=validated_data.get('llamada_pk'))
+        comentario = validated_data.get('comentario')
+        cll = ComentarioLlamada.objects.create(llamada=llamada, comentario=comentario)
+        if validated_data.get('compromisos') is not None and len(validated_data.get('compromisos')) > 0:
+            compromisos = validated_data.get('compromisos')
+            for compromiso in compromisos:
+                compromiso_ll = CompromisoLlamada.objects.create(nombre=compromiso)
+                cll.compromisos.add(compromiso_ll)
+        else:
+            pass
+
+        return cll

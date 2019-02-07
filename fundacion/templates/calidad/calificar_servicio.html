@@ -100,16 +100,67 @@
 
                             </table>
                         </div>
-                    <div class="row sin_marg_bottom">
-                        <button class="btn waves-effect waves-light col-lg-12" onclick="GuardarEvaluacion()">Guardar
-                            <i class="material-icons right">send</i>
-                        </button>
-                    </div>
+                        <div class="row sin_marg_bottom">
+                            <button class="btn waves-effect waves-light col-lg-12" onclick="GuardarEvaluacion()">Guardar
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
                     </div>
                     <div id="test2" class="col s12" style="margin-top: 40px;">
                         <div class="row sin_marg_bottom">
                             <div class="col s12" style="margin-bottom: 20px;">
                                 <h5 class="font_gris_oscuro" style="text-align: center;">Comentarios</h5>
+                                <div class="row">
+                                    <div class="col s12" style="padding-top: 15px;">
+                                        <p style="text-align: center;">Comentarios</p>
+                                    </div>
+                                    <div class="input-field col s12">
+                                            <textarea id="comentario" class="materialize-textarea"
+                                                      placeholder="Comentarios"
+                                                      style="padding-left: 14px;" maxlength="3000"></textarea>
+                                    </div>
+
+                                </div>
+                                <div id="compromisos">
+
+                                    <div class="row">
+                                        <div class="input-field col s1">
+                                            <label>1.</label>
+                                        </div>
+                                        <div class="input-field col s11">
+                                            <input id="compromiso1" type="text" placeholder="Compromiso">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s1">
+                                            <label>2.</label>
+                                        </div>
+                                        <div class="input-field col s11">
+                                            <input id="compromiso2" type="text" placeholder="Compromiso">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s1">
+                                            <label>3.</label>
+                                        </div>
+                                        <div class="input-field col s11">
+                                            <input id="compromiso3" type="text" placeholder="Compromiso">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s1">
+                                            <label>4.</label>
+                                        </div>
+                                        <div class="input-field col s11">
+                                            <input id="compromiso4" type="text" placeholder="Compromiso">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row sin_marg_bottom">
+                                    <button class="btn waves-effect waves-light col-lg-12" onclick="GuardarComentarios()">Guardar
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -927,32 +978,32 @@
                 });
 
                 $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_como_se_entero' %}",
-                cache: false,
-                success: function (json) {
+                    method: "GET",
+                    url: "{% url 'webservices:list_como_se_entero' %}",
+                    cache: false,
+                    success: function (json) {
 
-                    $("#como_se_entero").empty().html(' ');
-                    $('#como_se_entero').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Cómo se enteró")
-                    );
-                    for (i in json) {
+                        $("#como_se_entero").empty().html(' ');
                         $('#como_se_entero').append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Cómo se enteró")
                         );
-                    }
-                    try {
+                        for (i in json) {
+                            $('#como_se_entero').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        try {
                             $("#como_se_entero").val({{ object.como_se_entero_id }});
                         } catch (e) {
                             console.log(e.message)
                         }
-                    $('#como_se_entero').material_select();
-                }
-            });
+                        $('#como_se_entero').material_select();
+                    }
+                });
 
 
             });
@@ -1000,6 +1051,39 @@
                 },
                 success: function (json) {
                     alert('La evaluación ha sido guardada correctamente');
+                },
+                error: function (request) {
+                    alert(request.responseText);
+                    var error = request
+                }
+            });
+
+
+        }
+
+        function GuardarComentarios() {
+            var llamada = {{ object.pk }}
+            var comentario = $('#comentario').val();
+            var compromisos = []
+                console.log($('#compromisos input[type="text"]').filter(function () {
+                    if (this.value.length > 0){
+                        compromisos.push(this.value)
+                    }
+                }).length);
+
+            $.ajax({
+                data_type: 'json',
+                traditional: true,
+                method: "POST",
+                url: "{% url 'webservices:comentarios_servicio' %}",
+                cache: false,
+                data: {
+                    llamada_pk: llamada,
+                    comentario: comentario,
+                    compromisos: compromisos,
+                },
+                success: function (json) {
+                    alert('Los comentarios han sido guardados correctamente');
                 },
                 error: function (request) {
                     alert(request.responseText);
