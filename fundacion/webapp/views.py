@@ -43,3 +43,19 @@ def login(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse('webapp:login'))
+
+def avisos(request):
+    template_name = 'config/index.html'
+    return render(request, template_name)
+
+def recados(request):
+    template_name = 'config/index.html'
+    return render(request, template_name)
+
+def ver_avisos(request, pk):
+    template_name = 'config/index.html'
+    return render(request, template_name)
+
+def ver_recados(request, pk):
+    template_name = 'config/index.html'
+    return render(request, template_name)
