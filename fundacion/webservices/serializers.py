@@ -261,6 +261,13 @@ class ComentarioLlamadaSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         llamada = Llamada.objects.get(pk=validated_data.get('llamada_pk'))
+
+        coment = ComentarioLlamada.objects.filter(llamada=llamada).first()
+        if coment is not None:
+            comprom = coment.compromisos.all().values_list('pk', flat=True)
+            comp_llamada = CompromisoLlamada.objects.filter(pk__in=comprom).delete()
+            coment.delete()
+
         comentario = validated_data.get('comentario')
         cll = ComentarioLlamada.objects.create(llamada=llamada, comentario=comentario)
         if validated_data.get('compromisos') is not None and len(validated_data.get('compromisos')) > 0:
