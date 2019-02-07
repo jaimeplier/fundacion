@@ -1,201 +1,268 @@
+{% extends 'config/base.html' %}
 {% load static %}
-  <html>
-    <head>
-      <!--Import Google Icon Font-->
-      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="{% static 'css/materialize.css' %}"  media="screen,projection"/>
-      <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <style type="text/css">
-        .input-field.col label {
-          left: 1.75rem;   
-        }
+{% block style %}
+    <style type="text/css">
 
-        input.invalid:not([type]), input.invalid:not([type]):focus, input[type=text].invalid:not(.browser-default), input[type=text].invalid:not(.browser-default):focus, input[type=password].invalid:not(.browser-default), input[type=password].invalid:not(.browser-default):focus, input[type=email].invalid:not(.browser-default), input[type=email].invalid:not(.browser-default):focus, input[type=url].invalid:not(.browser-default), input[type=url].invalid:not(.browser-default):focus, input[type=time].invalid:not(.browser-default), input[type=time].invalid:not(.browser-default):focus, input[type=date].invalid:not(.browser-default), input[type=date].invalid:not(.browser-default):focus, input[type=datetime].invalid:not(.browser-default), input[type=datetime].invalid:not(.browser-default):focus, input[type=datetime-local].invalid:not(.browser-default), input[type=datetime-local].invalid:not(.browser-default):focus, input[type=tel].invalid:not(.browser-default), input[type=tel].invalid:not(.browser-default):focus, input[type=number].invalid:not(.browser-default), input[type=number].invalid:not(.browser-default):focus, input[type=search].invalid:not(.browser-default), input[type=search].invalid:not(.browser-default):focus, textarea.materialize-textarea.invalid, textarea.materialize-textarea.invalid:focus, .select-wrapper.invalid > input.select-dropdown {
-   
-             background-image: url(imagenes/tache.png)!important;
-             background-repeat: no-repeat;
-             background-position: right;
-             background-size: 25px 25px;
-             background-origin: content-box;
-             padding-right: 3px;
+        #cuadricula{
+            background-color: #0c0c0c;
+
+        }
+        .anchobtn{
+            max-height: 100%;
+            background-color: #0D47A1;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row fondo_blanco" style="padding-top: 10%;">
+        <div class="col s1 m1 l1"></div>
+        <div class="col s10 m10 l10" style="margin-top: 0px;">
+            <div class="row">
+                <div class="col s12">
+                    <p class="negritas font_azul_verde center titulos">1. SELECCIONA TIPO DE BUSQUEDA <a href="#!"><img
+                            src="{% static 'imagenes/1/interrogacion.png' %}" class="responsive-img"></a></p>
+                </div>
+            </div>
+
+            <div class="row" style="padding: 1%;">
+
+                    <div class="row sin_marg_bottom">
+                        <div class=" col s12 txt_algn_center">
+                            <p style="text-align: center;">
+                                <input class="with-gap" name="datos_p" type="radio" id="rv1" value="0" onClick="TipoBusqueda(1)"/>
+                                <label for="rv1" style="font-size: 18px;">Búsqueda por teléfono</label>
+                                <input class="with-gap" name="datos_p" type="radio" id="rv2" value="1" onClick="TipoBusqueda(2)"/>
+                                <label for="rv2" style="font-size: 18px;">Búsqueda por nombre</label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row mdl-grid">
+                        <div class=" input-field col s12 m10 l10" id="idTelefono">
+                            <input id="datos_personalesT" type="number" class="validate" required="required" >
+                            <label for="datos_personalesT"> Número de Teléfono</label>
+                        </div>
+                        <div class=" input-field col s12 m10 l10" id="idNombre">
+                            <input id="datos_personalesN" type="text" class="validate" required="required">
+                            <label for="datos_personalesN"> Nombre o alias</label>
+                        </div>
+                        <div class=" input-field col s12 m2 l2">
+                            <button class="btn fondo_naranja redondo" type="submit" name="action" onClick="Busqueda()">Buscar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12">
+                            <p class="negritas font_azul_verde center titulos">2. REFINA TU BÚQUEDA <a href="#!"><img
+                            src="{% static 'imagenes/1/interrogacion.png' %}" class="responsive-img"></a></p>
+                        </div>
+                    </div>
+
+                    <div class="row sin_marg_bottom">
+                        <div class="input-field col s12 m4 l4">
+                            <select id="consejeros">
+                            </select>
+                        </div>
+                         <div class=" input-field col s12 m4 l4">
+                                <input id="fecha_inicio" type="text" class="datepicker" required="required"
+                                       placeholder="DE">
+                            </div>
+                            <div class=" input-field col s12 m4 l4">
+                                <input id="fecha_fin" type="text" class="datepicker" required="required"
+                                       placeholder="A">
+                            </div>
+                    </div>
+                    <div id="titulo">
+
+                    </div>
+                    <div id="historial">
+
+                    </div>
+
+
+
+
+{% endblock %}
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+{% block scripts %}
+
+
+    <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var tipoBusqueda = "";
+            $("#idTelefono").show()
+            $("#idNombre").hide()
+            $('.collapsible').collapsible();
+            $('select').material_select();
+            $('.button-collapse').sideNav({
+                    menuWidth: 300, // Default is 300
+                    edge: 'left', // Choose the horizontal origin
+                    closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                    draggable: true // Choose whether you can drag to open on touch screens,
+                }
+            );
+
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 100,
+                min: [1939, 1, 1],
+                max: [2019, 1, 31],
+                format: 'yyyy-mm-dd',
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: false, // Close upon selecting a date,
+                container: undefined // ex. 'body' will append picker to body
+            });
+
+        });
+
+        $.ajax({
+            method: "GET",
+            url: "{% url 'webservices:list_consejeros' %}",
+            cache: false,
+            success: function (json) {
+
+                $("#consejeros").empty().html(' ');
+                $('#consejeros').append(
+                    $("<option></option>")
+                        .attr("value", "")
+                        .text("Consejeros")
+                );
+                for (i in json) {
+                    $('#consejeros').append(
+                        $("<option></option>")
+                            .attr("value", json[i].pk)
+                            .text(json[i].get_full_name)
+                    );
+                }
+                $('#consejeros').material_select();
+            }
+        });
+
+        function TipoBusqueda(valor) {
+
+            if (valor == 1) {
+                $("#idTelefono").show()
+                $("#idNombre").hide()
+                tipoBusqueda = 0
+            } else {
+                $("#idTelefono").hide()
+                $("#idNombre").show()
+                tipoBusqueda = 1
+            }
+         }
+
+
+
+        function Busqueda() {
+
+            var telefono = $('#datos_personalesT').val();
+            var nombre = $('#datos_personalesN').val();
+            var tipoBusqueda = "";
+
+            if ($("#rv1").is(':checked')){
+                tipoBusqueda = 0;
+            } else {
+                tipoBusqueda = 1;
             }
 
+            if(tipoBusqueda == 0 &&  $('#datos_personalesT').val() == ""){
+                alert('Introduce un número');
+                    return
+            } else if (tipoBusqueda == 1 &&  $('#datos_personalesN').val() == ""){
+                alert('Introduce un nombre');
+                    return
+            } else {
+
+                $.ajax({
+                method: "GET",
+                url: '/ws/busqueda_usuario/?tipo_busqueda=' + tipoBusqueda + '&telefono=' + telefono + '&nombre=' +  nombre,
+                cache: false,
+
+                success: function (json) {
+                    if (json == ""){
+                        $('#titulo').empty();
+                        $('#titulo').append(`<div class="container center">
+                                    <div class="col s12 center">
+                                    <p class="negritas font_azul_verde center titulos">No encontramos ningún usuario registrado con esos datos </p>
+                                    <a href="/consejero/registro_primera_vez/"><button class="btn">Registrar uno nuevo</button></a>
+                                </div>
+                            </div>`);
+                    } else
+
+                        $('#titulo').empty();
+                        $('#titulo').append(`<div class="row">
+                                    <div class="col s12">
+                                    <p class="negritas font_azul_verde center titulos">3. RESULTADOS DE BÚSQUEDA <a href="#!"><img
+                                    src="{% static 'imagenes/1/interrogacion.png' %}" class="responsive-img"></a></p>
+                                </div>
+                            </div>`);
+
+                    $("#historial").empty();
+                    for (i in json) {
+                        llamada = {
+                            victima: json[i].victima.nombre + ' ' + json[i].victima.apellido_paterno + ' ' + json[i].victima.apellido_materno,
+                            consejero: json[i].consejero.get_full_name,
+                            id: json[i].id,
+                            estatus: json[i].estatus.nombre,
+                            pk: json[i].victima.pk,
+                            ultllamada: json[i].fecha,
+                            motivo: json[i].motivo.nombre,
+                            causa: json[i].causa_riesgo,
+
+                        }
+                        $('#historial').append(`
+                                <div class="container sin_marg_bottom">
+                                    <div class="col s12 l4 m4 left">
+                                    <p><span class="font_negra negritas">Id Caso:</span>${llamada.id}</p>
+                                    <p><span class="font_negra negritas">Nombre:</span>
+                                    <br>${llamada.victima}</p>
+                                    <p><span class="font_negra negritas">Consejero: </span>
+                                    <br>${llamada.consejero}</p>
+                                    <p><span class="font_negra negritas">Última llamada: </span>
+                                    <br>${llamada.ultllamada}</p>
+                            </div>
+
+                            <div class="col s12 l4 m4 center" id="cuadricula" >
+
+                                    <p><span class="font_blanco negritas">Mótivo de llamada</span>
+                                    <br><span class="font_blanco">${llamada.motivo}</span></p>
+                                    <p><span class="font_blanco negritas">Nivel de Riesgo</span>
+                                    <progress id="html5" max="100" value="91"></progress>
+                                    <br><span class="font_blanco medianas">${llamada.motivo}</span></p>
+                                    <p><span class="font_blanco negritas">Nivel de Riesgo</span>
+                                    <progress id="html5" max="100" value="91"></progress>
+                                    <br><span class="font_blanco medianas">${llamada.motivo}</span></p>
 
 
-      </style>
-    </head>
+                            </div>
 
-    <body>
-      <main class="fondo_blanco">
-        <div id="had-container">
-            <div class="row fondo_gris datos_usuario">
-              <div class="col s12 m2 l2 center">
-                <img src="{% static 'imagenes/base/logo-origen.png' %}" class="responsive-img" style="padding-top: 4%; max-width: 318px;">
-              </div>
-              <div class="col s12 m10 l10"></div>
-            </div>
-        </div>    
-        <div id="container" class="fondo_blanco"  style="margin-top: 72px;">
-            <div id="menu" class="fondo_negro">
-              <ul id="slide-out" class="side-nav fixed" >
-                <li class="txt_algn_center menu_redondo1 fondo_negro" style="padding-top: 15px;">
-                   <div class="row" style="margin-bottom: 0px;">
-                      <div class="col s12"></div>
-                      <div class="col s12">
-                        <div class="row" style="margin-bottom: 0px;">
-                          <div class="col s12 center" style="padding-top:5%;">
-                            <img src="{% static 'imagenes/foto.jpg' %}" style="border: #EF7F13 3px solid; padding:3%;" alt="" class="circle foto" width="100">
-                          </div>
-                          <div class="col s9 center" style="padding-top: 2%; margin-top: 0px;">
-                            <p class="font_blanco negritas" style="margin-top: 0px;">Laura Patricia Flores Cruz</p>
-                          </div>
-                          <div class="col s3 center" style="padding-top:0%;">
-                            <p><a class="font_naranja" href="#"><i class="material-icons">power_settings_new</i></a></p>
-                          </div>
-                        </div>
-                      </div>
-                   </div>
-                </li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo">
-                  <ul class="collapsible collapsible-accordion">
-                    <li class="img_flecha">
-                      <a class="collapsible-header">Texto <i class="material-icons" style="float: right;margin: 0 0px 0 0; color: white;">chevron_right</i></a>
-                      <div class="collapsible-body">
-                        <ul>
-                          <li><a href="#!">Texto 1</a></li>
-                          <li><a href="#!">Texto 2</a></li>
-                          <li><a href="#!">Texto 3</a></li>
-                          <li><a href="#!">Texto 4</a></li>
-                        </ul>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo">
-                  <ul class="collapsible collapsible-accordion">
-                    <li >
-                      <a class="collapsible-header">Texto <i class="material-icons" style="float: right;margin: 0 0px 0 0; color: white;">chevron_right</i></a>
-                      <div class="collapsible-body">
-                        <ul>
-                          <li><a href="#!">Texto 1</a></li>
-                          <li><a href="#!">Texto 2</a></li>
-                          <li><a href="#!">Texto 3</a></li>
-                          <li><a href="#!">Texto 4</a></li>
-                        </ul>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-                <li class="menu_redondo"><a href="#!">Texto</a></li>
-              </ul>
-            </div>
-            <div id="content">
-              <div class="row fondo_naranja" style="margin-bottom: 0px;">
-                <div class="col s12" style="margin-left: 1%;">
-                    <a href="#" style="position: relative; top: 8px; right: 10px; color: white;" data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
-                    <a href="#!" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
-                    <a href="#!" class="breadcrumb font_blanco" style="font-size: 12px;">Texto</a>
-                    <a href="#!" class="breadcrumb font_blanco" style="font-size: 12px;">Texto</a>
-                </div>
-                
-              </div>
+                            <div class="col s12 l4 m4 fondo_azul">
+                                <a href="/consejero/registro_seguimiento/${llamada.pk}"><div class="anchobtn col s12 l4 m4 fondo_azul" name="action">>
+                                </div></a>
+                            </div>
 
-              <div class="row fondo_blanco" style="padding-top: 10%;">
-              <div class="col s1 m1 l1"></div>
-              <div class="col s10 m10 l10" style="margin-top: 0px;">
-               <div class="row">
-                 <div class="col s12">
-                   <p class="negritas font_azul_verde center titulos">FORMULARIO <a href="#!" style="mar"2%;><img src="{% static 'imagenes/1/interrogacion.png' %}" class="responsive-img"></a></p>
-                 </div>
-               </div> 
-                <div class="row" style="padding: 1%;">
-                  <form class="col s12">
+                            <div class="col s12 l12 m12 center">
+                                <p><span class="negritas font_azul txt_algn_center">RESUMEN DE ÚLTIMA LLAMADA</span></p>
+                                <p><span class="font_azul txt_algn_center">${llamada.causa}</span></p>
+                            </div>
 
-                    <div class="row sin_marg_bottom">
-                      <div class="input-field col s12">
-                        <input id="texto" type="text" class="validate" required="required">
-                        <label for="texto">Texto</label>
-                      </div>
-                    </div>
-                    <div class="row sin_marg_bottom">
-                      <div class="input-field col s12">
-                        <select>
-                          <option value="" disabled selected>Texto</option>
-                          <option value="1">Option 1</option>
-                          <option value="2">Option 2</option>
-                          <option value="3">Option 3</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="row sin_marg_bottom">
-                      <div class="input-field col s6">
-                        <input id="texto" type="text" class="validate" required="required">
-                        <label for="texto">Texto</label>
-                      </div>
-                      <div class="input-field col s6">
-                        <input id="texto" type="text" class="validate" required="required">
-                        <label for="texto">Texto</label>
-                      </div>
-                    </div>
-                    <div class="row sin_marg_bottom">
-                      <div class="input-field col s4">
-                        <input id="texto" type="text" class="validate" required="required">
-                        <label for="texto">Texto</label>
-                      </div>
-                      <div class="input-field col s4">
-                        <input id="texto" type="text" class="validate" required="required">
-                        <label for="texto">Texto</label>
-                      </div>
-                      <div class="input-field col s4">
-                        <input id="texto" type="text" class="validate" required="required">
-                        <label for="texto">Texto</label>
-                      </div>
-                    </div>
-                  </form>
-               </div>
-                <div class="row">
-                  <div class="col s12 center"  style="margin-bottom: 5%;">
-                    <button class="btn fondo_naranja redondo" type="submit" name="action">ENVIAR</button>
-                  </div>
-                </div>
-              </div>
-              <div class="col s1 m1 l1"></div>
-            </div>
 
-            
-            </div>
-        </div>    
-      </main> 
-      <div id="container" class="fondo_blanco">
-      <div class="row" style="margin-bottom: 0px; padding-bottom: 3%;">
-              <div class="col s12 center">
-                <img src="{% static 'imagenes/base/logo-gris.png' %}" class="responsive-img">
-              </div>
-            </div>
-      </div>      
 
-       <!--Import jQuery before materialize.js-->
-       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-       <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
-       <script type="text/javascript">
-        $(document).ready(function() {
-          $('select').material_select();
-          $('.button-collapse').sideNav({
-            menuWidth: 300, // Default is 300
-            edge: 'left', // Choose the horizontal origin
-            closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-            draggable: true // Choose whether you can drag to open on touch screens,
-          }
-        ); 
-        });
-         
-       </script>
-   </body>
-  </html>
+                            </div>`
+                        );
+                    }
+                }
+            });
+
+            }
+        }
+
+
+    </script>
+{% endblock %}
