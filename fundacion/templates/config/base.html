@@ -109,11 +109,10 @@
                             href="{% url 'administrador:list_acude_institucion' %}">Instituciones</a>
                     </li>
                     <li class="menu_redondo"><a href="#">Estadísticas</a></li>
-                    <li class="menu_redondo"><a href="#">Avisos</a></li>
-                    <li class="menu_redondo"><a href="#">Recados</a></li>
+
                 {% elif user.is_consejero %}
                     <li class="menu_redondo"><a href="{% url 'consejero:busqueda_usuario' %}">Buscar usuario</a></li>
-                    <li class="menu_redondo"><a href="#">Avisos</a></li>
+
 
                 {% elif user.is_supervisor %}
                     <li class="menu_redondo"><a href="{% url 'supervisor:resumen' %}">Resumen</a></li>
@@ -123,8 +122,6 @@
                             href="{% url 'administrador:list_acude_institucion' %}">Instituciones</a>
                     </li>
                     <li class="menu_redondo"><a href="#">Estadísticas</a></li>
-                    <li class="menu_redondo"><a href="#">Avisos</a></li>
-                    <li class="menu_redondo"><a href="#">Recados</a></li>
                 {% elif user.is_directorio %}
                     <li class="menu_redondo"><a
                             href="{% url 'directorio:list_acude_institucion' %}">Instituciones</a>
@@ -134,6 +131,7 @@
                     <li class="menu_redondo"><a href="{% url 'calidad:list_llamada' %}">Servicios</a></li>
                 {% endif %}
                 <li class="menu_redondo"><a href="{% url 'webapp:recados' %}">Recados</a></li>
+                <li class="menu_redondo"><a href="{% url 'webapp:avisos' %}">Avisos</a></li>
 
             </ul>
         </div>
