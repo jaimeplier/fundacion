@@ -57,7 +57,7 @@ class MensajesViewSet(viewsets.ModelViewSet):
         serializer = MensajeSerializerPk(data=self.request.data)
         if serializer.is_valid():
             serializer.save(usuario=self.request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({'id': serializer.instance.pk, 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_serializer_class(self):
@@ -82,7 +82,7 @@ class RecadosViewSet(viewsets.ModelViewSet):
         serializer = RecadoSerializerPk(data=self.request.data)
         if serializer.is_valid():
             serializer.save(usuario=self.request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({'id': serializer.instance.pk, 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_serializer_class(self):
