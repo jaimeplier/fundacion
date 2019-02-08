@@ -1,13 +1,14 @@
 from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from config.models import Llamada, Mensaje, Recado, Usuario, EstatusUsuario
 from webservices.serializers import FechaSerializer, MensajeSerializer, MensajeSerializerPk, RecadoSerializer, \
-    RecadoSerializerPk, UsuarioSerializer, EstatusUsuarioSerializer, PkSerializer
+    RecadoSerializerPk, UsuarioSerializer, EstatusUsuarioSerializer, PkSerializer, ArchivoMensjaSerializer, \
+    ArchivoEventoSerializer
 
 
 class ResumenLlamada(APIView):
@@ -130,3 +131,14 @@ class UpdateEstatusActividadUsuario(APIView):
 
     def get_serializer(self):
         return PkSerializer()
+
+class AgregaArchivoMensaje(CreateAPIView):
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ArchivoMensjaSerializer
+
+
+class AgregaArchivoRecado(CreateAPIView):
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ArchivoEventoSerializer
