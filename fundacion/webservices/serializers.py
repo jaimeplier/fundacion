@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, EstatusLLamada, Evaluacion, \
-    CalificacionLlamada, TareaLLamada, Archivo, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada
+    CalificacionLlamada, TareaLLamada, Archivo, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
+    EstatusUsuario
 
 
 class FechaSerializer(serializers.Serializer):
@@ -279,3 +280,13 @@ class ComentarioLlamadaSerializer(serializers.Serializer):
             pass
 
         return cll
+
+class EstatusUsuarioSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EstatusUsuario
+        fields = ('id', 'nombre', 'estatus')
+
+class PkSerializer(serializers.Serializer):
+
+    pk = serializers.IntegerField(min_value=1)

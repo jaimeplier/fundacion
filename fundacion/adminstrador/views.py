@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.gis.geos import Point
@@ -16,12 +18,12 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm, \
     EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm, \
     AgresorForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm, RecomendacionRiesgoForm, \
-    FaseCambioForm
+    FaseCambioForm, ActividadUsuarioForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
     MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
-    ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio
+    ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -36,8 +38,8 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'administrador'
 
     model = Llamada
-    columns = ['id', 'victima.nombre', 'consejero.get_full_name', 'hora_inicio', 'hora_fin', 'duracion_llamada',
-               'vida_riesgo', 'tipo_violencia', 'institucion', 'estatus', 'medio_contacto']
+    columns = ['id', 'victima.nombre', 'nombre', 'hora_inicio', 'hora_fin', 'duracion_llamada',
+               'vida_en_riesgo', 'tipo_violencia', 'institucion', 'estatus', 'medio_contacto']
     order_columns = ['id', 'victima__nombre', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo',
                      'tipo_violencia', 'estatus', 'institucion__nombre', 'estatus__nombre', 'medio_contacto']
     max_display_length = 100
@@ -46,6 +48,19 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
         if column == 'id':
             return row.pk
+        elif column == 'nombre':
+            return  row.consejero.get_full_name()
+        elif column == 'duracion_llamada':
+            formato = '%H:%M:%S'
+            h1 = str(row.hora_inicio.hour) + ':' + str(row.hora_inicio.minute) + ':' + str(row.hora_inicio.second)
+            h2 = str(row.hora_fin.hour) + ':' + str(row.hora_fin.minute) + ':' + str(row.hora_fin.second)
+            h1 = datetime.strptime(h1, formato)
+            h2 = datetime.strptime(h2, formato)
+            return str(h2-h1)
+        elif column == 'vida_en_riesgo':
+            if row.vida_en_riesgo:
+                return 'Sí'
+            return 'No'
 
         return super(LlamadaAjaxList, self).render_column(row, column)
 
@@ -3566,4 +3581,92 @@ class FaseCambioEdit(PermissionRequiredMixin, UpdateView):
 def delete_fase_cambio(request, pk):
     fase_cambio = get_object_or_404(FaseCambio, pk=pk)
     fase_cambio.delete()
+    return JsonResponse({'result': 1})
+
+class ActividadUsuarioAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = EstatusUsuario
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/actividad_usuario/list'
+    form_class = ActividadUsuarioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ActividadUsuarioAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar una actividad de usuario'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar una actividad de usuario'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_actividad_usuario(request):
+    template_name = 'administrador/tab_actividad_usuario.html'
+    return render(request, template_name)
+
+
+class ActividadUsuarioAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = EstatusUsuario
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_actividad_usuario',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(ActividadUsuarioAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return EstatusUsuario.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class ActividadUsuarioEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/actividad_usuario/list'
+
+    model = EstatusUsuario
+    template_name = 'config/formulario_1Col.html'
+    form_class = ActividadUsuarioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ActividadUsuarioEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_actividad_usuario(request, pk):
+    actividad_usuario = get_object_or_404(EstatusUsuario, pk=pk)
+    actividad_usuario.delete()
     return JsonResponse({'result': 1})
