@@ -5,10 +5,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Llamada, Mensaje, Recado, Usuario, EstatusUsuario
+from config.models import Llamada, Mensaje, Recado, Usuario, EstatusUsuario, ArchivoMensaje
 from webservices.serializers import FechaSerializer, MensajeSerializer, MensajeSerializerPk, RecadoSerializer, \
-    RecadoSerializerPk, UsuarioSerializer, EstatusUsuarioSerializer, PkSerializer, ArchivoMensjaSerializer, \
-    ArchivoEventoSerializer
+    RecadoSerializerPk, UsuarioSerializer, EstatusUsuarioSerializer, PkSerializer, ArchivoMensajeSerializer, \
+    ArchivoRecadoSerializer
 
 
 class ResumenLlamada(APIView):
@@ -19,14 +19,14 @@ class ResumenLlamada(APIView):
         tipo = serializer.validated_data['tipo']
         if tipo == 'dia':
             dia = serializer.validated_data['fecha']
-            llamadas_dia = Llamada.objects.filter(fecha__date = dia)
+            llamadas_dia = Llamada.objects.filter(fecha__date=dia)
             return Response(llamadas_dia, status=status.HTTP_200_OK)
         elif tipo == 'mes':
             year = serializer.validated_data['anio']
             month = serializer.validated_data['mes']
 
             llamadas_mes = Llamada.objects.filter(fecha__year__gte=year, fecha__month__gte=month,
-                                          fecha__year__lte=year, fecha__month__lte=month, accion__pk=1)
+                                                  fecha__year__lte=year, fecha__month__lte=month, accion__pk=1)
             return Response(llamadas_mes, status=status.HTTP_200_OK)
         elif tipo == 'rango':
             dia = serializer.validated_data['fecha']
@@ -40,6 +40,7 @@ class ResumenLlamada(APIView):
 
     def get_serializer(self):
         return FechaSerializer()
+
 
 class MensajesViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
@@ -65,6 +66,7 @@ class MensajesViewSet(viewsets.ModelViewSet):
         else:
             return MensajeSerializer
 
+
 class RecadosViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)
@@ -89,6 +91,7 @@ class RecadosViewSet(viewsets.ModelViewSet):
         else:
             return RecadoSerializer
 
+
 class ListUsuarios(ListAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication, SessionAuthentication)
@@ -98,6 +101,7 @@ class ListUsuarios(ListAPIView):
     def get_queryset(self):
         queryset = Usuario.objects.all()
         return queryset
+
 
 class ListEstatusActividadUsuario(ListAPIView):
     permission_classes = (IsAuthenticated,)
@@ -109,8 +113,8 @@ class ListEstatusActividadUsuario(ListAPIView):
         queryset = EstatusUsuario.objects.filter(estatus=True)
         return queryset
 
-class UpdateEstatusActividadUsuario(APIView):
 
+class UpdateEstatusActividadUsuario(APIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication, SessionAuthentication)
 
@@ -132,13 +136,53 @@ class UpdateEstatusActividadUsuario(APIView):
     def get_serializer(self):
         return PkSerializer()
 
+
 class AgregaArchivoMensaje(CreateAPIView):
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)
-    serializer_class = ArchivoMensjaSerializer
+    serializer_class = ArchivoMensajeSerializer
 
 
 class AgregaArchivoRecado(CreateAPIView):
     authentication_classes = (TokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)
-    serializer_class = ArchivoEventoSerializer
+    serializer_class = ArchivoRecadoSerializer
+
+
+class ListArchivoMensaje(ListAPIView):
+    """
+    **Búsqueda de archivos en mensajes**
+
+    1. id_mensaje: número entero del ID del mensaje
+
+    """
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ArchivoMensajeSerializer
+
+    def get_queryset(self):
+        pk_mensaje = self.request.query_params.get('id_mensaje', None)
+        queryset = ArchivoMensaje.objects.none()
+        if pk_mensaje is not None:
+            queryset = ArchivoMensaje.objects.filter(mensaje__pk=pk_mensaje)
+        return queryset
+
+
+class ListArchivoRecado(ListAPIView):
+    """
+    **Búsqueda de archivos en recados**
+
+    1. id_recado: número entero del ID del mensaje
+
+    """
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ArchivoRecadoSerializer
+
+    def get_queryset(self):
+        pk_recado = self.request.query_params.get('id_recado', None)
+        queryset = ArchivoMensaje.objects.none()
+        if pk_recado is not None:
+            queryset = ArchivoMensaje.objects.filter(mensaje__pk=pk_recado)
+        return queryset
+

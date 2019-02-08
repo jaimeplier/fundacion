@@ -285,13 +285,13 @@ class PkSerializer(serializers.Serializer):
 
     pk = serializers.IntegerField(min_value=1)
 
-class ArchivoMensjaSerializer(serializers.ModelSerializer):
+class ArchivoMensajeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArchivoMensaje
         fields = '__all__'
 
 
-class ArchivoEventoSerializer(serializers.ModelSerializer):
+class ArchivoRecadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArchivoRecado
         fields = '__all__'
