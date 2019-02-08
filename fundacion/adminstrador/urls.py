@@ -19,7 +19,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     AgresorAjaxList, AgresorEdit, \
     ComoSeEnteroAdd, ComoSeEnteroAjaxList, ComoSeEnteroEdit, EstadoMentalAdd, EstadoMentalAjaxList, EstadoMentalEdit, \
     NivelRiesgoAdd, NivelRiesgoAjaxList, NivelRiesgoEdit, RecomendacionRiesgoAdd, RecomendacionRiesgoAjaxList, \
-    RecomendacionRiesgoEdit, FaseCambioAdd, FaseCambioAjaxList, FaseCambioEdit
+    RecomendacionRiesgoEdit, FaseCambioAdd, FaseCambioAjaxList, FaseCambioEdit, ActividadUsuarioAdd, \
+    ActividadUsuarioAjaxList, ActividadUsuarioEdit
 from . import views
 
 app_name = 'administrador'
@@ -262,4 +263,10 @@ urlpatterns = [
     path('fase_cambio/ajax/list/', FaseCambioAjaxList.as_view(), name='list_ajax_fase_cambio'),
     path('fase_cambio/edit/<int:pk>', FaseCambioEdit.as_view(), name='edit_fase_cambio'),
     path('fase_cambio/list/delete/<int:pk>', views.delete_fase_cambio, name='delete_fase_cambio'),
+
+    path('actividad_usuario/add/', ActividadUsuarioAdd.as_view(), name='add_actividad_usuario'),
+    path('actividad_usuario/list/', views.list_actividad_usuario, name='list_actividad_usuario'),
+    path('actividad_usuario/ajax/list/', ActividadUsuarioAjaxList.as_view(), name='list_ajax_actividad_usuario'),
+    path('actividad_usuario/edit/<int:pk>', ActividadUsuarioEdit.as_view(), name='edit_actividad_usuario'),
+    path('actividad_usuario/list/delete/<int:pk>', views.delete_actividad_usuario, name='delete_actividad_usuario'),
 ]
