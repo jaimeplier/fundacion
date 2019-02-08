@@ -583,24 +583,24 @@ class TareaLLamada(models.Model):
         managed = True
         db_table = 'tarea_llamada'
 
-class Archivo(models.Model):
-    file = models.FileField(upload_to='adjuntos/')
-
-    class Meta:
-        managed = True
-        db_table = 'archivo'
-
 class Mensaje(models.Model):
     usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
     fecha = models.DateTimeField(auto_now_add=True)
     titulo = models.CharField(max_length=150)
     cuerpo = models.CharField(max_length=500)
     destinatarios = models.ManyToManyField(Usuario, related_name='recibidos', related_query_name='recibidos')
-    archivos = models.ManyToManyField(Archivo)
 
     class Meta:
         managed = True
         db_table = 'mensaje'
+
+class ArchivoMensaje(models.Model):
+    archivo = models.FileField(upload_to='adjunto_mensajes/')
+    mensaje = models.ForeignKey('Mensaje', on_delete=models.DO_NOTHING, related_name='archivos')
+
+    class Meta:
+        managed = True
+        db_table = 'archivo_mensaje'
 
 class Recado(models.Model):
     usuario = models.ForeignKey(Usuario, models.DO_NOTHING)
@@ -612,6 +612,14 @@ class Recado(models.Model):
     class Meta:
         managed = True
         db_table = 'recado'
+
+class ArchivoRecado(models.Model):
+    file = models.FileField(upload_to='adjunto_recado/')
+    recado = models.ForeignKey('Recado', on_delete=models.DO_NOTHING, related_name='archivos')
+
+    class Meta:
+        managed = True
+        db_table = 'archivo_recado'
 
 class ComentarioLlamada(models.Model):
     llamada = models.ForeignKey("Llamada", models.DO_NOTHING)

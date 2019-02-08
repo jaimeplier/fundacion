@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, EstatusLLamada, Evaluacion, \
-    CalificacionLlamada, TareaLLamada, Archivo, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
+    CalificacionLlamada, TareaLLamada, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
     EstatusUsuario
 
 
@@ -212,11 +212,6 @@ class RubrosSerializer(serializers.Serializer):
 
         return rubros
 
-class ArchivoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Archivo
-        fields = '__all__'
-
 class UsuarioSerializer(serializers.ModelSerializer):
     rol = serializers.PrimaryKeyRelatedField(many=False, queryset=Rol.objects.filter(pk__gt=1), read_only=False)
     genero = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
@@ -229,7 +224,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 class MensajeSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer(many=False, read_only=True)
-    archivos = ArchivoSerializer(many=True, read_only=True)
     destinatarios = UsuarioSerializer(many=True, read_only=True)
 
     class Meta:
