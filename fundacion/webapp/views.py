@@ -4,6 +4,9 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.urls import reverse
 
+from config.models import Usuario
+
+
 def index(request):
     template_name = 'config/index.html'
     return render(request, template_name)
@@ -52,10 +55,18 @@ def recados(request):
     template_name = 'config/enviar_recados.html'
     return render(request, template_name)
 
-def ver_avisos(request, pk):
-    template_name = 'config/index.html'
-    return render(request, template_name)
+def ver_avisos(request):
+    template_name = 'config/enviar_avisos.html'
+    usuario = Usuario.objects.get(pk=request.user.pk)
+    context = {
+        'usuario': usuario
+    }
+    return render(request, template_name, context)
 
-def ver_recados(request, pk):
+def ver_recados(request):
     template_name = 'config/index.html'
-    return render(request, template_name)
+    usuario = Usuario.objects.get(pk=request.user.pk)
+    context = {
+        'usuario': usuario
+    }
+    return render(request, template_name, context)

@@ -12,7 +12,7 @@ urlpatterns = [
     path('avisos/', views.avisos, name='avisos'),
     path('recados/', views.recados, name='recados'),
 
-    path('ver_avisos/<int:pk>', views.ver_avisos, name='ver_avisos'),
-    path('ver_recados/<int:pk>', views.ver_recados, name='ver_recados'),
+    path('ver_avisos/', views.ver_avisos, name='ver_avisos'),
+    path('ver_recados/', views.ver_recados, name='ver_recados'),
 
 ]
