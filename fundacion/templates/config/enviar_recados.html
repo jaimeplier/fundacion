@@ -11,7 +11,7 @@
 
         input.invalid:not([type]), input.invalid:not([type]):focus, input[type=text].invalid:not(.browser-default), input[type=text].invalid:not(.browser-default):focus, input[type=password].invalid:not(.browser-default), input[type=password].invalid:not(.browser-default):focus, input[type=email].invalid:not(.browser-default), input[type=email].invalid:not(.browser-default):focus, input[type=url].invalid:not(.browser-default), input[type=url].invalid:not(.browser-default):focus, input[type=time].invalid:not(.browser-default), input[type=time].invalid:not(.browser-default):focus, input[type=date].invalid:not(.browser-default), input[type=date].invalid:not(.browser-default):focus, input[type=datetime].invalid:not(.browser-default), input[type=datetime].invalid:not(.browser-default):focus, input[type=datetime-local].invalid:not(.browser-default), input[type=datetime-local].invalid:not(.browser-default):focus, input[type=tel].invalid:not(.browser-default), input[type=tel].invalid:not(.browser-default):focus, input[type=number].invalid:not(.browser-default), input[type=number].invalid:not(.browser-default):focus, input[type=search].invalid:not(.browser-default), input[type=search].invalid:not(.browser-default):focus, textarea.materialize-textarea.invalid, textarea.materialize-textarea.invalid:focus, .select-wrapper.invalid > input.select-dropdown {
 
-             background-image: url(imagenes/tache.png)!important;
+
              background-repeat: no-repeat;
              background-position: right;
              background-size: 25px 25px;
@@ -49,8 +49,6 @@
 
 {% block content %}
 
-
-
         <div class="row fondo_blanco" style="padding-top: 5%;">
               <div class="col s1 m1 l1"></div>
               <div class="col s10 m10 l10" style="margin-top: 0px;">
@@ -63,7 +61,7 @@
                   <form class="col s12" method="post" enctype="multipart/form-data">
                     <div class="row sin_marg_bottom">
                       <div class=" input-field col s12">
-                          <select class="js-example-placeholder-multiple js-states form-control" multiple="multiple"></select>
+                          <select class="js-data-example-ajax"></select>
                       </div>
                       <div class=" input-field col s12">
                          <input id="asunto" type="text" class="validate" required="required">
@@ -102,42 +100,70 @@
                </div>
                 <div class="row">
                   <div class="col s12 center"  style="margin-bottom: 5%;">
-                    <button class="btn fondo_naranja redondo" type="submit" name="action">Enviar</button>
+                    <button class="btn fondo_naranja redondo" name="action" onclick="enviarRecados()">Enviar</button>
                   </div>
                 </div>
               </div>
               <div class="col s1 m1 l1"></div>
             </div>
 
-       <!--Import jQuery before materialize.js-->
-       <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-       <script type="text/javascript" src="js/materialize.js"></script>
-       <script type="text/javascript">
+
+{%  endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
+    <script type="text/javascript">
         $(document).ready(function() {
-          $('select').material_select();
-          $('.button-collapse').sideNav({
-            menuWidth: 300, // Default is 300
-            edge: 'left', // Choose the horizontal origin
-            closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-            draggable: true // Choose whether you can drag to open on touch screens,
-          }
-        );
+            $('select').material_select();
+            $('.button-collapse').sideNav({
+                    menuWidth: 300, // Default is 300
+                    edge: 'left', // Choose the horizontal origin
+                    closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                    draggable: true // Choose whether you can drag to open on touch screens,
+                }
+            );
 
-        $('.datepicker').pickadate({
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears:100,
-            min: [1939,1,1],
-            max: [2019,1,31],
-            today: 'Today',
-            clear: 'Clear',
-            close: 'Ok',
-            closeOnSelect: false, // Close upon selecting a date,
-            container: undefined // ex. 'body' will append picker to body
-          });
-
-
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 100,
+                min: [1939, 1, 1],
+                max: [2019, 1, 31],
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: false, // Close upon selecting a date,
+                container: undefined // ex. 'body' will append picker to body
+            });
 
         });
+
+        function enviarRecados() {
+            var asunto = $('#asunto').val();
+            var textarea = $('#textarea1').val();
+            console.log(asunto);
+
+            $.ajax({
+                data_type: 'json',
+                traditional: true,
+                method: "POST",
+                url: '/ws/recados/',
+                cache: false,
+                data: {
+                    asunto: asunto,
+                    cuerpo: textarea,
+                },
+                success: function (json) {
+                    alert('La evaluación ha sido guardada correctamente');
+                },
+                error: function (request) {
+                    alert(request.responseText);
+                    var error = request
+                }
+            });
+
+
+
+        }
 
        </script>
 

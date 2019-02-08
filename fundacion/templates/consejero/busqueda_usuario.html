@@ -8,9 +8,12 @@
 
         }
         .anchobtn{
-            max-height: 100%;
+            width: auto;
+            height: auto;
             background-color: #0D47A1;
         }
+
+
     </style>
 {% endblock %}
 
@@ -64,14 +67,12 @@
                             <select id="consejeros">
                             </select>
                         </div>
-                         <div class=" input-field col s12 m4 l4">
-                                <input id="fecha_inicio" type="text" class="datepicker" required="required"
-                                       placeholder="DE">
-                            </div>
-                            <div class=" input-field col s12 m4 l4">
-                                <input id="fecha_fin" type="text" class="datepicker" required="required"
-                                       placeholder="A">
-                            </div>
+                        <div class=" input-field col s12 m4 l4">
+                            <input id="fecha_inicio" type="text" class="datepicker" required="required" placeholder="DE">
+                        </div>
+                        <div class=" input-field col s12 m4 l4">
+                            <input id="fecha_fin" type="text" class="datepicker" required="required" placeholder="A">
+                        </div>
                     </div>
                     <div id="titulo">
 
@@ -94,6 +95,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var tipoBusqueda = "";
+
+            console.log(consejeros);
             $("#idTelefono").show()
             $("#idNombre").hide()
             $('.collapsible').collapsible();
@@ -194,7 +197,8 @@
                                 </div>
                             </div>`);
                     } else
-
+                        /*$(#filtro).empty();
+                        $(#filtro).append(`\`);*/
                         $('#titulo').empty();
                         $('#titulo').append(`<div class="row">
                                     <div class="col s12">
@@ -242,9 +246,9 @@
 
                             </div>
 
-                            <div class="col s12 l4 m4 fondo_azul">
-                                <a href="/consejero/registro_seguimiento/${llamada.pk}"><div class="anchobtn col s12 l4 m4 fondo_azul" name="action">>
-                                </div></a>
+                            <div class="btn2 col s12 l4 m4 fondo_azul">
+                                <a href="/consejero/registro_seguimiento/${llamada.pk}"><button class="btn col s12 l4 m4 fondo_azul redondo" name="action">>
+                                </button></a>
                             </div>
 
                             <div class="col s12 l12 m12 center">

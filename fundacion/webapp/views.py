@@ -45,7 +45,7 @@ def logout_view(request):
     return redirect(reverse('webapp:login'))
 
 def avisos(request):
-    template_name = 'config/index.html'
+    template_name = 'config/enviar_avisos.html'
     return render(request, template_name)
 
 def recados(request):
