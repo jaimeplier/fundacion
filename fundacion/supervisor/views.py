@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render
@@ -39,6 +41,13 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
             if row.vida_en_riesgo:
                 return 'Sí'
             return 'No'
+        elif column == 'duracion_llamada':
+            formato = '%H:%M:%S'
+            h1 = str(row.hora_inicio.hour) + ':' + str(row.hora_inicio.minute) + ':' + str(row.hora_inicio.second)
+            h2 = str(row.hora_fin.hour) + ':' + str(row.hora_fin.minute) + ':' + str(row.hora_fin.second)
+            h1 = datetime.strptime(h1, formato)
+            h2 = datetime.strptime(h2, formato)
+            return str(h2-h1)
 
         return super(LlamadaAjaxList, self).render_column(row, column)
 
