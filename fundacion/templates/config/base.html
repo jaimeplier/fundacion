@@ -76,6 +76,12 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class=" input-field col s12 m12 l12">
+                                    <select id="actividad_usuario" onchange="CambiarActividad()">
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -157,6 +163,7 @@
 <!--Import jQuery before materialize.js-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('select').material_select();
@@ -167,7 +174,59 @@
                 draggable: true // Choose whether you can drag to open on touch screens,
             }
         );
+
+
+        $.ajax({
+            method: "GET",
+            url: "{% url 'webservices:list_estatus_actividad_usuarios' %}",
+            cache: false,
+            success: function (json) {
+
+                $("#actividad_usuario").empty().html(' ');
+                $('#actividad_usuario').append(
+                    $("<option></option>")
+                        .attr("value", "")
+                        .text("Estatus de tu actividad")
+                );
+                for (i in json) {
+                    $('#actividad_usuario').append(
+                        $("<option></option>")
+                            .attr("value", json[i].id)
+                            .text(json[i].nombre)
+                    );
+                }
+                try {
+                    $("#actividad_usuario").val({{ user.estatus_actividad.pk }});
+                } catch (e) {
+                    console.log(e.message)
+                }
+                $('#actividad_usuario').material_select();
+            }
+        });
     });
+
+    function CambiarActividad() {
+        var estatus = $("#actividad_usuario").val()
+
+        $.ajax({
+            data_type: 'json',
+            traditional: true,
+            method: "POST",
+            url: "{% url 'webservices:update_estatus_actividad_usuarios' %}",
+            cache: false,
+            data: {
+                pk: estatus,
+            },
+            success: function (json) {
+                console.log('Cambio de estatus con éxito')
+            },
+            error: function (request) {
+                alert('Ocurrió un error: Selecciona algún estatus válido de tu actividad actual');
+            }
+        });
+
+
+    }
 </script>
 {% block scripts %}{% endblock %}
 </body>

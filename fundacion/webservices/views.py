@@ -5,9 +5,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Llamada, Mensaje, Recado, Usuario
+from config.models import Llamada, Mensaje, Recado, Usuario, EstatusUsuario
 from webservices.serializers import FechaSerializer, MensajeSerializer, MensajeSerializerPk, RecadoSerializer, \
-    RecadoSerializerPk, UsuarioSerializer
+    RecadoSerializerPk, UsuarioSerializer, EstatusUsuarioSerializer, PkSerializer
 
 
 class ResumenLlamada(APIView):
@@ -97,3 +97,36 @@ class ListUsuarios(ListAPIView):
     def get_queryset(self):
         queryset = Usuario.objects.all()
         return queryset
+
+class ListEstatusActividadUsuario(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = EstatusUsuarioSerializer
+
+    def get_queryset(self):
+        queryset = EstatusUsuario.objects.filter(estatus=True)
+        return queryset
+
+class UpdateEstatusActividadUsuario(APIView):
+
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    def post(self, request):
+        serializer = PkSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        estatus_pk = serializer.validated_data['pk']
+        try:
+            estatus = EstatusUsuario.objects.get(pk=estatus_pk)
+            usuario = Usuario.objects.get(pk=request.user.pk)
+            usuario.estatus_actividad = estatus
+            usuario.save()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            response_data = {}
+            response_data['error'] = 'Selecciona un estatus'
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_serializer(self):
+        return PkSerializer()

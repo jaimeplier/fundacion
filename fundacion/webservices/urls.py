@@ -10,7 +10,7 @@ from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, Lis
     ListTipificaciones, ListTipificacionesCategorias, ListModalidadViolencia, ListFaseViolencia, ListSemaforo, \
     ListVictimas, ListAgresor, ListRedesApoyo, ListEstatusLLamada, ListMedioContacto, ListNivelRiesgo, \
     ListRecomendacionesRiesgo, ListFaseCambio, ListEstadoMental, ListComoSeEntero
-from webservices.views import ResumenLlamada, ListUsuarios
+from webservices.views import ResumenLlamada, ListUsuarios, ListEstatusActividadUsuario, UpdateEstatusActividadUsuario
 from . import views
 
 app_name = 'webservices'
@@ -23,6 +23,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-token-auth/', vtoken.obtain_auth_token),
     path('list_usuarios/', ListUsuarios.as_view(), name='list_usuarios'),
+    path('list_estatus_actividad_usuarios/', ListEstatusActividadUsuario.as_view(), name='list_estatus_actividad_usuarios'),
+    path('update_estatus_actividad_usuarios/', UpdateEstatusActividadUsuario.as_view(), name='update_estatus_actividad_usuarios'),
     # Consejeros:
     path('registro_primera_vez/', PrimerRegistro.as_view(), name='registro_primera_vez'),
     path('registro_seguimiento/', SeguimientoRegistro.as_view(), name='registro_seguimiento'),
