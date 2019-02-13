@@ -1,8 +1,8 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
-    <h5 class="titulo_tabla">- Tipificaciones -</h5>
-    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_tipificacion' %}"><i
+    <h5 class="titulo_tabla">- Subcategorías de la tipificación {{ tipificacion.nombre }} -</h5>
+    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_categoria_tipificacion'  tipificacion.pk %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -10,7 +10,6 @@
 {% block campos %}
     <th>ID</th>
     <th>Nombre</th>
-    <th>Subcategorías</th>
     <th data-orderable="false">Editar</th>
     <th data-orderable="false">Eliminar</th>
 {% endblock %}
@@ -42,8 +41,7 @@
                     { className: "center fondo_tab_gris border_rigth"},
                     { className: "fondo_tab_crema border_rigth"},
                     { className: "center fondo_tab_gris border_rigth"},
-                    { className: "center fondo_tab_crema "},
-                    { className: "center fondo_tab_gris border_rigth"}
+                    { className: "center fondo_tab_crema "}
 
                     ],
 
@@ -52,5 +50,5 @@
 <!-- *************************************************************************** -->
 
 
-{% block url_ajax %}{% url 'administrador:list_ajax_tipificacion' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_categoria_tipificacion' tipificacion.pk %}{% endblock %}
 

@@ -20,7 +20,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     ComoSeEnteroAdd, ComoSeEnteroAjaxList, ComoSeEnteroEdit, EstadoMentalAdd, EstadoMentalAjaxList, EstadoMentalEdit, \
     NivelRiesgoAdd, NivelRiesgoAjaxList, NivelRiesgoEdit, RecomendacionRiesgoAdd, RecomendacionRiesgoAjaxList, \
     RecomendacionRiesgoEdit, FaseCambioAdd, FaseCambioAjaxList, FaseCambioEdit, ActividadUsuarioAdd, \
-    ActividadUsuarioAjaxList, ActividadUsuarioEdit, TipificacionAdd, TipificacionAjaxList, TipificacionEdit
+    ActividadUsuarioAjaxList, ActividadUsuarioEdit, TipificacionAdd, TipificacionAjaxList, TipificacionEdit, \
+    CategoriaTipificacionAdd, CategoriaTipificacionAjaxList, CategoriaTipificacionEdit
 from . import views
 
 app_name = 'administrador'
@@ -275,4 +276,15 @@ urlpatterns = [
     path('tipificacion/ajax/list/', TipificacionAjaxList.as_view(), name='list_ajax_tipificacion'),
     path('tipificacion/edit/<int:pk>', TipificacionEdit.as_view(), name='edit_tipificacion'),
     path('tipificacion/list/delete/<int:pk>', views.delete_tipificacion, name='delete_tipificacion'),
+
+    path('categoria_tipificacion/add/<int:tipificacion>', CategoriaTipificacionAdd.as_view(),
+         name='add_categoria_tipificacion'),
+    path('categoria_tipificacion/list/<int:tipificacion>', views.list_categoria_tipificacion,
+         name='list_categoria_tipificacion'),
+    path('categoria_tipificacion/ajax/list/<int:tipificacion>', CategoriaTipificacionAjaxList.as_view(),
+         name='list_ajax_categoria_tipificacion'),
+    path('categoria_tipificacion/edit/<int:pk>/<int:tipificacion>', CategoriaTipificacionEdit.as_view(),
+         name='edit_categoria_tipificacion'),
+    path('categoria_tipificacion/list/delete/<int:pk>', views.delete_categoria_tipificacion,
+         name='delete_categoria_tipificacion'),
 ]
