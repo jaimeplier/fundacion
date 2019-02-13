@@ -551,7 +551,7 @@ class TipificacionLLamada(models.Model):
         db_table = 'tipificacion_llamada'
 
 class RecomendacionRiesgo(Catalogo):
-
+    tipificacion = models.ForeignKey('Tipificacion', models.DO_NOTHING)
     class Meta:
         managed = True
         db_table = 'recomendacion_riesgo'
