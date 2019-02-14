@@ -44,11 +44,9 @@
                         <div class=" col s12 txt_algn_center">
                             <p style="font-size: 20px; text-align: center;">¿Existe riesgo de vida?</p>
                             <p style="text-align: center;">
-                                <input class="with-gap" name="riesgo" type="radio" id="rv1" value="1"
-                                       onclick="MuestraRiesgo(true)"/>
+                                <input class="with-gap" name="riesgo" type="radio" id="rv1" value="1"/>
                                 <label for="rv1" style="font-size: 18px;">Sí</label>
-                                <input class="with-gap" name="riesgo" type="radio" id="rv2" value="0"
-                                       onclick="MuestraRiesgo(false)"/>
+                                <input class="with-gap" name="riesgo" type="radio" id="rv2" value="0">
                                 <label for="rv2" style="font-size: 18px;">No</label>
                             </p>
                         </div>
@@ -189,6 +187,7 @@
                                     <div class="col s12" id="recomendaciones" hidden>
                                         <p class=" negritas" style="font-size: 20px; text-align: center;">
                                             Recomendaciones</p>
+                                        <div id="desc_recomendaciones"></div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -963,19 +962,6 @@
                 }
             });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_recomendaciones_riesgo' %}",
-                cache: false,
-                success: function (json) {
-
-                    var indice = 1;
-                    for (i in json) {
-                        $('#recomendaciones').append('<p>' + (indice) + '.- ' + json[i].nombre + '</p>');
-                        indice = indice + 1;
-                    }
-                }
-            });
 
             $.ajax({
                 method: "GET",
@@ -1007,6 +993,30 @@
             var tipificacion = $('#tipificaciones').val();
             $('#categoria_tipificacion').empty().html(' ');
             if (tipificacion !== '') {
+                var vida_riesgo = $("input[name='riesgo']:checked").val();
+                console.log(vida_riesgo)
+                if (vida_riesgo == "1") {
+                    console.log('eNTRO')
+                    $('#desc_recomendaciones').empty().html(' ');
+                    $("#recomendaciones").show();
+                    $.ajax({
+                        method: "GET",
+                        url: "{% url 'webservices:list_recomendaciones_riesgo' %}?tipificacion=" + tipificacion,
+                        cache: false,
+                        success: function (json) {
+
+                            var indice = 1;
+                            for (i in json) {
+                                $('#desc_recomendaciones').append('<p>' + (indice) + '.- ' + json[i].nombre + '</p>');
+                                indice = indice + 1;
+                            }
+                        }
+                    });
+                } else {
+                    $("#recomendaciones").hide();
+
+                }
+
                 $.ajax({
                     method: "GET",
                     url: "{% url 'webservices:list_tipificaciones_categorias' %}?tipificacion=" + tipificacion,
@@ -1079,7 +1089,6 @@
             var tarea3 = $('#tarea3').val();
 
 
-
             $.ajax({
                 method: "POST",
                 url: "{% url 'webservices:registro_primera_vez' %}",
@@ -1141,13 +1150,6 @@
 
         }
 
-        function MuestraRiesgo(valor) {
-            if (valor == true) {
-                $("#recomendaciones").show()
-            } else {
-                $("#recomendaciones").hide()
-            }
-        }
 
     </script>
 {% endblock %}

@@ -241,7 +241,10 @@ class ListRecomendacionesRiesgo(ListAPIView):
     serializer_class = CatalogoSerializer
 
     def get_queryset(self):
-        queryset = RecomendacionRiesgo.objects.all()
+        tipificacion = self.request.query_params.get('tipificacion', None)
+        queryset = RecomendacionRiesgo.objects.none()
+        if tipificacion is not None:
+            queryset = RecomendacionRiesgo.objects.filter(tipificacion__pk=tipificacion)
         return queryset
 
 class ListFaseCambio(ListAPIView):
