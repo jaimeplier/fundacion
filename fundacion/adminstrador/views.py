@@ -3423,9 +3423,9 @@ class RecomendacionRiesgoAdd(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Agregar un recomendacion_riesgo'
+            context['titulo'] = 'Agregar una recomendacion para vida en riesgo'
         if 'instrucciones' not in context:
-            context['instrucciones'] = 'Completa todos los campos para registrar un'
+            context['instrucciones'] = 'Completa todos los campos para registrar'
         return context
 
 
@@ -3441,8 +3441,8 @@ class RecomendacionRiesgoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'catalogo'
 
     model = RecomendacionRiesgo
-    columns = ['id', 'nombre', 'editar', 'eliminar']
-    order_columns = ['id', 'nombre']
+    columns = ['id', 'nombre', 'tipificacion.nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre', 'tipificacion__nombre']
     max_display_length = 100
 
     def render_column(self, row, column):
@@ -3465,7 +3465,7 @@ class RecomendacionRiesgoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)| qs.filter(tipificacion__nombre__icontains=search)
         return qs
 
 

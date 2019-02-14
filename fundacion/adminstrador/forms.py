@@ -324,9 +324,7 @@ class NivelRiesgoForm(ModelForm):
 class RecomendacionRiesgoForm(ModelForm):
     class Meta:
         model = RecomendacionRiesgo
-        exclude = ['fecha_alta', 'fecha_baja']
-        widgets = {
-            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+        exclude = ['fecha_alta', 'fecha_baja', 'estatus']
 
 class FaseCambioForm(ModelForm):
     class Meta:
