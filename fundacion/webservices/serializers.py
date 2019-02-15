@@ -228,7 +228,7 @@ class MensajeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Mensaje
-        fields = ('id', 'usuario', 'fecha', 'titulo', 'cuerpo', 'archivos', 'destinatarios')
+        fields = ('id', 'usuario', 'fecha', 'titulo', 'cuerpo', 'archivos', 'destinatarios', 'leido')
 
 class MensajeSerializerPk(serializers.ModelSerializer):
     class Meta:

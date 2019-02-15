@@ -1,6 +1,6 @@
 from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -60,6 +60,14 @@ class MensajesViewSet(viewsets.ModelViewSet):
             return Response({'id': serializer.instance.pk, 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        queryset = Mensaje.objects.all()
+        mensaje = get_object_or_404(queryset, pk=pk)
+        mensaje.leido = True
+        mensaje.save()
+        serializer = MensajeSerializer(mensaje)
+        return Response(serializer.data)
+
     def get_serializer_class(self):
         if self.request is None or self.request.method == 'POST':
             return MensajeSerializerPk
@@ -84,6 +92,14 @@ class RecadosViewSet(viewsets.ModelViewSet):
             serializer.save(usuario=self.request.user)
             return Response({'id': serializer.instance.pk, 'data': serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk=None, *args, **kwargs):
+        queryset = Recado.objects.all()
+        recado = get_object_or_404(queryset, pk=pk)
+        recado.leido = True
+        recado.save()
+        serializer = RecadoSerializer(recado)
+        return Response(serializer.data)
 
     def get_serializer_class(self):
         if self.request is None or self.request.method == 'POST':
