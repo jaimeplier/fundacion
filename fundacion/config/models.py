@@ -589,6 +589,7 @@ class Mensaje(models.Model):
     titulo = models.CharField(max_length=150)
     cuerpo = models.CharField(max_length=500)
     destinatarios = models.ManyToManyField(Usuario, related_name='recibidos', related_query_name='recibidos')
+    leido = models.BooleanField(default=False)
 
     class Meta:
         managed = True
@@ -608,6 +609,7 @@ class Recado(models.Model):
     asunto = models.CharField(max_length=150)
     cuerpo = models.CharField(max_length=500)
     destinatarios = models.ManyToManyField(Usuario, related_name='recados', related_query_name='recados')
+    leido = models.BooleanField(default=False)
 
     class Meta:
         managed = True
