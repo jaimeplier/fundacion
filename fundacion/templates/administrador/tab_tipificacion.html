@@ -1,8 +1,8 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
-     <h5 class="titulo_tabla">- Recomendaciones para vida en riesgo -</h5>
-    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;"  href="{% url 'administrador:add_recomendacion_riesgo' %}"><i
+    <h5 class="titulo_tabla">- Tipificaciones -</h5>
+    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_tipificacion' %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -10,7 +10,7 @@
 {% block campos %}
     <th>ID</th>
     <th>Nombre</th>
-    <th>Tipificación</th>
+    <th>Subcategorías</th>
     <th data-orderable="false">Editar</th>
     <th data-orderable="false">Eliminar</th>
 {% endblock %}
@@ -35,7 +35,6 @@
     }
 {% endblock %}
 
-
 <!-- Bloque para agregar las clases de las columnas en la tabla acorde al diseño -->
  {% block columns %}
 
@@ -43,8 +42,8 @@
                     { className: "center fondo_tab_gris border_rigth"},
                     { className: "fondo_tab_crema border_rigth"},
                     { className: "center fondo_tab_gris border_rigth"},
-                    { className: "fondo_tab_crema border_rigth"},
-                    { className: "center fondo_tab_gris "}
+                    { className: "center fondo_tab_crema "},
+                    { className: "center fondo_tab_gris border_rigth"}
 
                     ],
 
@@ -53,7 +52,5 @@
 <!-- *************************************************************************** -->
 
 
-
-
-{% block url_ajax %}{% url 'administrador:list_ajax_recomendacion_riesgo' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_tipificacion' %}{% endblock %}
 

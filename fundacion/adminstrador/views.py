@@ -18,12 +18,13 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm, \
     EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm, \
     AgresorForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm, RecomendacionRiesgoForm, \
-    FaseCambioForm, ActividadUsuarioForm
+    FaseCambioForm, ActividadUsuarioForm, TipificacionForm, CategoriaTipificacionForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
     MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
-    ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario
+    ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
+    CategoriaTipificacion
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -3422,9 +3423,9 @@ class RecomendacionRiesgoAdd(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Agregar un recomendacion_riesgo'
+            context['titulo'] = 'Agregar una recomendacion para vida en riesgo'
         if 'instrucciones' not in context:
-            context['instrucciones'] = 'Completa todos los campos para registrar un'
+            context['instrucciones'] = 'Completa todos los campos para registrar'
         return context
 
 
@@ -3440,8 +3441,8 @@ class RecomendacionRiesgoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'catalogo'
 
     model = RecomendacionRiesgo
-    columns = ['id', 'nombre', 'editar', 'eliminar']
-    order_columns = ['id', 'nombre']
+    columns = ['id', 'nombre', 'tipificacion.nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre', 'tipificacion__nombre']
     max_display_length = 100
 
     def render_column(self, row, column):
@@ -3464,7 +3465,7 @@ class RecomendacionRiesgoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)| qs.filter(tipificacion__nombre__icontains=search)
         return qs
 
 
@@ -3669,4 +3670,216 @@ class ActividadUsuarioEdit(PermissionRequiredMixin, UpdateView):
 def delete_actividad_usuario(request, pk):
     actividad_usuario = get_object_or_404(EstatusUsuario, pk=pk)
     actividad_usuario.delete()
+    return JsonResponse({'result': 1})
+
+class TipificacionAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Tipificacion
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/tipificacion/list'
+    form_class = TipificacionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TipificacionAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar una tipificación'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar una actividad de usuario'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_tipificacion(request):
+    template_name = 'administrador/tab_tipificacion.html'
+    return render(request, template_name)
+
+
+class TipificacionAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Tipificacion
+    columns = ['id', 'nombre', 'subcategoria', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_tipificacion',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'subcategoria':
+            return '<a class="" href ="' + reverse('administrador:list_categoria_tipificacion',
+                                                   kwargs={
+                                                       'tipificacion': row.pk}) + '"><i class="material-icons">assignment</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(TipificacionAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Tipificacion.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class TipificacionEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/tipificacion/list'
+
+    model = Tipificacion
+    template_name = 'config/formulario_1Col.html'
+    form_class = TipificacionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TipificacionEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_tipificacion(request, pk):
+    tipificacion = get_object_or_404(Tipificacion, pk=pk)
+    tipificacion.delete()
+    return JsonResponse({'result': 1})
+
+
+class CategoriaTipificacionAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = CategoriaTipificacion
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/categoria_tipificacion/list'
+    form_class = CategoriaTipificacionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoriaTipificacionAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar una subcategoría a la tipificación'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        if 'save_and_new' not in context:
+            context['save_and_new'] = 'Guardar y nuevo'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+
+            tipificacion = Tipificacion.objects.get(pk=self.kwargs['tipificacion'])
+            cont_tipificacion = form.save(commit=False)
+
+            cont_tipificacion.tipificacion = tipificacion
+            cont_tipificacion.save()
+            if 'save_and_new' in form.data:
+                return HttpResponseRedirect(self.guardar_y_nuevo())
+
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def guardar_y_nuevo(self):
+        return reverse('administrador:add_categoria_tipificacion', kwargs={'tipificacion': self.kwargs['tipificacion']})
+
+    def get_success_url(self):
+        return reverse('administrador:list_categoria_tipificacion', kwargs={'tipificacion': self.kwargs['tipificacion']})
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_categoria_tipificacion(request, tipificacion):
+    template_name = 'administrador/tab_categoria_tipificacion.html'
+    tipificacion_obj = Tipificacion.objects.get(pk=tipificacion)
+    context = {'tipificacion': tipificacion_obj}
+    return render(request, template_name, context)
+
+
+class CategoriaTipificacionAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = CategoriaTipificacion
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_categoria_tipificacion',
+                                                   kwargs={
+                                                       'pk': row.pk, 'tipificacion': self.kwargs[
+                                                           'tipificacion']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(CategoriaTipificacionAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return CategoriaTipificacion.objects.filter(tipificacion__pk=self.kwargs['tipificacion'])
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class CategoriaTipificacionEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = CategoriaTipificacion
+    template_name = 'config/formulario_1Col.html'
+    form_class = CategoriaTipificacionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoriaTipificacionEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+    def get_success_url(self):
+        return reverse('administrador:list_categoria_tipificacion', kwargs={'tipificacion': self.kwargs['tipificacion']})
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_categoria_tipificacion(request, pk):
+    categoria_tipificacion = get_object_or_404(CategoriaTipificacion, pk=pk)
+    categoria_tipificacion.delete()
     return JsonResponse({'result': 1})

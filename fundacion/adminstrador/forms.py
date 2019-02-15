@@ -4,7 +4,8 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Directorio, Supervisor, Calidad, Sexo, Ayuda, MotivoLLamada, \
     EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
-    ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario
+    ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
+    CategoriaTipificacion
 
 
 class ConsejeroForm(ModelForm):
@@ -323,9 +324,7 @@ class NivelRiesgoForm(ModelForm):
 class RecomendacionRiesgoForm(ModelForm):
     class Meta:
         model = RecomendacionRiesgo
-        exclude = ['fecha_alta', 'fecha_baja']
-        widgets = {
-            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+        exclude = ['fecha_alta', 'fecha_baja', 'estatus']
 
 class FaseCambioForm(ModelForm):
     class Meta:
@@ -340,3 +339,13 @@ class ActividadUsuarioForm(ModelForm):
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
+class TipificacionForm(ModelForm):
+    class Meta:
+        model = Tipificacion
+        exclude = ['fecha_alta', 'fecha_baja', 'estatus']
+
+class CategoriaTipificacionForm(ModelForm):
+    class Meta:
+        model = CategoriaTipificacion
+        exclude = ['fecha_alta', 'fecha_baja', 'estatus', 'tipificacion']
