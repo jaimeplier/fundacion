@@ -3,47 +3,15 @@
 {% load static %}
 
 {% block style %}
-
     <style type="text/css">
-        .input-field.col label {
-          left: 1.75rem;
+
+        #pad{
+            padding: 6px;
         }
 
-        input.invalid:not([type]), input.invalid:not([type]):focus, input[type=text].invalid:not(.browser-default), input[type=text].invalid:not(.browser-default):focus, input[type=password].invalid:not(.browser-default), input[type=password].invalid:not(.browser-default):focus, input[type=email].invalid:not(.browser-default), input[type=email].invalid:not(.browser-default):focus, input[type=url].invalid:not(.browser-default), input[type=url].invalid:not(.browser-default):focus, input[type=time].invalid:not(.browser-default), input[type=time].invalid:not(.browser-default):focus, input[type=date].invalid:not(.browser-default), input[type=date].invalid:not(.browser-default):focus, input[type=datetime].invalid:not(.browser-default), input[type=datetime].invalid:not(.browser-default):focus, input[type=datetime-local].invalid:not(.browser-default), input[type=datetime-local].invalid:not(.browser-default):focus, input[type=tel].invalid:not(.browser-default), input[type=tel].invalid:not(.browser-default):focus, input[type=number].invalid:not(.browser-default), input[type=number].invalid:not(.browser-default):focus, input[type=search].invalid:not(.browser-default), input[type=search].invalid:not(.browser-default):focus, textarea.materialize-textarea.invalid, textarea.materialize-textarea.invalid:focus, .select-wrapper.invalid > input.select-dropdown {
 
 
-             background-repeat: no-repeat;
-             background-position: right;
-             background-size: 25px 25px;
-             background-origin: content-box;
-             padding-right: 3px;
-            }
-
-        [type="radio"]:not(:checked) + label, [type="radio"]:checked + label {
-            padding-left: 24px;
-            padding-right: 43px;
-          }
-
-          #datos_personales{
-            display: none;
-          }
-
-          #datos_sociode{
-            display: none;
-          }
-
-          [type="checkbox"] + label {
-            padding-left: 23px;
-            padding-right: 30px;
-          }
-
-          #datos_canalizacion{
-            display: none;
-          }
-
-
-      </style>
-
+    </style>
 {% endblock %}
 
 
@@ -58,30 +26,30 @@
                  </div>
                </div>
                 <div class="row sin_marg_bottom" style="padding: 1%; margin-bottom: 0px;">
-                  <form class="col s12" method="post" enctype="multipart/form-data">
+                  <form class="col s12" >
                     <div class="row sin_marg_bottom">
-                      <div class=" input-field col s12">
-                          <select class="js-data-example-ajax"></select>
+                      <div class="col s12">
+                          <select class="browser-default" id="usuarios"></select>
                       </div>
                       <div class=" input-field col s12">
-                         <input id="asunto" type="text" class="validate" required="required">
+                          <input id="asunto" type="text" class="validate" required="required">
                           <label for="texto"> Asunto:</label>
                       </div>
                     </div>
 
                     <div class="row sin_marg_bottom" >
-                     <form action="#" class="col s10">
+
                       <div class="file-field input-field">
-                        <div class="btn fondo_naranja redondo">
+                        <div class="btn fondo_naranja redondo s2">
                           <span>Adjuntar</span>
                           <input type="file">
                         </div>
-                        <div class="file-path-wrapper">
-                          <input class="file-path validate" type="text">
+                        <div class="file-path-wrapper" id="pad">
+                          <input type="text">
                         </div>
                       </div>
-                    </form>
-                     </div>
+
+                    </div>
 
                     <div class="row sin_marg_bottom">
                       <form class="col s12">
@@ -110,12 +78,16 @@
 
 {%  endblock %}
 
+
+
 {% block scripts %}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('select').material_select();
+
+
             $('.button-collapse').sideNav({
                     menuWidth: 300, // Default is 300
                     edge: 'left', // Choose the horizontal origin
@@ -136,12 +108,58 @@
                 container: undefined // ex. 'body' will append picker to body
             });
 
+
+            $("#usuarios").select2({
+
+
+                placeholder: "Buscar email",
+                maximumSelectionLength: '',
+                allowClear: true,
+                minimumInputLength: 1,
+                multiple: true,
+                minimumResultsForSearch: 1,
+                ajax: {
+                    url: "{% url 'webservices:list_usuarios' %}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term
+                        };
+                    },
+
+                processResults: function (data) {
+
+                return {
+                    results: $.map(data, function (obj) {
+                        return {
+                            id: obj.id,
+                            text: obj.correo
+                        };
+
+                    })
+                };
+
+            },
+            cache: true
+        }
+    });
+
+
+
+
+
         });
+
+
+
+
 
         function enviarRecados() {
             var asunto = $('#asunto').val();
             var textarea = $('#textarea1').val();
-            console.log(asunto);
+            var destinatarios = $("#usuarios").val();
+
 
             $.ajax({
                 data_type: 'json',
@@ -152,6 +170,7 @@
                 data: {
                     asunto: asunto,
                     cuerpo: textarea,
+                    destinatarios: destinatarios,
                 },
                 success: function (json) {
                     alert('La evaluación ha sido guardada correctamente');
