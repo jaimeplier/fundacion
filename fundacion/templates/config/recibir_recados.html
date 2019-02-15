@@ -1,0 +1,145 @@
+ {% extends 'config/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block style %}
+
+
+
+{% endblock %}
+
+
+{% block content %}
+  <div class="row fondo_blanco">
+               <div class="col s4" style="padding: 0px;">
+                  <div class="row" style="padding: 0px; margin-bottom: 0px;">
+                    <div class="col s12 fondo_gris">
+                         <div class="row">
+                           <div class="col s9">
+                             <p class="negritas" style="margin-bottom: 0px;">RECADO 1</p>
+                           </div>
+                           <div class="col s3" style="text-align: right;">
+                             <p style="font-size: 11px; line-height: 23px; margin-bottom: 0px;">ahora</p>
+                           </div>
+                           <div class="col s12">
+                             <i class="material-icons tiny">attachment</i><span class="" style="font-size: 12px; position: absolute;"> Armando Perez</span>
+                           </div>
+                           <div class="col s12">
+                             <p style="font-size: 12px;">
+                               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum efficitur est.
+                             </p>
+                           </div>
+                         </div>
+
+                    </div>
+                  </div>
+
+
+               </div>
+               <div class="col s8" style="padding: 0px;">
+                 <div class="row">
+                  <div class="col s12" style="padding: 3%;">
+                   <p class="negritas font_naranja center titulos">RECADOS</p>
+                 </div>
+                 <div class="col s12 fondo_verde font_blanco">
+                  <div class="row" style="margin-bottom: 0px;">
+                    <div class="col s8" style="padding-top:3%; ">
+                      <img src="imagenes/circulo_usuario.png" style="margin-right: 3%;"><span style="position: absolute;"> Armando Perez</span>
+                      <p style="margin-top: 0px; margin-left: 8%;">
+                        armandoperez@gmail.com
+                      </p>
+                    </div>
+                    <div class="col s4" style="padding: 3%;">
+                       <img src="imagenes/circulo_mas.png" style="margin-right: 3%;"><span class="negritas" style="position: absolute;"> NUEVO RECADO</span>
+                      <p style="margin-top: 0px; margin-left: 8%;">
+                        11 ene. 2019 18:15
+                      </p>
+                    </div>
+                  </div>
+                 </div>
+                 </div>
+
+                 <div class="row" style="padding: 5%;">
+                    <div class="col s12 font_gris_oscuro" style="text-align: center;">
+                        <h5 class="negritas">RECADO 1</h5>
+                        <p class="negritas">Llamar a las 4:00 pm para dar seguimiento</p>
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum efficitur est, quis condimentum lectus viverra eget. Vestibulum sed aliquam nisi. Mauris varius quam at auctor iaculis. Integer euismod ligula ac euismod commodo. Proin posuere, leo id porta fringilla, lectus mauris luctus ante, non viverra sapien elit nec lorem. Nunc sed ornare sapien, in accumsan dolor. Donec laoreet vestibulum ipsum, ac sollicitudin ligula imperdiet vitae. Ut at tempus elit. Pellentesque ornare quam orci, quis aliquet ipsum euismod id.</p>
+                        <hr>
+                    </div>
+                    <div class="col s6">
+                       <img src="imagenes/circulo_clip.png" style="margin-right: 3%;"><span class="negritas font_naranja" style="position: absolute;"> Archivos adjuntos</span>
+                    </div>
+                    <div class="col s6" style="text-align: right;">
+                       <img src="imagenes/circulo_descargar.png">
+                    </div>
+
+                  </div>
+
+               </div>
+              </div>
+{% endblock %}
+
+{% block scripts %}
+
+ <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+       <script type="text/javascript" src="js/materialize.js"></script>
+       <script type="text/javascript">
+        $(document).ready(function() {
+          $('select').material_select();
+          $('.button-collapse').sideNav({
+            menuWidth: 300, // Default is 300
+            edge: 'left', // Choose the horizontal origin
+            closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+            draggable: true // Choose whether you can drag to open on touch screens,
+          }
+        );
+
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears:100,
+            min: [1939,1,1],
+            max: [2019,1,31],
+            today: 'Today',
+            clear: 'Clear',
+            close: 'Ok',
+            closeOnSelect: false, // Close upon selecting a date,
+            container: undefined // ex. 'body' will append picker to body
+          });
+
+
+          $('#datos_p').change(function(){
+            if(!$(this).prop('checked')){
+              $('#datos_personales').hide();
+            }else{
+              $('#datos_personales').show();
+            }
+
+          })
+
+          $('#datos_s').change(function(){
+            if(!$(this).prop('checked')){
+              $('#datos_sociode').hide();
+            }else{
+              $('#datos_sociode').show();
+            }
+
+          })
+
+          $('#datos_c').change(function(){
+            if(!$(this).prop('checked')){
+              $('#datos_canalizacion').hide();
+            }else{
+              $('#datos_canalizacion').show();
+            }
+
+          })
+
+        });
+
+        $.ajax({
+
+        })
+
+       </script>
+
+{%  endblock %}

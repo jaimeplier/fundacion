@@ -56,15 +56,16 @@ def recados(request):
     return render(request, template_name)
 
 def ver_avisos(request):
-    template_name = 'config/enviar_avisos.html'
+    template_name = 'config/recibir_avisos.html'
     usuario = Usuario.objects.get(pk=request.user.pk)
     context = {
         'usuario': usuario
     }
     return render(request, template_name, context)
 
+
 def ver_recados(request):
-    template_name = 'config/index.html'
+    template_name = 'config/recibir_recados.html'
     usuario = Usuario.objects.get(pk=request.user.pk)
     context = {
         'usuario': usuario
