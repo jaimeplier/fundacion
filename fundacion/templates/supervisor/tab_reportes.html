@@ -34,7 +34,9 @@
             <select>
                 <option value="" disabled selected>Seleccione</option>
                 <option value="1">Productividad</option>
-                <option value="2">Supervisor</option>
+                <option value="2">Idicadores</option>
+                <option value="3" selected>Historial de servicios</option>
+                <option value="4">Generales</option>
             </select>
         </div>
         <div class="col s4 m4 l4"></div>
@@ -44,16 +46,33 @@
             <label class="textoReporte">Seleccione el periodo de tiempo</label>
         </div>
         <div class="col s4 m4 l4">
-            <input name="group1" type="radio" id="test1"/>
-            <label for="test1">Día</label>
-            <input name="group1" type="radio" id="test2"/>
-            <label for="test2">Mes</label>
-            <input name="group1" type="radio" id="test3"/>
-            <label for="test3">Rango de días</label>
+            <input name="fechas" type="radio" id="r_dia1" value="dia" onclick="muestra_filtro_fecha('dia')"/>
+            <label for="r_dia1">Día</label>
+            <input name="fechas" type="radio" id="r_mes" value="mes" onclick="muestra_filtro_fecha('mes')"/>
+            <label for="r_mes">Mes</label>
+            <input name="fechas" type="radio" id="r_dia2" value="rango" onclick="muestra_filtro_fecha('rango')"/>
+            <label for="r_dia2">Rango de días</label>
         </div>
         <div class="col s4 m4 l4">
             <!--<input type="text">-->
         </div>
+    </div>
+    <div class="row" style="margin-top: 1%;">
+        <div class="col s4 m4 l4" style="margin-top: 1%;">
+        </div>
+        <div class="col s2 m2 l2" id="div_mes" hidden>
+            <label for="select_fecha_mes">Mes</label>
+            <input type="text" class="selector_mes" id="select_fecha_mes" onchange="filtrar()">
+        </div>
+        <div class="col s2 m2 l2" id="div_fecha1" hidden>
+            <label for="select_fecha_1">Fecha</label>
+            <input type="text" class="datepicker" id="select_fecha1" onchange="filtrar()">
+        </div>
+        <div class="col s2 m2 l2" id="div_fecha2" hidden>
+            <label for="select_fecha2">Fecha fin</label>
+            <input type="text" class="datepicker" id="select_fecha2" onchange="filtrar()">
+        </div>
+        <div class="col s4 m4 l4"></div>
     </div>
     <div class="row" style="padding: 1%;">
         <div class="col s1"></div>
@@ -64,6 +83,7 @@
                     <th>ID</th>
                     <th>Usuario</th>
                     <th>Consejero</th>
+                    <th>Fecha</th>
                     <th>Inicio de llamada</th>
                     <th>Fin de llamada</th>
                     <th>Duración de la llamada</th>
@@ -114,7 +134,30 @@
                 }
             );
 
-            $('#tabla').DataTable({
+            $('.selector_mes').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 100,
+                format: 'Seleccionaste: mmmm',
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: true, // Close upon selecting a date,
+                container: undefined, // ex. 'body' will append picker to body
+            });
+
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 100,
+                format: 'Seleccionaste: dd/mmm/yyyy',
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: true, // Close upon selecting a date,
+                container: undefined // ex. 'body' will append picker to body
+            });
+
+
+            tabla = $('#tabla').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     {
@@ -158,6 +201,63 @@
             });
 
         });
+
+        function muestra_filtro_fecha(tipo) {
+            if (tipo == 'dia') {
+                $("#div_fecha1").show();
+                $("#div_fecha2").hide();
+                $("#div_mes").hide();
+            } else if (tipo == 'mes') {
+                $("#div_fecha1").hide();
+                $("#div_fecha2").hide();
+                $("#div_mes").show();
+            } else if (tipo == 'rango') {
+                $("#div_fecha1").show();
+                $("#div_fecha2").show();
+                $("#div_mes").hide();
+            }
+        }
+
+        function filtrar() {
+            var filtro = $("input[name='fechas']:checked").val();
+            if (filtro == "dia") {
+                filtrar_dia();
+            } else if (filtro == "mes") {
+                filtrar_mes();
+            } else if (filtro == "rango") {
+                filtrar_rango();
+            }
+        }
+
+
+        function filtrar_dia() {
+            var $dia_picker = $("#select_fecha1").pickadate();
+            var dia = $dia_picker.pickadate('picker');
+            nva_url = "{% url 'supervisor:list_ajax_llamada' %}?dia=" + dia.get('select', 'yyyy-mm-dd')
+            console.log(nva_url);
+            tabla.ajax.url(nva_url).load()
+            $('#tabla').dataTable()._fnAjaxUpdate()
+        }
+
+        function filtrar_mes() {
+            var $mes_picker = $("#select_fecha_mes").pickadate();
+            var mes = $mes_picker.pickadate('picker');
+            nva_url = "{% url 'supervisor:list_ajax_llamada' %}?mes=" + mes.get('select', 'mm')
+            console.log(nva_url);
+            tabla.ajax.url(nva_url).load()
+            $('#tabla').dataTable()._fnAjaxUpdate()
+        }
+
+        function filtrar_rango() {
+            var $fecha1_picker = $("#select_fecha1").pickadate();
+            var $fecha2_picker = $("#select_fecha2").pickadate();
+            var fecha1 = $fecha1_picker.pickadate('picker');
+            var fecha2 = $fecha2_picker.pickadate('picker');
+            nva_url = "{% url 'supervisor:list_ajax_llamada' %}?fecha1=" + fecha1.get('select', 'yyyy-mm-dd') + "&fecha2=" +fecha2.get('select', 'yyyy-mm-dd')
+            console.log(nva_url);
+            tabla.ajax.url(nva_url).load()
+            $('#tabla').dataTable()._fnAjaxUpdate()
+        }
 
     </script>
 {% endblock %}
