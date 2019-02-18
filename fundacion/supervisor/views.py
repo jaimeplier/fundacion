@@ -6,8 +6,10 @@ from django.shortcuts import render
 
 # Create your views here.
 from django_datatables_view.base_datatable_view import BaseDatatableView
+from pytz import timezone
 
 from config.models import Llamada
+from fundacion import settings
 
 
 @permission_required(perm='supervisor', login_url='/')
@@ -27,9 +29,10 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'supervisor'
 
     model = Llamada
-    columns = ['id', 'victima.nombre', 'nombre', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'institucion', 'estatus', 'medio_contacto']
-    order_columns = ['id', 'victima__nombre', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', 'estatus', 'institucion__nombre', 'estatus__nombre', 'medio_contacto']
+    columns = ['id', 'victima.nombre', 'nombre', 'fecha', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'institucion', 'estatus', 'medio_contacto']
+    order_columns = ['id', 'victima__nombre', 'fecha', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', 'estatus', 'institucion__nombre', 'estatus__nombre', 'medio_contacto']
     max_display_length = 100
+    settingstime_zone = timezone(settings.TIME_ZONE)
 
     def render_column(self, row, column):
 
@@ -56,6 +59,19 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
+        dia = self.request.GET.get(u'dia', None)
+        mes = self.request.GET.get(u'mes', None)
+        fecha1 = self.request.GET.get(u'fecha1', None)
+        fecha2 = self.request.GET.get(u'fecha2', None)
+        if dia:
+            datetime_object = datetime.strptime(dia, '%Y-%m-%d')
+            qs = qs.filter(fecha=datetime_object)
+        if mes:
+            qs = qs.filter(fecha__month=mes)
+        if fecha1 and fecha2:
+            fecha_inicio = datetime.strptime(fecha1, '%Y-%m-%d')
+            fecha_fin = datetime.strptime(fecha2, '%Y-%m-%d')
+            qs = qs.filter(fecha__range=(fecha_inicio, fecha_fin))
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
         return qs
