@@ -17,102 +17,9 @@
                     <div class="col s12 fondo_gris">
                          <div class="row">
                            <div class="col s9">
-                             <p class="negritas" style="margin-bottom: 0px;">FIESTA NAVIDEÑA</p>
-                           </div>
-                           <div class="col s3" style="text-align: right;">
-                             <p style="font-size: 11px; line-height: 23px; margin-bottom: 0px;">ahora</p>
-                           </div>
-                           <div class="col s12">
-                             <i class="material-icons tiny">attachment</i><span class="" style="font-size: 12px; position: absolute;"> Karla Alvarez</span>
-                           </div>
-                           <div class="col s12">
-                             <p style="font-size: 12px;">
-                               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum efficitur est.
-                             </p>
-                           </div>
-                         </div>
+                             <div id="avisos">
 
-                    </div>
-                  </div>
-                  <div class="row" style="padding: 0px; margin-bottom: 0px;">
-                    <div class="col s12 fondo_gris_ocuro">
-                         <div class="row">
-                           <div class="col s9">
-                             <p class="negritas" style="margin-bottom: 0px;">FIESTA NAVIDEÑA</p>
-                           </div>
-                           <div class="col s3" style="text-align: right;">
-                             <p style="font-size: 11px; line-height: 23px; margin-bottom: 0px;">ahora</p>
-                           </div>
-                           <div class="col s12">
-                             <i class="material-icons tiny">attachment</i><span class="" style="font-size: 12px; position: absolute;"> Karla Alvarez</span>
-                           </div>
-                           <div class="col s12">
-                             <p style="font-size: 12px;">
-                               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum efficitur est.
-                             </p>
-                           </div>
-                         </div>
-
-                    </div>
-                  </div>
-                  <div class="row" style="padding: 0px; margin-bottom: 0px;">
-                    <div class="col s12 arrow_box">
-                         <div class="row">
-                           <div class="col s9">
-                             <p class="negritas" style="margin-bottom: 0px;">FIESTA NAVIDEÑA</p>
-                           </div>
-                           <div class="col s3" style="text-align: right;">
-                             <p style="font-size: 11px; line-height: 23px; margin-bottom: 0px;">ahora</p>
-                           </div>
-                           <div class="col s12">
-                             <i class="material-icons tiny">attachment</i><span class="" style="font-size: 12px; position: absolute;"> Karla Alvarez</span>
-                           </div>
-                           <div class="col s12">
-                             <p style="font-size: 12px;">
-                               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum efficitur est.
-                             </p>
-                           </div>
-                         </div>
-
-                    </div>
-                  </div>
-                 <div class="row" style="padding: 0px; margin-bottom: 0px;">
-                     <div class="col s12 fondo_gris">
-                         <div class="row">
-                           <div class="col s9">
-                             <p class="negritas" style="margin-bottom: 0px;">FIESTA NAVIDEÑA</p>
-                           </div>
-                           <div class="col s3" style="text-align: right;">
-                             <p style="font-size: 11px; line-height: 23px; margin-bottom: 0px;">ahora</p>
-                           </div>
-                           <div class="col s12">
-                             <i class="material-icons tiny">attachment</i><span class="" style="font-size: 12px; position: absolute;"> Karla Alvarez</span>
-                           </div>
-                           <div class="col s12">
-                             <p style="font-size: 12px;">
-                               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum efficitur est.
-                             </p>
-                           </div>
-                         </div>
-
-                    </div>
-                  </div>
-                  <div class="row" style="padding: 0px; margin-bottom: 0px;">
-                    <div class="col s12 fondo_gris_ocuro">
-                         <div class="row">
-                           <div class="col s9">
-                             <p class="negritas" style="margin-bottom: 0px;">FIESTA NAVIDEÑA</p>
-                           </div>
-                           <div class="col s3" style="text-align: right;">
-                             <p style="font-size: 11px; line-height: 23px; margin-bottom: 0px;">ahora</p>
-                           </div>
-                           <div class="col s12">
-                             <i class="material-icons tiny ">attachment</i><span class="" style="font-size: 12px; position: absolute;"> Karla Alvarez</span>
-                           </div>
-                           <div class="col s12">
-                             <p style="font-size: 12px;">
-                               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum efficitur est.
-                             </p>
+                             </div>
                            </div>
                          </div>
 
@@ -120,6 +27,8 @@
                   </div>
 
                </div>
+
+
                <div class="col s8" style="padding: 0px;">
                  <div class="row">
                   <div class="col s12" style="padding: 3%;">
@@ -179,7 +88,41 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-          $('select').material_select();
+          $.ajax({
+                url: '/ws/mensajes/',
+                method: 'GET',
+                success: function (json) {
+                    for (i in json) {
+                        avisos = {
+                            asunto: json[i].titulo,
+                            cuerpo: json[i].cuerpo,
+                            fecha: json[i].fecha,
+                            status: json[i].status,
+                            nombre: json[i].usuario.nombre + ' ' + json[i].usuario.a_paterno + ' ' + json[i].usuario.a_materno,
+                        }
+                        $('#avisos').append(`<div class="col s9">
+                             <p class="negritas" style="margin-bottom: 0px;">${avisos.asunto}</p>
+                           </div>
+                           <div class="col s3" style="text-align: right;">
+                             <p style="font-size: 11px; line-height: 23px; margin-bottom: 0px;">${avisos.fecha}</p>
+                           </div>
+                           <div class="col s12">
+                             <i class="material-icons tiny">attachment</i><span class="" style="font-size: 12px; position: absolute;"> ${avisos.nombre}</span>
+                           </div>
+                           <div class="col s12">
+                             <p style="font-size: 12px;">
+                               ${avisos.cuerpo}
+                             </p>
+                           </div>`)
+                    }
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+            });
+
+
           $('.button-collapse').sideNav({
             menuWidth: 300, // Default is 300
             edge: 'left', // Choose the horizontal origin
@@ -188,17 +131,7 @@
           }
         );
 
-        $('.datepicker').pickadate({
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears:100,
-            min: [1939,1,1],
-            max: [2019,1,31],
-            today: 'Today',
-            clear: 'Clear',
-            close: 'Ok',
-            closeOnSelect: false, // Close upon selecting a date,
-            container: undefined // ex. 'body' will append picker to body
-          });
+
 
 
           $('#datos_p').change(function(){
@@ -229,5 +162,5 @@
           })
 
         });
-
+</script>
 {%  endblock %}

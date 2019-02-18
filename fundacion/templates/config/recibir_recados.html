@@ -14,21 +14,12 @@
                <div class="col s4" style="padding: 0px;">
                   <div class="row" style="padding: 0px; margin-bottom: 0px;">
                     <div class="col s12 fondo_gris">
-                         <div class="row">
-                           <div class="col s9">
-                             <p class="negritas" style="margin-bottom: 0px;">RECADO 1</p>
-                           </div>
-                           <div class="col s3" style="text-align: right;">
-                             <p style="font-size: 11px; line-height: 23px; margin-bottom: 0px;">ahora</p>
-                           </div>
-                           <div class="col s12">
-                             <i class="material-icons tiny">attachment</i><span class="" style="font-size: 12px; position: absolute;"> Armando Perez</span>
-                           </div>
-                           <div class="col s12">
-                             <p style="font-size: 12px;">
-                               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum efficitur est.
-                             </p>
-                           </div>
+                        <div class="row">
+
+                               <div id="recado">
+
+                                </div>
+
                          </div>
 
                     </div>
@@ -81,11 +72,43 @@
 
 {% block scripts %}
 
- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-       <script type="text/javascript" src="js/materialize.js"></script>
        <script type="text/javascript">
         $(document).ready(function() {
-          $('select').material_select();
+            $.ajax({
+                url: '/ws/recados/',
+                method: 'GET',
+                success: function (json) {
+                    for (i in json) {
+                        recado = {
+                            asunto: json[i].asunto,
+                            cuerpo: json[i].cuerpo,
+                            fecha: json[i].fecha,
+                            status: json[i].status,
+                            nombre: json[i].usuario.nombre + ' ' + json[i].usuario.a_paterno + ' ' + json[i].usuario.a_materno,
+                        }
+                        $('#recado').append(`<div class="col s9">
+                             <p class="negritas" style="margin-bottom: 0px;">${recado.asunto}</p>
+                           </div>
+                           <div class="col s3" style="text-align: right;">
+                             <p style="font-size: 11px; line-height: 23px; margin-bottom: 0px;">${recado.fecha}</p>
+                           </div>
+                           <div class="col s12">
+                             <i class="material-icons tiny">attachment</i><span class="" style="font-size: 12px; position: absolute;"> ${recado.nombre}</span>
+                           </div>
+                           <div class="col s12">
+                             <p style="font-size: 12px;">
+                               ${recado.cuerpo}
+                             </p>
+                           </div>`)
+                    }
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+                    
+                }
+            });
+
+
           $('.button-collapse').sideNav({
             menuWidth: 300, // Default is 300
             edge: 'left', // Choose the horizontal origin
@@ -93,18 +116,6 @@
             draggable: true // Choose whether you can drag to open on touch screens,
           }
         );
-
-        $('.datepicker').pickadate({
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears:100,
-            min: [1939,1,1],
-            max: [2019,1,31],
-            today: 'Today',
-            clear: 'Clear',
-            close: 'Ok',
-            closeOnSelect: false, // Close upon selecting a date,
-            container: undefined // ex. 'body' will append picker to body
-          });
 
 
           $('#datos_p').change(function(){
@@ -136,9 +147,7 @@
 
         });
 
-        $.ajax({
 
-        })
 
        </script>
 
