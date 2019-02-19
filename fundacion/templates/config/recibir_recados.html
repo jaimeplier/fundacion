@@ -4,8 +4,12 @@
 
 {% block style %}
 
+    <style type="text/css">
+        .fondo_verde{
+        background-color: #9bbc5c;
+    }
 
-
+    </style>
 {% endblock %}
 
 
@@ -32,16 +36,16 @@
                   <div class="col s12" style="padding: 3%;">
                    <p class="negritas font_naranja center titulos">RECADOS</p>
                  </div>
-                 <div class="col s12 fondo_verde font_blanco">
+                 <div class="fondo_verde col s12  font_blanco" >
                   <div class="row" style="margin-bottom: 0px;">
                     <div class="col s8" style="padding-top:3%; ">
-                      <img src="imagenes/circulo_usuario.png" style="margin-right: 3%;"><span style="position: absolute;"> Armando Perez</span>
+                      <img src="{% static "imagenes/circulo_usuario.png" %}" style="margin-right: 3%;"><span style="position: absolute;"> Armando Perez</span>
                       <p style="margin-top: 0px; margin-left: 8%;">
                         armandoperez@gmail.com
                       </p>
                     </div>
                     <div class="col s4" style="padding: 3%;">
-                       <img src="imagenes/circulo_mas.png" style="margin-right: 3%;"><span class="negritas" style="position: absolute;"> NUEVO RECADO</span>
+                       <img src="{% static "imagenes/circulo_mas.png" %}" style="margin-right: 3%;"><span class="negritas" style="position: absolute;"> NUEVO RECADO</span>
                       <p style="margin-top: 0px; margin-left: 8%;">
                         11 ene. 2019 18:15
                       </p>
@@ -58,10 +62,10 @@
                         <hr>
                     </div>
                     <div class="col s6">
-                       <img src="imagenes/circulo_clip.png" style="margin-right: 3%;"><span class="negritas font_naranja" style="position: absolute;"> Archivos adjuntos</span>
+                       <img src="{% static "imagenes/circulo_clip.png" %}" style="margin-right: 3%;"><span class="negritas font_naranja" style="position: absolute;"> Archivos adjuntos</span>
                     </div>
                     <div class="col s6" style="text-align: right;">
-                       <img src="imagenes/circulo_descargar.png">
+                       <img src="{% static "imagenes/circulo_descargar.png" %}">
                     </div>
 
                   </div>
@@ -71,7 +75,7 @@
 {% endblock %}
 
 {% block scripts %}
-
+        <script type="text/javascript" src="js/materialize.js"></script>
        <script type="text/javascript">
         $(document).ready(function() {
             $.ajax({

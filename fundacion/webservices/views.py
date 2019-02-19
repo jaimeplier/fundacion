@@ -81,8 +81,9 @@ class RecadosViewSet(viewsets.ModelViewSet):
     queryset = Recado.objects.all()
 
     def list(self, request):
-        qs = Recado.objects.filter(usuario=self.request.user) | Recado.objects.filter(
-            destinatarios=self.request.user)
+        qs = Recado.objects.filter(usuario=self.request.user) or Recado.objects.filter(
+            destinatarios=self.request.user
+        )
         serializer = RecadoSerializer(qs, many=True)
         return Response(serializer.data)
 
