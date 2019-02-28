@@ -186,6 +186,15 @@
 
                                         </div>
                                     </div>
+                                    <div class="col s12 txt_algn_center">
+                                        <div class="col s12">
+                                            <p style="text-align: center;">Cómo se enteró</p>
+                                        </div>
+                                        <div class="input-field col s12 m12 l12">
+                                            <select id="como_se_entero">
+                                            </select>
+                                        </div>
+                                    </div>
                                 </form>
                                 <div class="col s12 txt_algn_center">
                                     <p style="margin-top: 0px; text-align: center;">
@@ -402,15 +411,6 @@
                                 </p>
                             </div>
 
-                            <div class="col s12 txt_algn_center">
-                                <div class="col s12">
-                                    <p style="text-align: center;">Cómo se enteró</p>
-                                </div>
-                                <div class="input-field col s12 m12 l12">
-                                    <select id="como_se_entero">
-                                    </select>
-                                </div>
-                            </div>
 
                             </form>
                         </div>
@@ -1055,11 +1055,11 @@
                         }
                         var text_tareas = ''
                         for (i = 0; i < llamada.tareas.length; i++) {
-                                  text_tareas+=`<p>
+                            text_tareas += `<p>
                                     <input type="checkbox" id="tarea${llamada.tareas[i].id}" checked="checked"/>
                                     <label for="tc1">${llamada.tareas[i].nombre}</label>
                                 </p>`
-                                }
+                        }
                         console.log(text_tareas)
                         $('#historial').append(`<div class="row sin_marg_bottom">
                                     <div class="col s12 l6 m6">

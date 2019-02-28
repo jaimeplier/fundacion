@@ -157,7 +157,8 @@
                                     </div>
                                 </div>
                                 <div class="row sin_marg_bottom">
-                                    <button class="btn waves-effect waves-light col-lg-12" onclick="GuardarComentarios()">Guardar
+                                    <button class="btn waves-effect waves-light col-lg-12"
+                                            onclick="GuardarComentarios()">Guardar
                                         <i class="material-icons right">send</i>
                                     </button>
                                 </div>
@@ -195,6 +196,16 @@
                                                       placeholder="Causa de riesgo"
                                                       style="padding-left: 14px;" maxlength="512"></textarea>
 
+                                        </div>
+                                    </div>
+
+                                    <div class="col s12 txt_algn_center">
+                                        <div class="col s12">
+                                            <p style="text-align: center;">Cómo se enteró</p>
+                                        </div>
+                                        <div class="input-field col s12 m12 l12">
+                                            <select id="como_se_entero">
+                                            </select>
                                         </div>
                                     </div>
                                 </form>
@@ -405,16 +416,6 @@
                                 <p style="margin-top: 0px; text-align: center;">Estatus de la llamada</p>
                                 <p style="margin-top: 0px; text-align: center;" id="estatus_llamada">
                                 </p>
-                            </div>
-
-                            <div class="col s12 txt_algn_center">
-                                <div class="col s12">
-                                    <p style="text-align: center;">Cómo se enteró</p>
-                                </div>
-                                <div class="input-field col s12 m12 l12">
-                                    <select id="como_se_entero">
-                                    </select>
-                                </div>
                             </div>
 
 
@@ -1028,7 +1029,8 @@
         }
 
         function GuardarEvaluacion() {
-            var llamada ={{ object.pk }}
+            var llamada =
+            {{ object.pk }}
             var num_totales = $('.rubro').length;
             var num_rubros_cumplidos = $('.rubro:checkbox:checked').length;
             var rubros_cumplidos = $('.rubro:checkbox:checked');
@@ -1062,14 +1064,15 @@
         }
 
         function GuardarComentarios() {
-            var llamada = {{ object.pk }}
+            var llamada =
+            {{ object.pk }}
             var comentario = $('#comentario').val();
             var compromisos = []
-                console.log($('#compromisos input[type="text"]').filter(function () {
-                    if (this.value.length > 0){
-                        compromisos.push(this.value)
-                    }
-                }).length);
+            console.log($('#compromisos input[type="text"]').filter(function () {
+                if (this.value.length > 0) {
+                    compromisos.push(this.value)
+                }
+            }).length);
 
             $.ajax({
                 data_type: 'json',
