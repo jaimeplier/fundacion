@@ -69,14 +69,10 @@ def ver_avisos(request):
     }
     return render(request, template_name, context)
 
-
 def ver_recados(request):
-    template_name = 'config/recibir_recados.html'
-    usuario = Usuario.objects.get(pk=request.user.pk)
-    context = {
-        'usuario': usuario
-    }
-    return render(request, template_name, context)
+    return render(
+        request, 'config/recibir_recados.html', dict(usuario=Usuario.objects.get(pk=request.user.pk))
+    )
 
 class PendienteAdd(LoginRequiredMixin, CreateView):
     redirect_field_name = 'next'
