@@ -641,3 +641,16 @@ class EstatusUsuario(Catalogo):
     class Meta:
         managed = True
         db_table = 'estatus_usuario'
+
+class Pendiente(models.Model):
+    usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
+    nombre = models.CharField(max_length=256)
+    descripcion = models.TextField(max_length=2048)
+    fecha_inicio = models.DateField()
+    fecha_limite = models.DateField()
+    completado = models.BooleanField()
+    fecha_creacion =models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        managed = True
+        db_table = 'pendiente'
