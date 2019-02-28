@@ -284,10 +284,12 @@ class BusquedaUsuario(ListAPIView):
     1. tipo_busqueda:
         - 0: busqueda por teléfono
         - 1: busqueda por nombre
+        - 3: busqueda por ID de la víctima
 
     2. nombre: nombre de la victima
 
-    3. telefono: teléfono de la victima
+    3. telefono: teléfono de la víctima
+    4. id: ID de la victima
 
     **Búsqueda por filtros**
 
@@ -333,6 +335,13 @@ class BusquedaUsuario(ListAPIView):
             if nombre is not None:
                 list_last_llamadas = Victima.objects.filter(nombre__icontains=nombre) | Victima.objects.filter(apellido_materno__icontains=nombre) | Victima.objects.filter(apellido_paterno__icontains=nombre)
                 list_last_llamadas = list_last_llamadas.annotate(pk_llamada=Max('llamada__pk')).values_list('pk_llamada', flat=True)
+                queryset = Llamada.objects.filter(pk__in=list_last_llamadas)
+        if tipo_busqueda == '3':
+            id_usuario = self.request.query_params.get('id', None)
+            if id_usuario is not None:
+                list_last_llamadas = Victima.objects.filter(pk=id_usuario)
+                list_last_llamadas = list_last_llamadas.annotate(pk_llamada=Max('llamada__pk')).values_list(
+                    'pk_llamada', flat=True)
                 queryset = Llamada.objects.filter(pk__in=list_last_llamadas)
         if filtro == '1':
             if consejero is not None:
