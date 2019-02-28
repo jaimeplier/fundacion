@@ -74,6 +74,18 @@
                                                onchange="copiar_fecha()">
                                         {% render_field field class+="validate fecha_nac_form" placeholder="Fecha de nacimiento" required='required' data-validation-required-message="Este campo es requerido" id="fecha_nac_form" hidden="true" %}
                                         <label for="fecha_nac">Fecha de nacimiento</label>
+                                    {% elif field.html_name == 'fecha_inicio' %}
+                                        <input placeholder="Fecha de inicio" id="fecha_inicio" type="text"
+                                               class="datepicker"
+                                               onchange="copiar_fecha_ini()">
+                                        {% render_field field class+="validate fecha_ini_form" placeholder="Fecha de inicio" id="fecha_ini_form" hidden="true" %}
+                                        <label for="fecha_nac">Fecha de inicio</label>
+                                    {% elif field.html_name == 'fecha_limite' %}
+                                        <input placeholder="Fecha límite" id="fecha_limite" type="text"
+                                               class="datepicker"
+                                               onchange="copiar_fecha_lim()">
+                                        {% render_field field class+="validate fecha_lim_form" placeholder="Fecha límite" id="fecha_lim_form" hidden="true"%}
+                                        <label for="fecha_nac">Fecha de límite</label>
                                     {% elif field.html_name == 'lista_reproduccion' %}
                                         {% render_field field class+="validate tooltipped" placeholder=field.label data-tooltip="Copia y pega el embed de Spotify Ej. https://open.spotify.com/embed/user/spotify/playlist/37i9dQZF1DWYN0zdqzbEwl" %}
                                         <label for="{{ field.auto_id }} ">{{ field.label }}</label>
@@ -224,7 +236,6 @@
                 today: 'Hoy',
                 clear: 'Cancelar',
                 close: 'Ok',
-                min: true,
                 closeOnSelect: true // Close upon selecting a date,
             });
             selector_calendario = $calendario.pickadate('picker')
@@ -267,10 +278,24 @@
             $('select').material_select();
 
             var fecha = $('#fecha_nac_form').val();
+            var fecha_ini = $('#fecha_ini_form').val();
+            var fecha_lim = $('#fecha_lim_form').val();
             if (fecha !== undefined) {
                 selector_nacimiento.set('select', fecha, {format: 'dd/mm/yyyy'})
                 //$('#fecha_nac').val(fecha);
                 //$('[name=fecha_nac]').val(fecha);
+            }
+            if (fecha_ini !== undefined) {
+                var $input = $('#fecha_inicio').pickadate()
+                var picker = $input.pickadate('picker')
+                var fecha = $('#fecha_ini_form').val();
+                picker.set('select', fecha, {format: 'dd/mm/yyyy'})
+            }
+            if (fecha_lim !== undefined) {
+                var $input = $('#fecha_limite').pickadate()
+                var picker = $input.pickadate('picker')
+                var fecha = $('#fecha_lim_form').val();
+                picker.set('select', fecha, {format: 'dd/mm/yyyy'})
             }
 
             var fecha_hora = $('#fecha-hora').val();
@@ -293,6 +318,23 @@
             $('#fecha_nac_form').val('');
             var fecha_pick = fecha.value
             $('#fecha_nac_form').val(fecha_pick);
+        }
+
+        function copiar_fecha_ini() {
+            var $input = $('.datepicker').pickadate();
+            var picker = $input.pickadate('picker');
+            var fecha = picker._hidden;
+            $('#fecha_ini_form').val('');
+            var fecha_pick = fecha.value
+            $('#fecha_ini_form').val(fecha_pick);
+        }
+        function copiar_fecha_lim() {
+            var $input = $('.datepicker').pickadate();
+            var picker = $input.pickadate('picker');
+            var fecha = picker._hidden;
+            $('#fecha_lim_form').val('');
+            var fecha_pick = fecha.value
+            $('#fecha_lim_form').val(fecha_pick);
         }
 
         function copiar_fecha_hora() {

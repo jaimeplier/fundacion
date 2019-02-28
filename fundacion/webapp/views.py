@@ -1,10 +1,16 @@
 from django.contrib.auth import authenticate, login as auth_login, logout
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.urls import reverse
+from django.views.generic import CreateView, UpdateView
+from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from config.models import Usuario
+from config.models import Usuario, Pendiente
+from webapp.forms import PendienteForm
 
 
 def index(request):
@@ -71,3 +77,109 @@ def ver_recados(request):
         'usuario': usuario
     }
     return render(request, template_name, context)
+
+class PendienteAdd(LoginRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+
+    model = Pendiente
+    template_name = 'config/formulario_1Col.html'
+    form_class = PendienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PendienteAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un pendiente'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un pendiente'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            pendiente = form.save(commit=False)
+            usuario = Usuario.objects.get(pk=self.request.user.pk)
+            pendiente.usuario = usuario
+            pendiente.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('webapp:list_pendiente')
+
+
+@login_required(login_url='/')
+def list_pendiente(request):
+    template_name = 'config/tab_pendiente.html'
+    return render(request, template_name)
+
+
+class PendienteAjaxList(LoginRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+
+    model = Pendiente
+    columns = ['id', 'nombre', 'descripcion', 'fecha_inicio', 'fecha_limite', 'completado', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre', 'descripcion', 'fecha_inicio', 'fecha_limite', 'completado']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('webapp:edit_pendiente',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+        elif column == 'completado':
+            if row.completado:
+                return '<img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/aceptar.png">'
+            return '<img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/rechazar.png">'
+
+        return super(PendienteAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Pendiente.objects.filter(usuario__pk=self.request.user.pk)
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(
+                descripcion__icontains=search) | qs.filter(fecha_limite__icontains=search) | qs.filter(
+                completado__icontains=search) | qs.filter(fecha_inicio__icontains=search)
+        return qs
+
+
+class PendienteEdit(LoginRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/pendiente/list'
+
+    model = Pendiente
+    template_name = 'config/formulario_1Col.html'
+    form_class = PendienteForm
+
+    def get_context_data(self, **kwargs):
+        context = super(PendienteEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@login_required(login_url='/')
+def delete_pendiente(request, pk):
+    pendiente = get_object_or_404(Pendiente, pk=pk)
+    pendiente.delete()
+    return JsonResponse({'result': 1})
