@@ -645,10 +645,10 @@ class EstatusUsuario(Catalogo):
 class Pendiente(models.Model):
     usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
     nombre = models.CharField(max_length=256)
-    descripcion = models.TextField(max_length=2048)
-    fecha_inicio = models.DateField()
-    fecha_limite = models.DateField()
-    completado = models.BooleanField()
+    descripcion = models.TextField(max_length=2048, blank=True, null=True)
+    fecha_inicio = models.DateField(blank=True, null=True)
+    fecha_limite = models.DateField(blank=True, null=True)
+    completado = models.BooleanField(default=False)
     fecha_creacion =models.DateTimeField(auto_now_add=True)
 
     class Meta:
