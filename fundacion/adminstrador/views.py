@@ -18,13 +18,13 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm, \
     EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm, \
     AgresorForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm, RecomendacionRiesgoForm, \
-    FaseCambioForm, ActividadUsuarioForm, TipificacionForm, CategoriaTipificacionForm
+    FaseCambioForm, ActividadUsuarioForm, TipificacionForm, CategoriaTipificacionForm, SucursalInstitucionForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
     MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
-    CategoriaTipificacion
+    CategoriaTipificacion, Sucursal
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -627,7 +627,7 @@ class AcudeInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'institucion'
 
     model = AcudeInstitucion
-    columns = ['id', 'nombre', 'contacto', 'editar', 'eliminar']
+    columns = ['id', 'nombre', 'sucursal', 'contacto', 'editar', 'eliminar']
     order_columns = ['id', 'nombre']
     max_display_length = 100
 
@@ -641,6 +641,10 @@ class AcudeInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
             return '<a class="" href ="' + reverse('administrador:list_contacto_institucion',
                                                    kwargs={
                                                        'institucion': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/usuario.png"></a>'
+        elif column == 'sucursal':
+            return '<a class="" href ="' + reverse('administrador:list_sucursal_institucion',
+                                                   kwargs={
+                                                       'institucion': row.pk}) + '"><i class="material-icons">account_balance</i></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
                 row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
@@ -2253,6 +2257,154 @@ def delete_contacto_institucion(request, pk):
     contacto_institucion.delete()
     return JsonResponse({'result': 1})
 
+class SucursalInstitucionAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'institucion'
+
+    model = Sucursal
+    template_name = 'config/formMapa.html'
+    success_url = '/administrador/sucursal_institucion/list'
+    form_class = SucursalInstitucionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(SucursalInstitucionAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar una sucursal a la institucion'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar una sucursal'
+        if 'save_and_new' not in context:
+            context['save_and_new'] = 'Guardar y nuevo'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        lon = self.request.POST.get('lgn')
+        lat = self.request.POST.get('lat')
+        if form.is_valid():
+            try:
+                pnt = Point(float(lon), float(lat))
+                form.instance.coordenadas = pnt
+
+                institucion = AcudeInstitucion.objects.get(pk=self.kwargs['institucion'])
+                sucursal_institucion = form.save(commit=False)
+
+                sucursal_institucion.institucion = institucion
+                sucursal_institucion.save()
+                if 'save_and_new' in form.data:
+                    return HttpResponseRedirect(self.guardar_y_nuevo())
+
+                return HttpResponseRedirect(self.get_success_url())
+            except:
+                return render(request, template_name=self.template_name,
+                              context={'form': form, 'error': 'Falta ubicación de la institución'})
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def guardar_y_nuevo(self):
+        return reverse('administrador:add_sucursal_institucion', kwargs={'institucion': self.kwargs['institucion']})
+
+    def get_success_url(self):
+        return reverse('administrador:list_sucursal_institucion', kwargs={'institucion': self.kwargs['institucion']})
+
+
+@permission_required(perm='institucion', login_url='/')
+def list_sucursal_institucion(request, institucion):
+    template_name = 'administrador/tab_sucursal_institucion.html'
+    institucion = AcudeInstitucion.objects.get(pk=institucion)
+    context = {'institucion': institucion}
+    return render(request, template_name, context)
+
+
+class SucursalInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'institucion'
+
+    model = Sucursal
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_sucursal_institucion',
+                                                   kwargs={
+                                                       'pk': row.pk, 'institucion': self.kwargs[
+                                                           'institucion']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(SucursalInstitucionAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Sucursal.objects.filter(institucion__pk=self.kwargs['institucion'])
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class SucursalInstitucionEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'institucion'
+
+    model = Sucursal
+    template_name = 'config/formMapa.html'
+    form_class = SucursalInstitucionForm
+
+    def get_context_data(self, **kwargs):
+        context = super(SucursalInstitucionEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST, request.FILES)
+        lon = self.request.POST.get('lgn')
+        lat = self.request.POST.get('lat')
+
+        l = self.model.objects.get(pk=self.kwargs['pk'])
+        form = SucursalInstitucionForm(request.POST, request.FILES, instance=l)
+        if form.is_valid():
+            try:
+                pnt = Point(float(lon), float(lat))
+                form.instance.coordenadas = pnt
+                sucursal_institucion = form.save(commit=False)
+
+                sucursal_institucion.save()
+                return HttpResponseRedirect(self.get_success_url())
+            except:
+                return render(request, template_name=self.template_name,
+                              context={'form': form, 'error': 'Falta ubicación de la institución'})
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_sucursal_institucion', kwargs={'institucion': self.kwargs['institucion']})
+
+
+@permission_required(perm='institucion', login_url='/')
+def delete_sucursal_institucion(request, pk):
+    sucursal_institucion = get_object_or_404(Sucursal, pk=pk)
+    sucursal_institucion.delete()
+    return JsonResponse({'result': 1})
 
 class SexoAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'

@@ -21,7 +21,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     NivelRiesgoAdd, NivelRiesgoAjaxList, NivelRiesgoEdit, RecomendacionRiesgoAdd, RecomendacionRiesgoAjaxList, \
     RecomendacionRiesgoEdit, FaseCambioAdd, FaseCambioAjaxList, FaseCambioEdit, ActividadUsuarioAdd, \
     ActividadUsuarioAjaxList, ActividadUsuarioEdit, TipificacionAdd, TipificacionAjaxList, TipificacionEdit, \
-    CategoriaTipificacionAdd, CategoriaTipificacionAjaxList, CategoriaTipificacionEdit
+    CategoriaTipificacionAdd, CategoriaTipificacionAjaxList, CategoriaTipificacionEdit, SucursalInstitucionAdd, \
+    SucursalInstitucionAjaxList, SucursalInstitucionEdit
 from . import views
 
 app_name = 'administrador'
@@ -172,6 +173,17 @@ urlpatterns = [
          name='edit_contacto_institucion'),
     path('contacto_institucion/list/delete/<int:pk>', views.delete_contacto_institucion,
          name='delete_contacto_institucion'),
+
+    path('sucursal_institucion/add/<int:institucion>', SucursalInstitucionAdd.as_view(),
+         name='add_sucursal_institucion'),
+    path('sucursal_institucion/list/<int:institucion>', views.list_sucursal_institucion,
+         name='list_sucursal_institucion'),
+    path('sucursal_institucion/ajax/list/<int:institucion>', SucursalInstitucionAjaxList.as_view(),
+         name='list_ajax_sucursal_institucion'),
+    path('sucursal_institucion/edit/<int:pk>/<int:institucion>', SucursalInstitucionEdit.as_view(),
+         name='edit_sucursal_institucion'),
+    path('sucursal_institucion/list/delete/<int:pk>', views.delete_sucursal_institucion,
+         name='delete_sucursal_institucion'),
 
     path('sexo/add/', SexoAdd.as_view(), name='add_sexo'),
     path('sexo/list/', views.list_sexo, name='list_sexo'),

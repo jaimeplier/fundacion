@@ -1,8 +1,8 @@
 <!--   SOFTIC SOLUTIONS   -->
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
-    <h5 class="titulo_tabla">- Institución -</h5>
-    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_acude_institucion' %}"><i
+    <h5 class="titulo_tabla">- Sucursales {{ institucion.nombre }} -</h5>
+    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_sucursal_institucion' institucion.pk%}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -10,8 +10,6 @@
 {% block campos %}
     <th>ID</th>
     <th>Nombre</th>
-    <th data-orderable="false">Sucursales</th>
-    <th data-orderable="false">Contactos</th>
     <th data-orderable="false">Editar</th>
     <th data-orderable="false">Eliminar</th>
 {% endblock %}
@@ -43,8 +41,6 @@
                     { className: "center fondo_tab_gris border_rigth"},
                     { className: "fondo_tab_crema border_rigth"},
                     { className: "center fondo_tab_gris border_rigth"},
-                    { className: "center fondo_tab_crema border_rigth"},
-                    { className: "center fondo_tab_gris border_rigth"},
                     { className: "center fondo_tab_crema"}
                     ],
 
@@ -53,5 +49,5 @@
 <!-- *************************************************************************** -->
 
 
-{% block url_ajax %}{% url 'administrador:list_ajax_acude_institucion' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_sucursal_institucion' institucion.pk %}{% endblock %}
 
