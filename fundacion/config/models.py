@@ -194,6 +194,26 @@ class AcudeInstitucion(Catalogo):
         managed = True
         db_table = 'acude_institucion'
 
+class Sucursal(Catalogo):
+    institucion = models.ForeignKey('AcudeInstitucion', on_delete=models.DO_NOTHING)
+    coordenadas = models.PointField()
+    convenio = models.BooleanField(default=False)
+    direccion = models.CharField(max_length=512)
+
+    @property
+    def latitud(self):
+        """I'm the 'x' property."""
+        return str(self.coordenadas.coords[1])
+
+    @property
+    def longitud(self):
+        """I'm the 'x' property."""
+        return str(self.coordenadas.coords[0])
+
+    class Meta:
+        managed = True
+        db_table = 'sucursal'
+
 
 class Ayuda(Catalogo):
     tipo_ayuda = models.ForeignKey('TipoAyuda', models.DO_NOTHING)
