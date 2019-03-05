@@ -375,8 +375,8 @@
                         <div class="col s12">
                             <p style="text-align: center;">Canalizar a:</p>
                         </div>
-                        <div class="input-field col s12 m12 l12">
-                            <select id="instituciones">
+                        <div class="col s12 m12 l12">
+                            <select class="browser-default js-example-basic-single" id="instituciones" style="width: 100%">
                             </select>
                         </div>
                     </div>
@@ -401,13 +401,12 @@
     </div>
 
 {% endblock %}
-<!--Import jQuery before materialize.js-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
 {% block scripts %}
 
 
     <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.collapsible').collapsible();
@@ -946,6 +945,7 @@
                         );
                     }
                     $('#instituciones').material_select();
+                    $('.js-example-basic-single').select2();
                 }
             });
 
