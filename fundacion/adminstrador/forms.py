@@ -72,7 +72,7 @@ class CalidadForm(ModelForm):
 class AcudeInstitucionForm(ModelForm):
     class Meta:
         model = AcudeInstitucion
-        exclude = ['fecha_alta', 'fecha_baja', 'fecha_actualizacion', 'coordenadas']
+        exclude = ['fecha_alta', 'fecha_baja', 'fecha_actualizacion', 'coordenadas', 'estatus_institucion', 'estatus']
         labels = {
             'direccion': 'Dirección',
         }
@@ -223,7 +223,7 @@ class ContactoInstitucionForm(ModelForm):
 class SucursalInstitucionForm(ModelForm):
     class Meta:
         model = Sucursal
-        exclude = ['institucion', 'fecha_alta', 'fecha_baja', 'coordenadas']
+        exclude = ['institucion', 'fecha_alta', 'fecha_baja', 'fecha_actualizacion', 'coordenadas', 'estatus_institucion', 'estatus']
         labels = {
             'direccion': 'Dirección',
         }

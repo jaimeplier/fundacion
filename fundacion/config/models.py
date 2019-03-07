@@ -173,11 +173,16 @@ class Usuario(AbstractBaseUser):
         managed = True
         db_table = 'usuario'
 
+class EstatusInstitucion(Catalogo):
+    class Meta:
+        managed= True
+        db_table = 'estatus_institucion'
 
 class AcudeInstitucion(Catalogo):
     dependencia = models.ForeignKey('Dependencia', on_delete=models.DO_NOTHING)
     coordenadas = models.PointField()
     convenio = models.BooleanField(default=False)
+    estatus_institucion = models.ForeignKey('EstatusInstitucion', models.DO_NOTHING)
     direccion = models.CharField(max_length=512)
 
     @property
@@ -198,6 +203,7 @@ class Sucursal(Catalogo):
     institucion = models.ForeignKey('AcudeInstitucion', on_delete=models.DO_NOTHING)
     coordenadas = models.PointField()
     convenio = models.BooleanField(default=False)
+    estatus_institucion = models.ForeignKey('EstatusInstitucion', models.DO_NOTHING)
     direccion = models.CharField(max_length=512)
 
     @property

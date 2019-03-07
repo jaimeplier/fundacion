@@ -24,7 +24,7 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
     MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
-    CategoriaTipificacion, Sucursal
+    CategoriaTipificacion, Sucursal, EstatusInstitucion
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -603,6 +603,13 @@ class AcudeInstitucionAdd(PermissionRequiredMixin, CreateView):
                 form.instance.coordenadas = pnt
 
                 institucion = form.save(commit=False)
+                if self.request.user.rol.pk == 3:
+                    estatus = EstatusInstitucion.objects.get(pk=2)
+                    institucion.estatus_institucion = estatus
+                    institucion.save()
+                    return HttpResponseRedirect(self.get_success_url())
+                estatus = EstatusInstitucion.objects.get(pk=1)
+                institucion.estatus_institucion = estatus
                 institucion.save()
                 return HttpResponseRedirect(self.get_success_url())
             except:
@@ -627,17 +634,21 @@ class AcudeInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'institucion'
 
     model = AcudeInstitucion
-    columns = ['id', 'nombre', 'sucursal', 'contacto', 'editar', 'eliminar']
-    order_columns = ['id', 'nombre']
+    columns = ['id', 'nombre', 'estatus_institucion', 'sucursal', 'contacto', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre', 'estatus_institucion__nombre']
     max_display_length = 100
 
     def render_column(self, row, column):
 
         if column == 'editar':
+            if self.request.user.is_consejero:
+                return 'NA'
             return '<a class="" href ="' + reverse('administrador:edit_acude_institucion',
                                                    kwargs={
                                                        'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'contacto':
+            if self.request.user.is_consejero:
+                return 'NA'
             return '<a class="" href ="' + reverse('administrador:list_contacto_institucion',
                                                    kwargs={
                                                        'institucion': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/usuario.png"></a>'
@@ -648,6 +659,10 @@ class AcudeInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
                 row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'estatus_institucion':
+            if self.request.user.is_consejero:
+                return row.estatus_institucion.nombre
+            return 'Web service'
         elif column == 'id':
             return row.pk
 
@@ -2294,10 +2309,14 @@ class SucursalInstitucionAdd(PermissionRequiredMixin, CreateView):
                 sucursal_institucion = form.save(commit=False)
 
                 sucursal_institucion.institucion = institucion
+                if self.request.user.rol.pk == 3:
+                    estatus = EstatusInstitucion.objects.get(pk=2)
+                    sucursal_institucion.estatus_institucion = estatus
+                    sucursal_institucion.save()
+                    return HttpResponseRedirect(self.get_success_url())
+                estatus = EstatusInstitucion.objects.get(pk=1)
+                sucursal_institucion.estatus_institucion = estatus
                 sucursal_institucion.save()
-                if 'save_and_new' in form.data:
-                    return HttpResponseRedirect(self.guardar_y_nuevo())
-
                 return HttpResponseRedirect(self.get_success_url())
             except:
                 return render(request, template_name=self.template_name,
@@ -2326,13 +2345,15 @@ class SucursalInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'institucion'
 
     model = Sucursal
-    columns = ['id', 'nombre', 'editar', 'eliminar']
-    order_columns = ['id', 'nombre']
+    columns = ['id', 'nombre', 'estatus_institucion', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre', 'estatus_institucion__nombre']
     max_display_length = 100
 
     def render_column(self, row, column):
 
         if column == 'editar':
+            if self.request.user.is_consejero:
+                return 'NA'
             return '<a class="" href ="' + reverse('administrador:edit_sucursal_institucion',
                                                    kwargs={
                                                        'pk': row.pk, 'institucion': self.kwargs[
@@ -2340,6 +2361,10 @@ class SucursalInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
                 row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'estatus_institucion':
+            if self.request.user.is_consejero:
+                return row.estatus_institucion.nombre
+            return 'Web service'
         elif column == 'id':
             return row.pk
 

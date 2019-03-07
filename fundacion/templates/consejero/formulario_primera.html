@@ -365,18 +365,20 @@
                         <div class="col s12">
                             <p>
                                 <input type="checkbox" id="datos_c"/>
-                                <label for="datos_c" style="color:#EF7F13!important">¿Requiere
-                                    canalización?</label>
+                                <label for="datos_c" style="color:#EF7F13!important">¿Requiere canalización?</label>
                             </p>
                         </div>
                     </div>
 
                     <div class="row sin_marg_bottom" id="datos_canalizacion">
                         <div class="col s12">
-                            <p style="text-align: center;">Canalizar a:</p>
+                            <p style="text-align: center;">Canalizar a: <a href="{% url 'administrador:list_acude_institucion' %}" target="_blank"><button class="btn fondo_naranja redondo" style="width: 125px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">+ Nueva institución</button></a></p>
                         </div>
                         <div class="col s12 m12 l12">
-                            <select class="browser-default js-example-basic-single" id="instituciones" style="width: 100%">
+                            <button onclick="reloadInstituciones()" class="btn fondo_naranja redondo" style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
+                                <i class="material-icons" style="cursor: pointer">refresh</i>
+                            </button>
+                            <select class="browser-default js-example-basic-single" id="instituciones" style="width: 85%">
                             </select>
                         </div>
                     </div>
@@ -1147,6 +1149,32 @@
                 }
             });
 
+        }
+
+        function reloadInstituciones() {
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_instituciones' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#instituciones").empty().html(' ');
+                    $('#instituciones').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Institución")
+                    );
+                    for (i in json) {
+                        $('#instituciones').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#instituciones').material_select();
+                    //$('.js-example-basic-single').select2();
+                }
+            });
         }
 
 
