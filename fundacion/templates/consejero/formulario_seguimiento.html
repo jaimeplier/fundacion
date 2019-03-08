@@ -397,10 +397,21 @@
 
                             <div class="row sin_marg_bottom" id="datos_canalizacion">
                                 <div class="col s12">
-                                    <p style="text-align: center;">Canalizar a:</p>
+                                    <p style="text-align: center;">Canalizar a: <a
+                                            href="{% url 'administrador:list_acude_institucion' %}" target="_blank">
+                                        <button class="btn fondo_naranja redondo"
+                                                style="width: 125px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
+                                            + Nueva institución
+                                        </button>
+                                    </a></p>
                                 </div>
-                                <div class="input-field col s12 m12 l12">
-                                    <select id="instituciones">
+                                <div class="col s12 m12 l12">
+                                    <button onclick="reloadInstituciones()" class="btn fondo_naranja redondo"
+                                            style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
+                                        <i class="material-icons" style="cursor: pointer">refresh</i>
+                                    </button>
+                                    <select class="browser-default js-example-basic-single" id="instituciones"
+                                            style="width: 85%">
                                     </select>
                                 </div>
                             </div>
@@ -439,6 +450,8 @@
 <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
 {% block scripts %}
     <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript">
         var victima = {{ victima.pk }}
             $(document).ready(function () {
@@ -848,6 +861,7 @@
                             );
                         }
                         $('#instituciones').material_select();
+                        $('.js-example-basic-single').select2();
                     }
                 });
 
@@ -1129,6 +1143,32 @@
                 }
             }
             return mensaje_error
+        }
+
+        function reloadInstituciones() {
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_instituciones' %}",
+                cache: false,
+                success: function (json) {
+
+                    $("#instituciones").empty().html(' ');
+                    $('#instituciones').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Institución")
+                    );
+                    for (i in json) {
+                        $('#instituciones').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#instituciones').material_select();
+                    //$('.js-example-basic-single').select2();
+                }
+            });
         }
 
     </script>
