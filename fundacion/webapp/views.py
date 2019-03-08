@@ -31,7 +31,7 @@ def login(request):
             elif user.rol.nombre == 'administrador':
                 return redirect(reverse('webapp:index'))
             elif user.rol.nombre == 'directorio':
-                return redirect(reverse('directorio:list_acude_institucion'))
+                return redirect(reverse('administrador:list_acude_institucion'))
             elif user.rol.nombre == 'consejero':
                 return redirect(reverse('consejero:busqueda_usuario'))
             elif user.rol.nombre == 'supervisor':

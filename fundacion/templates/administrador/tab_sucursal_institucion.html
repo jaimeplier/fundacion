@@ -33,6 +33,30 @@
     }
     });
     }
+
+    function cambiar_estatus_institucion(idU, e) {
+            if(confirm('Estas seguro que quieres cambiar el estatus a ' + $("option:selected", e).text())){
+                var estatus = $(e).val()
+    console.log(estatus);
+                $.ajax({
+                    url: "/ws/cambiar_estatus_institucion/",
+                    data: {pk: idU, estatus: estatus, tipo: 1},
+                    type: "POST", // http method
+                    // handle a successful response
+                    success: function (aData) {
+                        $('#tabla').dataTable()._fnAjaxUpdate();
+                    },
+
+                    // handle a non-successful response
+                    error: function (xhr, errmsg, err) {
+                        alert("Ocurrio un error: " + xhr.responseJSON.detail);
+                    }
+                });
+            }
+            else{
+    console.log($(e).val())
+    $('#tabla').dataTable()._fnAjaxUpdate();}
+        }
 {% endblock %}
 
 <!-- Bloque para agregar las clases de las columnas en la tabla acorde al diseño -->
