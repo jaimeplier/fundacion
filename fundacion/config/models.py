@@ -571,7 +571,6 @@ class CategoriaTipificacion(Catalogo):
 class TipificacionLLamada(models.Model):
     llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
     categoria_tipificacion = models.ForeignKey('CategoriaTipificacion', models.DO_NOTHING)
-    descripcion = models.TextField(max_length=512)
     class Meta:
         managed = True
         db_table = 'tipificacion_llamada'

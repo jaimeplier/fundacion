@@ -224,17 +224,7 @@
 
                                         </p>
                                         <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;">Descripción de la tipificación</p>
-                                            </div>
-                                            <div class="input-field col s12">
-                                            <textarea id="descrip_tipificacion" class="materialize-textarea"
-                                                      placeholder="Descripción de la tipificación"
-                                                      style="padding-left: 14px;"></textarea>
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
+                                            <p style="margin-top: 0px; text-align: center;">Nivel de riesgo</p>
                                             <div class="input-field col s12">
                                                 <select id="nivel_riesgo">
                                                 </select>
@@ -550,7 +540,6 @@
                     }
                 });
 
-                $("#descrip_tipificacion").val('{{ tipificacion.descripcion }}')
 
                 $.ajax({
                     method: "GET",

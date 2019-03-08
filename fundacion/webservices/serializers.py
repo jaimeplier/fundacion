@@ -76,7 +76,6 @@ class PrimeraVezSerializer(serializers.Serializer):
 
     # Tipificacion Categoria
     categoria_tipificacion = serializers.IntegerField(min_value=1)
-    descripcion_tipificacion = serializers.CharField(max_length=512)
 
 
     # Examen mental
@@ -125,7 +124,6 @@ class SeguimientoSerializer(serializers.Serializer):
 
     # Tipificacion Categoria
     categoria_tipificacion = serializers.IntegerField(min_value=1)
-    descripcion_tipificacion = serializers.CharField(max_length=512)
 
     # Examen mental
     estado_mental_ute = serializers.IntegerField(min_value=1)

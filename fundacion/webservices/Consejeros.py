@@ -79,7 +79,6 @@ class PrimerRegistro(APIView):
         # ---> DATOS DE LA TIPIFICACION <---
 
         cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
-        descripcion_tipificacion = serializer.validated_data['descripcion_tipificacion']
 
         # ---> Datos del examen mental <---
 
@@ -122,8 +121,7 @@ class PrimerRegistro(APIView):
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
-        llamada_tipifificacion = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion,
-                                                                    descripcion=descripcion_tipificacion)
+        llamada_tipifificacion = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion)
 
         # ---> REGISTRO DE EXAMEN MENTAL <---
 
@@ -182,7 +180,6 @@ class SeguimientoRegistro(APIView):
         # ---> DATOS DE LA TIPIFICACION <---
 
         cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
-        descripcion_tipificacion = serializer.validated_data['descripcion_tipificacion']
 
         # ---> Datos del examen mental <---
 
@@ -219,8 +216,7 @@ class SeguimientoRegistro(APIView):
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
-        llamada_tipifificacion = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion,
-                                                                    descripcion=descripcion_tipificacion)
+        llamada_tipifificacion = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion)
 
         # ---> REGISTRO DE EXAMEN MENTAL <---
 
