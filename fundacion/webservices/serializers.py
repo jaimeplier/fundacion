@@ -68,6 +68,7 @@ class PrimeraVezSerializer(serializers.Serializer):
     causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False )
     redes_apoyo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     como_se_entero = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    devolver_llamada = serializers.BooleanField(default=False)
 
     # Tareas asiganadas a la llamada
     tarea1 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
@@ -116,6 +117,7 @@ class SeguimientoSerializer(serializers.Serializer):
     estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     como_se_entero = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    devolver_llamada = serializers.BooleanField(default=False)
 
     # Tareas asiganadas a la llamada
     tarea1 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)

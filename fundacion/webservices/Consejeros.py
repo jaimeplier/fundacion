@@ -70,6 +70,7 @@ class PrimerRegistro(APIView):
         victimas = VictimaInvolucrada.objects.get(pk=serializer.data['victimas'])
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
+        devolver_llamada = serializer.validated_data['devolver_llamada']
 
         # Tareas
         tarea1 = serializer.data['tarea1']
@@ -108,7 +109,7 @@ class PrimerRegistro(APIView):
                                          causa_riesgo=causa_riesgo, fase_cambio=fase_cambio,
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
                                          semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
-                                         como_se_entero=como_se_entero)
+                                         como_se_entero=como_se_entero, devolver_llamada=devolver_llamada)
         if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)
             llamada.tareas.add(tarea)
@@ -171,6 +172,7 @@ class SeguimientoRegistro(APIView):
         victimas = VictimaInvolucrada.objects.get(pk=serializer.data['victimas'])
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
+        devolver_llamada = serializer.validated_data['devolver_llamada']
 
         # Tareas
         tarea1 = serializer.data['tarea1']
@@ -202,7 +204,7 @@ class SeguimientoRegistro(APIView):
                                          causa_riesgo=causa_riesgo, fase_cambio=fase_cambio,
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
                                          semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
-                                         como_se_entero=como_se_entero)
+                                         como_se_entero=como_se_entero, devolver_llamada=devolver_llamada)
 
         if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)

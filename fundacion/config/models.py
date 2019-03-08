@@ -295,6 +295,7 @@ class Llamada(models.Model):
     agresor = models.ForeignKey('Agresor', models.DO_NOTHING, blank=True, null=True)
     como_se_entero = models.ForeignKey('ComoSeEntero', models.DO_NOTHING, blank=True, null=True)
     tareas = models.ManyToManyField('TareaLLamada', related_name='tareas')
+    devolver_llamada = models.BooleanField(default=False)
 
     class Meta:
         managed = True

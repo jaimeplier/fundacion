@@ -352,6 +352,16 @@
                                    placeholder="Tarea 3">
                         </div>
                     </div>
+                    {% if consejero.tipo_usuario.pk == 1 %}
+                        <div class="row sin_marg_bottom">
+                        <div class="col s12">
+                            <p>
+                                <input type="checkbox" id="devolver_llamada"/>
+                                <label for="devolver_llamada" style="color:#EF7F13!important">¿Acepta que le devuelvan la llamada?</label>
+                            </p>
+                        </div>
+                    </div>
+                    {% endif %}
 
                     <div class="row sin_marg_bottom">
                         <div class="col s12">
@@ -1084,6 +1094,10 @@
             var tarea1 = $('#tarea1').val();
             var tarea2 = $('#tarea2').val();
             var tarea3 = $('#tarea3').val();
+            var devolver_llamada = false
+            {% if consejero.tipo_usuario.pk == 1 %}
+            devolver_llamada = $('#devolver_llamada').prop('checked'); //Esta seleccionado devolver llamada
+            {% endif %}
 
 
             $.ajax({
@@ -1133,7 +1147,8 @@
                     tarea1: tarea1,
                     tarea2: tarea2,
                     tarea3: tarea3,
-                    estatus: estatus_llamada
+                    estatus: estatus_llamada,
+                    devolver_llamada: devolver_llamada
                 },
                 success: function (json) {
                     window.location.href = "{% url 'consejero:registro_primera_vez' %}";

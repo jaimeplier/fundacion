@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.generic import UpdateView
 
-from config.models import Victima
+from config.models import Victima, Consejero
 from consejero.forms import VictimaForm
 
 
@@ -17,7 +17,8 @@ def busqueda_usuario(request):
 @permission_required(perm='consejero', login_url='/')
 def registro_primera_vez(request):
     template_name = 'consejero/formulario_primera.html'
-    return render(request, template_name)
+    consejero = Consejero.objects.get(pk=request.user.pk)
+    return render(request, template_name, {'consejero': consejero})
 
 
 @permission_required(perm='consejero', login_url='/')
