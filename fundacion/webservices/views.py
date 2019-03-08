@@ -5,10 +5,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.models import Llamada, Mensaje, Recado, Usuario, EstatusUsuario, ArchivoMensaje
+from config.models import Llamada, Mensaje, Recado, Usuario, EstatusUsuario, ArchivoMensaje, AcudeInstitucion, \
+    EstatusInstitucion, Sucursal
 from webservices.serializers import FechaSerializer, MensajeSerializer, MensajeSerializerPk, RecadoSerializer, \
     RecadoSerializerPk, UsuarioSerializer, EstatusUsuarioSerializer, PkSerializer, ArchivoMensajeSerializer, \
-    ArchivoRecadoSerializer
+    ArchivoRecadoSerializer, EstatusInstitucionSucursalSerializer
 
 
 class ResumenLlamada(APIView):
@@ -203,3 +204,34 @@ class ListArchivoRecado(ListAPIView):
             queryset = ArchivoMensaje.objects.filter(mensaje__pk=pk_recado)
         return queryset
 
+class CambiarEstatusInstitucion(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    def post(self, request):
+        serializer = EstatusInstitucionSucursalSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        id_institucion = serializer.data.get('pk')
+        id_estatus = serializer.data.get('estatus')
+        tipo = serializer.data.get('tipo')
+
+        try:
+            if tipo == 0:
+                institucion = AcudeInstitucion.objects.get(pk= id_institucion)
+                estatus = EstatusInstitucion.objects.get(pk=id_estatus)
+                institucion.estatus_institucion = estatus
+                institucion.save()
+            elif tipo == 1:
+                sucursal = Sucursal.objects.get(pk=id_institucion)
+                estatus = EstatusInstitucion.objects.get(pk=id_estatus)
+                sucursal.estatus_institucion = estatus
+                sucursal.save()
+
+        except:
+            return Response({'Error': 'Objeto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({'result': 1}, status=status.HTTP_200_OK)
+
+    def get_serializer(self):
+        return EstatusInstitucionSucursalSerializer()

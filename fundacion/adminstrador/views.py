@@ -662,7 +662,15 @@ class AcudeInstitucionAjaxList(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'estatus_institucion':
             if self.request.user.is_consejero:
                 return row.estatus_institucion.nombre
-            return 'Web service'
+            select =  '<select onchange="cambiar_estatus_institucion(' + str(row.pk) + ', this)">'
+            estatus = {'Válida': 1, 'Validando': 2, 'Cancelada': 3}
+            for key,est in estatus.items():
+                if est == row.estatus_institucion.pk:
+                    select = select + '<option value="'+str(est)+'" selected>'+key+'</option>'
+                else:
+                    select = select + '<option value="' + str(est) + '">' + key + '</option>'
+            select = select + '</select><script>$("select").material_select();</script>'
+            return select
         elif column == 'id':
             return row.pk
 

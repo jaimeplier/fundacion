@@ -295,3 +295,10 @@ class ArchivoRecadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArchivoRecado
         fields = '__all__'
+
+class EstatusInstitucionSucursalSerializer(serializers.Serializer):
+    # tipo 0: institucion
+    # tipo 1: sucursal
+    tipo = serializers.IntegerField()
+    pk = serializers.IntegerField()
+    estatus = serializers.IntegerField()
