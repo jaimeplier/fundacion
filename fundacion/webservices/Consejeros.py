@@ -47,9 +47,8 @@ class PrimerRegistro(APIView):
         hora_fin = '14:20'
         consejero = Consejero.objects.get(pk=self.request.user.pk)
         f = serializer.data['f']
-        o = serializer.data['o']
-        d = serializer.data['d']
-        a = serializer.data['a']
+        recursos = serializer.data['recursos']
+        intervencion = serializer.data['intervencion']
         fase_cambio = FaseCambio.objects.get(pk=serializer.data['fase_cambio'])
         medio_contacto = MedioContacto.objects.get(pk=serializer.validated_data['medio_contacto'])
         violentometro = Violentometro.objects.filter(pk=serializer.validated_data['violentometro']).first()
@@ -100,7 +99,7 @@ class PrimerRegistro(APIView):
         # ---> REGISTRO DE LLAMADA <---
 
         llamada = Llamada.objects.create(hora_inicio=hora_inicio, hora_fin=hora_fin, consejero=consejero,
-                                         victima=victima, f=f, o=o, d=d, a=a, medio_contacto=medio_contacto,
+                                         victima=victima, f=f, recursos=recursos, intervencion=intervencion, medio_contacto=medio_contacto,
                                          violentometro=violentometro, tipo_caso=tipo_caso, tipo_ayuda=tipo_ayuda,
                                          tipo_violencia=tipo_violencia, institucion=institucion,
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
@@ -149,9 +148,8 @@ class SeguimientoRegistro(APIView):
         consejero = Consejero.objects.get(pk=self.request.user.pk)
         victima = Victima.objects.get(pk=serializer.validated_data['victima'])
         f = serializer.data['f']
-        o = serializer.data['o']
-        d = serializer.data['d']
-        a = serializer.data['a']
+        recursos = serializer.data['recursos']
+        intervencion = serializer.data['intervencion']
         fase_cambio = FaseCambio.objects.get(pk=serializer.data['fase_cambio'])
         medio_contacto = MedioContacto.objects.get(pk=serializer.validated_data['medio_contacto'])
         violentometro = Violentometro.objects.filter(pk=serializer.validated_data['violentometro']).first()
@@ -195,7 +193,7 @@ class SeguimientoRegistro(APIView):
         # ---> REGISTRO DE LLAMADA <---
 
         llamada = Llamada.objects.create(hora_inicio=hora_inicio, hora_fin=hora_fin, consejero=consejero,
-                                         victima=victima, f=f, o=o, d=d, a=a, medio_contacto=medio_contacto,
+                                         victima=victima, f=f, recursos=recursos, intervencion=intervencion ,medio_contacto=medio_contacto,
                                          violentometro=violentometro, tipo_caso=tipo_caso, tipo_ayuda=tipo_ayuda,
                                          tipo_violencia=tipo_violencia, institucion=institucion,
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,

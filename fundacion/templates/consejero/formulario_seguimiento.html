@@ -230,33 +230,22 @@
                                         </div>
                                         <div class="row">
                                             <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;">Oportunidades</p>
+                                                <p style="text-align: center;">Recursos</p>
                                             </div>
                                             <div class="input-field col s12">
-                                            <textarea id="o" class="materialize-textarea"
-                                                      placeholder="Oportunidades"
+                                            <textarea id="recursos" class="materialize-textarea"
+                                                      placeholder="Recursos"
                                                       style="padding-left: 14px;" maxlength="4096"></textarea>
 
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;">Debilidades</p>
+                                                <p style="text-align: center;">Intervención</p>
                                             </div>
                                             <div class="input-field col s12">
-                                            <textarea id="d" class="materialize-textarea"
-                                                      placeholder="Debilidades"
-                                                      style="padding-left: 14px;" maxlength="4096"></textarea>
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;">Amenazas</p>
-                                            </div>
-                                            <div class="input-field col s12">
-                                            <textarea id="a" class="materialize-textarea"
-                                                      placeholder="Amenazas"
+                                            <textarea id="intervencion" class="materialize-textarea"
+                                                      placeholder="Intervención"
                                                       style="padding-left: 14px;" maxlength="4096"></textarea>
 
                                             </div>
@@ -963,9 +952,8 @@
             var categoria_tipificacion = $("input[name='categoria_tipificacion']:checked").val();
             var nivel_riesgo = $('#nivel_riesgo').val();
             var f = $('#f').val();
-            var o = $('#o').val();
-            var d = $('#d').val();
-            var a = $('#a').val();
+            var recursos = $('#recursos').val();
+            var intervencion = $('#intervencion').val();
             var estado_mental_ute = $('#em_ute').val();
             var estado_mental_p = $('#em_p').val();
             var estado_mental_l = $('#em_l').val();
@@ -991,7 +979,7 @@
             var tarea3 = $('#tarea3').val();
             var devolver_llamada = false
             {% if consejero.tipo_usuario.pk == 1 %}
-            devolver_llamada = $('#devolver_llamada').prop('checked'); //Esta seleccionado devolver llamada
+                devolver_llamada = $('#devolver_llamada').prop('checked'); //Esta seleccionado devolver llamada
             {% endif %}
 
 
@@ -1006,9 +994,8 @@
                     categoria_tipificacion: categoria_tipificacion,
                     nivel_riesgo: nivel_riesgo,
                     f: f,
-                    o: o,
-                    d: d,
-                    a: a,
+                    recursos: recursos,
+                    intervencion: intervencion,
                     estado_mental_ute: estado_mental_ute,
                     estado_mental_p: estado_mental_p,
                     estado_mental_l: estado_mental_l,

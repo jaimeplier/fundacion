@@ -243,11 +243,11 @@
                                         </div>
                                         <div class="row">
                                             <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;">Oportunidades</p>
+                                                <p style="text-align: center;">Recursos</p>
                                             </div>
                                             <div class="input-field col s12">
                                             <textarea id="o" class="materialize-textarea"
-                                                      placeholder="Oportunidades"
+                                                      placeholder="Recursos"
                                                       style="padding-left: 14px;" maxlength="4096"></textarea>
 
                                             </div>
@@ -259,17 +259,6 @@
                                             <div class="input-field col s12">
                                             <textarea id="d" class="materialize-textarea"
                                                       placeholder="Debilidades"
-                                                      style="padding-left: 14px;" maxlength="4096"></textarea>
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;">Amenazas</p>
-                                            </div>
-                                            <div class="input-field col s12">
-                                            <textarea id="a" class="materialize-textarea"
-                                                      placeholder="Amenazas"
                                                       style="padding-left: 14px;" maxlength="4096"></textarea>
 
                                             </div>
@@ -571,17 +560,13 @@
                 } else {
                     $("#f").val('{{ object.f }}');
                 }
-                if ('{{ object.o }}' == 'None') {
+                if ('{{ object.recursos }}' == 'None') {
                 } else {
-                    $("#o").val('{{ object.o }}');
+                    $("#o").val('{{ object.recursos }}');
                 }
-                if ('{{ object.d }}' == 'None') {
+                if ('{{ object.intervencion }}' == 'None') {
                 } else {
-                    $("#d").val('{{ object.d }}');
-                }
-                if ('{{ object.a }}' == 'None') {
-                } else {
-                    $("#a").val('{{ object.a }}');
+                    $("#d").val('{{ object.intervencion }}');
                 }
 
                 $.ajax({
@@ -1018,8 +1003,7 @@
         }
 
         function GuardarEvaluacion() {
-            var llamada =
-            {{ object.pk }}
+            var llamada = {{ object.pk }}
             var num_totales = $('.rubro').length;
             var num_rubros_cumplidos = $('.rubro:checkbox:checked').length;
             var rubros_cumplidos = $('.rubro:checkbox:checked');
@@ -1053,8 +1037,7 @@
         }
 
         function GuardarComentarios() {
-            var llamada =
-            {{ object.pk }}
+            var llamada = {{ object.pk }}
             var comentario = $('#comentario').val();
             var compromisos = []
             console.log($('#compromisos input[type="text"]').filter(function () {
