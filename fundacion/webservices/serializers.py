@@ -178,7 +178,7 @@ class LLamadaSerializer(serializers.ModelSerializer):
         'hora_fin', 'f', 'recursos', 'intervencion', 'medio_contacto', 'violentometro', 'tipo_caso', 'tipo_ayuda',
         'tipo_violencia', 'institucion', 'posible_solucion', 'causa_riesgo', 'vida_en_riesgo', 'nivel_riesgo',
         'fase_cambio', 'calificacion', 'modalidad_violencia', 'fase_violencia', 'semaforo', 'victima_involucrada',
-        'agresor', 'como_se_entero', 'devolver_llamada')
+        'agresor', 'como_se_entero', 'devolver_llamada', 'id')
 
 class BusquedaSerializer(serializers.Serializer):
     tipo_busqueda = serializers.IntegerField(min_value=0, max_value=1)
