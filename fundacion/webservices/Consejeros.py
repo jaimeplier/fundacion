@@ -70,6 +70,9 @@ class PrimerRegistro(APIView):
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
         devolver_llamada = serializer.validated_data['devolver_llamada']
+        num_llamada = 0
+        if motivo_llamada.pk == 8:
+            num_llamada = 1
 
         # Tareas
         tarea1 = serializer.data['tarea1']
@@ -108,7 +111,7 @@ class PrimerRegistro(APIView):
                                          causa_riesgo=causa_riesgo, fase_cambio=fase_cambio,
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
                                          semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
-                                         como_se_entero=como_se_entero, devolver_llamada=devolver_llamada)
+                                         como_se_entero=como_se_entero, devolver_llamada=devolver_llamada, num_llamada=num_llamada)
         if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)
             llamada.tareas.add(tarea)
@@ -171,6 +174,10 @@ class SeguimientoRegistro(APIView):
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
         devolver_llamada = serializer.validated_data['devolver_llamada']
+        num_llamada = 0
+        if motivo_llamada.pk == 9:
+            n = Llamada.objects.filter(victima=victima).aggregate(Max('num_llamada'))
+            num_llamada = n['num_llamada__max'] + 1
 
         # Tareas
         tarea1 = serializer.data['tarea1']
@@ -202,7 +209,7 @@ class SeguimientoRegistro(APIView):
                                          causa_riesgo=causa_riesgo, fase_cambio=fase_cambio,
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
                                          semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
-                                         como_se_entero=como_se_entero, devolver_llamada=devolver_llamada)
+                                         como_se_entero=como_se_entero, devolver_llamada=devolver_llamada, num_llamada=num_llamada)
 
         if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)
@@ -325,20 +332,20 @@ class BusquedaUsuario(ListAPIView):
             if telefono is not None:
                 list_last_llamadas = Victima.objects.filter(telefono__icontains=telefono)
                 list_last_llamadas = list_last_llamadas.annotate(pk_llamada=Max('llamada__pk')).values_list('pk_llamada', flat=True)
-                queryset = Llamada.objects.filter(pk__in=list_last_llamadas)
+                queryset = Llamada.objects.filter(pk__in=list_last_llamadas).annotate(num_max=Max('num_llamada'))
         if tipo_busqueda == '1':
             nombre = self.request.query_params.get('nombre', None)
             if nombre is not None:
                 list_last_llamadas = Victima.objects.filter(nombre__icontains=nombre) | Victima.objects.filter(apellido_materno__icontains=nombre) | Victima.objects.filter(apellido_paterno__icontains=nombre)
                 list_last_llamadas = list_last_llamadas.annotate(pk_llamada=Max('llamada__pk')).values_list('pk_llamada', flat=True)
-                queryset = Llamada.objects.filter(pk__in=list_last_llamadas)
+                queryset = Llamada.objects.filter(pk__in=list_last_llamadas).annotate(num_max=Max('num_llamada'))
         if tipo_busqueda == '3':
             id_usuario = self.request.query_params.get('id', None)
             if id_usuario is not None:
                 list_last_llamadas = Victima.objects.filter(pk=id_usuario)
                 list_last_llamadas = list_last_llamadas.annotate(pk_llamada=Max('llamada__pk')).values_list(
                     'pk_llamada', flat=True)
-                queryset = Llamada.objects.filter(pk__in=list_last_llamadas)
+                queryset = Llamada.objects.filter(pk__in=list_last_llamadas).annotate(num_max=Max('num_llamada'))
         if filtro == '1':
             if consejero is not None:
                 try:

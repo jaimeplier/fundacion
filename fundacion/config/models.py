@@ -295,6 +295,7 @@ class Llamada(models.Model):
     como_se_entero = models.ForeignKey('ComoSeEntero', models.DO_NOTHING, blank=True, null=True)
     tareas = models.ManyToManyField('TareaLLamada', related_name='tareas')
     devolver_llamada = models.BooleanField(default=False)
+    num_llamada = models.PositiveIntegerField()
 
     class Meta:
         managed = True

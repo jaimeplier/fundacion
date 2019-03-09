@@ -169,10 +169,16 @@ class LLamadaSerializer(serializers.ModelSerializer):
     tipo_llamada = TipoLLamadaSerializer(read_only=True, many=False)
     estatus = EstatusLLamadaSerializer(read_only=True, many=False)
     tareas = TareasLLamadaSerializer(read_only=True,many=True)
+    num_max = serializers.IntegerField(required=False)
 
     class Meta:
         model = Llamada
-        fields = '__all__'
+        fields = (
+        'victima', 'consejero', 'motivo', 'tipo_llamada', 'estatus', 'tareas', 'num_max', 'fecha', 'hora_inicio',
+        'hora_fin', 'f', 'recursos', 'intervencion', 'medio_contacto', 'violentometro', 'tipo_caso', 'tipo_ayuda',
+        'tipo_violencia', 'institucion', 'posible_solucion', 'causa_riesgo', 'vida_en_riesgo', 'nivel_riesgo',
+        'fase_cambio', 'calificacion', 'modalidad_violencia', 'fase_violencia', 'semaforo', 'victima_involucrada',
+        'agresor', 'como_se_entero', 'devolver_llamada')
 
 class BusquedaSerializer(serializers.Serializer):
     tipo_busqueda = serializers.IntegerField(min_value=0, max_value=1)
