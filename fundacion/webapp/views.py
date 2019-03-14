@@ -138,6 +138,16 @@ class PendienteAjaxList(LoginRequiredMixin, BaseDatatableView):
             if row.completado:
                 return '<img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/aceptar.png">'
             return '<img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/rechazar.png">'
+        elif column == 'fecha_inicio':
+            if row.fecha_inicio is not None:
+                return row.fecha_inicio.strftime("%d %A %Y")
+            else:
+                return 'Sin fecha'
+        elif column == 'fecha_limite':
+            if row.fecha_limite is not None:
+                return row.fecha_limite.strftime("%d %A %Y")
+            else:
+                return 'Sinfecha'
 
         return super(PendienteAjaxList, self).render_column(row, column)
 
