@@ -69,7 +69,7 @@ class EvaluacionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search) | qs.filter(valor__icontains=search)
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
         return qs
 
 
