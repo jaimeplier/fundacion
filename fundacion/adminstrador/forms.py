@@ -11,7 +11,7 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
 class ConsejeroForm(ModelForm):
     class Meta:
         model = Consejero
-        exclude = ['rol', 'estatus', 'last_login']
+        exclude = ['rol', 'estatus', 'last_login', 'estatus_actividad']
         labels = {
             'tipo_usuario': 'Tipo de consejero',
             'a_paterno': 'Apellido paterno',
@@ -27,7 +27,7 @@ class ConsejeroForm(ModelForm):
 class DirectorioForm(ModelForm):
     class Meta:
         model = Directorio
-        exclude = ['rol', 'estatus', 'last_login']
+        exclude = ['rol', 'estatus', 'last_login', 'estatus_actividad']
         labels = {
             'a_paterno': 'Apellido paterno',
             'a_materno': 'Apellido materno',
@@ -42,7 +42,7 @@ class DirectorioForm(ModelForm):
 class SupervisorForm(ModelForm):
     class Meta:
         model = Supervisor
-        exclude = ['rol', 'estatus', 'last_login']
+        exclude = ['rol', 'estatus', 'last_login', 'estatus_actividad']
         labels = {
             'a_paterno': 'Apellido paterno',
             'a_materno': 'Apellido materno',
@@ -57,7 +57,7 @@ class SupervisorForm(ModelForm):
 class CalidadForm(ModelForm):
     class Meta:
         model = Calidad
-        exclude = ['rol', 'estatus', 'last_login']
+        exclude = ['rol', 'estatus', 'last_login', 'estatus_actividad']
         labels = {
             'a_paterno': 'Apellido paterno',
             'a_materno': 'Apellido materno',
