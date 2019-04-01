@@ -59,7 +59,7 @@ class Usuario(AbstractBaseUser):
     a_paterno = models.CharField(max_length=50)
     a_materno = models.CharField(max_length=50)
     password = models.CharField(max_length=256)
-    fecha_nac = models.DateField()
+    fecha_nac = models.DateField(null=True, blank=True)
     genero = models.ForeignKey('Sexo', models.DO_NOTHING, null=True)
     rol = models.ForeignKey('Rol', models.DO_NOTHING)
     estatus = models.BooleanField(default=True)

@@ -52,27 +52,22 @@
                                         <div class="row">
                                             <div class="input-field col s12 m6 l6">
                                                 <input placeholder="Fecha" id="fecha" type="text"
-                                                       class="datepicker" required="required"
-                                                       data-validation-required-message="Este campo es requerido"
-                                                       onchange="copiar_fecha_hora()">
+                                                       class="datepicker" onchange="copiar_fecha_hora()">
                                                 <label for="fecha">Fecha</label>
                                             </div>
                                             <div class="input-field col s12 m6 l6">
                                                 <input placeholder="Hora" id="hora" type="text"
-                                                       class="validate timepicker" required="required"
-                                                       data-validation-required-message="Este campo es requerido"
-                                                       onchange="copiar_fecha_hora()">
+                                                       class="validate timepicker" onchange="copiar_fecha_hora()">
                                                 <label for="fecha">Hora</label>
                                             </div>
                                         </div>
 
-                                        {% render_field field class+="validate" placeholder=field.label required='required' data-validation-required-message="Este campo es requerido" id="fecha-hora" hidden="true" %}
+                                        {% render_field field class+="validate" placeholder=field.label id="fecha-hora" hidden="true" %}
                                     {% elif field.html_name == 'fecha_nac' %}
                                         <input placeholder="Fecha de nacimiento" id="fecha_nac" type="text"
-                                               class="datepicker_nacimiento" required="required"
-                                               data-validation-required-message="Este campo es requerido"
+                                               class="datepicker_nacimiento"
                                                onchange="copiar_fecha()">
-                                        {% render_field field class+="validate fecha_nac_form" placeholder="Fecha de nacimiento" required='required' data-validation-required-message="Este campo es requerido" id="fecha_nac_form" hidden="true" %}
+                                        {% render_field field class+="validate fecha_nac_form" placeholder="Fecha de nacimiento" id="fecha_nac_form" hidden="true" %}
                                         <label for="fecha_nac">Fecha de nacimiento</label>
                                     {% elif field.html_name == 'fecha_inicio' %}
                                         <input placeholder="Fecha de inicio" id="fecha_inicio" type="text"
