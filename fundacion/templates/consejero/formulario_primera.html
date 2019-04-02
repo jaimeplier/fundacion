@@ -13,6 +13,10 @@
             display: none;
         }
 
+        #datos_hijos {
+            display: none;
+        }
+
         #datos_sociode {
             display: none;
         }
@@ -96,6 +100,26 @@
                             <input id="colonia" type="text" class="validate" required="required">
                             <label for="colonia"> Colonia</label>
                         </div>
+                    </div>
+                    <div class="row sin_marg_bottom">
+                        <div class="col s12">
+                            <p>
+                                <input type="checkbox" id="t_hijos"/>
+                                <label for="t_hijos" style="color:#EF7F13!important">Tiene hijos</label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row sin_marg_bottom" id="datos_hijos">
+
+                        <div class=" input-field col s12 m6 l6">
+                            <input id="hijos_menores" type="number" class="validate" min="0">
+                            <label for="hijos_menores"># Hijos menores</label>
+                        </div>
+                        <div class=" input-field col s12 m6 l6">
+                            <input id="hijos_mayores" type="number" class="validate" min="0">
+                            <label for="hijos_mayores"># Hijos mayores</label>
+                        </div>
+
                     </div>
                     <div class="row sin_marg_bottom">
                         <div class="col s12">
@@ -444,6 +468,15 @@
                     $('#datos_sociode').hide();
                 } else {
                     $('#datos_sociode').show();
+                }
+
+            })
+
+            $('#t_hijos').change(function () {
+                if (!$(this).prop('checked')) {
+                    $('#datos_hijos').hide();
+                } else {
+                    $('#datos_hijos').show();
                 }
 
             })
