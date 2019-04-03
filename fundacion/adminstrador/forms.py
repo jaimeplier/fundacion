@@ -5,7 +5,7 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Directorio, Supervisor, Calidad, Sexo, Ayuda, MotivoLLamada, \
     EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
-    CategoriaTipificacion, Sucursal, Aliado
+    CategoriaTipificacion, Sucursal, Aliado, LineaNegocio
 
 
 class ConsejeroForm(ModelForm):
@@ -369,6 +369,11 @@ class AliadoForm(ModelForm):
     class Meta:
         model = Aliado
         exclude = ['fecha_alta', 'fecha_baja', 'estatus']
+
+class LineaNegocioForm(ModelForm):
+    class Meta:
+        model = LineaNegocio
+        exclude = ['fecha_alta', 'fecha_baja', 'estatus', 'aliado']
 
 
 class CategoriaTipificacionForm(ModelForm):

@@ -22,7 +22,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     RecomendacionRiesgoEdit, FaseCambioAdd, FaseCambioAjaxList, FaseCambioEdit, ActividadUsuarioAdd, \
     ActividadUsuarioAjaxList, ActividadUsuarioEdit, TipificacionAdd, TipificacionAjaxList, TipificacionEdit, \
     CategoriaTipificacionAdd, CategoriaTipificacionAjaxList, CategoriaTipificacionEdit, SucursalInstitucionAdd, \
-    SucursalInstitucionAjaxList, SucursalInstitucionEdit, AliadoAdd, AliadoAjaxList, AliadoEdit
+    SucursalInstitucionAjaxList, SucursalInstitucionEdit, AliadoAdd, AliadoAjaxList, AliadoEdit, LineaNegocioAdd, \
+    LineaNegocioAjaxList, LineaNegocioEdit
 from . import views
 
 app_name = 'administrador'
@@ -282,6 +283,17 @@ urlpatterns = [
     path('aliado/ajax/list/', AliadoAjaxList.as_view(), name='list_ajax_aliado'),
     path('aliado/edit/<int:pk>', AliadoEdit.as_view(), name='edit_aliado'),
     path('aliado/list/delete/<int:pk>', views.delete_aliado, name='delete_aliado'),
+
+    path('linea_negocio/add/<int:aliado>', LineaNegocioAdd.as_view(),
+         name='add_linea_negocio'),
+    path('linea_negocio/list/<int:aliado>', views.list_linea_negocio,
+         name='list_linea_negocio'),
+    path('linea_negocio/ajax/list/<int:aliado>', LineaNegocioAjaxList.as_view(),
+         name='list_ajax_linea_negocio'),
+    path('linea_negocio/edit/<int:pk>/<int:aliado>', LineaNegocioEdit.as_view(),
+         name='edit_linea_negocio'),
+    path('linea_negocio/list/delete/<int:pk>', views.delete_linea_negocio,
+         name='delete_linea_negocio'),
 
     path('actividad_usuario/add/', ActividadUsuarioAdd.as_view(), name='add_actividad_usuario'),
     path('actividad_usuario/list/', views.list_actividad_usuario, name='list_actividad_usuario'),

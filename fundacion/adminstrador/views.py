@@ -19,13 +19,13 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm, \
     AgresorForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm, RecomendacionRiesgoForm, \
     FaseCambioForm, ActividadUsuarioForm, TipificacionForm, CategoriaTipificacionForm, SucursalInstitucionForm, \
-    AliadoForm
+    AliadoForm, LineaNegocioForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
     MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
-    CategoriaTipificacion, Sucursal, EstatusInstitucion, Aliado
+    CategoriaTipificacion, Sucursal, EstatusInstitucion, Aliado, LineaNegocio
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -3827,7 +3827,9 @@ class AliadoAjaxList(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'id':
             return row.pk
         elif column == 'linea_negocio':
-            return 'ln'
+            return '<a class="" href ="' + reverse('administrador:list_linea_negocio',
+                                                   kwargs={
+                                                       'aliado': row.pk}) + '"><i class="material-icons">business_center</i></a>'
 
         return super(AliadoAjaxList, self).render_column(row, column)
 
@@ -3866,6 +3868,128 @@ class AliadoEdit(PermissionRequiredMixin, UpdateView):
 def delete_aliado(request, pk):
     aliado = get_object_or_404(Aliado, pk=pk)
     aliado.delete()
+    return JsonResponse({'result': 1})
+
+class LineaNegocioAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = LineaNegocio
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/linea_negocio/list'
+    form_class = LineaNegocioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(LineaNegocioAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar una línea de negocio'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar una línea de negocio'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            aliado = Aliado.objects.get(pk=self.kwargs['aliado'])
+            linea_negocio = form.save(commit=False)
+            linea_negocio.aliado = aliado
+            linea_negocio.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_linea_negocio', kwargs={'aliado': self.kwargs['aliado']})
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_linea_negocio(request, aliado):
+    template_name = 'administrador/tab_linea_negocio.html'
+    aliado = Aliado.objects.get(pk=aliado)
+    context = {'aliado': aliado}
+    return render(request, template_name, context)
+
+
+class LineaNegocioAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Sucursal
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_linea_negocio',
+                                                   kwargs={
+                                                       'pk': row.pk, 'aliado': self.kwargs[
+                                                           'aliado']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(LineaNegocioAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return LineaNegocio.objects.filter(aliado__pk=self.kwargs['aliado'])
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class LineaNegocioEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = LineaNegocio
+    template_name = 'config/formulario_1Col.html'
+    form_class = LineaNegocioForm
+
+    def get_context_data(self, **kwargs):
+        context = super(LineaNegocioEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar línea de negocio'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST, request.FILES)
+
+        l = self.model.objects.get(pk=self.kwargs['pk'])
+        form = LineaNegocioForm(request.POST, request.FILES, instance=l)
+        if form.is_valid():
+            linea_negocio = form.save(commit=False)
+            linea_negocio.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_linea_negocio', kwargs={'aliado': self.kwargs['aliado']})
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_linea_negocio(request, pk):
+    linea_negocio = get_object_or_404(LineaNegocio, pk=pk)
+    linea_negocio.delete()
     return JsonResponse({'result': 1})
 
 class ActividadUsuarioAdd(PermissionRequiredMixin, CreateView):
