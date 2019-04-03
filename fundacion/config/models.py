@@ -680,3 +680,18 @@ class Pendiente(models.Model):
     class Meta:
         managed = True
         db_table = 'pendiente'
+
+
+class Aliado(Catalogo):
+    script = models.TextField(max_length=1024)
+
+    class Meta:
+        managed=True
+        db_table= 'aliado'
+
+class LineaNegocio(Catalogo):
+    aliado = models.ForeignKey('Aliado', models.DO_NOTHING)
+
+    class Meta:
+        managed=True
+        db_table= 'linea_negocio'
