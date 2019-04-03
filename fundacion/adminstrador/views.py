@@ -18,13 +18,14 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DirectorioForm, SupervisorForm, ContactoInstitucionForm, CalidadForm, SexoForm, AyudaForm, MotivoLLamadaForm, \
     EstatusLLamadaForm, DependenciaForm, RedesApoyoForm, FaseViolenciaForm, SemaforoForm, VictimaInvolucradaForm, \
     AgresorForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm, RecomendacionRiesgoForm, \
-    FaseCambioForm, ActividadUsuarioForm, TipificacionForm, CategoriaTipificacionForm, SucursalInstitucionForm
+    FaseCambioForm, ActividadUsuarioForm, TipificacionForm, CategoriaTipificacionForm, SucursalInstitucionForm, \
+    AliadoForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoCaso, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, Ayuda, \
     MotivoLLamada, EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
-    CategoriaTipificacion, Sucursal, EstatusInstitucion
+    CategoriaTipificacion, Sucursal, EstatusInstitucion, Aliado
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -3775,6 +3776,96 @@ class FaseCambioEdit(PermissionRequiredMixin, UpdateView):
 def delete_fase_cambio(request, pk):
     fase_cambio = get_object_or_404(FaseCambio, pk=pk)
     fase_cambio.delete()
+    return JsonResponse({'result': 1})
+
+class AliadoAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Aliado
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/aliado/list'
+    form_class = AliadoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AliadoAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un aliado'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_aliado(request):
+    template_name = 'administrador/tab_aliado.html'
+    return render(request, template_name)
+
+
+class AliadoAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Aliado
+    columns = ['id', 'nombre', 'linea_negocio', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_aliado',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+        elif column == 'linea_negocio':
+            return 'ln'
+
+        return super(AliadoAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Aliado.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class AliadoEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/aliado/list'
+
+    model = Aliado
+    template_name = 'config/formulario_1Col.html'
+    form_class = AliadoForm
+
+    def get_context_data(self, **kwargs):
+        context = super(AliadoEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_aliado(request, pk):
+    aliado = get_object_or_404(Aliado, pk=pk)
+    aliado.delete()
     return JsonResponse({'result': 1})
 
 class ActividadUsuarioAdd(PermissionRequiredMixin, CreateView):

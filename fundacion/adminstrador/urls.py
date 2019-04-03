@@ -22,7 +22,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     RecomendacionRiesgoEdit, FaseCambioAdd, FaseCambioAjaxList, FaseCambioEdit, ActividadUsuarioAdd, \
     ActividadUsuarioAjaxList, ActividadUsuarioEdit, TipificacionAdd, TipificacionAjaxList, TipificacionEdit, \
     CategoriaTipificacionAdd, CategoriaTipificacionAjaxList, CategoriaTipificacionEdit, SucursalInstitucionAdd, \
-    SucursalInstitucionAjaxList, SucursalInstitucionEdit
+    SucursalInstitucionAjaxList, SucursalInstitucionEdit, AliadoAdd, AliadoAjaxList, AliadoEdit
 from . import views
 
 app_name = 'administrador'
@@ -276,6 +276,12 @@ urlpatterns = [
     path('fase_cambio/ajax/list/', FaseCambioAjaxList.as_view(), name='list_ajax_fase_cambio'),
     path('fase_cambio/edit/<int:pk>', FaseCambioEdit.as_view(), name='edit_fase_cambio'),
     path('fase_cambio/list/delete/<int:pk>', views.delete_fase_cambio, name='delete_fase_cambio'),
+
+    path('aliado/add/', AliadoAdd.as_view(), name='add_aliado'),
+    path('aliado/list/', views.list_aliado, name='list_aliado'),
+    path('aliado/ajax/list/', AliadoAjaxList.as_view(), name='list_ajax_aliado'),
+    path('aliado/edit/<int:pk>', AliadoEdit.as_view(), name='edit_aliado'),
+    path('aliado/list/delete/<int:pk>', views.delete_aliado, name='delete_aliado'),
 
     path('actividad_usuario/add/', ActividadUsuarioAdd.as_view(), name='add_actividad_usuario'),
     path('actividad_usuario/list/', views.list_actividad_usuario, name='list_actividad_usuario'),
