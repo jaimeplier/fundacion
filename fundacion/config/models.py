@@ -267,40 +267,49 @@ class Llamada(models.Model):
     fecha = models.DateField(auto_now_add=True)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
-    consejero = models.ForeignKey('Consejero', models.DO_NOTHING)
-    victima = models.ForeignKey('Victima', models.DO_NOTHING)
     f = models.CharField(max_length=4096, blank=True, null=True)
+    debilidades = models.CharField(max_length=4096, blank=True, null=True)
+    amenazas = models.CharField(max_length=4096, blank=True, null=True)
     recursos = models.CharField(max_length=4096, blank=True, null=True)
     intervencion = models.CharField(max_length=4096, blank=True, null=True)
-    medio_contacto = models.ForeignKey('MedioContacto', models.DO_NOTHING)
-    violentometro = models.ForeignKey('Violentometro', models.DO_NOTHING, blank=True, null=True)
     tipo_caso = models.TextField(max_length=1024, blank=True, null=True)
     tipo_ayuda = models.TextField(max_length=1024, blank=True, null=True)
-    tipo_violencia = models.ForeignKey('TipoViolencia', models.DO_NOTHING, blank=True, null=True)
-    institucion = models.ForeignKey('AcudeInstitucion', models.DO_NOTHING, blank=True, null=True)
     posible_solucion = models.CharField(max_length=4096, blank=True, null=True)
     causa_riesgo = models.CharField(max_length=4096, blank=True, null=True)
     vida_en_riesgo = models.BooleanField(default=False)
+    calificacion = models.FloatField(null=True, blank=True)
+    devolver_llamada = models.BooleanField(default=False)
+    num_llamada = models.PositiveIntegerField()
+    consejero = models.ForeignKey('Consejero', models.DO_NOTHING)
+    victima = models.ForeignKey('Victima', models.DO_NOTHING)
+    medio_contacto = models.ForeignKey('MedioContacto', models.DO_NOTHING)
+    violentometro = models.ForeignKey('Violentometro', models.DO_NOTHING, blank=True, null=True)
+    tipo_violencia = models.ForeignKey('TipoViolencia', models.DO_NOTHING, blank=True, null=True)
     tipo_llamada = models.ForeignKey('TipoLlamada', models.DO_NOTHING, blank=True, null=True)
     motivo = models.ForeignKey('MotivoLLamada', models.DO_NOTHING, blank=True, null=True)
     nivel_riesgo = models.ForeignKey('NivelRiesgo', models.DO_NOTHING, blank=True, null=True)
     fase_cambio = models.ForeignKey('FaseCambio', models.DO_NOTHING, blank=True, null=True)
     estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
-    calificacion = models.FloatField(null=True, blank=True)
     modalidad_violencia = models.ForeignKey('ModalidadViolencia', models.DO_NOTHING, blank=True, null=True)
     fase_violencia = models.ForeignKey('FaseViolencia', models.DO_NOTHING, blank=True, null=True)
     semaforo = models.ForeignKey('Semaforo', models.DO_NOTHING, blank=True, null=True)
     victima_involucrada = models.ForeignKey('VictimaInvolucrada', models.DO_NOTHING, blank=True, null=True)
     agresor = models.ForeignKey('Agresor', models.DO_NOTHING, blank=True, null=True)
     como_se_entero = models.ForeignKey('ComoSeEntero', models.DO_NOTHING, blank=True, null=True)
+    linea_negocio = models.ForeignKey('LineaNegocio', models.DO_NOTHING, blank=True, null=True)
+    aliado = models.ForeignKey('Aliado', models.DO_NOTHING, blank=True, null=True)
     tareas = models.ManyToManyField('TareaLLamada', related_name='tareas')
-    devolver_llamada = models.BooleanField(default=False)
-    num_llamada = models.PositiveIntegerField()
 
     class Meta:
         managed = True
         db_table = 'llamada'
 
+class LlamadaCanalizacion(models.Model):
+    institucion = models.ForeignKey('AcudeInstitucion', models.DO_NOTHING)
+    llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
+    class Meta:
+        managed = True
+        db_table = 'llamada_has_canalizaciones'
 
 class EstatusLLamada(Catalogo):
     class Meta:
@@ -424,6 +433,9 @@ class Victima(models.Model):
     telefono = models.CharField(max_length=256)
     nombre = models.CharField(max_length=256)
     apellido_paterno = models.CharField(max_length=128, blank=True, null=True)
+    apellido_materno = models.CharField(max_length=128, blank=True, null=True)
+    num_hijos_menores = models.PositiveIntegerField(blank=True, null=True)
+    num_hijos_mayores = models.PositiveIntegerField(blank=True, null=True)
     apellido_materno = models.CharField(max_length=128, blank=True, null=True)
     estado_civil = models.ForeignKey('EstadoCivil', models.DO_NOTHING, blank=True, null=True)
     municipio = models.ForeignKey('Municipio', models.DO_NOTHING, blank=True, null=True)
