@@ -11,7 +11,7 @@ from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, R
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
     FaseCambio, ExamenMental, ModalidadViolencia, FaseViolencia, Semaforo, Agresor, ComoSeEntero, TareaLLamada, \
-    VictimaInvolucrada
+    VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
     BusquedaSerializer, VictimaSerializer
@@ -31,6 +31,8 @@ class PrimerRegistro(APIView):
         nombre = serializer.validated_data['nombre']
         apellido_paterno = serializer.data['apellido_paterno']
         apellido_materno = serializer.data['apellido_materno']
+        num_hijos_menores = serializer.data['num_hijos_menores']
+        num_hijos_mayores = serializer.data['num_hijos_mayores']
         estado_civil = EstadoCivil.objects.filter(pk=serializer.data['estado_civil']).first()
         municipio = Municipio.objects.filter(pk=serializer.data['municipio']).first()
         ocupacion = Ocupacion.objects.filter(pk=serializer.data['ocupacion']).first()
@@ -47,6 +49,8 @@ class PrimerRegistro(APIView):
         hora_fin = '14:20'
         consejero = Consejero.objects.get(pk=self.request.user.pk)
         f = serializer.data['f']
+        debilidades = serializer.data['debilidades']
+        amenazas = serializer.data['amenazas']
         recursos = serializer.data['recursos']
         intervencion = serializer.data['intervencion']
         fase_cambio = FaseCambio.objects.get(pk=serializer.data['fase_cambio'])
@@ -55,7 +59,6 @@ class PrimerRegistro(APIView):
         tipo_caso = serializer.data['tipo_caso']
         tipo_ayuda = serializer.data['tipo_ayuda']
         tipo_violencia = TipoViolencia.objects.filter(pk=serializer.validated_data['tipo_violencia']).first()
-        institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
         posible_solucion = serializer.data['posible_solucion']
         vida_en_riesgo = serializer.validated_data['vida_en_riesgo']
         tipo_llamada = TipoLlamada.objects.get(pk=1)  # llamada de primera vez
@@ -70,7 +73,13 @@ class PrimerRegistro(APIView):
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
         devolver_llamada = serializer.validated_data['devolver_llamada']
+        linea_negocio = LineaNegocio.objects.filter(pk=serializer.data['linea_negocio']).first()
+        aliado = Aliado.objects.filter(pk=serializer.data['aliado']).first()
         num_llamada = 0
+
+        num_hijos_menores = num_hijos_menores if num_hijos_menores is not None else 0
+        num_hijos_mayores = num_hijos_mayores if num_hijos_mayores is not None else 0
+
         if motivo_llamada.pk == 8:
             num_llamada = 1
 
@@ -91,27 +100,39 @@ class PrimerRegistro(APIView):
         em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_m'])
         em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_a'])
 
+        # ---> Datos de las canalizaciones a instituciones <---
+
+        institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
 
         # ---> REGISTRO DE VICTIMA <---
 
         victima = Victima.objects.create(nombre=nombre, telefono=telefono, apellido_paterno=apellido_paterno,
                                          apellido_materno=apellido_materno, estado_civil=estado_civil,
                                          municipio=municipio, ocupacion=ocupacion, religion=religion, vive_con=vive_con,
-                                         sexo=sexo, nivel_estudio=nivel_estudio, lengua_indigena=lengua_indigena)
+                                         sexo=sexo, nivel_estudio=nivel_estudio, lengua_indigena=lengua_indigena,
+                                         num_hijos_mayores=num_hijos_mayores, num_hijos_menores=num_hijos_menores)
 
         # ---> REGISTRO DE LLAMADA <---
 
         llamada = Llamada.objects.create(hora_inicio=hora_inicio, hora_fin=hora_fin, consejero=consejero,
                                          victima=victima, f=f, recursos=recursos, intervencion=intervencion, medio_contacto=medio_contacto,
                                          violentometro=violentometro, tipo_caso=tipo_caso, tipo_ayuda=tipo_ayuda,
-                                         tipo_violencia=tipo_violencia, institucion=institucion,
+                                         tipo_violencia=tipo_violencia,
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
                                          nivel_riesgo=nivel_riesgo, estatus=estatus,
                                          causa_riesgo=causa_riesgo, fase_cambio=fase_cambio,
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
                                          semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
-                                         como_se_entero=como_se_entero, devolver_llamada=devolver_llamada, num_llamada=num_llamada)
+                                         como_se_entero=como_se_entero, devolver_llamada=devolver_llamada,
+                                         num_llamada=num_llamada, debilidades=debilidades, amenazas=amenazas,
+                                         linea_negocio=linea_negocio,aliado=aliado)
+
+        # ---> REGISTRO DE CANALIZACIONES LLAMADA <---
+        if institucion is not None:
+            canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
+
+
         if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)
             llamada.tareas.add(tarea)
@@ -151,6 +172,8 @@ class SeguimientoRegistro(APIView):
         consejero = Consejero.objects.get(pk=self.request.user.pk)
         victima = Victima.objects.get(pk=serializer.validated_data['victima'])
         f = serializer.data['f']
+        debilidades = serializer.data['debilidades']
+        amenazas = serializer.data['amenazas']
         recursos = serializer.data['recursos']
         intervencion = serializer.data['intervencion']
         fase_cambio = FaseCambio.objects.get(pk=serializer.data['fase_cambio'])
@@ -159,7 +182,6 @@ class SeguimientoRegistro(APIView):
         tipo_caso = serializer.data['tipo_caso']
         tipo_ayuda = serializer.data['tipo_ayuda']
         tipo_violencia = TipoViolencia.objects.filter(pk=serializer.validated_data['tipo_violencia']).first()
-        institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
         posible_solucion = serializer.data['posible_solucion']
         vida_en_riesgo = serializer.validated_data['vida_en_riesgo']
         tipo_llamada = TipoLlamada.objects.get(pk=1)  # llamada de primera vez
@@ -174,6 +196,8 @@ class SeguimientoRegistro(APIView):
         agresor = Agresor.objects.get(pk=serializer.data['agresor'])
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
         devolver_llamada = serializer.validated_data['devolver_llamada']
+        linea_negocio = LineaNegocio.objects.filter(pk=serializer.data['linea_negocio']).first()
+        aliado = Aliado.objects.filter(pk=serializer.data['aliado']).first()
         num_llamada = 0
         if motivo_llamada.pk == 9:
             n = Llamada.objects.filter(victima=victima).aggregate(Max('num_llamada'))
@@ -196,6 +220,9 @@ class SeguimientoRegistro(APIView):
         em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_m'])
         em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_a'])
 
+        # ---> Datos de las canalizaciones a instituciones <---
+
+        institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
 
         # ---> REGISTRO DE LLAMADA <---
 
@@ -209,7 +236,13 @@ class SeguimientoRegistro(APIView):
                                          causa_riesgo=causa_riesgo, fase_cambio=fase_cambio,
                                          modalidad_violencia=modalidad_violencia, fase_violencia=fase_violencia,
                                          semaforo=semaforo, victima_involucrada=victimas, agresor=agresor,
-                                         como_se_entero=como_se_entero, devolver_llamada=devolver_llamada, num_llamada=num_llamada)
+                                         como_se_entero=como_se_entero, devolver_llamada=devolver_llamada, num_llamada=num_llamada,
+                                         debilidades=debilidades, amenazas=amenazas, linea_negocio=linea_negocio,aliado=aliado)
+
+        # ---> REGISTRO DE CANALIZACIONES LLAMADA <---
+
+        canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
+
 
         if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)

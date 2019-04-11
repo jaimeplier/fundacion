@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, EstatusLLamada, Evaluacion, \
     CalificacionLlamada, TareaLLamada, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
-    EstatusUsuario, ArchivoMensaje, ArchivoRecado
+    EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio
 
 
 class FechaSerializer(serializers.Serializer):
@@ -18,6 +18,16 @@ class CatalogoSerializer(serializers.Serializer):
     nombre = serializers.CharField()
     estatus = serializers.BooleanField()
 
+class AliadoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Aliado
+        fields = ['pk', 'script', 'nombre']
+
+class LineaNegocioSerializer(serializers.ModelSerializer):
+    aliado = AliadoSerializer(read_only=True)
+    class Meta:
+        model = LineaNegocio
+        fields = ['pk', 'nombre', 'aliado']
 
 class PrimeraVezSerializer(serializers.Serializer):
     # victima
@@ -33,6 +43,8 @@ class PrimeraVezSerializer(serializers.Serializer):
     sexo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     nivel_estudio = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     lengua_indigena = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    num_hijos_menores = serializers.IntegerField(min_value=0, allow_null=True, required=False)
+    num_hijos_mayores = serializers.IntegerField(min_value=0, allow_null=True, required=False)
     #Fecha de nacimiento
     #Codigo postal
     #Colonia
@@ -44,6 +56,8 @@ class PrimeraVezSerializer(serializers.Serializer):
     #consejero = serializers.IntegerField()
     #victima = serializers.IntegerField()
     f = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
+    amenazas = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
+    debilidades = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     recursos = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     intervencion = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     medio_contacto = serializers.IntegerField()
@@ -68,6 +82,8 @@ class PrimeraVezSerializer(serializers.Serializer):
     redes_apoyo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     como_se_entero = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     devolver_llamada = serializers.BooleanField(default=False)
+    linea_negocio = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    aliado = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Tareas asiganadas a la llamada
     tarea1 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
@@ -93,6 +109,8 @@ class SeguimientoSerializer(serializers.Serializer):
     #consejero = serializers.IntegerField()
     victima = serializers.IntegerField()
     f = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
+    amenazas = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
+    debilidades = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     recursos = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     intervencion = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     medio_contacto = serializers.IntegerField()
@@ -116,6 +134,8 @@ class SeguimientoSerializer(serializers.Serializer):
     causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     como_se_entero = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     devolver_llamada = serializers.BooleanField(default=False)
+    linea_negocio = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    aliado = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Tareas asiganadas a la llamada
     tarea1 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
@@ -176,7 +196,7 @@ class LLamadaSerializer(serializers.ModelSerializer):
         fields = (
         'victima', 'consejero', 'motivo', 'tipo_llamada', 'estatus', 'tareas', 'num_max', 'fecha', 'hora_inicio',
         'hora_fin', 'f', 'recursos', 'intervencion', 'medio_contacto', 'violentometro', 'tipo_caso', 'tipo_ayuda',
-        'tipo_violencia', 'institucion', 'posible_solucion', 'causa_riesgo', 'vida_en_riesgo', 'nivel_riesgo',
+        'tipo_violencia', 'posible_solucion', 'causa_riesgo', 'vida_en_riesgo', 'nivel_riesgo',
         'fase_cambio', 'calificacion', 'modalidad_violencia', 'fase_violencia', 'semaforo', 'victima_involucrada',
         'agresor', 'como_se_entero', 'devolver_llamada', 'id')
 

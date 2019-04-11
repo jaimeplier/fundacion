@@ -9,6 +9,9 @@
             padding-right: 43px;
         }
 
+        #datos_aliado {
+            display: none;
+        }
 
         [type="checkbox"] + label {
             padding-left: 23px;
@@ -158,6 +161,40 @@
                     <div id="test2" class="col s12" style="margin-top: 40px;">
                         <div class="row sin_marg_bottom">
                             <div class="col s12" style="margin-bottom: 20px;">
+                                <div class="col s12">
+                    <p>
+                        <input type="checkbox" id="es_aliado"/>
+                        <label for="es_aliado" style="color:#EF7F13!important">Tiene aliado</label>
+                    </p>
+                </div>
+
+            <div class="row" id="datos_aliado">
+                <div class="row">
+                    <div class="col s2"></div>
+                    <div class="col s8">
+                            <p style="margin-top: 0px; text-align: justify;" id="script_aliado"></p>
+                    </div>
+                    <div class="col s2"></div>
+                </div>
+                <div class="col s6">
+                    <div class="row">
+                        <p style="margin-top: 0px; text-align: center;">Aliado</p>
+                        <div class="input-field col s12">
+                            <select id="aliado" onchange="CargarLineaNegocio()">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s6">
+                    <div class="row">
+                        <p style="margin-top: 0px; text-align: center;">Línea de negocio</p>
+                        <div class="input-field col s12">
+                            <select id="linea_negocio">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
                                 <h5 class="font_gris_oscuro" style="text-align: center;">
                                     Nuevo Servicio
                                 </h5>
@@ -169,24 +206,6 @@
                                     </p>
                                 </div>
                                 <div class="col s12 txt_algn_center">
-                                    <p style="margin-top: 0px; text-align: center;">Tipo de Llamada</p>
-                                    <p style="margin-top: 0px; text-align: center;" id="tipo_llamada">
-                                    </p>
-                                </div>
-
-                                <form class="col s12">
-                                    <div class="row">
-                                        <div class="col s12" style="padding-top: 15px;">
-                                            <p style="text-align: center;">Motivo de consulta</p>
-                                        </div>
-                                        <div class="input-field col s12">
-                                            <textarea id="causa_riesgo" class="materialize-textarea"
-                                                      placeholder="Motivo de consulta"
-                                                      style="padding-left: 14px;" maxlength="512"></textarea>
-
-                                        </div>
-                                    </div>
-                                    <div class="col s12 txt_algn_center">
                                         <div class="col s12">
                                             <p style="text-align: center;">Cómo se enteró</p>
                                         </div>
@@ -195,10 +214,28 @@
                                             </select>
                                         </div>
                                     </div>
+                                <div class="col s12 txt_algn_center">
+                                    <p style="margin-top: 0px; text-align: center;">Tipo de servicio</p>
+                                    <p style="margin-top: 0px; text-align: center;" id="tipo_llamada">
+                                    </p>
+                                </div>
+
+                                <form class="col s12">
+                                    <div class="row">
+                                        <div class="col s12" style="padding-top: 15px;">
+                                            <p style="text-align: center;">Desarrollo del caso</p>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <textarea id="causa_riesgo" class="materialize-textarea"
+                                                      placeholder="Desarrollo del caso"
+                                                      style="padding-left: 14px;" maxlength="512"></textarea>
+
+                                        </div>
+                                    </div>
                                 </form>
                                 <div class="col s12 txt_algn_center">
                                     <p style="margin-top: 0px; text-align: center;">
-                                        Tipificación
+                                        Motivo de consulta
                                     </p>
                                     <div class="row">
                                         <div class=" input-field col s12 m12 l12">
@@ -250,6 +287,28 @@
 
                                             </div>
                                         </div>
+                                        <div class="row">
+                                    <div class="col s12" style="padding-top: 15px;">
+                                        <p style="text-align: center;">Debilidades</p>
+                                    </div>
+                                    <div class="input-field col s12">
+                                            <textarea id="debilidades" class="materialize-textarea"
+                                                      placeholder="Debilidades"
+                                                      style="padding-left: 14px;" maxlength="4096"></textarea>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s12" style="padding-top: 15px;">
+                                        <p style="text-align: center;">Amenazas</p>
+                                    </div>
+                                    <div class="input-field col s12">
+                                            <textarea id="amenazas" class="materialize-textarea"
+                                                      placeholder="Amenazas"
+                                                      style="padding-left: 14px;" maxlength="4096"></textarea>
+
+                                    </div>
+                                </div>
                                         <p style="text-align: center;">
                                             <!--
                                             <input type="checkbox" id="tp5"/>
@@ -262,6 +321,7 @@
                             </div>
 
                             <div class="row">
+                                <p style="margin-top: 0px; text-align: center;"> Fase de cambio</p>
                                 <div class="input-field col s12">
                                     <select id="fase_cambio">
                                     </select>
@@ -273,22 +333,27 @@
                                     <p style="text-align: center;">Examen de salud mental</p>
                                 </div>
                                 <div class="input-field col s12">
+                                    <p style="margin-top: 0px; text-align: center;">Ubicación Tiempo Espacio (UTE)</p>
                                     <select id="em_ute">
                                     </select>
                                 </div>
                                 <div class="input-field col s12">
+                                    <p style="margin-top: 0px; text-align: center;">Pensamiento (P)</p>
                                     <select id="em_p">
                                     </select>
                                 </div>
                                 <div class="input-field col s12">
+                                    <p style="margin-top: 0px; text-align: center;">Lenguaje (L)</p>
                                     <select id="em_l">
                                     </select>
                                 </div>
                                 <div class="input-field col s12">
+                                    <p style="margin-top: 0px; text-align: center;">Memoria (M)</p>
                                     <select id="em_m">
                                     </select>
                                 </div>
                                 <div class="input-field col s12">
+                                    <p style="margin-top: 0px; text-align: center;">Atención (A)</p>
                                     <select id="em_a">
                                     </select>
                                 </div>
@@ -297,35 +362,42 @@
 
                             <div class="row sin_marg_bottom">
                                 <div class="input-field col s12 m6 l6">
+                                    <p style="margin-top: 0px; text-align: center;">Modalidad</p>
                                     <select id="modalidad_violencia">
                                     </select>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
+                                    <p style="margin-top: 0px; text-align: center;">Tipo de violencia</p>
                                     <select id="tipos_violencia">
-
                                     </select>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
+                                    <p style="margin-top: 0px; text-align: center;">Fase de violencia</p>
                                     <select id="fase_violencia">
                                     </select>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
+                                    <p style="margin-top: 0px; text-align: center;">Semáforo</p>
                                     <select id="semaforo">
                                     </select>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
+                                    <p style="margin-top: 0px; text-align: center;">Violentometro</p>
                                     <select id="violentometro">
                                     </select>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
+                                    <p style="margin-top: 0px; text-align: center;">Víctima</p>
                                     <select id="victimas">
                                     </select>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
+                                    <p style="margin-top: 0px; text-align: center;">Agresor</p>
                                     <select id="agresor">
                                     </select>
                                 </div>
                                 <div class=" input-field col s12 m6 l6">
+                                    <p style="margin-top: 0px; text-align: center;">Medio de contacto</p>
                                     <select id="medio_contacto">
                                     </select>
                                 </div>
@@ -476,7 +548,38 @@
                         $('#datos_canalizacion').show();
                     }
 
-                })
+                });
+
+                $('#es_aliado').change(function () {
+                if (!$(this).prop('checked')) {
+                    $('#datos_aliado').hide();
+                } else {
+                    $.ajax({
+                        method: "GET",
+                        url: "{% url 'webservices:list_aliado' %}",
+                        cache: false,
+                        success: function (json) {
+
+                            $("#aliado").empty().html(' ');
+                            $('#aliado').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Aliado")
+                            );
+                            for (i in json) {
+                                $('#aliado').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                            }
+                            $('#aliado').material_select();
+                        }
+                    });
+                    $('#datos_aliado').show();
+                }
+
+            });
 
                 $.ajax({
                     method: "GET",
@@ -944,6 +1047,37 @@
             }
         }
 
+        function CargarLineaNegocio() {
+            var aliado = $('#aliado').val();
+            $('#linea_negocio').empty().html(' ');
+            if (aliado !== '') {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_line_negocio' %}?aliado=" + aliado,
+                    cache: false,
+                    success: function (json) {
+                        var script_aliado = json[0].aliado.script;
+                        $("#script_aliado").empty().html(' ');
+                        $("#script_aliado").append(script_aliado);
+                        $("#linea_negocio").empty().html(' ');
+                            $('#linea_negocio').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Línea de negocio")
+                            );
+                            for (i in json) {
+                                $('#linea_negocio').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                            }
+                            $('#linea_negocio').material_select();
+                    }
+                });
+            }
+        }
+
         function GuardarLLamada() {
             //var vida_riesgo = $("input[name='riesgo']:checked").val();
             var motivo_llamada = $("input[name='motivo_llamada']:checked").val();
@@ -952,6 +1086,8 @@
             var categoria_tipificacion = $("input[name='categoria_tipificacion']:checked").val();
             var nivel_riesgo = $('#nivel_riesgo').val();
             var f = $('#f').val();
+            var debilidades = $('#debilidades').val();
+            var amenazas = $('#amenazas').val();
             var recursos = $('#recursos').val();
             var intervencion = $('#intervencion').val();
             var estado_mental_ute = $('#em_ute').val();
@@ -977,7 +1113,12 @@
             var tarea1 = $('#tarea1').val();
             var tarea2 = $('#tarea2').val();
             var tarea3 = $('#tarea3').val();
-            var devolver_llamada = false
+            var devolver_llamada = false;
+            var aliado, linea_negocio = null;
+            if ($("#es_aliado").prop('checked')) {
+                aliado = $("#aliado").val();
+                linea_negocio = $("#linea_negocio").val();
+            }
             {% if consejero.tipo_usuario.pk == 1 %}
                 devolver_llamada = $('#devolver_llamada').prop('checked'); //Esta seleccionado devolver llamada
             {% endif %}
@@ -994,6 +1135,8 @@
                     categoria_tipificacion: categoria_tipificacion,
                     nivel_riesgo: nivel_riesgo,
                     f: f,
+                    debilidades: debilidades,
+                    amenazas: amenazas,
                     recursos: recursos,
                     intervencion: intervencion,
                     estado_mental_ute: estado_mental_ute,
@@ -1017,7 +1160,9 @@
                     tarea2: tarea2,
                     tarea3: tarea3,
                     estatus: estatus_llamada,
-                    devolver_llamada: devolver_llamada
+                    devolver_llamada: devolver_llamada,
+                    aliado: aliado,
+                    linea_negocio: linea_negocio,
                 },
                 success: function (json) {
                     window.location.href = "{% url 'consejero:registro_seguimiento' victima.pk %}";

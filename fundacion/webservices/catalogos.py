@@ -7,8 +7,8 @@ from rest_framework.generics import ListAPIView, get_object_or_404
 from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoCaso, TipoViolencia, \
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, RedesApoyo, EstatusLLamada, MedioContacto, NivelRiesgo, \
-    RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero
-from webservices.serializers import CatalogoSerializer
+    RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio
+from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer
 
 
 class ListSexo(ListAPIView):
@@ -275,4 +275,27 @@ class ListComoSeEntero(ListAPIView):
 
     def get_queryset(self):
         queryset = ComoSeEntero.objects.all()
+        return queryset
+
+class ListAliado(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = AliadoSerializer
+
+    def get_queryset(self):
+        queryset = Aliado.objects.all()
+        return queryset
+
+class ListLineaNegocio(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = LineaNegocioSerializer
+
+    def get_queryset(self):
+        aliado = self.request.query_params.get('aliado', None)
+        queryset = LineaNegocio.objects.none()
+        if aliado is not None:
+            queryset = LineaNegocio.objects.filter(aliado__pk=aliado)
         return queryset
