@@ -103,6 +103,7 @@ class PrimerRegistro(APIView):
         # ---> Datos de las canalizaciones a instituciones <---
 
         institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
+        institucion2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion2']).first()
 
         # ---> REGISTRO DE VICTIMA <---
 
@@ -129,9 +130,13 @@ class PrimerRegistro(APIView):
                                          linea_negocio=linea_negocio,aliado=aliado)
 
         # ---> REGISTRO DE CANALIZACIONES LLAMADA <---
-        if institucion is not None:
+        if institucion is not None and institucion2 is not None and institucion == institucion2:
             canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
-
+        else:
+            if institucion is not None:
+                canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
+            if institucion2 is not None:
+                canalizacion_llamada2 = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion2)
 
         if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)
@@ -223,6 +228,7 @@ class SeguimientoRegistro(APIView):
         # ---> Datos de las canalizaciones a instituciones <---
 
         institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
+        institucion2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion2']).first()
 
         # ---> REGISTRO DE LLAMADA <---
 
@@ -240,8 +246,13 @@ class SeguimientoRegistro(APIView):
                                          debilidades=debilidades, amenazas=amenazas, linea_negocio=linea_negocio,aliado=aliado)
 
         # ---> REGISTRO DE CANALIZACIONES LLAMADA <---
-
-        canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
+        if institucion is not None and institucion2 is not None and institucion == institucion2:
+            canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
+        else:
+            if institucion is not None:
+                canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
+            if institucion2 is not None:
+                canalizacion_llamada2 = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion2)
 
 
         if tarea1 is not None:

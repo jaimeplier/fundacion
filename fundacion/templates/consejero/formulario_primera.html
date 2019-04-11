@@ -467,7 +467,7 @@
                             </a></p>
                         </div>
                         <div class="col s12 m12 l12">
-                            <button onclick="reloadInstituciones()" class="btn fondo_naranja redondo"
+                            <button onclick="reloadInstituciones('instituciones')" class="btn fondo_naranja redondo"
                                     style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
                                 <i class="material-icons" style="cursor: pointer">refresh</i>
                             </button>
@@ -475,7 +475,20 @@
                                     style="width: 85%">
                             </select>
                         </div>
+                        <div class="col s12">
+                            <p style="text-align: center;">Canalizar a:</p>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <button onclick="reloadInstituciones('instituciones2')" class="btn fondo_naranja redondo"
+                                    style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
+                                <i class="material-icons" style="cursor: pointer">refresh</i>
+                            </button>
+                            <select class="browser-default js-example-basic-single" id="instituciones2"
+                                    style="width: 85%">
+                            </select>
+                        </div>
                     </div>
+
 
                     <div class="col s12 txt_algn_center">
                         <p style="margin-top: 0px; text-align: center;">Estatus de la llamada</p>
@@ -1072,14 +1085,26 @@
                             .attr("value", "")
                             .text("Institución")
                     );
+                    $("#instituciones2").empty().html(' ');
+                    $('#instituciones2').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Institución")
+                    );
                     for (i in json) {
                         $('#instituciones').append(
                             $("<option></option>")
                                 .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
+                        $('#instituciones2').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
                     }
                     $('#instituciones').material_select();
+                    $('#instituciones2').material_select();
                     $('.js-example-basic-single').select2();
                 }
             });
@@ -1333,27 +1358,27 @@
 
         }
 
-        function reloadInstituciones() {
+        function reloadInstituciones(id_select) {
             $.ajax({
                 method: "GET",
                 url: "{% url 'webservices:list_instituciones' %}",
                 cache: false,
                 success: function (json) {
 
-                    $("#instituciones").empty().html(' ');
-                    $('#instituciones').append(
+                    $("#"+id_select).empty().html(' ');
+                    $("#"+id_select).append(
                         $("<option></option>")
                             .attr("value", "")
                             .text("Institución")
                     );
                     for (i in json) {
-                        $('#instituciones').append(
+                        $("#"+id_select).append(
                             $("<option></option>")
                                 .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
-                    $('#instituciones').material_select();
+                    $("#"+id_select).material_select();
                     //$('.js-example-basic-single').select2();
                 }
             });
