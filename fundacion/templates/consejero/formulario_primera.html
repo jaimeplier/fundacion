@@ -239,14 +239,42 @@
                             </p>
                             <div class="row">
                                 <div class=" input-field col s12 m12 l12">
-                                    <select id="tipificaciones" onchange="CargarCatTipificacion()">
+                                    <select id="tipificaciones1" onchange="CargarCatTipificacion(1)">
                                     </select>
                                 </div>
                             </div>
+                            <p style="text-align: center;" id="categoria_tipificacion1"></p>
+                            <div class="row">
+                                    <div class=" input-field col s12 m12 l12" id="sub1">
+                                    </div>
+                                </div>
+                            <div id="contenedor_tipificaciones2">
+                                <div class="row">
+                                    <div class=" input-field col s12 m12 l12">
+                                        <select id="tipificaciones2" onchange="CargarCatTipificacion(2)">
+                                        </select>
+                                    </div>
+                                </div>
+                                <p style="text-align: center;" id="categoria_tipificacion2"></p>
+                                <div class="row">
+                                    <div class=" input-field col s12 m12 l12" id="sub2">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="contenedor_tipificaciones3">
+                                <div class="row">
+                                    <div class=" input-field col s12 m12 l12">
+                                        <select id="tipificaciones3" onchange="CargarCatTipificacion(3)">
+                                        </select>
+                                    </div>
+                                </div>
+                                <p style="text-align: center;" id="categoria_tipificacion3"></p>
+                                <div class="row">
+                                    <div class=" input-field col s12 m12 l12" id="sub3">
+                                    </div>
+                                </div>
+                            </div>
                             <form action="#">
-                                <p style="text-align: center;" id="categoria_tipificacion">
-
-                                </p>
                                 <div class="row">
                                     <div class="col s12" id="recomendaciones" hidden>
                                         <p class=" negritas" style="font-size: 20px; text-align: center;">
@@ -741,20 +769,44 @@
                 cache: false,
                 success: function (json) {
 
-                    $("#tipificaciones").empty().html(' ');
-                    $('#tipificaciones').append(
+                    $("#tipificaciones1").empty().html(' ');
+                    $('#tipificaciones1').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Motivo de consulta")
+                    );
+                    $("#tipificaciones2").empty().html(' ');
+                    $('#tipificaciones2').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("Motivo de consulta")
+                    );
+                    $("#tipificaciones3").empty().html(' ');
+                    $('#tipificaciones3').append(
                         $("<option></option>")
                             .attr("value", "")
                             .text("Motivo de consulta")
                     );
                     for (i in json) {
-                        $('#tipificaciones').append(
+                        $('#tipificaciones1').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                        $('#tipificaciones2').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                        $('#tipificaciones3').append(
                             $("<option></option>")
                                 .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
-                    $('#tipificaciones').material_select();
+                    $('#tipificaciones1').material_select();
+                    $('#tipificaciones2').material_select();
+                    $('#tipificaciones3').material_select();
                 }
             });
 
@@ -1148,9 +1200,9 @@
 
         });
 
-        function CargarCatTipificacion() {
-            var tipificacion = $('#tipificaciones').val();
-            $('#categoria_tipificacion').empty().html(' ');
+        function CargarCatTipificacion(elem) {
+            var tipificacion = $('#tipificaciones'+elem).val();
+            $('#categoria_tipificacion'+elem).empty().html(' ');
             if (tipificacion !== '') {
                 var vida_riesgo = $("input[name='riesgo']:checked").val();
                 console.log(vida_riesgo)
@@ -1182,11 +1234,42 @@
                     success: function (json) {
 
                         for (i in json) {
-                            $('#categoria_tipificacion').append('<input class="with-gap" name="categoria_tipificacion" type="radio" value="' + json[i].pk + '" id="tic' + json[i].pk + '"/><label for="tic' + json[i].pk + '">' + json[i].nombre + '</label>');
+                            $('#categoria_tipificacion'+elem).append('<input class="with-gap" onclick="checkSubcategorias('+json[i].pk+','+elem+')" name="categoria_tipificacion'+elem+'" type="radio" value="' + json[i].pk + '" id="tic' + json[i].pk + '_'+elem+'"/><label for="tic' + json[i].pk + '_'+elem+'">' + json[i].nombre + '</label>');
                         }
                     }
                 });
             }
+        }
+
+        function checkSubcategorias(pk_categoria, elemento) {
+            console.log('entro a funcion')
+            $('#sub'+elemento).empty().html(' ');
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_tipificaciones_subcategorias' %}?categoria=" + pk_categoria,
+                cache: false,
+                success: function (json) {
+                    if (json.length > 0){
+                        var sel;
+                        $("#sub"+elemento).empty().html(' ');
+                        selector_html = '<select id="subcategoria'+elemento+'">'
+
+                           selector_html = selector_html + '<option value>Subcategoría</option>'
+                        for (i in json) {
+                            selector_html = selector_html+ '<option value"'+json[i].pk+'">'+json[i].nombre+'</option>'
+                        }
+                        selector_html = selector_html +'</select>'
+
+                        console.log(selector_html)
+                        $("#sub"+elemento).html(selector_html);
+                        $("#subcategoria"+elemento).material_select();
+                    }
+                    else {
+                        console.log('No tiene subcategorias')
+                    }
+
+                }
+            });
         }
 
         function CargarLineaNegocio() {
@@ -1242,8 +1325,8 @@
             //}
             var motivo_llamada = $("input[name='motivo_llamada']:checked").val();
             var causa_riesgo = $('#causa_riesgo').val();
-            var tipificacion = $('#tipificaciones').val();
-            var categoria_tipificacion = $("input[name='categoria_tipificacion']:checked").val();
+            var tipificacion = $('#tipificaciones1').val();
+            var categoria_tipificacion = $("input[name='categoria_tipificacion1']:checked").val();
             var nivel_riesgo = $('#nivel_riesgo').val();
             var f = $('#f').val();
             var debilidades = $('#debilidades').val();
