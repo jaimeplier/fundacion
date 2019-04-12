@@ -235,7 +235,7 @@ class SeguimientoRegistro(APIView):
         llamada = Llamada.objects.create(hora_inicio=hora_inicio, hora_fin=hora_fin, consejero=consejero,
                                          victima=victima, f=f, recursos=recursos, intervencion=intervencion ,medio_contacto=medio_contacto,
                                          violentometro=violentometro, tipo_caso=tipo_caso, tipo_ayuda=tipo_ayuda,
-                                         tipo_violencia=tipo_violencia, institucion=institucion,
+                                         tipo_violencia=tipo_violencia,
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
                                          nivel_riesgo=nivel_riesgo, estatus=estatus,
