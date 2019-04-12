@@ -218,6 +218,15 @@
 
             });
 
+            $('.datepicker').on('mousedown',function(event){
+            event.preventDefault();
+            });
+            $('.timepicker').on('mousedown',function(event){
+            event.preventDefault();
+            });
+            $('.datepicker_nacimiento').on('mousedown',function(event){
+            event.preventDefault();
+            });
             var $calendario = $('.datepicker').pickadate({
                 monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 monthsShort: ['Enero', 'Feb', 'Mar', 'Abr', 'Mayo', 'Jun', 'Jul', 'Agos', 'Sept', 'Oct', 'Nov', 'Dic'],
