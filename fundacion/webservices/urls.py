@@ -9,7 +9,8 @@ from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, Lis
     ListTipoLlamada, ListTipoCaso, ListTipoViolencia, ListViolentometro, ListAcudeInstitucion, ListMotivoLlamada, \
     ListTipificaciones, ListTipificacionesCategorias, ListModalidadViolencia, ListFaseViolencia, ListSemaforo, \
     ListVictimas, ListAgresor, ListRedesApoyo, ListEstatusLLamada, ListMedioContacto, ListNivelRiesgo, \
-    ListRecomendacionesRiesgo, ListFaseCambio, ListEstadoMental, ListComoSeEntero, ListAliado, ListLineaNegocio
+    ListRecomendacionesRiesgo, ListFaseCambio, ListEstadoMental, ListComoSeEntero, ListAliado, ListLineaNegocio, \
+    ListTipificacionesSubcategorias
 from webservices.views import ResumenLlamada, ListUsuarios, ListEstatusActividadUsuario, UpdateEstatusActividadUsuario, \
     AgregaArchivoMensaje, AgregaArchivoRecado, ListArchivoMensaje, ListArchivoRecado, CambiarEstatusInstitucion
 from . import views
@@ -57,6 +58,7 @@ urlpatterns = [
     path('list_motivo_de_llamada/', ListMotivoLlamada.as_view(), name='list_motivo_de_llamada'),
     path('list_tipificaciones/', ListTipificaciones.as_view(), name='list_tipificaciones'),
     path('list_tipificaciones_categorias/', ListTipificacionesCategorias.as_view(), name='list_tipificaciones_categorias'),
+    path('list_tipificaciones_subcategorias/', ListTipificacionesSubcategorias.as_view(), name='list_tipificaciones_subcategorias'),
     #path('list_tipificaciones/', ListTipoCaso.as_view(), name='list_tipificaciones'),
     path('list_modalidad_violencia/', ListModalidadViolencia.as_view(), name='list_modalidad_violencia'),
     path('list_tipos_violencia/', ListTipoViolencia.as_view(), name='list_tipos_violencia'),

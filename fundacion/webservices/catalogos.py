@@ -7,7 +7,7 @@ from rest_framework.generics import ListAPIView, get_object_or_404
 from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoCaso, TipoViolencia, \
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, RedesApoyo, EstatusLLamada, MedioContacto, NivelRiesgo, \
-    RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio
+    RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion
 from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer
 
 
@@ -102,6 +102,19 @@ class ListTipificacionesCategorias(ListAPIView):
         queryset = CategoriaTipificacion.objects.none()
         if tipificacion is not None:
             queryset = CategoriaTipificacion.objects.filter(tipificacion__pk=tipificacion)
+        return queryset
+
+class ListTipificacionesSubcategorias(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = CatalogoSerializer
+
+    def get_queryset(self):
+        categoria = self.request.query_params.get('categoria', None)
+        queryset = SubcategoriaTipificacion.objects.none()
+        if categoria is not None:
+            queryset = SubcategoriaTipificacion.objects.filter(categoria__pk=categoria)
         return queryset
 
 class ListTipoCaso(ListAPIView):
