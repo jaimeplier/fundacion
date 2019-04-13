@@ -589,6 +589,7 @@ class SubcategoriaTipificacion(Catalogo):
 class TipificacionLLamada(models.Model):
     llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
     categoria_tipificacion = models.ForeignKey('CategoriaTipificacion', models.DO_NOTHING)
+    subcategoria_tipificacion = models.ForeignKey('SubcategoriaTipificacion', models.DO_NOTHING, null=True, blank=True)
     class Meta:
         managed = True
         db_table = 'tipificacion_llamada'
