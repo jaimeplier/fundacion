@@ -92,8 +92,14 @@ class PrimeraVezSerializer(serializers.Serializer):
     tarea3 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
 
     # Tipificacion Categoria
-    categoria_tipificacion = serializers.IntegerField(min_value=1)
+    categoria_tipificacion1 = serializers.IntegerField(min_value=1)
+    categoria_tipificacion2 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    categoria_tipificacion3 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
+    # Tipificacion Subcategoria
+    subcategoria_tipificacion1 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    subcategoria_tipificacion2 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    subcategoria_tipificacion3 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Examen mental
     estado_mental_ute = serializers.IntegerField(min_value=1)
@@ -145,7 +151,14 @@ class SeguimientoSerializer(serializers.Serializer):
     tarea3 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
 
     # Tipificacion Categoria
-    categoria_tipificacion = serializers.IntegerField(min_value=1)
+    categoria_tipificacion1 = serializers.IntegerField(min_value=1)
+    categoria_tipificacion2 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    categoria_tipificacion3 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+
+    # Tipificacion Subcategoria
+    subcategoria_tipificacion1 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    subcategoria_tipificacion2 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    subcategoria_tipificacion3 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Examen mental
     estado_mental_ute = serializers.IntegerField(min_value=1)

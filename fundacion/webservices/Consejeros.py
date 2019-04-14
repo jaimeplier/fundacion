@@ -11,7 +11,7 @@ from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, R
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, EstatusLLamada, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
     FaseCambio, ExamenMental, ModalidadViolencia, FaseViolencia, Semaforo, Agresor, ComoSeEntero, TareaLLamada, \
-    VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion
+    VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion, SubcategoriaTipificacion
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
     BusquedaSerializer, VictimaSerializer
@@ -90,7 +90,12 @@ class PrimerRegistro(APIView):
 
         # ---> DATOS DE LA TIPIFICACION <---
 
-        cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
+        cat_tipificacion1 = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion1'])
+        subcat_tipificacion1 = SubcategoriaTipificacion.objects.filter(pk=serializer.data['subcategoria_tipificacion1']).first()
+        cat_tipificacion2 = CategoriaTipificacion.objects.filter(pk=serializer.validated_data['categoria_tipificacion2']).first()
+        subcat_tipificacion2 = SubcategoriaTipificacion.objects.filter(pk=serializer.data['subcategoria_tipificacion2']).first()
+        cat_tipificacion3 = CategoriaTipificacion.objects.filter(pk=serializer.validated_data['categoria_tipificacion3']).first()
+        subcat_tipificacion3 = SubcategoriaTipificacion.objects.filter(pk=serializer.data['subcategoria_tipificacion3']).first()
 
         # ---> Datos del examen mental <---
 
@@ -150,7 +155,11 @@ class PrimerRegistro(APIView):
 
         # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
-        llamada_tipifificacion = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion)
+        llamada_tipifificacion1 = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion1, subcategoria_tipificacion=subcat_tipificacion1)
+        if cat_tipificacion2 is not None:
+            llamada_tipifificacion2 = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion2, subcategoria_tipificacion=subcat_tipificacion2)
+        if cat_tipificacion3 is not None:
+            llamada_tipifificacion3 = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion3, subcategoria_tipificacion=subcat_tipificacion3)
 
         # ---> REGISTRO DE EXAMEN MENTAL <---
 
@@ -215,7 +224,17 @@ class SeguimientoRegistro(APIView):
 
         # ---> DATOS DE LA TIPIFICACION <---
 
-        cat_tipificacion = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion'])
+        cat_tipificacion1 = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion1'])
+        subcat_tipificacion1 = SubcategoriaTipificacion.objects.filter(
+            pk=serializer.data['subcategoria_tipificacion1']).first()
+        cat_tipificacion2 = CategoriaTipificacion.objects.filter(
+            pk=serializer.validated_data['categoria_tipificacion2']).first()
+        subcat_tipificacion2 = SubcategoriaTipificacion.objects.filter(
+            pk=serializer.data['subcategoria_tipificacion2']).first()
+        cat_tipificacion3 = CategoriaTipificacion.objects.filter(
+            pk=serializer.validated_data['categoria_tipificacion3']).first()
+        subcat_tipificacion3 = SubcategoriaTipificacion.objects.filter(
+            pk=serializer.data['subcategoria_tipificacion3']).first()
 
         # ---> Datos del examen mental <---
 
@@ -265,9 +284,19 @@ class SeguimientoRegistro(APIView):
             tarea = TareaLLamada.objects.create(nombre=tarea3)
             llamada.tareas.add(tarea)
 
-        # ---> REGISTRO DE LLAMADA TIPIFICACION <---
+            # ---> REGISTRO DE LLAMADA TIPIFICACION <---
 
-        llamada_tipifificacion = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion)
+            llamada_tipifificacion1 = TipificacionLLamada.objects.create(llamada=llamada,
+                                                                         categoria_tipificacion=cat_tipificacion1,
+                                                                         subcategoria_tipificacion=subcat_tipificacion1)
+            if cat_tipificacion2 is not None:
+                llamada_tipifificacion2 = TipificacionLLamada.objects.create(llamada=llamada,
+                                                                             categoria_tipificacion=cat_tipificacion2,
+                                                                             subcategoria_tipificacion=subcat_tipificacion2)
+            if cat_tipificacion3 is not None:
+                llamada_tipifificacion3 = TipificacionLLamada.objects.create(llamada=llamada,
+                                                                             categoria_tipificacion=cat_tipificacion3,
+                                                                             subcategoria_tipificacion=subcat_tipificacion3)
 
         # ---> REGISTRO DE EXAMEN MENTAL <---
 

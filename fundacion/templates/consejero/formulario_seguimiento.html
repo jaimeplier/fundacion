@@ -13,6 +13,14 @@
             display: none;
         }
 
+        #contenedor_tipificaciones2 {
+            display: none;
+        }
+
+        #contenedor_tipificaciones3 {
+            display: none;
+        }
+
         [type="checkbox"] + label {
             padding-left: 23px;
             padding-right: 30px;
@@ -247,6 +255,7 @@
                                     <div class="row">
                                         <div class=" input-field col s12 m12 l12" id="sub1">
                                         </div>
+                                        <span id="agregarTipificacion1" style="cursor: pointer" class="font_naranja" onclick="showTip2(this)">+ Agregar otra tipificación</span>
                                     </div>
                                     <div id="contenedor_tipificaciones2">
                                         <div class="row">
@@ -259,6 +268,8 @@
                                         <div class="row">
                                             <div class=" input-field col s12 m12 l12" id="sub2">
                                             </div>
+                                            <span id="agregarTipificacion2" style="cursor: pointer;" class="font_naranja" onclick="showTip3(this)">+ Agregar otra tipificación</span>
+                                            <span id="eliminar2" style="color: darkred; cursor: pointer; margin-left: 75px;" onclick="ocultarTip(2)">x Eliminar tipificación</span>
                                         </div>
                                     </div>
                                     <div id="contenedor_tipificaciones3">
@@ -272,6 +283,7 @@
                                         <div class="row">
                                             <div class=" input-field col s12 m12 l12" id="sub3">
                                             </div>
+                                            <span style="color: darkred; cursor: pointer; text-align: right" onclick="ocultarTip(3)">x Eliminar tipificación</span>
                                         </div>
                                     </div>
                                     <form action="#">
@@ -1147,7 +1159,7 @@
 
                            selector_html = selector_html + '<option value>Subcategoría</option>'
                         for (i in json) {
-                            selector_html = selector_html+ '<option value"'+json[i].pk+'">'+json[i].nombre+'</option>'
+                            selector_html = selector_html+ '<option value="'+json[i].pk+'">'+json[i].nombre+'</option>'
                         }
                         selector_html = selector_html +'</select>'
 
@@ -1198,8 +1210,7 @@
             //var vida_riesgo = $("input[name='riesgo']:checked").val();
             var motivo_llamada = $("input[name='motivo_llamada']:checked").val();
             var causa_riesgo = $('#causa_riesgo').val();
-            var tipificacion = $('#tipificaciones1').val();
-            var categoria_tipificacion = $("input[name='categoria_tipificacion1']:checked").val();
+
             var nivel_riesgo = $('#nivel_riesgo').val();
             var f = $('#f').val();
             var debilidades = $('#debilidades').val();
@@ -1230,12 +1241,47 @@
             var tarea1 = $('#tarea1').val();
             var tarea2 = $('#tarea2').val();
             var tarea3 = $('#tarea3').val();
-            var devolver_llamada = false;
             var aliado, linea_negocio = null;
             if ($("#es_aliado").prop('checked')) {
                 aliado = $("#aliado").val();
                 linea_negocio = $("#linea_negocio").val();
             }
+
+            var tipificacion1, tipificacion2, tipificacion3 = null;
+            var categoria_tipificacion1, categoria_tipificacion2, categoria_tipificacion3 = null;
+            var subcategoria_tipificacion1, subcategoria_tipificacion2, subcategoria_tipificacion3 = null;
+
+            switch (num_tipificaciones) {
+                case 1:
+                    tipificacion1 = $('#tipificaciones1').val();
+                    categoria_tipificacion1 = $("input[name='categoria_tipificacion1']:checked").val();
+                    subcategoria_tipificacion1 = $('#subcategoria1').val();
+                    break;
+                case 2:
+                    tipificacion1 = $('#tipificaciones1').val();
+                    categoria_tipificacion1 = $("input[name='categoria_tipificacion1']:checked").val();
+                    subcategoria_tipificacion1 = $('#subcategoria1').val();
+
+                    tipificacion2 = $('#tipificaciones2').val();
+                    categoria_tipificacion2 = $("input[name='categoria_tipificacion2']:checked").val();
+                    subcategoria_tipificacion2 = $('#subcategoria2').val();
+                    break;
+                case 3:
+                    tipificacion1 = $('#tipificaciones1').val();
+                    categoria_tipificacion1 = $("input[name='categoria_tipificacion1']:checked").val();
+                    subcategoria_tipificacion1 = $('#subcategoria1').val();
+
+                    tipificacion2 = $('#tipificaciones2').val();
+                    categoria_tipificacion2 = $("input[name='categoria_tipificacion2']:checked").val();
+                    subcategoria_tipificacion2 = $('#subcategoria2').val();
+
+                    tipificacion3 = $('#tipificaciones3').val();
+                    categoria_tipificacion3 = $("input[name='categoria_tipificacion3']:checked").val();
+                    subcategoria_tipificacion3 = $('#subcategoria3').val();
+                    break;
+            }
+
+            var devolver_llamada = false;
             {% if consejero.tipo_usuario.pk == 1 %}
                 devolver_llamada = $('#devolver_llamada').prop('checked'); //Esta seleccionado devolver llamada
             {% endif %}
@@ -1249,7 +1295,12 @@
                     victima: victima,
                     motivo_llamada: motivo_llamada,
                     causa_riesgo: causa_riesgo,
-                    categoria_tipificacion: categoria_tipificacion,
+                    categoria_tipificacion1: categoria_tipificacion1,
+                    categoria_tipificacion2: categoria_tipificacion2,
+                    categoria_tipificacion3: categoria_tipificacion3,
+                    subcategoria_tipificacion1: subcategoria_tipificacion1,
+                    subcategoria_tipificacion2: subcategoria_tipificacion2,
+                    subcategoria_tipificacion3: subcategoria_tipificacion3,
                     nivel_riesgo: nivel_riesgo,
                     f: f,
                     debilidades: debilidades,
@@ -1422,6 +1473,24 @@
                     //$('.js-example-basic-single').select2();
                 }
             });
+        }
+        num_tipificaciones = 1
+        function showTip2(elemento) {
+            $("#"+elemento.id).hide();
+            $("#contenedor_tipificaciones2").show();
+            num_tipificaciones += 1;
+        }
+        function showTip3(elemento) {
+            $("#"+elemento.id).hide();
+            $("#eliminar2").hide();
+            $("#contenedor_tipificaciones3").show();
+            num_tipificaciones += 1;
+        }
+        function ocultarTip(num_elemento) {
+            $("#contenedor_tipificaciones"+num_elemento).hide();
+            num_tipificaciones -= 1;
+            $("#eliminar"+num_tipificaciones).show();
+            $("#agregarTipificacion"+num_tipificaciones).show();
         }
 
     </script>
