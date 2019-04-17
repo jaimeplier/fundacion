@@ -280,7 +280,7 @@ class RecadoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recado
-        fields = ('id', 'usuario', 'fecha', 'cuerpo', 'destinatarios', 'asunto')
+        fields = ('id', 'usuario', 'fecha', 'cuerpo', 'destinatarios', 'asunto', 'archivos')
 
 class RecadoSerializerPk(serializers.ModelSerializer):
     class Meta:
