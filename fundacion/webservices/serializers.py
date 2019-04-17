@@ -327,13 +327,13 @@ class PkSerializer(serializers.Serializer):
 class ArchivoMensajeSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArchivoMensaje
-        fields = '__all__'
+        fields = ('archivo', 'mensaje')
 
 
 class ArchivoRecadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArchivoRecado
-        fields = '__all__'
+        fields = ('file', 'recado')
 
 class EstatusInstitucionSucursalSerializer(serializers.Serializer):
     # tipo 0: institucion
