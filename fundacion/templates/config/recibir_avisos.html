@@ -8,6 +8,14 @@
         background-color: #9bbc5c;
     }
 
+        .mifondo{
+            background-color: #f2f2f2;
+        }
+
+        .mifondo:hover{
+            background-color: white !important;
+        }
+
     </style>
 
 
@@ -21,13 +29,10 @@
                   <div class="row" style="padding: 0px; margin-bottom: 0px;">
                     <div class="col s12 fondo_gris">
                          <div class="row">
-                           <div class="col s9">
                              <div id="avisos">
 
                              </div>
-                           </div>
                          </div>
-
                     </div>
                   </div>
 
@@ -41,41 +46,15 @@
                  </div>
                  <div class="col s12 fondo_verde font_blanco">
                   <div class="row" style="margin-bottom: 0px;">
-                    <div class="col s8" style="padding-top:3%; ">
-                      <img src="{% static "imagenes/circulo_usuario.png" %}" style="margin-right: 3%;"><span style="position: absolute;"> Karla Alvarez</span>
-                      <p style="margin-top: 0px; margin-left: 8%;">
-                        karlaalvarez@gmail.com
-                      </p>
-                    </div>
-                    <div class="col s4" style="padding: 3%;">
-                       <img src="{% static "imagenes/circulo_mas.png" %}" style="margin-right: 3%;"><span class="negritas" style="position: absolute;"> NUEVO AVISO</span>
-                      <p style="margin-top: 0px; margin-left: 8%;">
-                        11 ene. 2019 18:15
-                      </p>
+                    <div id="header_mensaje">
+
                     </div>
                   </div>
                  </div>
                  </div>
+                 <div id="mensaje_aviso">
 
-                 <div class="row" style="padding: 5%;">
-                    <div class="col s12 font_gris_oscuro" style="text-align: center;">
-                        <h5 class="negritas">FIESTA NAVIDEÑA</h5>
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum efficitur est, quis condimentum lectus viverra eget. Vestibulum sed aliquam nisi. Mauris varius quam at auctor iaculis. Integer euismod ligula ac euismod commodo. Proin posuere, leo id porta fringilla, lectus mauris luctus ante, non viverra sapien elit nec lorem. Nunc sed ornare sapien, in accumsan dolor. Donec laoreet vestibulum ipsum, ac sollicitudin ligula imperdiet vitae. Ut at tempus elit. Pellentesque ornare quam orci, quis aliquet ipsum euismod id.</p>
-                        <hr>
-                    </div>
-                    <div class="col s6">
-                       <img src="{% static "imagenes/circulo_clip.png" %}" style="margin-right: 3%;"><span class="negritas font_naranja" style="position: absolute;"> Archivos adjuntos</span>
-                    </div>
-                    <div class="col s6" style="text-align: right;">
-                       <img src="{% static "imagenes/circulo_descargar.png" %}">
-                    </div>
-                    <div class="col s12" style="margin-top: 5%;">
-                      <div class="col s4">
-                        <img src="{% static "imagenes/img1.png " %}" class="responsive-img" />
-                      </div>
-                    </div>
-                  </div>
-
+                 </div>
                </div>
               </div>
 
@@ -90,16 +69,24 @@
           $.ajax({
                 url: '/ws/mensajes/',
                 method: 'GET',
-                success: function (json) {
+                success: function (res) {
+                    let json = res.sort(function (a, b) {
+                        a = new Date(a.fecha);
+                        b = new Date(b.fecha);
+                        return a > b ? -1 : a < b ? 1 : 0;
+                    });
                     for (i in json) {
                         avisos = {
+                            id: json[i].id,
                             asunto: json[i].titulo,
                             cuerpo: json[i].cuerpo,
                             fecha: json[i].fecha,
                             status: json[i].status,
                             nombre: json[i].usuario.nombre + ' ' + json[i].usuario.a_paterno + ' ' + json[i].usuario.a_materno,
                         }
-                        $('#avisos').append(`<div class="col s9">
+                        $('#avisos').append(`
+                         <div id=${avisos.id} class="row select-aviso mifondo">
+                            <div class="col s9">
                              <p class="negritas" style="margin-bottom: 0px;">${avisos.asunto}</p>
                            </div>
                            <div class="col s3" style="text-align: right;">
@@ -113,7 +100,14 @@
                                ${avisos.cuerpo}
                              </p>
                            </div>`)
+
+
+
                     }
+                    $('.select-aviso').on('click', function(e){
+                        e.preventDefault();
+                        aviso_con_Id(this.id);
+                    });
                 },
 
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -161,5 +155,55 @@
           })
 
         });
+        function aviso_con_Id(mensajeid) {
+           $.ajax({
+                url: '/ws/mensajes/'+ mensajeid,
+                method: 'GET',
+                success: function (res) {
+                    // console.log('res click', res);
+                    $( "#mensaje_aviso" ).empty().append(`
+                    <div class="row" style="padding: 5%;">
+                      <div class="col s12 font_gris_oscuro" style="text-align: center;">
+                        <h5 class="negritas">${res.titulo}</h5>
+                        <p style="text-align: left;">${res.cuerpo}</p>
+                        <hr>
+                      </div>
+                    <div class="col s6">
+                       <img src="{% static "imagenes/circulo_clip.png" %}" style="margin-right: 3%;"><span class="negritas font_naranja" style="position: absolute;">
+                       Archivos adjuntos</span>
+                    </div>
+                    <p>${res.archivos} </p>
+                    <div class="col s6" style="text-align: right;">
+                       <img src="{% static "imagenes/circulo_descargar.png" %}">
+                    </div>
+                    <div class="col s12" style="margin-top: 5%;">
+                    </div>
+                  </div>
+
+                `)
+
+                    $("#header_mensaje").empty().append(`
+                    <div class="col s8" style="padding-top:3%; ">
+                        <img src="{% static "imagenes/circulo_usuario.png" %}" style="margin-right: 3%;"><span style="position: absolute;">
+                         ${res.destinatarios[0].nombre} ${res.destinatarios[0].a_paterno} ${res.destinatarios[0].a_materno}</span>
+                      <p style="margin-top: 0px; margin-left: 8%;">
+                        ${res.destinatarios[0].correo}
+                      </p>
+                    </div>
+                    <div class="col s4" style="padding: 3%;">
+                        <a href="{% url 'webapp:avisos' %}"><img src="{% static "imagenes/circulo_mas.png" %}" style="margin-right: 3%;"><span class="negritas" style="position: absolute;"> NUEVO AVISO</span></a>
+                      <p style="margin-top: 0px; margin-left: 8%;">
+                        ${res.fecha}
+                      </p>
+                    </div>
+                    `)
+
+                },
+
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                }
+           });
+            }
 </script>
 {%  endblock %}
