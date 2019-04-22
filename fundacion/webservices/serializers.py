@@ -261,13 +261,25 @@ class UsuarioSerializer(serializers.ModelSerializer):
             'id', 'correo', 'nombre', 'a_paterno', 'a_materno', 'foto', 'estatus',
             'rol', 'genero')
 
+class ArchivoMensajeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ArchivoMensaje
+        fields = ('archivo', 'mensaje')
+
+
+class ArchivoRecadoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ArchivoRecado
+        fields = ('file', 'recado')
+
 class MensajeSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer(many=False, read_only=True)
     destinatarios = UsuarioSerializer(many=True, read_only=True)
+    archivo = ArchivoMensajeSerializer(source='archivos', many=True)
 
     class Meta:
         model = Mensaje
-        fields = ('id', 'usuario', 'fecha', 'titulo', 'cuerpo', 'archivos', 'destinatarios', 'leido')
+        fields = ('id', 'usuario', 'fecha', 'titulo', 'cuerpo', 'archivo', 'destinatarios', 'leido')
 
 class MensajeSerializerPk(serializers.ModelSerializer):
     class Meta:
@@ -277,10 +289,11 @@ class MensajeSerializerPk(serializers.ModelSerializer):
 class RecadoSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer(many=False, read_only=True)
     destinatarios = UsuarioSerializer(many=True, read_only=True)
+    archivo = ArchivoRecadoSerializer(source='archivos', many=True)
 
     class Meta:
         model = Recado
-        fields = ('id', 'usuario', 'fecha', 'cuerpo', 'destinatarios', 'asunto', 'archivos', 'leido')
+        fields = ('id', 'usuario', 'fecha', 'cuerpo', 'destinatarios', 'asunto', 'archivo', 'leido')
 
 class RecadoSerializerPk(serializers.ModelSerializer):
     class Meta:
@@ -323,17 +336,6 @@ class EstatusUsuarioSerializer(serializers.ModelSerializer):
 class PkSerializer(serializers.Serializer):
 
     pk = serializers.IntegerField(min_value=1)
-
-class ArchivoMensajeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ArchivoMensaje
-        fields = ('archivo', 'mensaje')
-
-
-class ArchivoRecadoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ArchivoRecado
-        fields = ('file', 'recado')
 
 class EstatusInstitucionSucursalSerializer(serializers.Serializer):
     # tipo 0: institucion
