@@ -17,6 +17,18 @@
             background-color: #f2f2f2;
         }
 
+        .scroll {
+            height:100vh;
+            overflow-y: scroll;
+
+        }
+
+
+        .fondo_obscuro{
+	        background-color: #6E6D6D;
+            color: white;
+        }
+
         .mifondo:hover{
             background-color: white !important;
         }
@@ -32,9 +44,9 @@
 
 {% block content %}
   <div class="row fondo_blanco">
-               <div class="col s4" style="padding: 0px;">
+               <div class="col s4 scroll" style="padding: 0px;">
                   <div class="row" style="padding: 0px; margin-bottom: 0px;">
-                    <div class="col s12 fondo_gris">
+                    <div class="col s12 fondo_gris ">
                         <div class="row">
 
                                <div id="recado">
@@ -55,7 +67,19 @@
                  </div>
                  <div class="fondo_verde col s12  font_blanco" >
                   <div class="row" style="margin-bottom: 0px;">
-                    <div id="header_msj"></div>
+                    <div id="header_msj">
+                        <div class="col s8" style="padding-top:3%; ">
+                      <img src="{% static "imagenes/circulo_usuario.png" %}" style="margin-right: 3%;">
+
+                    </div>
+                    <div class="col s4" style="padding: 3%;">
+                        <a href="{% url 'webapp:recados' %}"><img src="{% static "imagenes/circulo_mas.png" %}" style="margin-right: 3%;">
+                        <span class="negritas" style="position: absolute;"> NUEVO RECADO</span></a>
+                      <p style="margin-top: 0px; margin-left: 8%;">
+
+                      </p>
+                    </div>
+                    </div>
                   </div>
                  </div>
                  </div>
@@ -72,7 +96,13 @@
 {% block scripts %}
         <script type="text/javascript" src="js/materialize.js"></script>
        <script type="text/javascript">
+
+       const DOMAIN = "http://localhost:8000";
+       //const DOMAIN = "http://ec2-52-32-27-159.us-west-2.compute.amazonaws.com"
+
         $(document).ready(function() {
+
+
             $.ajax({
                 url: '/ws/recados/',
                 method: 'GET',
@@ -80,8 +110,9 @@
                     let json = res.sort(function (a, b) {
                         a = new Date(a.fecha);
                         b = new Date(b.fecha);
-                        return a > b ? -1 : a < b ? 1 : 0;
+                            return a > b ? -1 : a < b ? 1 : 0;
                     });
+                    console.log(json, "json")
                     for (i in json) {
                         recado = {
                             id: json[i].id,
@@ -90,6 +121,7 @@
                             fecha: json[i].fecha,
                             status: json[i].status,
                             nombre: json[i].usuario.nombre + ' ' + json[i].usuario.a_paterno + ' ' + json[i].usuario.a_materno,
+                            leido: json[i].leido,
                         }
                         $('#recado').append(`
                          <div id=${recado.id} class=" row select-recado mifondo">
@@ -100,17 +132,23 @@
                              <p style="font-size: 11px; line-height: 23px; margin-bottom: 0px;">${recado.fecha}</p>
                            </div>
                            <div class="col s12">
-                             <i class="material-icons tiny">attachment</i><span class="" style="font-size: 12px; position: absolute;"> ${recado.nombre}</span>
+                             <i class="material-icons tiny">attachment</i><span class="" style="font-size: 12px;"> De: ${recado.nombre}</span>
                            </div>
                            <div class="col s12">
                              <p style="font-size: 12px;">
                                ${recado.cuerpo}
                              </p>
                            </div>
-                         </div>`)
+                         </div>
+                        `)
+
+                        if (!recado.leido) {
+                            $('#' + recado.id).removeClass("mifondo").addClass("fondo_obscuro");
+                       }
                     }
                     $('.select-recado').on('click', function(e){
                         e.preventDefault();
+                        $('#' + this.id).removeClass("fondo_obscuro")
                         recado_con_Id(this.id);
                     });
                 },
@@ -180,22 +218,36 @@
                         <p style="text-align: left;">${res.cuerpo}</p>
                         <hr>
                     </div>
-                    <div class="col s6">
-                       <img src="{% static 'imagenes/circulo_clip.png' %}" style="margin-right: 3%;"><span class="negritas font_naranja" style="position: absolute;"> Archivos adjuntos</span>
+
+                    <div id="archivo">
                     </div>
-                    <p>${res.archivos} </p>
-                    <div class="col s6" style="text-align: right;">
-                       <img src="{% static "imagenes/circulo_descargar.png" %}">
-                    </div>
+
+
                   </div>
                 `)
+
+                for( let el of res.archivo ) {
+                    console.log("archivos", el)
+                     $( "#archivo" ).empty().append(`
+                        <div class="col s6">
+                        <img src="{% static 'imagenes/circulo_clip.png' %}" style="margin-right: 3%;">
+                        <span class="negritas font_naranja" style="position: absolute;"> ${el.file} </span>
+                        </div>
+
+
+                        <div class="col s6" style="text-align: right;">
+                            <a href=${DOMAIN + el.file} target="blank"><img src="{% static "imagenes/circulo_descargar.png" %}"></a>
+                        </div>
+
+                `)
+                }
 
 
                    // for(u in res.destinatarios)
                     $( "#header_msj" ).empty().append(`
                     <div class="col s8" style="padding-top:3%; ">
                       <img src="{% static "imagenes/circulo_usuario.png" %}" style="margin-right: 3%;"><span style="position: absolute;">
-                      ${res.destinatarios[0].nombre} ${res.destinatarios[0].a_paterno} ${res.destinatarios[0].a_materno}</span>
+                      De: ${res.destinatarios[0].nombre} ${res.destinatarios[0].a_paterno} ${res.destinatarios[0].a_materno}</span>
                       <p style="margin-top: 0px; margin-left: 8%;">
                         ${res.destinatarios[0].correo}
                       </p>

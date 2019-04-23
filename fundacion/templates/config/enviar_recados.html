@@ -169,6 +169,11 @@
                     destinatarios: destinatarios,
                 },
                 success: function (res) {
+
+                if(!$('#adjuntos')[0].files[0]) {
+                    alert('Se ha enviado el mensaje');
+                    return
+                }
                     const formData = new FormData();
                     formData.append('file', $('#adjuntos')[0].files[0]);
                     formData.append('recado', res.id);
