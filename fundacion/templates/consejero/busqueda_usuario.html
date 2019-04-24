@@ -33,7 +33,7 @@
                     <div class="row sin_marg_bottom">
                         <div class=" col s12 txt_algn_center">
                             <p style="text-align: center;">
-                                <input class="with-gap" name="datos_p" type="radio" id="rv1" value="0"  onClick="TipoBusqueda(1)"/>
+                                <input class="with-gap" name="datos_p" type="radio" id="rv1" value="0" checked="checked" onClick="TipoBusqueda(1)"/>
                                 <label for="rv1" style="font-size: 18px;">Búsqueda por teléfono</label>
                                 <input class="with-gap" name="datos_p" type="radio" id="rv2" value="1" onClick="TipoBusqueda(2)"/>
                                 <label for="rv2" style="font-size: 18px;">Búsqueda por nombre</label>
@@ -94,7 +94,7 @@
     <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            
+
             var tipoBusqueda = "";
             $("#idTelefono").show()
             $("#idNombre").hide()
@@ -166,6 +166,34 @@
             var nombre = $('#datos_personalesN').val();
             var tipoBusqueda = "";
 
+            function setRiesgo(nivel) {
+                if(nivel === 1) {
+                    return 'Alto'
+                }
+                if(nivel === 2) {
+                    return 'Medio'
+                }
+                if(nivel === 3) {
+                    return 'Bajo'
+                } else {
+                    return 'NA'
+                }
+            }
+
+            function setPorcentaje(nivel) {
+                if(nivel === 1) {
+                    return 91
+                }
+                if(nivel === 2) {
+                    return 55
+                }
+                if(nivel === 3) {
+                    return 38
+                } else {
+                    return 10
+                }
+            }
+
             if ($("#rv1").is(':checked')){
                 tipoBusqueda = 0;
             } else {
@@ -217,6 +245,7 @@
                             ultllamada: json[i].fecha,
                             motivo: json[i].motivo.nombre,
                             causa: json[i].causa_riesgo,
+                            nivel_riesgo: json[i].nivel_riesgo
 
                         }
                         $('#historial').append(`
@@ -236,8 +265,8 @@
                                     <p><span class="font_blanco negritas">Mótivo de llamada</span>
                                     <br><span class="font_blanco">${llamada.motivo}</span></p>
                                     <p><span class="font_blanco negritas">Nivel de Riesgo</span>
-                                    <progress id="html5" max="100" value="91"></progress>
-                                    <br><span class="font_blanco medianas">${llamada.motivo}</span></p>
+                                    <progress id="html5" max="100" value=${setPorcentaje(llamada.nivel_riesgo)}></progress>
+                                    <br><span class="font_blanco medianas">${setRiesgo(llamada.nivel_riesgo)}</span></p>
                                     <p><span class="font_blanco negritas">Nivel de Riesgo</span>
                                     <progress id="html5" max="100" value="91"></progress>
                                     <br><span class="font_blanco medianas">${llamada.motivo}</span></p>

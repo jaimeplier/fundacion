@@ -96,7 +96,7 @@
                         b = new Date(b.fecha);
                         return a > b ? -1 : a < b ? 1 : 0;
                     });
-                    console.log('json', json);
+
                     for (i in json) {
                         avisos = {
                             id: json[i].id,
@@ -186,7 +186,7 @@
                 url: '/ws/mensajes/'+ mensajeid,
                 method: 'GET',
                 success: function (res) {
-                    console.log('res click', res);
+
                     $( "#mensaje_aviso" ).empty().append(`
                     <div class="row" style="padding: 5%;">
                       <div class="col s12 font_gris_oscuro" style="text-align: center;">
@@ -207,7 +207,7 @@
                 `)
 
                     for( let el of res.archivo ) {
-                        console.log("archivos", el)
+
                         $("#archivo").empty().append(`
                         <div class="col s6">
                             <img src="{% static "imagenes/circulo_clip.png" %}" style="margin-right: 3%;">
