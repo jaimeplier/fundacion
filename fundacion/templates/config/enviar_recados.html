@@ -87,9 +87,6 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-
-
-
             $('.button-collapse').sideNav({
                     menuWidth: 300, // Default is 300
                     edge: 'left', // Choose the horizontal origin
@@ -123,7 +120,7 @@
                 url: "{% url 'webservices:list_usuarios' %}",
                 cache: false,
                 success: function (json) {
-
+                    console.log('res',json);
                     $("#usuarios").empty().html(' ');
                     $('#usuarios').append(
                         $("<option></option>")
@@ -134,16 +131,13 @@
                         $('#usuarios').append(
                             $("<option></option>")
                                 .attr("value", json[i].id)
-                                .text(json[i].correo)
+                                .text(json[i].nombre + ' ' + json[i].a_paterno + ' ' + json[i].a_materno )
                         );
                     }
                     $('#usuarios').material_select();
                     $('.js-example-basic-multiple').select2();
                 }
             });
-
-
-
 
         });
 

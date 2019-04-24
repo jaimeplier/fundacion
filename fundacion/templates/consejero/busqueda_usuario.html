@@ -33,7 +33,7 @@
                     <div class="row sin_marg_bottom">
                         <div class=" col s12 txt_algn_center">
                             <p style="text-align: center;">
-                                <input class="with-gap" name="datos_p" type="radio" id="rv1" value="0" onClick="TipoBusqueda(1)"/>
+                                <input class="with-gap" name="datos_p" type="radio" id="rv1" value="0" checked="checked" onClick="TipoBusqueda(1)"/>
                                 <label for="rv1" style="font-size: 18px;">Búsqueda por teléfono</label>
                                 <input class="with-gap" name="datos_p" type="radio" id="rv2" value="1" onClick="TipoBusqueda(2)"/>
                                 <label for="rv2" style="font-size: 18px;">Búsqueda por nombre</label>
@@ -94,6 +94,9 @@
     <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            1- alto
+            2 medio
+            3 bajo
             var tipoBusqueda = "";
             $("#idTelefono").show()
             $("#idNombre").hide()
@@ -185,6 +188,7 @@
                 cache: false,
 
                 success: function (json) {
+                    console.log('return funct', json);
                     if (json == ""){
                         $('#titulo').empty();
                         $('#titulo').append(`<div class="container center">
@@ -239,7 +243,6 @@
                                     <p><span class="font_blanco negritas">Nivel de Riesgo</span>
                                     <progress id="html5" max="100" value="91"></progress>
                                     <br><span class="font_blanco medianas">${llamada.motivo}</span></p>
-
 
                             </div>
 

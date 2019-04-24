@@ -127,7 +127,7 @@
                         $('#usuarios').append(
                             $("<option></option>")
                                 .attr("value", json[i].id)
-                                .text(json[i].correo)
+                                .text(json[i].nombre + ' ' + json[i].a_paterno + ' ' + json[i].a_materno )
                         );
                     }
                     $('#usuarios').material_select();
