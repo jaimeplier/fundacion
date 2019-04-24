@@ -333,7 +333,7 @@ class ListHistorialLLamada(ListAPIView):
         consejero = self.request.query_params.get('consejero', None)
         f_inicio = self.request.query_params.get('f_inicio', None)
         f_fin = self.request.query_params.get('f_fin', None)
-        queryset = Consejero.objects.none()
+        queryset = Llamada.objects.filter(victima=victima)
         if victima is not None and f_inicio is not None and f_fin is not None and consejero is not None:
             consejeros_list = Llamada.objects.filter(victima__pk=victima).values_list('consejero__pk', flat=True)
             queryset = Llamada.objects.filter(victima__pk=victima, consejero=consejero, fecha__range=[f_inicio, f_fin])

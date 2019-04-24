@@ -602,6 +602,74 @@
                 $('ul.tabs').tabs();
 
 
+                // carga de historial de victima
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_historial_llamada' %}?victima=" + victima,
+                    cache: false,
+                    success: function (json) {
+                        $("#historial").empty();
+                        for (i in json) {
+                            llamada = {
+                                victima: json[i].victima.nombre + ' ' + json[i].victima.apellido_paterno + ' ' + json[i].victima.apellido_materno,
+                                consejero: json[i].consejero.get_full_name,
+                                motivo_llamada: json[i].motivo.nombre,
+                                id: json[i].id,
+                                estatus: json[i].estatus.nombre,
+                                plan_accion: json[i].posible_solucion,
+                                causa_riesgo: json[i].causa_riesgo,
+                                tareas: json[i].tareas,
+                            }
+                            var text_tareas = ''
+                            for (i = 0; i < llamada.tareas.length; i++) {
+                                text_tareas += `<p>
+                                    <input type="checkbox" id="tarea${llamada.tareas[i].id}" checked="checked"/>
+                                    <label for="tc1">${llamada.tareas[i].nombre}</label>
+                                </p>`
+                            }
+
+                            $('#historial').append(`<div class="row sin_marg_bottom">
+                                    <div class="col s12 l6 m6">
+                                <p><span class="font_naranja negritas">Nombre: </span>${llamada.victima}</p>
+                            </div>
+                            <div class="col s12 l6 m6">
+                                <p><span class="font_naranja negritas">Id Caso: </span>${llamada.id}</p>
+                            </div>
+                            <div class="col s12 l6 m6">
+                                <p><span class="font_naranja negritas">Consejero: </span>${llamada.consejero}</p>
+                            </div>
+                            <div class="col s12 l6 m6">
+                                <p><span class="font_naranja negritas">Motivo Llamada: </span>${llamada.motivo_llamada}</p>
+                            </div>
+                            <div class="col s12">
+                                <p><span class="font_naranja negritas">Estaus de la Llamada: </span>${llamada.estatus}</p>
+                            </div>
+
+
+                            <div class="col s12" style="margin-top: 20px;">
+                                <p class="font_naranja negritas" style="text-align: center;">Motivo de Llamada </p>
+                                <p>
+                                    ${llamada.causa_riesgo}
+                                </p>
+                            </div>
+                            <div class="col s12" style="margin-top: 20px;">
+                                <p class="font_naranja negritas" style="text-align: center;">Plan de Acción</p>
+                                <p>
+                                    ${llamada.plan_accion}
+                                </p>
+                            </div>
+                            <div class="col s12 txt_algn_center" style="margin-top: 20px; margin-bottom: 10%;">
+                                <p style="margin-top: 0px; text-align: center;" class="font_naranja negritas">
+                                    Tareas completas
+                                </p>
+                                ${text_tareas}
+                            </div>
+                            <hr></div>`
+                            );
+                        }
+                    }
+                });
+
                 $('#datos_c').change(function () {
                     if (!$(this).prop('checked')) {
                         $('#datos_canalizacion').hide();
@@ -1145,7 +1213,6 @@
         }
 
         function checkSubcategorias(pk_categoria, elemento) {
-            console.log('entro a funcion')
             $('#sub'+elemento).empty().html(' ');
             $.ajax({
                 method: "GET",
@@ -1163,7 +1230,7 @@
                         }
                         selector_html = selector_html +'</select>'
 
-                        console.log(selector_html)
+
                         $("#sub"+elemento).html(selector_html);
                         $("#subcategoria"+elemento).material_select();
                     }
@@ -1378,7 +1445,7 @@
                                     <label for="tc1">${llamada.tareas[i].nombre}</label>
                                 </p>`
                         }
-                        console.log(text_tareas)
+
                         $('#historial').append(`<div class="row sin_marg_bottom">
                                     <div class="col s12 l6 m6">
                                 <p><span class="font_naranja negritas">Nombre: </span>${llamada.victima}</p>
