@@ -7,7 +7,8 @@ from rest_framework.generics import ListAPIView, get_object_or_404
 from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoCaso, TipoViolencia, \
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, RedesApoyo, EstatusLLamada, MedioContacto, NivelRiesgo, \
-    RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion
+    RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
+    Consejero
 from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer
 
 
@@ -88,7 +89,17 @@ class ListTipificaciones(ListAPIView):
     serializer_class = CatalogoSerializer
 
     def get_queryset(self):
+        u = self.request.user
+        consejero = Consejero.objects.get(pk=u.pk)
+        tipo_usuario = consejero.tipo_usuario.pk
         queryset = Tipificacion.objects.all()
+        print (consejero.tipo_usuario.nombre)
+        if tipo_usuario == 1: # Abogado
+            queryset = Tipificacion.objects.filter(pk=[4])
+        elif tipo_usuario == 2: # Medico
+            queryset = Tipificacion.objects.filter(pk__in=[2,3])
+        elif tipo_usuario == 3: # Psicologo
+            queryset = Tipificacion.objects.filter(pk=1)
         return queryset
 
 class ListTipificacionesCategorias(ListAPIView):
