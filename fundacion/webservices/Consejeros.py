@@ -92,9 +92,9 @@ class PrimerRegistro(APIView):
 
         cat_tipificacion1 = CategoriaTipificacion.objects.get(pk=serializer.validated_data['categoria_tipificacion1'])
         subcat_tipificacion1 = SubcategoriaTipificacion.objects.filter(pk=serializer.data['subcategoria_tipificacion1']).first()
-        cat_tipificacion2 = CategoriaTipificacion.objects.filter(pk=serializer.validated_data['categoria_tipificacion2']).first()
+        cat_tipificacion2 = CategoriaTipificacion.objects.filter(pk=serializer.data['categoria_tipificacion2']).first()
         subcat_tipificacion2 = SubcategoriaTipificacion.objects.filter(pk=serializer.data['subcategoria_tipificacion2']).first()
-        cat_tipificacion3 = CategoriaTipificacion.objects.filter(pk=serializer.validated_data['categoria_tipificacion3']).first()
+        cat_tipificacion3 = CategoriaTipificacion.objects.filter(pk=serializer.data['categoria_tipificacion3']).first()
         subcat_tipificacion3 = SubcategoriaTipificacion.objects.filter(pk=serializer.data['subcategoria_tipificacion3']).first()
 
         # ---> Datos del examen mental <---
@@ -228,11 +228,11 @@ class SeguimientoRegistro(APIView):
         subcat_tipificacion1 = SubcategoriaTipificacion.objects.filter(
             pk=serializer.data['subcategoria_tipificacion1']).first()
         cat_tipificacion2 = CategoriaTipificacion.objects.filter(
-            pk=serializer.validated_data['categoria_tipificacion2']).first()
+            pk=serializer.data['categoria_tipificacion2']).first()
         subcat_tipificacion2 = SubcategoriaTipificacion.objects.filter(
             pk=serializer.data['subcategoria_tipificacion2']).first()
         cat_tipificacion3 = CategoriaTipificacion.objects.filter(
-            pk=serializer.validated_data['categoria_tipificacion3']).first()
+            pk=serializer.data['categoria_tipificacion3']).first()
         subcat_tipificacion3 = SubcategoriaTipificacion.objects.filter(
             pk=serializer.data['subcategoria_tipificacion3']).first()
 
