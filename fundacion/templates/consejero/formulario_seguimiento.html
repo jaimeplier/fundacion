@@ -128,6 +128,14 @@
                                     {% render_field form.vive_con %}
                                     <label for="{{ form.vive_con.auto_id }}">Vive con</label>
                                 </div>
+                                <div class="input-field col s12 m6 l6">
+                                    {% render_field form.num_hijos_menores %}
+                                    <label for="{{ form.num_hijos_menores.auto_id }}"># Hijos menores</label>
+                                </div>
+                                <div class="input-field col s12 m6 l6">
+                                    {% render_field form.num_hijos_mayores %}
+                                    <label for="{{ form.num_hijos_mayores.auto_id }}"># Hijos mayores</label>
+                                </div>
 
                                 <div class="col s12" style="text-align: center; margin-top: 20px;">
                                     <button class="btn fondo_naranja redondo" type="submit" name="action">Guardar
