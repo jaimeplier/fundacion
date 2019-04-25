@@ -93,7 +93,6 @@ class ListTipificaciones(ListAPIView):
         consejero = Consejero.objects.get(pk=u.pk)
         tipo_usuario = consejero.tipo_usuario.pk
         queryset = Tipificacion.objects.all()
-        print (consejero.tipo_usuario.nombre)
         if tipo_usuario == 1: # Abogado
             queryset = Tipificacion.objects.filter(pk=[4])
         elif tipo_usuario == 2: # Medico
@@ -308,7 +307,10 @@ class ListAliado(ListAPIView):
     serializer_class = AliadoSerializer
 
     def get_queryset(self):
+        aliado = self.request.query_params.get('aliado', None)
         queryset = Aliado.objects.all()
+        if aliado is not None:
+            queryset = Aliado.objects.filter(pk=aliado)
         return queryset
 
 class ListLineaNegocio(ListAPIView):

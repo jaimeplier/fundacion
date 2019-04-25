@@ -1306,15 +1306,38 @@
             var aliado = $('#aliado').val();
             $('#linea_negocio').empty().html(' ');
             if (aliado !== '') {
+                aliado = parseInt(aliado);
                 $.ajax({
                     method: "GET",
                     url: "{% url 'webservices:list_line_negocio' %}?aliado=" + aliado,
                     cache: false,
                     success: function (json) {
-                        var script_aliado = json[0].aliado.script;
-                        $("#script_aliado").empty().html(' ');
-                        $("#script_aliado").append(script_aliado);
-                        $("#linea_negocio").empty().html(' ');
+                        if (json.length == 0) {
+                            $("#script_aliado").empty().html(' ');
+                            $("#linea_negocio").empty().html(' ');
+                            $('#linea_negocio').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Línea de negocio")
+                            );
+                            $.ajax({
+                                method: "GET",
+                                url: "/ws/list_aliado?aliado="+aliado,
+                                cache: false,
+                                success: function (json) {
+                                    console.log(json);
+                                    var script_aliado = json[0].script;
+                                    $("#script_aliado").append(script_aliado);
+                                }
+                            });
+                            $('#linea_negocio').material_select();
+
+                        } else {
+
+                            var script_aliado = json[0].aliado.script;
+                            $("#script_aliado").empty().html(' ');
+                            $("#script_aliado").append(script_aliado);
+                            $("#linea_negocio").empty().html(' ');
                             $('#linea_negocio').append(
                                 $("<option></option>")
                                     .attr("value", "")
@@ -1328,6 +1351,7 @@
                                 );
                             }
                             $('#linea_negocio').material_select();
+                        }
                     }
                 });
             }
