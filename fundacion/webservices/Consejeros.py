@@ -66,7 +66,7 @@ class PrimerRegistro(APIView):
         nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
         estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
         causa_riesgo = serializer.data['causa_riesgo']
-        modalidad_violencia = ModalidadViolencia.objects.get(pk=serializer.data['modalidad_violencia'])
+        modalidad_violencia = ModalidadViolencia.objects.filter(pk=serializer.data['modalidad_violencia']).first()
         fase_violencia = FaseViolencia.objects.get(pk=serializer.data['fase_violencia'])
         semaforo = Semaforo.objects.get(pk=serializer.data['semaforo'])
         victimas = VictimaInvolucrada.objects.get(pk=serializer.data['victimas'])
@@ -203,7 +203,7 @@ class SeguimientoRegistro(APIView):
         nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
         estatus = EstatusLLamada.objects.get(pk=serializer.validated_data['estatus'])
         causa_riesgo = serializer.data['causa_riesgo']
-        modalidad_violencia = ModalidadViolencia.objects.get(pk=serializer.data['modalidad_violencia'])
+        modalidad_violencia = ModalidadViolencia.objects.filter(pk=serializer.data['modalidad_violencia']).first()
         fase_violencia = FaseViolencia.objects.get(pk=serializer.data['fase_violencia'])
         semaforo = Semaforo.objects.get(pk=serializer.data['semaforo'])
         victimas = VictimaInvolucrada.objects.get(pk=serializer.data['victimas'])
