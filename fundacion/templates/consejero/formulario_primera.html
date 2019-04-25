@@ -20,6 +20,10 @@
             display: none;
         }
 
+        .violencia{
+            display: none;
+        }
+
         #datos_sociode {
             display: none;
         }
@@ -406,16 +410,6 @@
 
                     <div class="row sin_marg_bottom">
                         <div class="input-field col s12 m6 l6">
-                            <p style="margin-top: 0px; text-align: center;">Modalidad</p>
-                            <select id="modalidad_violencia">
-                            </select>
-                        </div>
-                        <div class="input-field col s12 m6 l6">
-                            <p style="margin-top: 0px; text-align: center;">Tipo de violencia</p>
-                            <select id="tipos_violencia">
-                            </select>
-                        </div>
-                        <div class="input-field col s12 m6 l6">
                             <p style="margin-top: 0px; text-align: center;">Fase de violencia</p>
                             <select id="fase_violencia">
                             </select>
@@ -423,11 +417,6 @@
                         <div class="input-field col s12 m6 l6">
                             <p style="margin-top: 0px; text-align: center;">Semáforo</p>
                             <select id="semaforo">
-                            </select>
-                        </div>
-                        <div class="input-field col s12 m6 l6">
-                            <p style="margin-top: 0px; text-align: center;">Violentometro</p>
-                            <select id="violentometro">
                             </select>
                         </div>
                         <div class="input-field col s12 m6 l6">
@@ -443,6 +432,21 @@
                         <div class=" input-field col s12 m6 l6">
                             <p style="margin-top: 0px; text-align: center;">Medio de contacto</p>
                             <select id="medio_contacto">
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6 violencia">
+                            <p style="margin-top: 0px; text-align: center;">Modalidad</p>
+                            <select id="modalidad_violencia">
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6 violencia">
+                            <p style="margin-top: 0px; text-align: center;">Tipo de violencia</p>
+                            <select id="tipos_violencia">
+                            </select>
+                        </div>
+                        <div class="input-field col s12 m6 l6 violencia">
+                            <p style="margin-top: 0px; text-align: center;">Violentometro</p>
+                            <select id="violentometro">
                             </select>
                         </div>
                     </div>
@@ -1263,6 +1267,13 @@
         function checkSubcategorias(pk_categoria, elemento) {
             console.log('entro a funcion')
             $('#sub'+elemento).empty().html(' ');
+            var tipi1 = $("input[name='categoria_tipificacion1']:checked").val();
+            var tipi2 = $("input[name='categoria_tipificacion2']:checked").val();
+            var tipi3 = $("input[name='categoria_tipificacion3']:checked").val();
+            if (tipi1 == 63 || tipi2 == 63 || tipi3 == 63){
+                $(".violencia").show();
+            }
+            else{$(".violencia").hide();}
             $.ajax({
                 method: "GET",
                 url: "{% url 'webservices:list_tipificaciones_subcategorias' %}?categoria=" + pk_categoria,
