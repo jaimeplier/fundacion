@@ -264,8 +264,6 @@ class Llamada(models.Model):
     amenazas = models.CharField(max_length=4096, blank=True, null=True)
     recursos = models.CharField(max_length=4096, blank=True, null=True)
     intervencion = models.CharField(max_length=4096, blank=True, null=True)
-    tipo_caso = models.TextField(max_length=1024, blank=True, null=True)
-    tipo_ayuda = models.TextField(max_length=1024, blank=True, null=True)
     posible_solucion = models.CharField(max_length=4096, blank=True, null=True)
     causa_riesgo = models.CharField(max_length=4096, blank=True, null=True)
     vida_en_riesgo = models.BooleanField(default=False)
