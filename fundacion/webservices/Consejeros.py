@@ -56,8 +56,6 @@ class PrimerRegistro(APIView):
         fase_cambio = FaseCambio.objects.get(pk=serializer.data['fase_cambio'])
         medio_contacto = MedioContacto.objects.get(pk=serializer.validated_data['medio_contacto'])
         violentometro = Violentometro.objects.filter(pk=serializer.validated_data['violentometro']).first()
-        tipo_caso = serializer.data['tipo_caso']
-        tipo_ayuda = serializer.data['tipo_ayuda']
         tipo_violencia = TipoViolencia.objects.filter(pk=serializer.validated_data['tipo_violencia']).first()
         posible_solucion = serializer.data['posible_solucion']
         vida_en_riesgo = serializer.validated_data['vida_en_riesgo']
@@ -122,8 +120,7 @@ class PrimerRegistro(APIView):
 
         llamada = Llamada.objects.create(hora_inicio=hora_inicio, hora_fin=hora_fin, consejero=consejero,
                                          victima=victima, f=f, recursos=recursos, intervencion=intervencion, medio_contacto=medio_contacto,
-                                         violentometro=violentometro, tipo_caso=tipo_caso, tipo_ayuda=tipo_ayuda,
-                                         tipo_violencia=tipo_violencia,
+                                         violentometro=violentometro, tipo_violencia=tipo_violencia,
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
                                          nivel_riesgo=nivel_riesgo, estatus=estatus,
@@ -193,8 +190,6 @@ class SeguimientoRegistro(APIView):
         fase_cambio = FaseCambio.objects.get(pk=serializer.data['fase_cambio'])
         medio_contacto = MedioContacto.objects.get(pk=serializer.validated_data['medio_contacto'])
         violentometro = Violentometro.objects.filter(pk=serializer.validated_data['violentometro']).first()
-        tipo_caso = serializer.data['tipo_caso']
-        tipo_ayuda = serializer.data['tipo_ayuda']
         tipo_violencia = TipoViolencia.objects.filter(pk=serializer.validated_data['tipo_violencia']).first()
         posible_solucion = serializer.data['posible_solucion']
         vida_en_riesgo = serializer.validated_data['vida_en_riesgo']
@@ -253,8 +248,7 @@ class SeguimientoRegistro(APIView):
 
         llamada = Llamada.objects.create(hora_inicio=hora_inicio, hora_fin=hora_fin, consejero=consejero,
                                          victima=victima, f=f, recursos=recursos, intervencion=intervencion ,medio_contacto=medio_contacto,
-                                         violentometro=violentometro, tipo_caso=tipo_caso, tipo_ayuda=tipo_ayuda,
-                                         tipo_violencia=tipo_violencia,
+                                         violentometro=violentometro, tipo_violencia=tipo_violencia,
                                          posible_solucion=posible_solucion, vida_en_riesgo=vida_en_riesgo,
                                          tipo_llamada=tipo_llamada, motivo=motivo_llamada,
                                          nivel_riesgo=nivel_riesgo, estatus=estatus,

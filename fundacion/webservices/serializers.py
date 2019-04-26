@@ -62,8 +62,6 @@ class PrimeraVezSerializer(serializers.Serializer):
     intervencion = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     medio_contacto = serializers.IntegerField()
     violentometro = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    tipo_caso = serializers.CharField(max_length=1024, allow_blank=True, allow_null=True, required=False)
-    tipo_ayuda = serializers.CharField(max_length=1024, allow_blank=True, allow_null=True, required=False)
     tipo_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     institucion = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     institucion2 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
@@ -122,8 +120,6 @@ class SeguimientoSerializer(serializers.Serializer):
     intervencion = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     medio_contacto = serializers.IntegerField()
     violentometro = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    tipo_caso = serializers.CharField(max_length=1024, allow_blank=True, allow_null=True, required=False)
-    tipo_ayuda = serializers.CharField(max_length=1024, allow_blank=True, allow_null=True, required=False)
     tipo_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     institucion = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     institucion2 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
@@ -210,7 +206,7 @@ class LLamadaSerializer(serializers.ModelSerializer):
         model = Llamada
         fields = (
         'victima', 'consejero', 'motivo', 'tipo_llamada', 'estatus', 'tareas', 'num_max', 'fecha', 'hora_inicio',
-        'hora_fin', 'f', 'recursos', 'intervencion', 'medio_contacto', 'violentometro', 'tipo_caso', 'tipo_ayuda',
+        'hora_fin', 'f', 'recursos', 'intervencion', 'medio_contacto', 'violentometro',
         'tipo_violencia', 'posible_solucion', 'causa_riesgo', 'vida_en_riesgo', 'nivel_riesgo',
         'fase_cambio', 'calificacion', 'modalidad_violencia', 'fase_violencia', 'semaforo', 'victima_involucrada',
         'agresor', 'como_se_entero', 'devolver_llamada', 'id')
