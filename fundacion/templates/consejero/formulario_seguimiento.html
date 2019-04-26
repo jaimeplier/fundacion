@@ -255,7 +255,7 @@
                                 </form>
                                 <div class="col s12 txt_algn_center">
                                     <p style="margin-top: 0px; text-align: center;">
-                                        Motivo de consulta
+                                        Tipo de llamada
                                     </p>
                                     <div class="row">
                                         <div class=" input-field col s12 m12 l12">
@@ -659,7 +659,7 @@
 
 
                             <div class="col s12" style="margin-top: 20px;">
-                                <p class="font_naranja negritas" style="text-align: center;">Motivo de Llamada </p>
+                                <p class="font_naranja negritas" style="text-align: center;">Tipo de Llamada </p>
                                 <p>
                                     ${llamada.causa_riesgo}
                                 </p>
@@ -767,19 +767,19 @@
                         $('#tipificaciones1').append(
                             $("<option></option>")
                                 .attr("value", "")
-                                .text("Tipificaciones")
+                                .text("Tipo de llamada")
                         );
                         $("#tipificaciones2").empty().html(' ');
                         $('#tipificaciones2').append(
                             $("<option></option>")
                                 .attr("value", "")
-                                .text("Motivo de consulta")
+                                .text("Tipo de llamada")
                         );
                         $("#tipificaciones3").empty().html(' ');
                         $('#tipificaciones3').append(
                             $("<option></option>")
                                 .attr("value", "")
-                                .text("Motivo de consulta")
+                                .text("Tipo de llamada")
                         );
                         for (i in json) {
                             $('#tipificaciones1').append(
@@ -1507,7 +1507,7 @@
 
 
                             <div class="col s12" style="margin-top: 20px;">
-                                <p class="font_naranja negritas" style="text-align: center;">Motivo de Llamada </p>
+                                <p class="font_naranja negritas" style="text-align: center;">Tipo de Llamada </p>
                                 <p>
                                     ${llamada.causa_riesgo}
                                 </p>
