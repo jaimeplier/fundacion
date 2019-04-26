@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView, get_object_or_404
 
-from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoCaso, TipoViolencia, \
+from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoViolencia, \
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, RedesApoyo, EstatusLLamada, MedioContacto, NivelRiesgo, \
     RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
@@ -125,16 +125,6 @@ class ListTipificacionesSubcategorias(ListAPIView):
         queryset = SubcategoriaTipificacion.objects.none()
         if categoria is not None:
             queryset = SubcategoriaTipificacion.objects.filter(categoria__pk=categoria)
-        return queryset
-
-class ListTipoCaso(ListAPIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = (TokenAuthentication, SessionAuthentication)
-
-    serializer_class = CatalogoSerializer
-
-    def get_queryset(self):
-        queryset = TipoCaso.objects.all()
         return queryset
 
 class ListModalidadViolencia(ListAPIView):
