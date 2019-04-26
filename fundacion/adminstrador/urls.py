@@ -6,12 +6,12 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     MedioContactoAdd, MedioContactoAjaxList, MedioContactoEdit, ModalidadViolenciaAdd, ModalidadViolenciaAjaxList, \
     ModalidadViolenciaEdit, MunicipioAdd, MunicipioAjaxList, MunicipioEdit, NivelEstudioAdd, NivelEstudioAjaxList, \
     NivelEstudioEdit, NivelViolenciaAdd, NivelViolenciaAjaxList, NivelViolenciaEdit, OcupacionAdd, OcupacionAjaxList, \
-    OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, TipoCasoAdd, TipoCasoAjaxList, TipoCasoEdit, \
+    OcupacionEdit, ReligionAdd, ReligionAjaxList, ReligionEdit, \
     TipoViolenciaAdd, TipoViolenciaAjaxList, TipoViolenciaEdit, ViolentometroAdd, ViolentometroAjaxList, \
     ViolentometroEdit, ViveConAdd, ViveConAjaxList, ViveConEdit, ConsejeroAdd, ConsejeroAjaxList, \
     ConsejeroEdit, DirectorioAdd, DirectorioAjaxList, DirectorioEdit, SupervisorAdd, SupervisorAjaxList, \
     SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit, CalidadAdd, \
-    CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit, AyudaAdd, AyudaAjaxList, AyudaEdit, \
+    CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit, \
     MotivoLLamadaAdd, MotivoLLamadaAjaxList, MotivoLLamadaEdit, EstatusLLamadaAdd, EstatusLLamadaAjaxList, \
     EstatusLLamadaEdit, DependenciaAdd, DependenciaAjaxList, DependenciaEdit, RedesApoyoAdd, RedesApoyoAjaxList, \
     RedesApoyoEdit, FaseViolenciaAdd, FaseViolenciaAjaxList, FaseViolenciaEdit, SemaforoAdd, SemaforoAjaxList, \
@@ -141,12 +141,6 @@ urlpatterns = [
     path('religion/edit/<int:pk>', ReligionEdit.as_view(), name='edit_religion'),
     path('religion/list/delete/<int:pk>', views.delete_religion, name='delete_religion'),
 
-    path('tipo_caso/add/', TipoCasoAdd.as_view(), name='add_tipo_caso'),
-    path('tipo_caso/list/', views.list_tipo_caso, name='list_tipo_caso'),
-    path('tipo_caso/ajax/list/', TipoCasoAjaxList.as_view(), name='list_ajax_tipo_caso'),
-    path('tipo_caso/edit/<int:pk>', TipoCasoEdit.as_view(), name='edit_tipo_caso'),
-    path('tipo_caso/list/delete/<int:pk>', views.delete_tipo_caso, name='delete_tipo_caso'),
-
     path('tipo_violencia/add/', TipoViolenciaAdd.as_view(), name='add_tipo_violencia'),
     path('tipo_violencia/list/', views.list_tipo_violencia, name='list_tipo_violencia'),
     path('tipo_violencia/ajax/list/', TipoViolenciaAjaxList.as_view(), name='list_ajax_tipo_violencia'),
@@ -192,12 +186,6 @@ urlpatterns = [
     path('sexo/ajax/list/', SexoAjaxList.as_view(), name='list_ajax_sexo'),
     path('sexo/edit/<int:pk>', SexoEdit.as_view(), name='edit_sexo'),
     path('sexo/list/delete/<int:pk>', views.delete_sexo, name='delete_sexo'),
-
-    path('ayuda/add/', AyudaAdd.as_view(), name='add_ayuda'),
-    path('ayuda/list/', views.list_ayuda, name='list_ayuda'),
-    path('ayuda/ajax/list/', AyudaAjaxList.as_view(), name='list_ajax_ayuda'),
-    path('ayuda/edit/<int:pk>', AyudaEdit.as_view(), name='edit_ayuda'),
-    path('ayuda/list/delete/<int:pk>', views.delete_ayuda, name='delete_ayuda'),
 
     path('motivo_llamada/add/', MotivoLLamadaAdd.as_view(), name='add_motivo_llamada'),
     path('motivo_llamada/list/', views.list_motivo_llamada, name='list_motivo_llamada'),
