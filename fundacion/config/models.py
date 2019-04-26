@@ -221,14 +221,6 @@ class Sucursal(Catalogo):
         db_table = 'sucursal'
 
 
-class Ayuda(Catalogo):
-    tipo_ayuda = models.ForeignKey('TipoAyuda', models.DO_NOTHING)
-
-    class Meta:
-        managed = True
-        db_table = 'ayuda'
-
-
 class Consejero(Usuario):
     tipo_usuario = models.ForeignKey('TipoUsuario', on_delete=models.DO_NOTHING)
 
@@ -329,15 +321,6 @@ class TipoLlamada(Catalogo):
         db_table = 'tipo_llamada'
 
 
-class LLamadaAyuda(models.Model):
-    llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
-    ayuda = models.ForeignKey('Ayuda', models.DO_NOTHING)
-
-    class Meta:
-        managed = True
-        db_table = 'llamada_ayuda'
-
-
 class MedioContacto(Catalogo):
     class Meta:
         managed = True
@@ -409,18 +392,6 @@ class Sexo(Catalogo):
     class Meta:
         managed = True
         db_table = 'sexo'
-
-
-class TipoAyuda(Catalogo):
-    class Meta:
-        managed = True
-        db_table = 'tipo_ayuda'
-
-
-class TipoCaso(Catalogo):
-    class Meta:
-        managed = True
-        db_table = 'tipo_caso'
 
 
 class TipoViolencia(Catalogo):
