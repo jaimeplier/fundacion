@@ -231,20 +231,6 @@
                             </p>
                         </div>
 
-                        <form class="col s12">
-                            <div class="row">
-                                <div class="col s12" style="padding-top: 15px;">
-                                    <p style="text-align: center;">Desarrollo del caso</p>
-                                </div>
-                                <div class="input-field col s12">
-                                            <textarea id="causa_riesgo" class="materialize-textarea"
-                                                      placeholder="Desarrollo del caso"
-                                                      style="padding-left: 14px;" maxlength="512"></textarea>
-
-                                </div>
-                            </div>
-
-                        </form>
                         <div class="col s12 txt_algn_center">
                             <p style="margin-top: 0px; text-align: center;">
                                 Tipo de llamada
@@ -410,16 +396,6 @@
 
                     <div class="row sin_marg_bottom">
                         <div class="input-field col s12 m6 l6">
-                            <p style="margin-top: 0px; text-align: center;">Fase de violencia</p>
-                            <select id="fase_violencia">
-                            </select>
-                        </div>
-                        <div class="input-field col s12 m6 l6">
-                            <p style="margin-top: 0px; text-align: center;">Semáforo</p>
-                            <select id="semaforo">
-                            </select>
-                        </div>
-                        <div class="input-field col s12 m6 l6">
                             <p style="margin-top: 0px; text-align: center;">Víctima</p>
                             <select id="victimas">
                             </select>
@@ -533,12 +509,6 @@
                         </div>
                     </div>
 
-
-                    <div class="col s12 txt_algn_center">
-                        <p style="margin-top: 0px; text-align: center;">Estatus de la llamada</p>
-                        <p style="margin-top: 0px; text-align: center;" id="estatus_llamada">
-                        </p>
-                    </div>
 
 
                 </form>
@@ -989,52 +959,6 @@
 
             $.ajax({
                 method: "GET",
-                url: "{% url 'webservices:list_fases_violencia' %}",
-                cache: false,
-                success: function (json) {
-
-                    $("#fase_violencia").empty().html(' ');
-                    $('#fase_violencia').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Fase de violencia")
-                    );
-                    for (i in json) {
-                        $('#fase_violencia').append(
-                            $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
-                        );
-                    }
-                    $('#fase_violencia').material_select();
-                }
-            });
-
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_semaforo' %}",
-                cache: false,
-                success: function (json) {
-
-                    $("#semaforo").empty().html(' ');
-                    $('#semaforo').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Semáforo")
-                    );
-                    for (i in json) {
-                        $('#semaforo').append(
-                            $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
-                        );
-                    }
-                    $('#semaforo').material_select();
-                }
-            });
-
-            $.ajax({
-                method: "GET",
                 url: "{% url 'webservices:list_violentometro' %}",
                 cache: false,
                 success: function (json) {
@@ -1181,18 +1105,6 @@
                     $('#instituciones').material_select();
                     $('#instituciones2').material_select();
                     $('.js-example-basic-single').select2();
-                }
-            });
-
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_estatus_llamada' %}",
-                cache: false,
-                success: function (json) {
-
-                    for (i in json) {
-                        $('#estatus_llamada').append('<input class="with-gap" name="estatus_llamada" type="radio" value="' + json[i].pk + '" id="ell' + json[i].pk + '"/><label for="ell' + json[i].pk + '">' + json[i].nombre + '</label>');
-                    }
                 }
             });
 
@@ -1378,7 +1290,6 @@
             var trab_remunerado = $("input[name='trab_remunerado']:checked").val();
             //}
             var motivo_llamada = $("input[name='motivo_llamada']:checked").val();
-            var causa_riesgo = $('#causa_riesgo').val();
             
             var nivel_riesgo = $('#nivel_riesgo').val();
             var f = $('#f').val();
@@ -1394,8 +1305,6 @@
             var fase_cambio = $('#fase_cambio').val();
             var modalidad_violencia = $('#modalidad_violencia').val();
             var tipo_violencia = $('#tipos_violencia').val();
-            var fase_violencia = $('#fase_violencia').val();
-            var semaforo = $('#semaforo').val();
             var violentometro = $('#violentometro').val();
             var victimas = $('#victimas').val();
             var agresor = $('#agresor').val();
@@ -1408,7 +1317,6 @@
             var institucion2 = $('#instituciones2').val();
             //}
             var como_se_entero = $('#como_se_entero').val();
-            var estatus_llamada = $("input[name='estatus_llamada']:checked").val();
             //Registro temporal de tareas
             var tarea1 = $('#tarea1').val();
             var tarea2 = $('#tarea2').val();
@@ -1485,7 +1393,6 @@
                     num_hijos_menores: num_hijos_menores,
                     num_hijos_mayores: num_hijos_mayores,
                     motivo_llamada: motivo_llamada,
-                    causa_riesgo: causa_riesgo,
                     categoria_tipificacion1: categoria_tipificacion1,
                     categoria_tipificacion2: categoria_tipificacion2,
                     categoria_tipificacion3: categoria_tipificacion3,
@@ -1506,8 +1413,6 @@
                     fase_cambio: fase_cambio,
                     modalidad_violencia: modalidad_violencia,
                     tipo_violencia: tipo_violencia,
-                    fase_violencia: fase_violencia,
-                    semaforo: semaforo,
                     violentometro: violentometro,
                     victimas: victimas,
                     agresor: agresor,
@@ -1520,7 +1425,6 @@
                     tarea1: tarea1,
                     tarea2: tarea2,
                     tarea3: tarea3,
-                    estatus: estatus_llamada,
                     devolver_llamada: devolver_llamada,
                     aliado: aliado,
                     linea_negocio: linea_negocio,
