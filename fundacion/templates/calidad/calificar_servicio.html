@@ -191,12 +191,6 @@
                                         <div class="col s12" style="padding-top: 15px;">
                                             <p style="text-align: center;">Motivo de consulta</p>
                                         </div>
-                                        <div class="input-field col s12">
-                                            <textarea id="causa_riesgo" class="materialize-textarea"
-                                                      placeholder="Causa de riesgo"
-                                                      style="padding-left: 14px;" maxlength="512"></textarea>
-
-                                        </div>
                                     </div>
 
                                     <div class="col s12 txt_algn_center">
@@ -319,14 +313,6 @@
                                     </select>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
-                                    <select id="fase_violencia">
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select id="semaforo">
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
                                     <select id="violentometro">
                                     </select>
                                 </div>
@@ -390,13 +376,6 @@
                                     </select>
                                 </div>
                             </div>
-
-                            <div class="col s12 txt_algn_center">
-                                <p style="margin-top: 0px; text-align: center;">Estatus de la llamada</p>
-                                <p style="margin-top: 0px; text-align: center;" id="estatus_llamada">
-                                </p>
-                            </div>
-
 
                             </form>
                         </div>
@@ -510,7 +489,6 @@
                     }
                 });
 
-                $('#causa_riesgo').val('{{ object.causa_riesgo }}')
 
                 $.ajax({
                     method: "GET",
@@ -743,63 +721,6 @@
                     }
                 });
 
-
-                $.ajax({
-                    method: "GET",
-                    url: "{% url 'webservices:list_fases_violencia' %}",
-                    cache: false,
-                    success: function (json) {
-
-                        $("#fase_violencia").empty().html(' ');
-                        $('#fase_violencia').append(
-                            $("<option></option>")
-                                .attr("value", "")
-                                .text("Fase de violencia")
-                        );
-                        for (i in json) {
-                            $('#fase_violencia').append(
-                                $("<option></option>")
-                                    .attr("value", json[i].pk)
-                                    .text(json[i].nombre)
-                            );
-                        }
-                        try {
-                            $("#fase_violencia").val({{ object.fase_violencia_id }});
-                        } catch (e) {
-                            console.log(e.message)
-                        }
-                        $('#fase_violencia').material_select();
-                    }
-                });
-
-                $.ajax({
-                    method: "GET",
-                    url: "{% url 'webservices:list_semaforo' %}",
-                    cache: false,
-                    success: function (json) {
-
-                        $("#semaforo").empty().html(' ');
-                        $('#semaforo').append(
-                            $("<option></option>")
-                                .attr("value", "")
-                                .text("Semáforo")
-                        );
-                        for (i in json) {
-                            $('#semaforo').append(
-                                $("<option></option>")
-                                    .attr("value", json[i].pk)
-                                    .text(json[i].nombre)
-                            );
-                        }
-                        try {
-                            $("#semaforo").val({{ object.semaforo_id }});
-                        } catch (e) {
-                            console.log(e.message)
-                        }
-                        $('#semaforo').material_select();
-                    }
-                });
-
                 $.ajax({
                     method: "GET",
                     url: "{% url 'webservices:list_violentometro' %}",
@@ -943,19 +864,6 @@
                             console.log(e.message)
                         }
                         $('#instituciones').material_select();
-                    }
-                });
-
-                $.ajax({
-                    method: "GET",
-                    url: "{% url 'webservices:list_estatus_llamada' %}",
-                    cache: false,
-                    success: function (json) {
-
-                        for (i in json) {
-                            $('#estatus_llamada').append('<input class="with-gap" name="estatus_llamada" type="radio" value="' + json[i].pk + '" id="ell' + json[i].pk + '"/><label for="ell' + json[i].pk + '">' + json[i].nombre + '</label>');
-                        }
-                        $("#ell{{ object.estatus_id }}").prop('checked', true);
                     }
                 });
 
