@@ -12,11 +12,10 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     ConsejeroEdit, DirectorioAdd, DirectorioAjaxList, DirectorioEdit, SupervisorAdd, SupervisorAjaxList, \
     SupervisorEdit, ContactoInstitucionAdd, ContactoInstitucionAjaxList, ContactoInstitucionEdit, CalidadAdd, \
     CalidadAjaxList, CalidadEdit, LlamadaAjaxList, SexoAdd, SexoAjaxList, SexoEdit, \
-    MotivoLLamadaAdd, MotivoLLamadaAjaxList, MotivoLLamadaEdit, EstatusLLamadaAdd, EstatusLLamadaAjaxList, \
-    EstatusLLamadaEdit, DependenciaAdd, DependenciaAjaxList, DependenciaEdit, RedesApoyoAdd, RedesApoyoAjaxList, \
-    RedesApoyoEdit, FaseViolenciaAdd, FaseViolenciaAjaxList, FaseViolenciaEdit, SemaforoAdd, SemaforoAjaxList, \
-    SemaforoEdit, VictimaInvolucradaAdd, VictimaInvolucradaAjaxList, VictimaInvolucradaEdit, AgresorAdd, \
-    AgresorAjaxList, AgresorEdit, \
+    MotivoLLamadaAdd, MotivoLLamadaAjaxList, MotivoLLamadaEdit, \
+    DependenciaAdd, DependenciaAjaxList, DependenciaEdit, RedesApoyoAdd, RedesApoyoAjaxList, \
+    RedesApoyoEdit, VictimaInvolucradaAdd, \
+    VictimaInvolucradaAjaxList, VictimaInvolucradaEdit, AgresorAdd, AgresorAjaxList, AgresorEdit, \
     ComoSeEnteroAdd, ComoSeEnteroAjaxList, ComoSeEnteroEdit, EstadoMentalAdd, EstadoMentalAjaxList, EstadoMentalEdit, \
     NivelRiesgoAdd, NivelRiesgoAjaxList, NivelRiesgoEdit, RecomendacionRiesgoAdd, RecomendacionRiesgoAjaxList, \
     RecomendacionRiesgoEdit, FaseCambioAdd, FaseCambioAjaxList, FaseCambioEdit, ActividadUsuarioAdd, \
@@ -193,12 +192,6 @@ urlpatterns = [
     path('motivo_llamada/edit/<int:pk>', MotivoLLamadaEdit.as_view(), name='edit_motivo_llamada'),
     path('motivo_llamada/list/delete/<int:pk>', views.delete_motivo_llamada, name='delete_motivo_llamada'),
 
-    path('estatus_llamada/add/', EstatusLLamadaAdd.as_view(), name='add_estatus_llamada'),
-    path('estatus_llamada/list/', views.list_estatus_llamada, name='list_estatus_llamada'),
-    path('estatus_llamada/ajax/list/', EstatusLLamadaAjaxList.as_view(), name='list_ajax_estatus_llamada'),
-    path('estatus_llamada/edit/<int:pk>', EstatusLLamadaEdit.as_view(), name='edit_estatus_llamada'),
-    path('estatus_llamada/list/delete/<int:pk>', views.delete_estatus_llamada, name='delete_estatus_llamada'),
-
     path('dependencia/add/', DependenciaAdd.as_view(), name='add_dependencia'),
     path('dependencia/list/', views.list_dependencia, name='list_dependencia'),
     path('dependencia/ajax/list/', DependenciaAjaxList.as_view(), name='list_ajax_dependencia'),
@@ -210,18 +203,6 @@ urlpatterns = [
     path('redes_apoyo/ajax/list/', RedesApoyoAjaxList.as_view(), name='list_ajax_redes_apoyo'),
     path('redes_apoyo/edit/<int:pk>', RedesApoyoEdit.as_view(), name='edit_redes_apoyo'),
     path('redes_apoyo/list/delete/<int:pk>', views.delete_redes_apoyo, name='delete_redes_apoyo'),
-
-    path('fase_violencia/add/', FaseViolenciaAdd.as_view(), name='add_fase_violencia'),
-    path('fase_violencia/list/', views.list_fase_violencia, name='list_fase_violencia'),
-    path('fase_violencia/ajax/list/', FaseViolenciaAjaxList.as_view(), name='list_ajax_fase_violencia'),
-    path('fase_violencia/edit/<int:pk>', FaseViolenciaEdit.as_view(), name='edit_fase_violencia'),
-    path('fase_violencia/list/delete/<int:pk>', views.delete_fase_violencia, name='delete_fase_violencia'),
-
-    path('semaforo/add/', SemaforoAdd.as_view(), name='add_semaforo'),
-    path('semaforo/list/', views.list_semaforo, name='list_semaforo'),
-    path('semaforo/ajax/list/', SemaforoAjaxList.as_view(), name='list_ajax_semaforo'),
-    path('semaforo/edit/<int:pk>', SemaforoEdit.as_view(), name='edit_semaforo'),
-    path('semaforo/list/delete/<int:pk>', views.delete_semaforo, name='delete_semaforo'),
 
     path('victimas_involucradas/add/', VictimaInvolucradaAdd.as_view(), name='add_victimas_involucradas'),
     path('victimas_involucradas/list/', views.list_victimas_involucradas, name='list_victimas_involucradas'),

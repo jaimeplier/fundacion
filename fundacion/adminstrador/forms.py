@@ -3,7 +3,7 @@ from django.forms import ModelForm, Select, PasswordInput
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Directorio, Supervisor, Calidad, Sexo, MotivoLLamada, \
-    EstatusLLamada, Dependencia, RedesApoyo, FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, \
+    Dependencia, RedesApoyo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
     CategoriaTipificacion, Sucursal, Aliado, LineaNegocio, SubcategoriaTipificacion
 
@@ -240,14 +240,6 @@ class MotivoLLamadaForm(ModelForm):
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
 
-class EstatusLLamadaForm(ModelForm):
-    class Meta:
-        model = EstatusLLamada
-        exclude = ['fecha_alta', 'fecha_baja']
-        widgets = {
-            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
-
-
 class DependenciaForm(ModelForm):
     class Meta:
         model = Dependencia
@@ -259,22 +251,6 @@ class DependenciaForm(ModelForm):
 class RedesApoyoForm(ModelForm):
     class Meta:
         model = RedesApoyo
-        exclude = ['fecha_alta', 'fecha_baja']
-        widgets = {
-            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
-
-
-class FaseViolenciaForm(ModelForm):
-    class Meta:
-        model = FaseViolencia
-        exclude = ['fecha_alta', 'fecha_baja']
-        widgets = {
-            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
-
-
-class SemaforoForm(ModelForm):
-    class Meta:
-        model = Semaforo
         exclude = ['fecha_alta', 'fecha_baja']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
