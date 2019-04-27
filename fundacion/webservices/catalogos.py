@@ -6,7 +6,7 @@ from rest_framework.generics import ListAPIView, get_object_or_404
 
 from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoViolencia, \
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
-    FaseViolencia, Semaforo, VictimaInvolucrada, Agresor, RedesApoyo, EstatusLLamada, MedioContacto, NivelRiesgo, \
+    VictimaInvolucrada, Agresor, RedesApoyo, MedioContacto, NivelRiesgo, \
     RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
     Consejero
 from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer
@@ -147,26 +147,6 @@ class ListTipoViolencia(ListAPIView):
         queryset = TipoViolencia.objects.all()
         return queryset
 
-class ListFaseViolencia(ListAPIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = (TokenAuthentication, SessionAuthentication)
-
-    serializer_class = CatalogoSerializer
-
-    def get_queryset(self):
-        queryset = FaseViolencia.objects.all()
-        return queryset
-
-class ListSemaforo(ListAPIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = (TokenAuthentication, SessionAuthentication)
-
-    serializer_class = CatalogoSerializer
-
-    def get_queryset(self):
-        queryset = Semaforo.objects.all()
-        return queryset
-
 class ListViolentometro(ListAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication, SessionAuthentication)
@@ -225,16 +205,6 @@ class ListAcudeInstitucion(ListAPIView):
 
     def get_queryset(self):
         queryset = AcudeInstitucion.objects.all()
-        return queryset
-
-class ListEstatusLLamada(ListAPIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = (TokenAuthentication, SessionAuthentication)
-
-    serializer_class = CatalogoSerializer
-
-    def get_queryset(self):
-        queryset = EstatusLLamada.objects.all()
         return queryset
 
 class ListNivelRiesgo(ListAPIView):

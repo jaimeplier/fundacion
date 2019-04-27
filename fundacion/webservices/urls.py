@@ -7,8 +7,8 @@ from webservices.Consejeros import PrimerRegistro, SeguimientoRegistro, ListCons
     UltimaLLamada, BusquedaUsuario, ListConsejeros
 from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, ListOcupacion, ListViveCon, \
     ListTipoLlamada, ListTipoViolencia, ListViolentometro, ListAcudeInstitucion, ListMotivoLlamada, \
-    ListTipificaciones, ListTipificacionesCategorias, ListModalidadViolencia, ListFaseViolencia, ListSemaforo, \
-    ListVictimas, ListAgresor, ListRedesApoyo, ListEstatusLLamada, ListMedioContacto, ListNivelRiesgo, \
+    ListTipificaciones, ListTipificacionesCategorias, ListModalidadViolencia, \
+    ListVictimas, ListAgresor, ListRedesApoyo, ListMedioContacto, ListNivelRiesgo, \
     ListRecomendacionesRiesgo, ListFaseCambio, ListEstadoMental, ListComoSeEntero, ListAliado, ListLineaNegocio, \
     ListTipificacionesSubcategorias
 from webservices.views import ResumenLlamada, ListUsuarios, ListEstatusActividadUsuario, UpdateEstatusActividadUsuario, \
@@ -61,15 +61,12 @@ urlpatterns = [
     path('list_tipificaciones_subcategorias/', ListTipificacionesSubcategorias.as_view(), name='list_tipificaciones_subcategorias'),
     path('list_modalidad_violencia/', ListModalidadViolencia.as_view(), name='list_modalidad_violencia'),
     path('list_tipos_violencia/', ListTipoViolencia.as_view(), name='list_tipos_violencia'),
-    path('list_fases_violencia/', ListFaseViolencia.as_view(), name='list_fases_violencia'),
-    path('list_semaforo/', ListSemaforo.as_view(), name='list_semaforo'),
     path('list_violentometro/', ListViolentometro.as_view(), name='list_violentometro'),
     path('list_victimas/', ListVictimas.as_view(), name='list_victimas'),
     path('list_agresor/', ListAgresor.as_view(), name='list_agresor'),
     path('list_redes_apoyo/', ListRedesApoyo.as_view(), name='list_redes_apoyo'),
     path('list_medio_contacto/', ListMedioContacto.as_view(), name='list_medio_contacto'),
     path('list_instituciones/', ListAcudeInstitucion.as_view(), name='list_instituciones'),
-    path('list_estatus_llamada/', ListEstatusLLamada.as_view(), name='list_estatus_llamada'),
     path('list_nivel_riesgo/', ListNivelRiesgo.as_view(), name='list_nivel_riesgo'),
     path('list_recomendaciones_riesgo/', ListRecomendacionesRiesgo.as_view(), name='list_recomendaciones_riesgo'),
     path('list_fase_cambio/', ListFaseCambio.as_view(), name='list_fase_cambio'),
