@@ -265,7 +265,6 @@ class Llamada(models.Model):
     recursos = models.CharField(max_length=4096, blank=True, null=True)
     intervencion = models.CharField(max_length=4096, blank=True, null=True)
     posible_solucion = models.CharField(max_length=4096, blank=True, null=True)
-    causa_riesgo = models.CharField(max_length=4096, blank=True, null=True)
     vida_en_riesgo = models.BooleanField(default=False)
     calificacion = models.FloatField(null=True, blank=True)
     devolver_llamada = models.BooleanField(default=False)
@@ -279,10 +278,7 @@ class Llamada(models.Model):
     motivo = models.ForeignKey('MotivoLLamada', models.DO_NOTHING, blank=True, null=True)
     nivel_riesgo = models.ForeignKey('NivelRiesgo', models.DO_NOTHING, blank=True, null=True)
     fase_cambio = models.ForeignKey('FaseCambio', models.DO_NOTHING, blank=True, null=True)
-    estatus = models.ForeignKey('EstatusLLamada', models.DO_NOTHING, blank=True, null=True)
     modalidad_violencia = models.ForeignKey('ModalidadViolencia', models.DO_NOTHING, blank=True, null=True)
-    fase_violencia = models.ForeignKey('FaseViolencia', models.DO_NOTHING, blank=True, null=True)
-    semaforo = models.ForeignKey('Semaforo', models.DO_NOTHING, blank=True, null=True)
     victima_involucrada = models.ForeignKey('VictimaInvolucrada', models.DO_NOTHING, blank=True, null=True)
     agresor = models.ForeignKey('Agresor', models.DO_NOTHING, blank=True, null=True)
     como_se_entero = models.ForeignKey('ComoSeEntero', models.DO_NOTHING, blank=True, null=True)
@@ -300,12 +296,6 @@ class LlamadaCanalizacion(models.Model):
     class Meta:
         managed = True
         db_table = 'llamada_has_canalizaciones'
-
-class EstatusLLamada(Catalogo):
-    class Meta:
-        managed = True
-        db_table = 'estatus_llamada'
-
 
 class MotivoLLamada(Catalogo):
     class Meta:
@@ -446,18 +436,6 @@ class RedesApoyo(Catalogo):
     class Meta:
         managed = True
         db_table = 'redes_de_apoyo'
-
-
-class FaseViolencia(Catalogo):
-    class Meta:
-        managed = True
-        db_table = 'fase_de_violencia'
-
-
-class Semaforo(Catalogo):
-    class Meta:
-        managed = True
-        db_table = 'semaforo'
 
 
 class VictimaInvolucrada(Catalogo):
