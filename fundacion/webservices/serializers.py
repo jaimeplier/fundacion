@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, EstatusLLamada, Evaluacion, \
+from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, Evaluacion, \
     CalificacionLlamada, TareaLLamada, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
     EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio
 
@@ -69,15 +69,11 @@ class PrimeraVezSerializer(serializers.Serializer):
     vida_en_riesgo = serializers.BooleanField(default=False)
     fase_cambio = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     modalidad_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    fase_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    semaforo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     victimas = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     agresor = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     motivo_llamada = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     estado_mental = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     nivel_riesgo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False )
     redes_apoyo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     como_se_entero = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     devolver_llamada = serializers.BooleanField(default=False)
@@ -127,15 +123,11 @@ class SeguimientoSerializer(serializers.Serializer):
     vida_en_riesgo = serializers.BooleanField(default=False)
     fase_cambio = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     modalidad_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    fase_violencia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    semaforo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     victimas = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     agresor = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     motivo_llamada = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     estado_mental = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     nivel_riesgo = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    estatus = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    causa_riesgo = serializers.CharField(max_length=4096, allow_blank=True, allow_null=True, required=False)
     como_se_entero = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     devolver_llamada = serializers.BooleanField(default=False)
     linea_negocio = serializers.IntegerField(min_value=1, allow_null=True, required=False)
@@ -183,11 +175,6 @@ class TipoLLamadaSerializer(serializers.ModelSerializer):
         model = TipoLlamada
         fields = '__all__'
 
-class EstatusLLamadaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EstatusLLamada
-        fields = '__all__'
-
 class TareasLLamadaSerializer(serializers.ModelSerializer):
     class Meta:
         model = TareaLLamada
@@ -198,17 +185,16 @@ class LLamadaSerializer(serializers.ModelSerializer):
     consejero = ConsejeroSerializer(read_only=True, many=False)
     motivo = MotivoLLamadaSerializer(read_only=True, many=False)
     tipo_llamada = TipoLLamadaSerializer(read_only=True, many=False)
-    estatus = EstatusLLamadaSerializer(read_only=True, many=False)
     tareas = TareasLLamadaSerializer(read_only=True,many=True)
     num_max = serializers.IntegerField(required=False)
 
     class Meta:
         model = Llamada
         fields = (
-        'victima', 'consejero', 'motivo', 'tipo_llamada', 'estatus', 'tareas', 'num_max', 'fecha', 'hora_inicio',
+        'victima', 'consejero', 'motivo', 'tipo_llamada', 'tareas', 'num_max', 'fecha', 'hora_inicio',
         'hora_fin', 'f', 'recursos', 'intervencion', 'medio_contacto', 'violentometro',
-        'tipo_violencia', 'posible_solucion', 'causa_riesgo', 'vida_en_riesgo', 'nivel_riesgo',
-        'fase_cambio', 'calificacion', 'modalidad_violencia', 'fase_violencia', 'semaforo', 'victima_involucrada',
+        'tipo_violencia', 'posible_solucion', 'vida_en_riesgo', 'nivel_riesgo',
+        'fase_cambio', 'calificacion', 'modalidad_violencia', 'victima_involucrada',
         'agresor', 'como_se_entero', 'devolver_llamada', 'id')
 
 class BusquedaSerializer(serializers.Serializer):
