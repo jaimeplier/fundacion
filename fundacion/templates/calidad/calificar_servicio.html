@@ -181,9 +181,13 @@
                                     </p>
                                 </div>
                                 <div class="col s12 txt_algn_center">
-                                    <p style="margin-top: 0px; text-align: center;">Tipo de Llamada</p>
-                                    <p style="margin-top: 0px; text-align: center;" id="tipo_llamada">
-                                    </p>
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p style="margin-top: 0px; text-align: center;">Tipo de Llamada</p>
+                                        </div>
+                                    </div>
+                                    <div id="tipo_llamada" class="row">
+                                    </div>
                                 </div>
 
                                 <form class="col s12">
@@ -194,36 +198,60 @@
                                     </div>
 
                                     <div class="col s12 txt_algn_center">
-                                        <div class="col s12">
-                                            <p style="text-align: center;">Cómo se enteró</p>
+                                        <div class="col s3"></div>
+                                        <div class="col s6">
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <p style="text-align: center;">¿Cómo se enteró?</p>
+                                                </div>
+                                                <div class="input-field col s12 m12 l12">
+                                                    <select id="como_se_entero">
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="input-field col s12 m12 l12">
-                                            <select id="como_se_entero">
-                                            </select>
-                                        </div>
+                                        <div class="col s3"></div>
                                     </div>
                                 </form>
                                 <div class="col s12 txt_algn_center">
-                                    <p style="margin-top: 0px; text-align: center;">
-                                        Tipificación
-                                    </p>
                                     <div class="row">
-                                        <div class=" input-field col s12 m12 l12">
-                                            <select id="tipificaciones" onchange="CargarCatTipificacion()">
-                                            </select>
-                                        </div>
+                                        <div class="col s3"></div>
+                                            <div class="col s6">
+                                                <div class="row">
+                                                    <div class="col s12">
+                                                        <p style="text-align: center;"> Tipificación</p>
+                                                    </div>
+                                                    <div class="input-field col s12 m12 l12">
+                                                        <select id="tipificaciones" onchange="CargarCatTipificacion()">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col s3"></div>
                                     </div>
                                     <form action="#">
                                         <p style="text-align: center;" id="categoria_tipificacion">
 
                                         </p>
+
                                         <div class="row">
-                                            <p style="margin-top: 0px; text-align: center;">Nivel de riesgo</p>
-                                            <div class="input-field col s12">
-                                                <select id="nivel_riesgo">
-                                                </select>
+                                            <div class="col s12 txt_algn_center">
+                                                <div class="col s3"></div>
+                                                <div class="col s6">
+                                                    <div class="row">
+                                                        <div class="col s12">
+                                                            <p style="text-align: center;">Nivel de riesgo</p>
+                                                        </div>
+                                                        <div class="input-field col s12 m12 l12">
+                                                            <select id="nivel_riesgo">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col s3"></div>
                                             </div>
                                         </div>
+
                                         <div class="row">
                                             <div class="col s12" style="padding-top: 15px;">
                                                 <p style="text-align: center;">Fortalezas</p>
@@ -483,7 +511,10 @@
                     success: function (json) {
 
                         for (i in json) {
-                            $('#tipo_llamada').append('<input class="with-gap" name="motivo_llamada" type="radio" value="' + json[i].pk + '" id="tl' + json[i].pk + '"/><label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>');
+                            $('#tipo_llamada').append('<div class="col s4">' +
+                                                       '<input class="with-gap" name="motivo_llamada" type="radio" value="' + json[i].pk + '" id="tl' + json[i].pk + '"/>' +
+                                                       '<label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>' +
+                                                      '</div>');
                         }
                         $('#tl{{ object.tipo_llamada.pk }}').prop('checked', true)
                     }
