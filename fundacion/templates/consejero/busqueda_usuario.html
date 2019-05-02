@@ -182,15 +182,15 @@
 
             function setPorcentaje(nivel) {
                 if(nivel === 1) {
-                    return 91
+                    return 100
                 }
                 if(nivel === 2) {
-                    return 55
+                    return 50
                 }
                 if(nivel === 3) {
-                    return 38
+                    return 15
                 } else {
-                    return 10
+                    return 5
                 }
             }
 
@@ -242,7 +242,8 @@
                             pk: json[i].victima.pk,
                             ultllamada: json[i].fecha,
                             motivo: json[i].motivo.nombre,
-                            nivel_riesgo: json[i].nivel_riesgo
+                            nivel_riesgo: json[i].nivel_riesgo,
+                            num_llamada: json[i].num_llamada
 
                         }
                         $('#historial').append(`
@@ -262,11 +263,10 @@
                                     <p><span class="font_blanco negritas">Mótivo de llamada</span>
                                     <br><span class="font_blanco">${llamada.motivo}</span></p>
                                     <p><span class="font_blanco negritas">Nivel de Riesgo</span>
-                                    <progress id="html5" max="100" value=${setPorcentaje(llamada.nivel_riesgo)}></progress>
+                                    <progress class="barra" id="myProgress" max="100" value=${setPorcentaje(llamada.nivel_riesgo)}></progress>
                                     <br><span class="font_blanco medianas">${setRiesgo(llamada.nivel_riesgo)}</span></p>
-                                    <p><span class="font_blanco negritas">Nivel de Riesgo</span>
-                                    <progress id="html5" max="100" value="91"></progress>
-                                    <br><span class="font_blanco medianas">${llamada.motivo}</span></p>
+                                    <p><span class="font_blanco negritas">Número de llamda</span>
+                                    <br><span class="font_blanco medianas">${llamada.num_llamada}</span></p>
 
                             </div>
 
