@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, Evaluacion, \
     CalificacionLlamada, TareaLLamada, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
-    EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio
+    EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio, Tutor
 
 
 class FechaSerializer(serializers.Serializer):
@@ -28,6 +28,11 @@ class LineaNegocioSerializer(serializers.ModelSerializer):
     class Meta:
         model = LineaNegocio
         fields = ['pk', 'nombre', 'aliado']
+
+class TutorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tutor
+        fields = ['pk', 'nombre']
 
 class PrimeraVezSerializer(serializers.Serializer):
     # victima

@@ -8,8 +8,8 @@ from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, Tipo
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     VictimaInvolucrada, Agresor, RedesApoyo, MedioContacto, NivelRiesgo, \
     RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
-    Consejero
-from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer
+    Consejero, Tutor
+from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer, TutorSerializer
 
 
 class ListSexo(ListAPIView):
@@ -284,4 +284,14 @@ class ListLineaNegocio(ListAPIView):
         queryset = LineaNegocio.objects.none()
         if aliado is not None:
             queryset = LineaNegocio.objects.filter(aliado__pk=aliado)
+        return queryset
+
+class ListTutor(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = TutorSerializer
+
+    def get_queryset(self):
+        queryset = Tutor.objects.filter(estatus=True)
         return queryset
