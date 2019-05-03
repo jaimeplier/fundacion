@@ -660,3 +660,9 @@ class LineaNegocio(Catalogo):
     class Meta:
         managed=True
         db_table= 'linea_negocio'
+
+class Tutor(Catalogo):
+
+    class Meta:
+        managed=True
+        db_table= 'tutor'
