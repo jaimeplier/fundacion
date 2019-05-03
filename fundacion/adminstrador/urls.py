@@ -23,7 +23,7 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     CategoriaTipificacionAdd, CategoriaTipificacionAjaxList, CategoriaTipificacionEdit, SucursalInstitucionAdd, \
     SucursalInstitucionAjaxList, SucursalInstitucionEdit, AliadoAdd, AliadoAjaxList, AliadoEdit, LineaNegocioAdd, \
     LineaNegocioAjaxList, LineaNegocioEdit, SubcategoriaTipificacionAdd, SubcategoriaTipificacionAjaxList, \
-    SubcategoriaTipificacionEdit
+    SubcategoriaTipificacionEdit, TutorAdd, TutorAjaxList, TutorEdit
 from . import views
 
 app_name = 'administrador'
@@ -298,4 +298,10 @@ urlpatterns = [
          name='edit_subcategoria_tipificacion'),
     path('subcategoria_tipificacion/list/delete/<int:pk>', views.delete_subcategoria_tipificacion,
          name='delete_subcategoria_tipificacion'),
+
+    path('tutor/add/', TutorAdd.as_view(), name='add_tutor'),
+    path('tutor/list/', views.list_tutor, name='list_tutor'),
+    path('tutor/ajax/list/', TutorAjaxList.as_view(), name='list_ajax_tutor'),
+    path('tutor/edit/<int:pk>', TutorEdit.as_view(), name='edit_tutor'),
+    path('tutor/list/delete/<int:pk>', views.delete_tutor, name='delete_tutor'),
 ]

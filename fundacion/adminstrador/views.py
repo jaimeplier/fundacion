@@ -19,13 +19,13 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DependenciaForm, RedesApoyoForm, VictimaInvolucradaForm, \
     AgresorForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm, RecomendacionRiesgoForm, \
     FaseCambioForm, ActividadUsuarioForm, TipificacionForm, CategoriaTipificacionForm, SucursalInstitucionForm, \
-    AliadoForm, LineaNegocioForm, SubcategoriaTipificacionForm
+    AliadoForm, LineaNegocioForm, SubcategoriaTipificacionForm, TutorForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, \
     MotivoLLamada, Dependencia, RedesApoyo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
-    CategoriaTipificacion, Sucursal, EstatusInstitucion, Aliado, LineaNegocio, SubcategoriaTipificacion
+    CategoriaTipificacion, Sucursal, EstatusInstitucion, Aliado, LineaNegocio, SubcategoriaTipificacion, Tutor
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -3964,4 +3964,92 @@ class SubcategoriaTipificacionEdit(PermissionRequiredMixin, UpdateView):
 def delete_subcategoria_tipificacion(request, pk):
     subcategoria_tipificacion = get_object_or_404(SubcategoriaTipificacion, pk=pk)
     subcategoria_tipificacion.delete()
+    return JsonResponse({'result': 1})
+
+class TutorAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Tutor
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/tutor/list'
+    form_class = TutorForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TutorAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un tutor'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un tutor'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_tutor(request):
+    template_name = 'administrador/tab_tutor.html'
+    return render(request, template_name)
+
+
+class TutorAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Tutor
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_tutor',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(TutorAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Tutor.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class TutorEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/tutor/list'
+
+    model = Tutor
+    template_name = 'config/formulario_1Col.html'
+    form_class = TutorForm
+
+    def get_context_data(self, **kwargs):
+        context = super(TutorEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_tutor(request, pk):
+    tutor = get_object_or_404(Tutor, pk=pk)
+    tutor.delete()
     return JsonResponse({'result': 1})
