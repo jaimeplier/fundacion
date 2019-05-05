@@ -13,6 +13,23 @@
             background-color: #0D47A1;
         }
 
+        .progress {
+            height: 6px;
+            background-color: #f2f2f2;
+
+        }
+
+        .rojo_progress{
+            background-color:#A41424!important;
+        }
+
+        .verde_progress{
+           background-color:#93D65F!important;
+        }
+
+        .naranja_progress{
+           background-color:#EB7A02!important;
+        }
 
     </style>
 {% endblock %}
@@ -165,6 +182,8 @@
             var telefono = $('#datos_personalesT').val();
             var nombre = $('#datos_personalesN').val();
             var tipoBusqueda = "";
+            var nivel_riesgo ="";
+            var clase_color="";
 
             function setRiesgo(nivel) {
                 if(nivel === 1) {
@@ -222,7 +241,7 @@
                                     <a href="/consejero/registro_primera_vez/"><button class="btn">Registrar uno nuevo</button></a>
                                 </div>
                             </div>`);
-                    } else
+                    } else{
                         /*$(#filtro).empty();
                         $(#filtro).append(`\`);*/
                         $('#titulo').empty();
@@ -246,6 +265,23 @@
                             num_llamada: json[i].num_llamada
 
                         }
+
+                        nivel_riesgo = setRiesgo(llamada.nivel_riesgo);
+
+                        if (nivel_riesgo == "Bajo"){
+                            clase_color = "verde_progress";
+                        }else{
+                            if(nivel_riesgo=="Medio"){
+                               clase_color = "naranja_progress";
+                            }else{
+                               if(nivel_riesgo=="Alto"){
+                                   clase_color = "rojo_progress";
+                                }
+                            }
+
+                        }
+
+
                         $('#historial').append(`
                                 <div class="container sin_marg_bottom">
                                     <div class="col s12 l4 m4 left">
@@ -263,7 +299,9 @@
                                     <p><span class="font_blanco negritas">Mótivo de llamada</span>
                                     <br><span class="font_blanco">${llamada.motivo}</span></p>
                                     <p><span class="font_blanco negritas">Nivel de Riesgo</span>
-                                    <progress class="barra" id="myProgress" max="100" value=${setPorcentaje(llamada.nivel_riesgo)}></progress>
+                                    <div class="progress">
+                                          <div id="myProgress" class="determinate ${clase_color}" style="width:${setPorcentaje(llamada.nivel_riesgo)}%"></div>
+                                     </div>
                                     <br><span class="font_blanco medianas">${setRiesgo(llamada.nivel_riesgo)}</span></p>
                                     <p><span class="font_blanco negritas">Número de llamada</span>
                                     <br><span class="font_blanco medianas">${llamada.num_llamada}</span></p>
@@ -279,13 +317,11 @@
                                 <p><span class="negritas font_azul txt_algn_center">RESUMEN DE ÚLTIMA LLAMADA</span></p>
                                 <p><span class="font_azul txt_algn_center"></span></p>
                             </div>
-
-
-
                             </div>`
                         );
                     }
                 }
+              }
             });
 
             }
