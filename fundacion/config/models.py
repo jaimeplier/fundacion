@@ -666,3 +666,13 @@ class Tutor(Catalogo):
     class Meta:
         managed=True
         db_table= 'tutor'
+
+class VictimaMenorEdad(models.Model):
+    llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
+    edad = models.IntegerField()
+    registro = models.BooleanField(default=False)
+    tutor = models.ForeignKey('Tutor', models.DO_NOTHING)
+
+    class Meta:
+        managed = True
+        db_table = 'victima_menor_edad'
