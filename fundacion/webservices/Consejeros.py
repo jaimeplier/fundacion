@@ -172,8 +172,8 @@ class PrimerRegistro(APIView):
         return PrimeraVezSerializer()
 
 class SeguimientoRegistro(APIView):
-    #permission_classes = (IsAuthenticated, ConsejeroPermission)
-    #authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated, ConsejeroPermission)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
 
     def post(self, request):
         serializer = SeguimientoSerializer(data=request.data)
