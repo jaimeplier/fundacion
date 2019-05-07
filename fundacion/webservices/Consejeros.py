@@ -11,7 +11,7 @@ from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, R
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
     FaseCambio, ExamenMental, ModalidadViolencia, Agresor, ComoSeEntero, TareaLLamada, \
-    VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion, SubcategoriaTipificacion, VictimaMenorEdad
+    VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion, SubcategoriaTipificacion, VictimaMenorEdad, Tutor
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
     BusquedaSerializer, VictimaSerializer
@@ -300,7 +300,9 @@ class SeguimientoRegistro(APIView):
         if 'victimas_menores' in serializer.validated_data:
             lista_menores_edad = serializer.validated_data['victimas_menores']
             for menor in lista_menores_edad:
-                VictimaMenorEdad.objects.create(**menor,llamada=llamada)
+                print(menor)
+                tutor = Tutor.objects.get(pk=menor['tutor'])
+                VictimaMenorEdad.objects.create(tutor=tutor, edad=menor['edad'], registro=menor['registro'],llamada=llamada)
 
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)

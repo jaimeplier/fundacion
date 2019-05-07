@@ -41,7 +41,7 @@ class menorSerializer(serializers.Serializer):
 
     def validate_tutor(self, value):
         try:
-            value = Tutor.objects.get(pk=value)
+            Tutor.objects.get(pk=value)
         except:
             raise serializers.ValidationError('El ID:' +str(value) +' tutor no existe')
         return value
