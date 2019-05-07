@@ -177,7 +177,7 @@ class SeguimientoSerializer(serializers.Serializer):
     estado_mental_a = serializers.IntegerField(min_value=1)
 
     # Array menores en riesgo
-    victimas_menores = serializers.ListField(child=menorSerializer(), required=False)
+    victimas_menores = serializers.ListField(child=menorSerializer(), required=False, allow_null=True)
 
 class ConsejeroSerializer(serializers.ModelSerializer):
     class Meta:
