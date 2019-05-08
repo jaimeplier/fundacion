@@ -34,6 +34,18 @@ class TutorSerializer(serializers.ModelSerializer):
         model = Tutor
         fields = ['pk', 'nombre']
 
+class menorSerializer(serializers.Serializer):
+    edad = serializers.IntegerField(min_value=0, max_value=17)
+    tutor = serializers.IntegerField()
+    registro = serializers.BooleanField(default=False)
+
+    def validate_tutor(self, value):
+        try:
+            Tutor.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('El ID:' +str(value) +' tutor no existe')
+        return value
+
 class PrimeraVezSerializer(serializers.Serializer):
     # victima
     telefono = serializers.IntegerField()
@@ -107,6 +119,10 @@ class PrimeraVezSerializer(serializers.Serializer):
     estado_mental_m = serializers.IntegerField(min_value=1)
     estado_mental_a = serializers.IntegerField(min_value=1)
 
+    # Array menores en riesgo
+    victimas_menores = serializers.ListField(child=menorSerializer(), required=False)
+
+
 class SeguimientoSerializer(serializers.Serializer):
 
     # Llamada
@@ -159,6 +175,9 @@ class SeguimientoSerializer(serializers.Serializer):
     estado_mental_l = serializers.IntegerField(min_value=1)
     estado_mental_m = serializers.IntegerField(min_value=1)
     estado_mental_a = serializers.IntegerField(min_value=1)
+
+    # Array menores en riesgo
+    victimas_menores = serializers.ListField(child=menorSerializer(), required=False, allow_null=True)
 
 class ConsejeroSerializer(serializers.ModelSerializer):
     class Meta:
