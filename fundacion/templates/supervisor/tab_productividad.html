@@ -1,0 +1,265 @@
+{% extends 'config/base.html' %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+    <style>
+        .input-field.col label {
+            left: 1.75rem;
+        }
+
+        .textoReporte {
+            font-size: 1.2rem;
+            color: #000;
+        }
+
+        #titulo {
+            color: #EF7F13;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col s12 center">
+            <h4 id="titulo">- Reportes -</h4>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 5%;">
+        <div class="col s4 m4 l4" style="margin-top: 1%;">
+            <label class="textoReporte">Selecciona el tipo de reporte</label>
+        </div>
+        <div class="col s4 m4 l4">
+            <select>
+                <option value="" disabled selected>Seleccione</option>
+                <option value="1">Productividad</option>
+                <option value="2">Idicadores</option>
+                <option value="3" selected>Historial de servicios</option>
+                <option value="4">Generales</option>
+            </select>
+        </div>
+        <div class="col s4 m4 l4"></div>
+    </div>
+    <div class="row">
+        <div class="col s4 m4 l4">
+            <label class="textoReporte">Seleccione el periodo de tiempo</label>
+        </div>
+        <div class="col s4 m4 l4">
+            <input name="fechas" type="radio" id="r_dia1" value="dia" onclick="muestra_filtro_fecha('dia')"/>
+            <label for="r_dia1">Día</label>
+            <input name="fechas" type="radio" id="r_mes" value="mes" onclick="muestra_filtro_fecha('mes')"/>
+            <label for="r_mes">Mes</label>
+            <input name="fechas" type="radio" id="r_dia2" value="rango" onclick="muestra_filtro_fecha('rango')"/>
+            <label for="r_dia2">Rango de días</label>
+        </div>
+        <div class="col s4 m4 l4">
+            <!--<input type="text">-->
+        </div>
+    </div>
+    <div class="row" style="margin-top: 1%;">
+        <div class="col s4 m4 l4" style="margin-top: 1%;">
+        </div>
+        <div class="col s2 m2 l2" id="div_mes" hidden>
+            <label for="select_fecha_mes">Mes</label>
+            <input type="text" class="selector_mes" id="select_fecha_mes" onchange="filtrar()">
+        </div>
+        <div class="col s2 m2 l2" id="div_fecha1" hidden>
+            <label for="select_fecha_1">Fecha</label>
+            <input type="text" class="datepicker" id="select_fecha1" onchange="filtrar()">
+        </div>
+        <div class="col s2 m2 l2" id="div_fecha2" hidden>
+            <label for="select_fecha2">Fecha fin</label>
+            <input type="text" class="datepicker" id="select_fecha2" onchange="filtrar()">
+        </div>
+        <div class="col s4 m4 l4"></div>
+    </div>
+    <div class="row" style="padding: 1%;">
+        <div class="col s1"></div>
+        <div class="col s10">
+            <table id="tabla" class="display responsive-table" style="width:100%; padding-top: 5%;">
+                <thead>
+                <tr>
+                    <th>Consejero</th>
+                    <th>Tiempo en servicio</th>
+                    <th>Total de llamadas</th>
+                    <th>Servicios atendidos</th>
+                    <th>Transferencias recibidas</th>
+                    <th>Transferencias realizadas</th>
+                    <th>Abandono operativo</th>
+                    <th>Duración promedio de llamadas</th>
+                </tr>
+                </thead>
+                {% block datos_tabla %} {% endblock %}
+            </table>
+        </div>
+        <div class="col s1"></div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'js/crsfajax.js' %}"></script>
+    <script type="text/javascript" src="{% static 'DataTables/datatables.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+
+    <script type="text/javascript">
+        {% block scripts_tabla %}
+        {% endblock %}
+        var id = 0;
+
+        function actualiza(uid) {
+            id = uid;
+            $('.modal').modal({
+                    dismissible: false
+                }
+            );
+            $('#modal1').modal('open');
+        }
+
+        $(document).ready(function () {
+            $('select').material_select();
+            $('.button-collapse').sideNav({
+                    menuWidth: 300, // Default is 300
+                    edge: 'left', // Choose the horizontal origin
+                    closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                    draggable: true // Choose whether you can drag to open on touch screens,
+                }
+            );
+
+            $('.selector_mes').on('mousedown',function(event){
+            event.preventDefault();
+            });
+            $('.datepicker').on('mousedown',function(event){
+            event.preventDefault();
+            });
+            $('.selector_mes').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 100,
+                format: 'Seleccionaste: mmmm',
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: true, // Close upon selecting a date,
+                container: undefined, // ex. 'body' will append picker to body
+            });
+
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 100,
+                format: 'Seleccionaste: dd/mmm/yyyy',
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: true, // Close upon selecting a date,
+                container: undefined // ex. 'body' will append picker to body
+            });
+
+
+            tabla = $('#tabla').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        copyTitle: 'Ajouté au presse-papiers',
+                        copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',
+                        copySuccess: {
+                            _: '%d lignes copiées',
+                            1: '1 ligne copiée'
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print all',
+                        exportOptions: {
+                            modifier: {
+                                selected: null
+                            }
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        customize: function (xlsx) {
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            $('row c[r^="C"]', sheet).attr('s', '2');
+                        }
+                    }
+
+
+                ],
+                processing: true,
+                serverSide: false,
+                ajax: "{% block url_ajax %}{% url 'supervisor:list_ajax_productividad' %}{% endblock %}",
+                {% block order %}{% endblock %}
+            });
+
+        });
+
+        function muestra_filtro_fecha(tipo) {
+            if (tipo == 'dia') {
+                $("#div_fecha1").show();
+                $("#div_fecha2").hide();
+                $("#div_mes").hide();
+            } else if (tipo == 'mes') {
+                $("#div_fecha1").hide();
+                $("#div_fecha2").hide();
+                $("#div_mes").show();
+            } else if (tipo == 'rango') {
+                $("#div_fecha1").show();
+                $("#div_fecha2").show();
+                $("#div_mes").hide();
+            }
+        }
+
+        function filtrar() {
+            var filtro = $("input[name='fechas']:checked").val();
+            if (filtro == "dia") {
+                filtrar_dia();
+            } else if (filtro == "mes") {
+                filtrar_mes();
+            } else if (filtro == "rango") {
+                filtrar_rango();
+            }
+        }
+
+
+        function filtrar_dia() {
+            var $dia_picker = $("#select_fecha1").pickadate();
+            var dia = $dia_picker.pickadate('picker');
+            nva_url = "{% url 'supervisor:list_ajax_productividad' %}?dia=" + dia.get('select', 'yyyy-mm-dd')
+            console.log(nva_url);
+            tabla.ajax.url(nva_url).load()
+            $('#tabla').dataTable()._fnAjaxUpdate()
+        }
+
+        function filtrar_mes() {
+            var $mes_picker = $("#select_fecha_mes").pickadate();
+            var mes = $mes_picker.pickadate('picker');
+            nva_url = "{% url 'supervisor:list_ajax_productividad' %}?mes=" + mes.get('select', 'mm')
+            console.log(nva_url);
+            tabla.ajax.url(nva_url).load()
+            $('#tabla').dataTable()._fnAjaxUpdate()
+        }
+
+        function filtrar_rango() {
+            var $fecha1_picker = $("#select_fecha1").pickadate();
+            var $fecha2_picker = $("#select_fecha2").pickadate();
+            var fecha1 = $fecha1_picker.pickadate('picker');
+            var fecha2 = $fecha2_picker.pickadate('picker');
+            nva_url = "{% url 'supervisor:list_ajax_llamada' %}?fecha1=" + fecha1.get('select', 'yyyy-mm-dd') + "&fecha2=" +fecha2.get('select', 'yyyy-mm-dd')
+            console.log(nva_url);
+            tabla.ajax.url(nva_url).load()
+            $('#tabla').dataTable()._fnAjaxUpdate()
+        }
+
+    </script>
+{% endblock %}
