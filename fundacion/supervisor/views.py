@@ -155,14 +155,27 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
                 transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
                 transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
                 llamadas_atendidas=Count('fecha')).order_by('consejero')
-            return queryset
         elif mes:
             llamadas = llamadas.filter(fecha__month=mes)
+            queryset = llamadas.values('consejero').annotate(total_llamadas=Count('fecha')).annotate(
+                tiempo_servicio=Sum('duracion_minutos')).annotate(
+                abandonos=Count('tipo_llamada', filter=Q(motivo__pk__in=[3, 6]))).annotate(
+                promedio=Avg('duracion_minutos')).annotate(
+                transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
+                transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
+                llamadas_atendidas=Count('fecha')).order_by('consejero')
         elif fecha1 and fecha2:
             fecha_inicio = datetime.strptime(fecha1, '%Y-%m-%d')
             fecha_fin = datetime.strptime(fecha2, '%Y-%m-%d')
             llamadas = llamadas.filter(fecha__range=(fecha_inicio, fecha_fin))
-        if search=='tyty':
+            queryset = llamadas.values('consejero').annotate(total_llamadas=Count('fecha')).annotate(
+                tiempo_servicio=Sum('duracion_minutos')).annotate(
+                abandonos=Count('tipo_llamada', filter=Q(motivo__pk__in=[3, 6]))).annotate(
+                promedio=Avg('duracion_minutos')).annotate(
+                transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
+                transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
+                llamadas_atendidas=Count('fecha')).order_by('consejero')
+        if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
             queryset = llamadas.values('consejero').annotate(total_llamadas=Count('fecha')).annotate(
                 tiempo_servicio=Sum('duracion_minutos')).annotate(

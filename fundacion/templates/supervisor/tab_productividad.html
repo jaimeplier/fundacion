@@ -255,7 +255,7 @@
             var $fecha2_picker = $("#select_fecha2").pickadate();
             var fecha1 = $fecha1_picker.pickadate('picker');
             var fecha2 = $fecha2_picker.pickadate('picker');
-            nva_url = "{% url 'supervisor:list_ajax_llamada' %}?fecha1=" + fecha1.get('select', 'yyyy-mm-dd') + "&fecha2=" +fecha2.get('select', 'yyyy-mm-dd')
+            nva_url = "{% url 'supervisor:list_ajax_productividad' %}?fecha1=" + fecha1.get('select', 'yyyy-mm-dd') + "&fecha2=" +fecha2.get('select', 'yyyy-mm-dd')
             console.log(nva_url);
             tabla.ajax.url(nva_url).load()
             $('#tabla').dataTable()._fnAjaxUpdate()
