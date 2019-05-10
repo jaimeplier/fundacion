@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_404
@@ -5,11 +7,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.db.models import Sum, Count, Avg, Q
 from config.models import Llamada, Mensaje, Recado, Usuario, EstatusUsuario, ArchivoMensaje, AcudeInstitucion, \
     EstatusInstitucion, Sucursal
 from webservices.serializers import FechaSerializer, MensajeSerializer, MensajeSerializerPk, RecadoSerializer, \
     RecadoSerializerPk, UsuarioSerializer, EstatusUsuarioSerializer, PkSerializer, ArchivoMensajeSerializer, \
-    ArchivoRecadoSerializer, EstatusInstitucionSucursalSerializer
+    ArchivoRecadoSerializer, EstatusInstitucionSucursalSerializer, FechaSerializerMes
 
 
 class ResumenLlamada(APIView):
@@ -41,6 +44,26 @@ class ResumenLlamada(APIView):
 
     def get_serializer(self):
         return FechaSerializer()
+
+class ResumenLlamadaMes(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+    serializer_class = FechaSerializerMes
+
+    def get_queryset(self):
+
+        mes = self.request.query_params.get('mes', None)
+        anio = self.request.query_params.get('anio', None)
+        if mes and anio:
+
+            llamadas_mes = Llamada.objects.filter(fecha__year__gte=anio, fecha__month__gte=mes,
+                                                  fecha__year__lte=anio, fecha__month__lte=mes)
+            queryset = llamadas_mes.values('fecha').annotate(n_servicios=Count('fecha')).order_by('fecha')
+            return queryset
+        current_time = datetime.now()
+        llamadas_mes = Llamada.objects.filter(fecha__year__gte=current_time.year, fecha__month__gte=current_time.month,
+                               fecha__year__lte=current_time.year, fecha__month__lte=current_time.month)
+        return llamadas_mes.values('fecha').annotate(n_servicios=Count('fecha')).order_by('fecha')
 
 
 class MensajesViewSet(viewsets.ModelViewSet):

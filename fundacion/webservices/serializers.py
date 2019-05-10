@@ -12,6 +12,9 @@ class FechaSerializer(serializers.Serializer):
     mes = serializers.IntegerField(allow_null=True)
     anio = serializers.IntegerField(allow_null=True)
 
+class FechaSerializerMes(serializers.Serializer):
+    n_servicios = serializers.IntegerField()
+    fecha = serializers.DateField()
 
 class CatalogoSerializer(serializers.Serializer):
     pk = serializers.IntegerField()

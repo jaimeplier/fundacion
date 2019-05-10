@@ -12,7 +12,8 @@ from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, Lis
     ListRecomendacionesRiesgo, ListFaseCambio, ListEstadoMental, ListComoSeEntero, ListAliado, ListLineaNegocio, \
     ListTipificacionesSubcategorias, ListTutor
 from webservices.views import ResumenLlamada, ListUsuarios, ListEstatusActividadUsuario, UpdateEstatusActividadUsuario, \
-    AgregaArchivoMensaje, AgregaArchivoRecado, ListArchivoMensaje, ListArchivoRecado, CambiarEstatusInstitucion
+    AgregaArchivoMensaje, AgregaArchivoRecado, ListArchivoMensaje, ListArchivoRecado, CambiarEstatusInstitucion, \
+    ResumenLlamadaMes
 from . import views
 
 app_name = 'webservices'
@@ -47,6 +48,7 @@ urlpatterns = [
 
     # Supervisores:
     path('resumenLlamada/', ResumenLlamada.as_view(), name='resumen_puntos_mes'),
+    path('resumen_llamada_mes/', ResumenLlamadaMes.as_view(), name='resumen_puntos_mes'),
 
     # Catalogos:
     path('list_sexos/', ListSexo.as_view(), name='list_sexos'),
