@@ -30,8 +30,8 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'supervisor'
 
     model = Llamada
-    columns = ['id', 'victima.nombre', 'nombre', 'fecha', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'institucion', 'estatus', 'medio_contacto']
-    order_columns = ['id', 'victima__nombre', 'fecha', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', 'estatus', 'institucion__nombre', 'estatus__nombre', 'medio_contacto']
+    columns = ['id', 'victima.nombre', 'nombre', 'fecha', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'instituciones', 'medio_contacto']
+    order_columns = ['id', 'victima__nombre', 'fecha', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', '', 'estatus__nombre', 'medio_contacto']
     max_display_length = 100
     settingstime_zone = timezone(settings.TIME_ZONE)
 
@@ -52,6 +52,14 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
             h1 = datetime.strptime(h1, formato)
             h2 = datetime.strptime(h2, formato)
             return str(h2-h1)
+        elif column=='instituciones':
+            canalizaciones = LlamadaCanalizacion.objects.filter(llamada__pk=row.pk)
+            if canalizaciones.count() >0:
+                canalizaciones_str = ''
+                for canalizacion in canalizaciones:
+                    canalizaciones_str += canalizacion.institucion.nombre + '<br>'
+                return canalizaciones_str
+            return 'Sin canalización'
 
         return super(LlamadaAjaxList, self).render_column(row, column)
 
