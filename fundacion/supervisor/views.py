@@ -130,9 +130,9 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
         current_time = datetime.now()
         llamadas = Llamada.objects.all()
         queryset = llamadas.values('consejero').annotate(total_llamadas=Count('fecha')).annotate(
-            tiempo_servicio=Sum('duracion_minutos')).annotate(
+            tiempo_servicio=Sum('duracion_servicio')).annotate(
             abandonos=Count('tipo_llamada', filter=Q(motivo__pk__in=[3, 6]))).annotate(
-            promedio=Avg('duracion_minutos')).annotate(
+            promedio=Avg('duracion_servicio')).annotate(
             transferencias_recibidas=Count('transferencia',filter=Q(recibido=True))).annotate(
             transferencias_realizadas=Count('transferencia',filter=Q(transferencia=True))).annotate(
             llamadas_atendidas=Count('fecha', filter=Q(fecha__month__gte=current_time.month,
@@ -147,9 +147,9 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
         fecha2 = self.request.GET.get(u'fecha2', None)
         llamadas = Llamada.objects.all()
         queryset = llamadas.values('consejero').annotate(total_llamadas=Count('fecha')).annotate(
-            tiempo_servicio=Sum('duracion_minutos')).annotate(
+            tiempo_servicio=Sum('duracion_servicio')).annotate(
             abandonos=Count('tipo_llamada', filter=Q(motivo__pk__in=[3, 6]))).annotate(
-            promedio=Avg('duracion_minutos')).annotate(
+            promedio=Avg('duracion_servicio')).annotate(
             transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
             transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
             llamadas_atendidas=Count('fecha'))
@@ -157,18 +157,18 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
             datetime_object = datetime.strptime(dia, '%Y-%m-%d')
             llamadas = llamadas.filter(fecha=datetime_object)
             queryset = llamadas.values('consejero').annotate(total_llamadas=Count('fecha')).annotate(
-                tiempo_servicio=Sum('duracion_minutos')).annotate(
+                tiempo_servicio=Sum('duracion_servicio')).annotate(
                 abandonos=Count('tipo_llamada', filter=Q(motivo__pk__in=[3, 6]))).annotate(
-                promedio=Avg('duracion_minutos')).annotate(
+                promedio=Avg('duracion_servicio')).annotate(
                 transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
                 transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
                 llamadas_atendidas=Count('fecha')).order_by('consejero')
         elif mes:
             llamadas = llamadas.filter(fecha__month=mes)
             queryset = llamadas.values('consejero').annotate(total_llamadas=Count('fecha')).annotate(
-                tiempo_servicio=Sum('duracion_minutos')).annotate(
+                tiempo_servicio=Sum('duracion_servicio')).annotate(
                 abandonos=Count('tipo_llamada', filter=Q(motivo__pk__in=[3, 6]))).annotate(
-                promedio=Avg('duracion_minutos')).annotate(
+                promedio=Avg('duracion_servicio')).annotate(
                 transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
                 transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
                 llamadas_atendidas=Count('fecha')).order_by('consejero')
@@ -177,18 +177,18 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
             fecha_fin = datetime.strptime(fecha2, '%Y-%m-%d')
             llamadas = llamadas.filter(fecha__range=(fecha_inicio, fecha_fin))
             queryset = llamadas.values('consejero').annotate(total_llamadas=Count('fecha')).annotate(
-                tiempo_servicio=Sum('duracion_minutos')).annotate(
+                tiempo_servicio=Sum('duracion_servicio')).annotate(
                 abandonos=Count('tipo_llamada', filter=Q(motivo__pk__in=[3, 6]))).annotate(
-                promedio=Avg('duracion_minutos')).annotate(
+                promedio=Avg('duracion_servicio')).annotate(
                 transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
                 transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
                 llamadas_atendidas=Count('fecha')).order_by('consejero')
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
             queryset = llamadas.values('consejero').annotate(total_llamadas=Count('fecha')).annotate(
-                tiempo_servicio=Sum('duracion_minutos')).annotate(
+                tiempo_servicio=Sum('duracion_servicio')).annotate(
                 abandonos=Count('tipo_llamada', filter=Q(motivo__pk__in=[3, 6]))).annotate(
-                promedio=Avg('duracion_minutos')).annotate(
+                promedio=Avg('duracion_servicio')).annotate(
                 transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
                 transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
                 llamadas_atendidas=Count('fecha'))
