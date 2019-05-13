@@ -132,7 +132,7 @@
                 {% endif %}
                 <li class="menu_redondo"><a href="{% url 'webapp:list_pendiente' %}">Pendientes</a></li>
                 <li class="menu_redondo"><a href="{% url 'webapp:ver_recados' %}">Recados</a></li>
-                <li class="menu_redondo"><a href="{% url 'webapp:ver_avisos' %}">Avisos</a></li>
+                <li class="menu_redondo" style="margin-bottom: 15%;"><a href="{% url 'webapp:ver_avisos' %}">Avisos</a></li>
 
             </ul>
         </div>
@@ -161,11 +161,16 @@
 
 <!--Import jQuery before materialize.js-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+
 <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('select').material_select();
+        $('select').on('mousedown',function(event){
+            event.preventDefault();
+        })
+
         $('.button-collapse').sideNav({
                 menuWidth: 300, // Default is 300
                 edge: 'left', // Choose the horizontal origin
