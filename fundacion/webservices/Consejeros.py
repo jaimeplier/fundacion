@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db.models import Max
 from django.http import Http404
 from rest_framework import status
@@ -45,8 +46,12 @@ class PrimerRegistro(APIView):
 
         # ---> DATOS DE LA LLAMADA <---
 
-        hora_inicio = '14:00'
-        hora_fin = '14:20'
+        hora_inicio = '14:00:00'
+        hora_fin = '14:20:00'
+        formato = '%H:%M:%S'
+        h1 = datetime.strptime(hora_inicio, formato)
+        h2 = datetime.strptime(hora_fin, formato)
+        duracion_servicio = str(h2 - h1)
         consejero = Consejero.objects.get(pk=self.request.user.pk)
         f = serializer.data['f']
         debilidades = serializer.data['debilidades']
@@ -125,7 +130,7 @@ class PrimerRegistro(APIView):
                                          victima_involucrada=victimas, agresor=agresor,
                                          como_se_entero=como_se_entero, devolver_llamada=devolver_llamada,
                                          num_llamada=num_llamada, debilidades=debilidades, amenazas=amenazas,
-                                         linea_negocio=linea_negocio,aliado=aliado)
+                                         linea_negocio=linea_negocio,aliado=aliado, duracion_servicio=duracion_servicio)
 
         # ---> REGISTRO DE CANALIZACIONES LLAMADA <---
         if institucion is not None and institucion2 is not None and institucion == institucion2:
@@ -181,8 +186,12 @@ class SeguimientoRegistro(APIView):
 
         # ---> DATOS DE LA LLAMADA <---
 
-        hora_inicio = '14:00'
-        hora_fin = '14:20'
+        hora_inicio = '14:00:00'
+        hora_fin = '14:20:00'
+        formato = '%H:%M:%S'
+        h1 = datetime.strptime(hora_inicio, formato)
+        h2 = datetime.strptime(hora_fin, formato)
+        duracion_servicio = str(h2 - h1)
         consejero = Consejero.objects.get(pk=self.request.user.pk)
         victima = Victima.objects.get(pk=serializer.validated_data['victima'])
         f = serializer.data['f']
@@ -255,7 +264,8 @@ class SeguimientoRegistro(APIView):
                                          modalidad_violencia=modalidad_violencia,
                                          victima_involucrada=victimas, agresor=agresor,
                                          como_se_entero=como_se_entero, devolver_llamada=devolver_llamada, num_llamada=num_llamada,
-                                         debilidades=debilidades, amenazas=amenazas, linea_negocio=linea_negocio,aliado=aliado)
+                                         debilidades=debilidades, amenazas=amenazas, linea_negocio=linea_negocio,aliado=aliado,
+                                         duracion_servicio=duracion_servicio)
 
         # ---> REGISTRO DE CANALIZACIONES LLAMADA <---
         if institucion is not None and institucion2 is not None and institucion == institucion2:
