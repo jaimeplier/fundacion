@@ -557,6 +557,7 @@ class FaseCambio(Catalogo):
         db_table = 'fase_cambio'
 
 class Evaluacion(Catalogo):
+    comentario = models.TextField(max_length=512, null=True, blank=True)
     class Meta:
         managed = True
         db_table = 'evaluacion_servicio'
