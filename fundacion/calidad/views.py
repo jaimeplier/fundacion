@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.utils.html import linebreaks
 from django.views.generic import CreateView, UpdateView,DetailView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
@@ -45,8 +46,8 @@ class EvaluacionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'calidad'
 
     model = Evaluacion
-    columns = ['id', 'nombre', 'editar', 'eliminar']
-    order_columns = ['id', 'nombre']
+    columns = ['id', 'nombre', 'comentario', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre', 'comentario']
     max_display_length = 100
 
     def render_column(self, row, column):
@@ -60,6 +61,11 @@ class EvaluacionAjaxList(PermissionRequiredMixin, BaseDatatableView):
                 row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
+        elif column == 'comentario':
+            if row.comentario:
+                a = linebreaks(row.comentario)
+                return linebreaks(row.comentario)
+            return 'Sin comentarios'
 
         return super(EvaluacionAjaxList, self).render_column(row, column)
 
@@ -69,7 +75,7 @@ class EvaluacionAjaxList(PermissionRequiredMixin, BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)| qs.filter(comentario__icontains=search)
         return qs
 
 
