@@ -411,6 +411,8 @@ class Victima(models.Model):
     colonia = models.CharField(max_length=512, null=True, blank=True)
     trabajo_remunerado = models.BooleanField(null=True, blank=True)
     redes_apoyo = models.ForeignKey('RedesApoyo', models.DO_NOTHING, blank=True, null=True)
+    estatus = models.BooleanField(default=True)
+    comentarios_estatus = models.TextField(max_length=256, null=True, blank=True)
 
     class Meta:
         managed = True
