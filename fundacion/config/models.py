@@ -331,6 +331,19 @@ class Municipio(Catalogo):
         managed = True
         db_table = 'municipio'
 
+class Colonia(Catalogo):
+    municipio = models.ForeignKey('Municipio', models.DO_NOTHING)
+
+    class Meta:
+        managed = True
+        db_table = 'colonia'
+
+class CPColonia(Catalogo):
+    colonia = models.ForeignKey('Colonia', models.DO_NOTHING)
+
+    class Meta:
+        managed = True
+        db_table = 'cp_colonia'
 
 class NivelEstudio(Catalogo):
     class Meta:
