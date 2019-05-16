@@ -15,7 +15,9 @@ from webapp.forms import PendienteForm
 
 def index(request):
     template_name = 'config/index.html'
-    return render(request, template_name)
+    rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')}]
+    context = {'rutas':rutas}
+    return render(request, template_name, context)
 
 def login(request):
     error_message = ''
