@@ -186,7 +186,7 @@ class ConsejeroSerializer(serializers.ModelSerializer):
 class VictimaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Victima
-        fields = ['pk','nombre', 'apellido_paterno', 'apellido_materno', 'telefono']
+        fields = ['pk','nombre', 'apellido_paterno', 'apellido_materno', 'telefono', 'estatus', 'comentarios_estatus']
 
 class MotivoLLamadaSerializer(serializers.ModelSerializer):
     class Meta:

@@ -141,10 +141,15 @@
                 <div class="col s12" style="margin-left: 1%;">
                     <a href="#" style="position: relative; top: 8px; right: 10px; color: white;"
                        data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
-                    <a href="#!" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}"
+                    {% for ruta in rutas %}
+                     {% if ruta.nombre == "menu" %}
+                    <a href="{{ ruta.url }}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}"
                                                            class="responsive-img" style="position: relative; top: 5px;"></a>
-                    <a href="#!" class="breadcrumb font_blanco" style="font-size: 12px;">Texto</a>
-                    <a href="#!" class="breadcrumb font_blanco" style="font-size: 12px;">Texto</a>
+                         {% else %}
+                    <a href="{{ ruta.url }}" class="breadcrumb font_blanco" style="font-size: 12px;">{{ ruta.nombre }}</a>
+
+                     {% endif %}
+                    {% endfor %}
                 </div>
             </div>
             {% block content %} {% endblock %}

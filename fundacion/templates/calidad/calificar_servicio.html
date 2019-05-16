@@ -81,11 +81,17 @@
                             <table>
                                 <tr>
                                     <th>Rubro</th>
+                                    <th>Comentarios</th>
                                     <th>Check</th>
                                 </tr>
                                 {% for rubro in rubros %}
                                     <tr>
                                         <td>{{ rubro.nombre }}</td>
+                                        {% if rubro.comentario %}
+                                        <td>{{ rubro.comentario|linebreaksbr }}</td>
+                                            {% else %}
+                                        <td>Sin comentarios</td>
+                                        {% endif %}
                                         <td>
                                             <div>
                                                 <p>

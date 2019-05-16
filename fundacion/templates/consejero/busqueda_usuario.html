@@ -262,7 +262,8 @@
                             ultllamada: json[i].fecha,
                             motivo: json[i].motivo.nombre,
                             nivel_riesgo: json[i].nivel_riesgo,
-                            num_llamada: json[i].num_llamada
+                            num_llamada: json[i].num_llamada,
+                            estatus_victima: json[i].victima.estatus
 
                         }
 
@@ -279,6 +280,10 @@
                                 }
                             }
 
+                        }
+                        var estatus = 'Inactivo';
+                        if (llamada.estatus_victima == true){
+                            estatus = 'Activo';
                         }
 
 
@@ -305,6 +310,8 @@
                                     <br><span class="font_blanco medianas">${setRiesgo(llamada.nivel_riesgo)}</span></p>
                                     <p><span class="font_blanco negritas">Número de llamada</span>
                                     <br><span class="font_blanco medianas">${llamada.num_llamada}</span></p>
+                                    <p><span class="font_blanco negritas">Estatus de la víctima</span>
+                                    <br><span class="font_blanco medianas">${estatus}</span></p>
 
                             </div>
 
