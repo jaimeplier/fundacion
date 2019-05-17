@@ -5,7 +5,7 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Directorio, Supervisor, Calidad, Sexo, MotivoLLamada, \
     Dependencia, RedesApoyo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
-    CategoriaTipificacion, Sucursal, Aliado, LineaNegocio, SubcategoriaTipificacion, Tutor
+    CategoriaTipificacion, Sucursal, Aliado, LineaNegocio, SubcategoriaTipificacion, Tutor, Colonia, CPColonia
 
 
 class ConsejeroForm(ModelForm):
@@ -85,7 +85,7 @@ class AcudeInstitucionForm(ModelForm):
 class EstadoForm(ModelForm):
     class Meta:
         model = Estado
-        exclude = ['fecha_alta', 'fecha_baja']
+        exclude = ['fecha_alta', 'fecha_baja', 'pais']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
@@ -141,10 +141,23 @@ class ModalidadViolenciaForm(ModelForm):
 class MunicipioForm(ModelForm):
     class Meta:
         model = Municipio
-        exclude = ['fecha_alta', 'fecha_baja']
+        exclude = ['fecha_alta', 'fecha_baja', 'estado']
         widgets = {
             'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
+class ColoniaForm(ModelForm):
+    class Meta:
+        model = Colonia
+        exclude = ['fecha_alta', 'fecha_baja', 'municipio']
+        widgets = {
+            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+
+class CPColoniaForm(ModelForm):
+    class Meta:
+        model = CPColonia
+        exclude = ['fecha_alta', 'fecha_baja', 'colonia']
+        widgets = {
+            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
 
 class NivelEstudioForm(ModelForm):
     class Meta:

@@ -19,13 +19,14 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DependenciaForm, RedesApoyoForm, VictimaInvolucradaForm, \
     AgresorForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm, RecomendacionRiesgoForm, \
     FaseCambioForm, ActividadUsuarioForm, TipificacionForm, CategoriaTipificacionForm, SucursalInstitucionForm, \
-    AliadoForm, LineaNegocioForm, SubcategoriaTipificacionForm, TutorForm
+    AliadoForm, LineaNegocioForm, SubcategoriaTipificacionForm, TutorForm, ColoniaForm, CPColoniaForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, \
     MotivoLLamada, Dependencia, RedesApoyo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
-    CategoriaTipificacion, Sucursal, EstatusInstitucion, Aliado, LineaNegocio, SubcategoriaTipificacion, Tutor
+    CategoriaTipificacion, Sucursal, EstatusInstitucion, Aliado, LineaNegocio, SubcategoriaTipificacion, Tutor, Colonia, \
+    CPColonia
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -758,11 +759,29 @@ class EstadoAdd(PermissionRequiredMixin, CreateView):
             context['instrucciones'] = 'Completa todos los campos para registrar un'
         return context
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+
+            pais = Pais.objects.get(pk=self.kwargs['pais'])
+            estado = form.save(commit=False)
+            estado.pais = pais
+            estado.save()
+
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_estado', kwargs={'pais': self.kwargs['pais']})
+
 
 @permission_required(perm='catalogo', login_url='/')
-def list_estado(request):
+def list_estado(request, pais):
+    context = {'pais':pais}
     template_name = 'administrador/tab_estado.html'
-    return render(request, template_name)
+    return render(request, template_name, context)
 
 
 class EstadoAjaxList(PermissionRequiredMixin, BaseDatatableView):
@@ -771,7 +790,7 @@ class EstadoAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'catalogo'
 
     model = Estado
-    columns = ['id', 'nombre', 'editar', 'eliminar']
+    columns = ['id', 'nombre', 'municipios', 'editar', 'eliminar']
     order_columns = ['id', 'nombre']
     max_display_length = 100
 
@@ -780,17 +799,22 @@ class EstadoAjaxList(PermissionRequiredMixin, BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_estado',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+                                                       'pk': row.pk, 'pais': self.kwargs['pais']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
                 row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
+        elif column == 'municipios':
+            return '<a class="" href ="' + reverse('administrador:list_municipio',
+                                                   kwargs={
+                                                       'estado': row.pk}) + '"><i class="material-icons">account_balance</i></a>'
 
         return super(EstadoAjaxList, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return Estado.objects.all()
+        pais = self.kwargs['pais']
+        return Estado.objects.filter(pais__pk=pais)
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
@@ -818,6 +842,21 @@ class EstadoEdit(PermissionRequiredMixin, UpdateView):
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+
+        estado = self.model.objects.get(pk=self.kwargs['pk'])
+        form = EstadoForm(request.POST, request.FILES, instance=estado)
+        if form.is_valid():
+            estado_form = form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_estado', kwargs={'pais': self.kwargs['pais']})
 
 
 @permission_required(perm='catalogo', login_url='/')
@@ -860,7 +899,7 @@ class PaisAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'catalogo'
 
     model = Pais
-    columns = ['id', 'nombre', 'editar', 'eliminar']
+    columns = ['id', 'nombre', 'estados', 'editar', 'eliminar']
     order_columns = ['id', 'nombre']
     max_display_length = 100
 
@@ -875,6 +914,10 @@ class PaisAjaxList(PermissionRequiredMixin, BaseDatatableView):
                 row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
+        elif column == 'estados':
+            return '<a class="" href ="' + reverse('administrador:list_estado',
+                                                   kwargs={
+                                                       'pais': row.pk}) + '"><i class="material-icons">landscape</i></a>'
 
         return super(PaisAjaxList, self).render_column(row, column)
 
@@ -1381,11 +1424,28 @@ class MunicipioAdd(PermissionRequiredMixin, CreateView):
             context['instrucciones'] = 'Completa todos los campos para registrar un'
         return context
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            estado = Estado.objects.get(pk=self.kwargs['estado'])
+            municipio = form.save(commit=False)
+            municipio.estado = estado
+            municipio.save()
+
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_municipio', kwargs={'estado': self.kwargs['estado']})
+
 
 @permission_required(perm='catalogo', login_url='/')
-def list_municipio(request):
+def list_municipio(request, estado):
+    context = {'estado':estado}
     template_name = 'administrador/tab_municipio.html'
-    return render(request, template_name)
+    return render(request, template_name, context)
 
 
 class MunicipioAjaxList(PermissionRequiredMixin, BaseDatatableView):
@@ -1394,7 +1454,7 @@ class MunicipioAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'catalogo'
 
     model = Municipio
-    columns = ['id', 'nombre', 'editar', 'eliminar']
+    columns = ['id', 'nombre', 'colonias', 'editar', 'eliminar']
     order_columns = ['id', 'nombre']
     max_display_length = 100
 
@@ -1403,17 +1463,21 @@ class MunicipioAjaxList(PermissionRequiredMixin, BaseDatatableView):
         if column == 'editar':
             return '<a class="" href ="' + reverse('administrador:edit_municipio',
                                                    kwargs={
-                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+                                                       'pk': row.pk, 'estado':self.kwargs['estado']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
         elif column == 'eliminar':
             return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
                 row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
         elif column == 'id':
             return row.pk
+        elif column == 'colonias':
+            return '<a class="" href ="' + reverse('administrador:edit_municipio',
+                                                   kwargs={
+                                                       'pk': row.pk, 'estado':self.kwargs['estado']}) + '"><i class="material-icons">people</i></a>'
 
         return super(MunicipioAjaxList, self).render_column(row, column)
 
     def get_initial_queryset(self):
-        return Municipio.objects.all()
+        return Municipio.objects.filter(estado__pk=self.kwargs['estado'])
 
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
@@ -1442,6 +1506,21 @@ class MunicipioEdit(PermissionRequiredMixin, UpdateView):
             context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
         return context
 
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+
+        municipio = self.model.objects.get(pk=self.kwargs['pk'])
+        form = MunicipioForm(request.POST, request.FILES, instance=municipio)
+        if form.is_valid():
+            municipio_form = form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_municipio', kwargs={'estado': self.kwargs['estado']})
+
 
 @permission_required(perm='catalogo', login_url='/')
 def delete_municipio(request, pk):
@@ -1449,6 +1528,249 @@ def delete_municipio(request, pk):
     municipio.delete()
     return JsonResponse({'result': 1})
 
+class ColoniaAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Colonia
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/colonia/list'
+    form_class = ColoniaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ColoniaAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar una colonia'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            municipio = Estado.objects.get(pk=self.kwargs['municipio'])
+            colonia = form.save(commit=False)
+            colonia.municipio = municipio
+            colonia.save()
+
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_colonia', kwargs={'municipio': self.kwargs['municipio']})
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_colonia(request, municipio):
+    context = {'municipio':municipio}
+    template_name = 'administrador/tab_colonia.html'
+    return render(request, template_name, context)
+
+
+class ColoniaAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = Colonia
+    columns = ['id', 'nombre', 'colonias', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_colonia',
+                                                   kwargs={
+                                                       'pk': row.pk, 'municipio':self.kwargs['municipio']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+        elif column == 'colonias':
+            return '<a class="" href ="' + reverse('administrador:edit_colonia',
+                                                   kwargs={
+                                                       'pk': row.pk, 'municipio':self.kwargs['municipio']}) + '"><i class="material-icons">people</i></a>'
+
+        return super(ColoniaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Colonia.objects.filter(municipio__pk=self.kwargs['municipio'])
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class ColoniaEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/colonia/list'
+
+    model = Colonia
+    template_name = 'config/formulario_1Col.html'
+    form_class = ColoniaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ColoniaEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+
+        colonia = self.model.objects.get(pk=self.kwargs['pk'])
+        form = ColoniaForm(request.POST, request.FILES, instance=colonia)
+        if form.is_valid():
+            colonia_form = form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_colonia', kwargs={'municipio': self.kwargs['municipio']})
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_colonia(request, pk):
+    colonia = get_object_or_404(Colonia, pk=pk)
+    colonia.delete()
+    return JsonResponse({'result': 1})
+
+class CPColoniaAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = CPColonia
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/cp/list'
+    form_class = CPColoniaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CPColoniaAdd, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar una cp'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            colonia = Colonia.objects.get(pk=self.kwargs['colonia'])
+            cp = form.save(commit=False)
+            cp.colonia = colonia
+            cp.save()
+
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_cp', kwargs={'colonia': self.kwargs['colonia']})
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_cp(request, colonia):
+    context = {'colonia':colonia}
+    template_name = 'administrador/tab_cp.html'
+    return render(request, template_name, context)
+
+
+class CPColoniaAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = CPColonia
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_cp',
+                                                   kwargs={
+                                                       'pk': row.pk, 'colonia':self.kwargs['colonia']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(CPColoniaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return CPColonia.objects.filter(colonia__pk=self.kwargs['colonia'])
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class CPColoniaEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/cp/list'
+
+    model = CPColonia
+    template_name = 'config/formulario_1Col.html'
+    form_class = CPColoniaForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CPColoniaEdit, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+
+        cp = self.model.objects.get(pk=self.kwargs['pk'])
+        form = CPColoniaForm(request.POST, request.FILES, instance=cp)
+        if form.is_valid():
+            cp_form = form.save()
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def get_success_url(self):
+        return reverse('administrador:list_cp', kwargs={'colonia': self.kwargs['colonia']})
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_cp(request, pk):
+    cp = get_object_or_404(CPColonia, pk=pk)
+    cp.delete()
+    return JsonResponse({'result': 1})
 
 class NivelEstudioAdd(PermissionRequiredMixin, CreateView):
     redirect_field_name = 'next'

@@ -2,7 +2,7 @@
 {% extends "config/tab_base.html" %}
 {% block titulo_tabla %}
     <h5 class="titulo_tabla">- Estados -</h5>
-    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_estado' %}"><i
+    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_estado' pais %}"><i
             class="material-icons left">add</i>Agregar</a>
 
 {% endblock %}
@@ -10,6 +10,7 @@
 {% block campos %}
     <th>ID</th>
     <th>Nombre</th>
+    <th data-orderable="false">Municipios</th>
     <th data-orderable="false">Editar</th>
     <th data-orderable="false">Eliminar</th>
 {% endblock %}
@@ -41,7 +42,8 @@
                     { className: "center fondo_tab_gris border_rigth"},
                     { className: "fondo_tab_crema border_rigth"},
                     { className: "center fondo_tab_gris border_rigth"},
-                    { className: "center fondo_tab_crema "}
+                    { className: "center fondo_tab_crema border_rigth"},
+                    { className: "center fondo_tab_gris"}
 
                     ],
 
@@ -50,5 +52,5 @@
 <!-- *************************************************************************** -->
 
 
-{% block url_ajax %}{% url 'administrador:list_ajax_estado' %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_estado' pais %}{% endblock %}
 

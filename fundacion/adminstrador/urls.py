@@ -67,17 +67,35 @@ urlpatterns = [
     path('acude_institucion/edit/<int:pk>', AcudeInstitucionEdit.as_view(), name='edit_acude_institucion'),
     path('acude_institucion/list/delete/<int:pk>', views.delete_acude_institucion, name='delete_acude_institucion'),
 
-    path('estado/add/', EstadoAdd.as_view(), name='add_estado'),
-    path('estado/list/', views.list_estado, name='list_estado'),
-    path('estado/ajax/list/', EstadoAjaxList.as_view(), name='list_ajax_estado'),
-    path('estado/edit/<int:pk>', EstadoEdit.as_view(), name='edit_estado'),
-    path('estado/list/delete/<int:pk>', views.delete_estado, name='delete_estado'),
-
     path('pais/add/', PaisAdd.as_view(), name='add_pais'),
     path('pais/list/', views.list_pais, name='list_pais'),
     path('pais/ajax/list/', PaisAjaxList.as_view(), name='list_ajax_pais'),
     path('pais/edit/<int:pk>', PaisEdit.as_view(), name='edit_pais'),
     path('pais/list/delete/<int:pk>', views.delete_pais, name='delete_pais'),
+
+    path('estado/add/<int:pais>', EstadoAdd.as_view(), name='add_estado'),
+    path('estado/list/<int:pais>', views.list_estado, name='list_estado'),
+    path('estado/ajax/list/<int:pais>', EstadoAjaxList.as_view(), name='list_ajax_estado'),
+    path('estado/edit/<int:pk>/<int:pais>', EstadoEdit.as_view(), name='edit_estado'),
+    path('estado/list/delete/<int:pk>', views.delete_estado, name='delete_estado'),
+
+    path('municipio/add/<int:estado>', MunicipioAdd.as_view(), name='add_municipio'),
+    path('municipio/list/<int:estado>', views.list_municipio, name='list_municipio'),
+    path('municipio/ajax/list/<int:estado>', MunicipioAjaxList.as_view(), name='list_ajax_municipio'),
+    path('municipio/edit/<int:pk>/<int:estado>', MunicipioEdit.as_view(), name='edit_municipio'),
+    path('municipio/list/delete/<int:pk>/<int:estado>', views.delete_municipio, name='delete_municipio'),
+
+    # path('colonia/add/<int:municipio>', ColoniaAdd.as_view(), name='add_colonia'),
+    # path('colonia/list/<int:municipio>', views.list_colonia, name='list_colonia'),
+    # path('colonia/ajax/list/<int:municipio>', ColoniaAjaxList.as_view(), name='list_ajax_colonia'),
+    # path('colonia/edit/<int:pk>/<int:municipio>', ColoniaEdit.as_view(), name='edit_colonia'),
+    # path('colonia/list/delete/<int:pk>', views.delete_colonia, name='delete_colonia'),
+
+    # path('cp/add/<int:colonia>', CPColoniaAdd.as_view(), name='add_cp'),
+    # path('cp/list/<int:colonia>', views.list_cp, name='list_cp'),
+    # path('cp/ajax/list/<int:colonia>', CPColoniaAjaxList.as_view(), name='list_ajax_cp'),
+    # path('cp/edit/<int:pk>/<int:colonia>', CPColoniaEdit.as_view(), name='edit_cp'),
+    # path('cp/list/delete/<int:pk>/<int:colonia>', views.delete_cp, name='delete_cp'),
 
     path('estado_civil/add/', EstadoCivilAdd.as_view(), name='add_estado_civil'),
     path('estado_civil/list/', views.list_estado_civil, name='list_estado_civil'),
@@ -109,12 +127,6 @@ urlpatterns = [
     path('modalidad_violencia/edit/<int:pk>', ModalidadViolenciaEdit.as_view(), name='edit_modalidad_violencia'),
     path('modalidad_violencia/list/delete/<int:pk>', views.delete_modalidad_violencia,
          name='delete_modalidad_violencia'),
-
-    path('municipio/add/', MunicipioAdd.as_view(), name='add_municipio'),
-    path('municipio/list/', views.list_municipio, name='list_municipio'),
-    path('municipio/ajax/list/', MunicipioAjaxList.as_view(), name='list_ajax_municipio'),
-    path('municipio/edit/<int:pk>', MunicipioEdit.as_view(), name='edit_municipio'),
-    path('municipio/list/delete/<int:pk>', views.delete_municipio, name='delete_municipio'),
 
     path('nivel_estudio/add/', NivelEstudioAdd.as_view(), name='add_nivel_estudio'),
     path('nivel_estudio/list/', views.list_nivel_estudio, name='list_nivel_estudio'),
