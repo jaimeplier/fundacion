@@ -1540,6 +1540,15 @@ class ColoniaAdd(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ColoniaAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            municipio = Municipio.objects.get(pk=self.kwargs['municipio'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'país', 'url': reverse('administrador:list_pais')},
+                     {'nombre': 'estado', 'url': reverse('administrador:list_estado', kwargs={'pais': municipio.estado.pais.pk})},
+                     {'nombre': 'municipio', 'url': reverse('administrador:list_municipio', kwargs={'estado': municipio.estado.pk})},
+                     {'nombre': 'colonia', 'url': reverse('administrador:list_colonia', kwargs={'municipio': municipio.pk})}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -1567,6 +1576,7 @@ class ColoniaAdd(PermissionRequiredMixin, CreateView):
 
 @permission_required(perm='catalogo', login_url='/')
 def list_colonia(request, municipio):
+    municipio = Municipio.objects.get(pk=municipio)
     context = {'municipio':municipio}
     template_name = 'administrador/tab_colonia.html'
     return render(request, template_name, context)
@@ -1622,6 +1632,15 @@ class ColoniaEdit(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ColoniaEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            municipio = Municipio.objects.get(pk=self.kwargs['municipio'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'país', 'url': reverse('administrador:list_pais')},
+                     {'nombre': 'estado', 'url': reverse('administrador:list_estado', kwargs={'pais': municipio.estado.pais.pk})},
+                     {'nombre': 'municipio', 'url': reverse('administrador:list_municipio', kwargs={'estado': municipio.estado.pk})},
+                     {'nombre': 'colonia', 'url': reverse('administrador:list_colonia', kwargs={'municipio': municipio.pk})}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
