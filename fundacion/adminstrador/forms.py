@@ -155,9 +155,7 @@ class ColoniaForm(ModelForm):
 class CPColoniaForm(ModelForm):
     class Meta:
         model = CPColonia
-        exclude = ['fecha_alta', 'fecha_baja', 'colonia']
-        widgets = {
-            'estatus': Select(choices=[[True, 'Activo'], [False, 'Inactivo']]), }
+        exclude = ['colonia']
 
 class NivelEstudioForm(ModelForm):
     class Meta:

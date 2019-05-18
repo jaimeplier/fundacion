@@ -96,7 +96,7 @@ urlpatterns = [
     path('cp/list/<int:colonia>', views.list_cp, name='list_cp'),
     path('cp/ajax/list/<int:colonia>', CPColoniaAjaxList.as_view(), name='list_ajax_cp'),
     path('cp/edit/<int:pk>/<int:colonia>', CPColoniaEdit.as_view(), name='edit_cp'),
-    path('cp/list/delete/<int:pk>/<int:colonia>', views.delete_cp, name='delete_cp'),
+    path('cp/list/delete/<int:pk>', views.delete_cp, name='delete_cp'),
 
     path('estado_civil/add/', EstadoCivilAdd.as_view(), name='add_estado_civil'),
     path('estado_civil/list/', views.list_estado_civil, name='list_estado_civil'),

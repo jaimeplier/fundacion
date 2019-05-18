@@ -1667,7 +1667,7 @@ class CPColoniaAdd(PermissionRequiredMixin, CreateView):
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Agregar una cp'
+            context['titulo'] = 'Agregar un código postal'
         if 'instrucciones' not in context:
             context['instrucciones'] = 'Completa todos los campos para registrar un código postal'
         return context
@@ -1702,8 +1702,8 @@ class CPColoniaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'catalogo'
 
     model = CPColonia
-    columns = ['id', 'nombre', 'editar', 'eliminar']
-    order_columns = ['id', 'nombre']
+    columns = ['id', 'codigo', 'editar', 'eliminar']
+    order_columns = ['id', 'codigo']
     max_display_length = 100
 
     def render_column(self, row, column):
@@ -1726,7 +1726,7 @@ class CPColoniaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     def filter_queryset(self, qs):
         search = self.request.GET.get(u'search[value]', None)
         if search:
-            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+            qs = qs.filter(codigo__icontains=search) | qs.filter(pk__icontains=search)
         return qs
 
 

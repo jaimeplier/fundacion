@@ -338,7 +338,8 @@ class Colonia(Catalogo):
         managed = True
         db_table = 'colonia'
 
-class CPColonia(Catalogo):
+class CPColonia(models.Model):
+    codigo = models.CharField(max_length=6)
     colonia = models.ForeignKey('Colonia', models.DO_NOTHING)
 
     class Meta:
