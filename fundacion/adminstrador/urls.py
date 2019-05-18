@@ -23,7 +23,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     CategoriaTipificacionAdd, CategoriaTipificacionAjaxList, CategoriaTipificacionEdit, SucursalInstitucionAdd, \
     SucursalInstitucionAjaxList, SucursalInstitucionEdit, AliadoAdd, AliadoAjaxList, AliadoEdit, LineaNegocioAdd, \
     LineaNegocioAjaxList, LineaNegocioEdit, SubcategoriaTipificacionAdd, SubcategoriaTipificacionAjaxList, \
-    SubcategoriaTipificacionEdit, TutorAdd, TutorAjaxList, TutorEdit
+    SubcategoriaTipificacionEdit, TutorAdd, TutorAjaxList, TutorEdit, ColoniaAdd, ColoniaAjaxList, ColoniaEdit, \
+    CPColoniaAdd, CPColoniaAjaxList, CPColoniaEdit
 from . import views
 
 app_name = 'administrador'
@@ -85,17 +86,17 @@ urlpatterns = [
     path('municipio/edit/<int:pk>/<int:estado>', MunicipioEdit.as_view(), name='edit_municipio'),
     path('municipio/list/delete/<int:pk>/<int:estado>', views.delete_municipio, name='delete_municipio'),
 
-    # path('colonia/add/<int:municipio>', ColoniaAdd.as_view(), name='add_colonia'),
-    # path('colonia/list/<int:municipio>', views.list_colonia, name='list_colonia'),
-    # path('colonia/ajax/list/<int:municipio>', ColoniaAjaxList.as_view(), name='list_ajax_colonia'),
-    # path('colonia/edit/<int:pk>/<int:municipio>', ColoniaEdit.as_view(), name='edit_colonia'),
-    # path('colonia/list/delete/<int:pk>', views.delete_colonia, name='delete_colonia'),
+    path('colonia/add/<int:municipio>', ColoniaAdd.as_view(), name='add_colonia'),
+    path('colonia/list/<int:municipio>', views.list_colonia, name='list_colonia'),
+    path('colonia/ajax/list/<int:municipio>', ColoniaAjaxList.as_view(), name='list_ajax_colonia'),
+    path('colonia/edit/<int:pk>/<int:municipio>', ColoniaEdit.as_view(), name='edit_colonia'),
+    path('colonia/list/delete/<int:pk>', views.delete_colonia, name='delete_colonia'),
 
-    # path('cp/add/<int:colonia>', CPColoniaAdd.as_view(), name='add_cp'),
-    # path('cp/list/<int:colonia>', views.list_cp, name='list_cp'),
-    # path('cp/ajax/list/<int:colonia>', CPColoniaAjaxList.as_view(), name='list_ajax_cp'),
-    # path('cp/edit/<int:pk>/<int:colonia>', CPColoniaEdit.as_view(), name='edit_cp'),
-    # path('cp/list/delete/<int:pk>/<int:colonia>', views.delete_cp, name='delete_cp'),
+    path('cp/add/<int:colonia>', CPColoniaAdd.as_view(), name='add_cp'),
+    path('cp/list/<int:colonia>', views.list_cp, name='list_cp'),
+    path('cp/ajax/list/<int:colonia>', CPColoniaAjaxList.as_view(), name='list_ajax_cp'),
+    path('cp/edit/<int:pk>/<int:colonia>', CPColoniaEdit.as_view(), name='edit_cp'),
+    path('cp/list/delete/<int:pk>/<int:colonia>', views.delete_cp, name='delete_cp'),
 
     path('estado_civil/add/', EstadoCivilAdd.as_view(), name='add_estado_civil'),
     path('estado_civil/list/', views.list_estado_civil, name='list_estado_civil'),

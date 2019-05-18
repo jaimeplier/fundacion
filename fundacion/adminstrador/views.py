@@ -1470,9 +1470,9 @@ class MunicipioAjaxList(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'id':
             return row.pk
         elif column == 'colonias':
-            return '<a class="" href ="' + reverse('administrador:edit_municipio',
+            return '<a class="" href ="' + reverse('administrador:list_colonia',
                                                    kwargs={
-                                                       'pk': row.pk, 'estado':self.kwargs['estado']}) + '"><i class="material-icons">people</i></a>'
+                                                       'municipio':row.pk}) + '"><i class="material-icons">people</i></a>'
 
         return super(MunicipioAjaxList, self).render_column(row, column)
 
@@ -1552,7 +1552,7 @@ class ColoniaAdd(PermissionRequiredMixin, CreateView):
         self.object = self.get_object
         form = self.form_class(request.POST)
         if form.is_valid():
-            municipio = Estado.objects.get(pk=self.kwargs['municipio'])
+            municipio = Municipio.objects.get(pk=self.kwargs['municipio'])
             colonia = form.save(commit=False)
             colonia.municipio = municipio
             colonia.save()
@@ -1594,9 +1594,9 @@ class ColoniaAjaxList(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'id':
             return row.pk
         elif column == 'colonias':
-            return '<a class="" href ="' + reverse('administrador:edit_colonia',
+            return '<a class="" href ="' + reverse('administrador:list_cp',
                                                    kwargs={
-                                                       'pk': row.pk, 'municipio':self.kwargs['municipio']}) + '"><i class="material-icons">people</i></a>'
+                                                       'colonia':row.pk}) + '"><i class="material-icons">list</i></a>'
 
         return super(ColoniaAjaxList, self).render_column(row, column)
 
@@ -1669,7 +1669,7 @@ class CPColoniaAdd(PermissionRequiredMixin, CreateView):
         if 'titulo' not in context:
             context['titulo'] = 'Agregar una cp'
         if 'instrucciones' not in context:
-            context['instrucciones'] = 'Completa todos los campos para registrar un'
+            context['instrucciones'] = 'Completa todos los campos para registrar un código postal'
         return context
 
     def post(self, request, *args, **kwargs):
