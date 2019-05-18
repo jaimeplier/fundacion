@@ -139,17 +139,19 @@
         <div id="content">
             <div class="row fondo_naranja" style="margin-bottom: 0px;">
                 <div class="col s12" style="margin-left: 1%;">
-                    <a href="#" style="position: relative; top: 8px; right: 10px; color: white;"
-                       data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
-                    {% for ruta in rutas %}
-                     {% if ruta.nombre == "menu" %}
-                    <a href="{{ ruta.url }}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}"
-                                                           class="responsive-img" style="position: relative; top: 5px;"></a>
-                         {% else %}
-                    <a href="{{ ruta.url }}" class="breadcrumb font_blanco" style="font-size: 12px;">{{ ruta.nombre }}</a>
-
-                     {% endif %}
-                    {% endfor %}
+                    {% block navegador %}
+                        <a href="#" style="position: relative; top: 8px; right: 10px; color: white;"
+                           data-activates="slide-out" class="button-collapse hide-on-large-only"><i
+                                class="material-icons">menu</i></a>
+                        {% for ruta in rutas %}
+                            {% if ruta.nombre == "menu" %}
+                                <a href="{{ ruta.url }}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}"
+                                        class="responsive-img" style="position: relative; top: 5px;"></a>
+                            {% else %}
+                                <a href="{{ ruta.url }}" class="breadcrumb font_blanco" style="font-size: 12px;">{{ ruta.nombre }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endblock %}
                 </div>
             </div>
             {% block content %} {% endblock %}
