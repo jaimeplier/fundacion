@@ -4051,6 +4051,13 @@ class LineaNegocioAdd(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(LineaNegocioAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            aliado = Aliado.objects.get(pk=self.kwargs['aliado'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'Aliados', 'url': reverse('administrador:list_aliado')},
+                     {'nombre': 'Línea de negocio', 'url': reverse('administrador:list_linea_negocio', kwargs={'aliado':aliado.pk})}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -4130,6 +4137,13 @@ class LineaNegocioEdit(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(LineaNegocioEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            aliado = Aliado.objects.get(pk=self.kwargs['aliado'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'Aliados', 'url': reverse('administrador:list_aliado')},
+                     {'nombre': 'Línea de negocio', 'url': reverse('administrador:list_linea_negocio', kwargs={'aliado':aliado.pk})}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
