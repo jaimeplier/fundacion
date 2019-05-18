@@ -108,7 +108,6 @@
                     <li class="menu_redondo"><a
                             href="{% url 'administrador:list_acude_institucion' %}">Instituciones</a>
                     </li>
-                    <li class="menu_redondo"><a href="#">Estadísticas</a></li>
 
                 {% elif user.is_consejero %}
                     <li class="menu_redondo"><a href="{% url 'consejero:busqueda_usuario' %}">Buscar usuario</a></li>
@@ -121,7 +120,6 @@
                     <li class="menu_redondo"><a
                             href="{% url 'administrador:list_acude_institucion' %}">Instituciones</a>
                     </li>
-                    <li class="menu_redondo"><a href="#">Estadísticas</a></li>
                 {% elif user.is_directorio %}
                     <li class="menu_redondo"><a
                             href="{% url 'administrador:list_acude_institucion' %}">Instituciones</a>
