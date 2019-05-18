@@ -751,6 +751,13 @@ class EstadoAdd(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(EstadoAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            pais = Pais.objects.get(pk=self.kwargs['pais'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'País', 'url': reverse('administrador:list_pais')},
+                     {'nombre': 'Estado', 'url': reverse('administrador:list_estado', kwargs={'pais': pais.pk})}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -835,6 +842,13 @@ class EstadoEdit(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(EstadoEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            pais = Pais.objects.get(pk=self.kwargs['pais'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'País', 'url': reverse('administrador:list_pais')},
+                     {'nombre': 'Estado', 'url': reverse('administrador:list_estado', kwargs={'pais': pais.pk})}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
