@@ -4388,12 +4388,19 @@ class CategoriaTipificacionAdd(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CategoriaTipificacionAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            tipificacion = Tipificacion.objects.get(pk=self.kwargs['tipificacion'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'Tipificaciones', 'url': reverse('administrador:list_tipificacion')},
+                     {'nombre': 'Categorías', 'url': reverse('administrador:list_categoria_tipificacion', kwargs={'tipificacion':tipificacion.pk})}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
-            context['titulo'] = 'Agregar una subcategoría a la tipificación'
+            context['titulo'] = 'Agregar una categoría a la tipificación'
         if 'instrucciones' not in context:
-            context['instrucciones'] = 'Completa todos los campos para registrar un'
+            context['instrucciones'] = 'Completa todos los campos para registrar una categoria'
         if 'save_and_new' not in context:
             context['save_and_new'] = 'Guardar y nuevo'
 
@@ -4481,6 +4488,13 @@ class CategoriaTipificacionEdit(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(CategoriaTipificacionEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            tipificacion = Tipificacion.objects.get(pk=self.kwargs['tipificacion'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'Tipificaciones', 'url': reverse('administrador:list_tipificacion')},
+                     {'nombre': 'Categorías', 'url': reverse('administrador:list_categoria_tipificacion', kwargs={'tipificacion':tipificacion.pk})}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
