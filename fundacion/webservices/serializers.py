@@ -2,7 +2,8 @@ from rest_framework import serializers
 
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, Evaluacion, \
     CalificacionLlamada, TareaLLamada, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
-    EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio, Tutor
+    EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio, Tutor, CPColonia, Colonia, Municipio, Estado, \
+    Pais
 
 
 class FechaSerializer(serializers.Serializer):
@@ -32,6 +33,35 @@ class TutorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tutor
         fields = ['pk', 'nombre']
+
+class PaisSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pais
+        fields = ['pk', 'nombre']
+
+class EstadoSerializer(serializers.ModelSerializer):
+    pais = PaisSerializer()
+    class Meta:
+        model = Estado
+        fields = ['pk', 'nombre', 'pais']
+
+class MunicipioSerializer(serializers.ModelSerializer):
+    estado = EstadoSerializer()
+    class Meta:
+        model = Municipio
+        fields = ['pk', 'nombre', 'estado']
+
+class ColoniaSerializer(serializers.ModelSerializer):
+    municipio = MunicipioSerializer()
+    class Meta:
+        model = Colonia
+        fields = ['pk', 'nombre', 'municipio']
+
+class CPSerializer(serializers.ModelSerializer):
+    colonia = ColoniaSerializer()
+    class Meta:
+        model = CPColonia
+        fields = ['pk', 'codigo', 'colonia']
 
 class menorSerializer(serializers.Serializer):
     edad = serializers.IntegerField(min_value=0, max_value=17)
