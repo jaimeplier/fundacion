@@ -229,6 +229,10 @@ class DirectorioAdd(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(DirectorioAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Directorio', 'url': reverse('administrador:list_directorio')}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -309,6 +313,10 @@ class DirectorioEdit(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(DirectorioEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Directorio', 'url': reverse('administrador:list_directorio')}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
