@@ -100,6 +100,10 @@ class ConsejeroAdd(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ConsejeroAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Consejero', 'url': reverse('administrador:list_consejero')}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -179,6 +183,10 @@ class ConsejeroEdit(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ConsejeroEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Consejero', 'url': reverse('administrador:list_consejero')}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
