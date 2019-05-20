@@ -488,6 +488,10 @@ class CalidadAdd(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CalidadAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Calidad', 'url': reverse('administrador:list_calidad')}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -567,6 +571,10 @@ class CalidadEdit(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(CalidadEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Calidad', 'url': reverse('administrador:list_calidad')}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
