@@ -14,7 +14,12 @@
     </style>
 {% endblock %}
 
-
+{% block navegador %}
+    <a href="#" style="position: relative; top: 8px; right: 10px; color: white;"
+       data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
+    <a href="{% url 'webapp:index' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
+    <a href="{% url 'webapp:ver_recados' %}" class="breadcrumb font_blanco" style="font-size: 12px;">Recados</a>
+{% endblock %}
 {% block content %}
 
         <div class="row fondo_blanco" style="padding-top: 5%;">
