@@ -87,7 +87,17 @@ class PendienteAdd(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(PendienteAdd, self).get_context_data(**kwargs)
         if 'rutas' not in context:
-            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+            if self.request.user.is_consejero:
+                menu = reverse('consejero:busqueda_usuario')
+            elif self.request.user.is_supervisor:
+                menu = reverse('supervisor:resumen')
+            elif self.request.user.is_directorio:
+                menu = reverse('administrador:list_acude_institucion')
+            elif self.request.user.is_calidad:
+                menu = reverse('calidad:list_evaluacion')
+            else:
+                menu = reverse('webapp:index')
+            rutas = [{'nombre': 'menu', 'url': menu},
                      {'nombre': 'Pendientes', 'url': reverse('webapp:list_pendiente')}]
             context['rutas'] = rutas
         if 'form' not in context:
@@ -182,7 +192,17 @@ class PendienteEdit(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(PendienteEdit, self).get_context_data(**kwargs)
         if 'rutas' not in context:
-            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+            if self.request.user.is_consejero:
+                menu = reverse('consejero:busqueda_usuario')
+            elif self.request.user.is_supervisor:
+                menu = reverse('supervisor:resumen')
+            elif self.request.user.is_directorio:
+                menu = reverse('administrador:list_acude_institucion')
+            elif self.request.user.is_calidad:
+                menu = reverse('calidad:list_evaluacion')
+            else:
+                menu = reverse('webapp:index')
+            rutas = [{'nombre': 'menu', 'url': menu},
                      {'nombre': 'Pendientes', 'url': reverse('webapp:list_pendiente')}]
             context['rutas'] = rutas
         if 'form' not in context:
