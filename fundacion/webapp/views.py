@@ -86,6 +86,10 @@ class PendienteAdd(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(PendienteAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Pendientes', 'url': reverse('webapp:list_pendiente')}]
+            context['rutas'] = rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -177,6 +181,10 @@ class PendienteEdit(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(PendienteEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Pendientes', 'url': reverse('webapp:list_pendiente')}]
+            context['rutas'] = rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
