@@ -2627,6 +2627,13 @@ class ContactoInstitucionAdd(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ContactoInstitucionAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            institucion = AcudeInstitucion.objects.get(pk=self.kwargs['institucion'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Institución', 'url': reverse('administrador:list_acude_institucion')},
+                     {'nombre': 'Contacto', 'url': reverse('administrador:list_contacto_institucion',
+                                                           kwargs={'institucion': institucion.pk})}]
+            context['rutas'] = rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -2716,6 +2723,13 @@ class ContactoInstitucionEdit(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(ContactoInstitucionEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            institucion = AcudeInstitucion.objects.get(pk=self.kwargs['institucion'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Institución', 'url': reverse('administrador:list_acude_institucion')},
+                     {'nombre': 'Contacto', 'url': reverse('administrador:list_contacto_institucion',
+                                                           kwargs={'institucion': institucion.pk})}]
+            context['rutas'] = rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
