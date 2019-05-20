@@ -46,6 +46,11 @@
         }
     </style>
 {% endblock %}
+{% block navegador %}
+    <a href="#" style="position: relative; top: 8px; right: 10px; color: white;"
+       data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
+    <a href="{% url 'consejero:busqueda_usuario' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
+{% endblock %}
 
 {% block content %}
     <div class="row fondo_blanco" style="padding-top: 10%;">
