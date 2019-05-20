@@ -343,6 +343,10 @@ class SupervisorAdd(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(SupervisorAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Supervisor', 'url': reverse('administrador:list_supervisor')}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -422,6 +426,10 @@ class SupervisorEdit(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(SupervisorEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Supervisor', 'url': reverse('administrador:list_supervisor')}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
