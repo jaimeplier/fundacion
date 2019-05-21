@@ -619,7 +619,15 @@ class AcudeInstitucionAdd(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(AcudeInstitucionAdd, self).get_context_data(**kwargs)
         if 'rutas' not in context:
-            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+            if self.request.user.is_consejero:
+                menu = reverse('consejero:busqueda_usuario')
+            elif self.request.user.is_supervisor:
+                menu = reverse('supervisor:resumen')
+            elif self.request.user.is_directorio:
+                menu = reverse('administrador:list_acude_institucion')
+            else:
+                menu = reverse('webapp:index')
+            rutas = [{'nombre': 'menu', 'url': menu},
                      {'nombre': 'Institución', 'url': reverse('administrador:list_acude_institucion')}]
             context['rutas']= rutas
         if 'form' not in context:
@@ -737,7 +745,15 @@ class AcudeInstitucionEdit(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(AcudeInstitucionEdit, self).get_context_data(**kwargs)
         if 'rutas' not in context:
-            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+            if self.request.user.is_consejero:
+                menu = reverse('consejero:busqueda_usuario')
+            elif self.request.user.is_supervisor:
+                menu = reverse('supervisor:resumen')
+            elif self.request.user.is_directorio:
+                menu = reverse('administrador:list_acude_institucion')
+            else:
+                menu = reverse('webapp:index')
+            rutas = [{'nombre': 'menu', 'url': menu},
                      {'nombre': 'Institución', 'url': reverse('administrador:list_acude_institucion')}]
             context['rutas']= rutas
         if 'form' not in context:
@@ -2628,8 +2644,16 @@ class ContactoInstitucionAdd(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(ContactoInstitucionAdd, self).get_context_data(**kwargs)
         if 'rutas' not in context:
+            if self.request.user.is_consejero:
+                menu = reverse('consejero:busqueda_usuario')
+            elif self.request.user.is_supervisor:
+                menu = reverse('supervisor:resumen')
+            elif self.request.user.is_directorio:
+                menu = reverse('administrador:list_acude_institucion')
+            else:
+                menu = reverse('webapp:index')
             institucion = AcudeInstitucion.objects.get(pk=self.kwargs['institucion'])
-            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+            rutas = [{'nombre': 'menu', 'url': menu},
                      {'nombre': 'Institución', 'url': reverse('administrador:list_acude_institucion')},
                      {'nombre': 'Contacto', 'url': reverse('administrador:list_contacto_institucion',
                                                            kwargs={'institucion': institucion.pk})}]
@@ -2724,8 +2748,16 @@ class ContactoInstitucionEdit(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(ContactoInstitucionEdit, self).get_context_data(**kwargs)
         if 'rutas' not in context:
+            if self.request.user.is_consejero:
+                menu = reverse('consejero:busqueda_usuario')
+            elif self.request.user.is_supervisor:
+                menu = reverse('supervisor:resumen')
+            elif self.request.user.is_directorio:
+                menu = reverse('administrador:list_acude_institucion')
+            else:
+                menu = reverse('webapp:index')
             institucion = AcudeInstitucion.objects.get(pk=self.kwargs['institucion'])
-            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+            rutas = [{'nombre': 'menu', 'url': menu},
                      {'nombre': 'Institución', 'url': reverse('administrador:list_acude_institucion')},
                      {'nombre': 'Contacto', 'url': reverse('administrador:list_contacto_institucion',
                                                            kwargs={'institucion': institucion.pk})}]
@@ -2761,8 +2793,16 @@ class SucursalInstitucionAdd(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(SucursalInstitucionAdd, self).get_context_data(**kwargs)
         if 'rutas' not in context:
+            if self.request.user.is_consejero:
+                menu = reverse('consejero:busqueda_usuario')
+            elif self.request.user.is_supervisor:
+                menu = reverse('supervisor:resumen')
+            elif self.request.user.is_directorio:
+                menu = reverse('administrador:list_acude_institucion')
+            else:
+                menu = reverse('webapp:index')
             institucion = AcudeInstitucion.objects.get(pk=self.kwargs['institucion'])
-            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+            rutas = [{'nombre': 'menu', 'url': menu},
                      {'nombre': 'Institución', 'url': reverse('administrador:list_acude_institucion')},
                      {'nombre': 'Sucursal', 'url': reverse('administrador:list_sucursal_institucion',
                                                            kwargs={'institucion': institucion.pk})}]
@@ -2883,8 +2923,16 @@ class SucursalInstitucionEdit(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(SucursalInstitucionEdit, self).get_context_data(**kwargs)
         if 'rutas' not in context:
+            if self.request.user.is_consejero:
+                menu = reverse('consejero:busqueda_usuario')
+            elif self.request.user.is_supervisor:
+                menu = reverse('supervisor:resumen')
+            elif self.request.user.is_directorio:
+                menu = reverse('administrador:list_acude_institucion')
+            else:
+                menu = reverse('webapp:index')
             institucion = AcudeInstitucion.objects.get(pk=self.kwargs['institucion'])
-            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+            rutas = [{'nombre': 'menu', 'url': menu},
                      {'nombre': 'Institución', 'url': reverse('administrador:list_acude_institucion')},
                      {'nombre': 'Sucursal', 'url': reverse('administrador:list_sucursal_institucion', kwargs={'institucion':institucion.pk})}]
             context['rutas']= rutas
