@@ -25,6 +25,10 @@ class EvaluacionAdd(PermissionRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(EvaluacionAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('calidad:list_evaluacion')},
+                     {'nombre': 'Rubros de evaluación', 'url': reverse('calidad:list_evaluacion')}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
@@ -91,6 +95,10 @@ class EvaluacionEdit(PermissionRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(EvaluacionEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('calidad:list_evaluacion')},
+                     {'nombre': 'Rubros de evaluación', 'url': reverse('calidad:list_evaluacion')}]
+            context['rutas']= rutas
         if 'form' not in context:
             context['form'] = self.form_class()
         if 'titulo' not in context:
