@@ -18,6 +18,8 @@
     <a href="{% url 'webapp:index' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
     {% elif user.is_supervisor %}
     <a href="{% url 'supervisor:resumen' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
+    {% elif user.is_directorio %}
+    <a href="{% url 'administrador:list_acude_institucion' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
     {% endif %}
     <a href="{% url 'administrador:list_acude_institucion'%}" class="breadcrumb font_blanco" style="font-size: 12px;">Institución</a>
 {% endblock %}
