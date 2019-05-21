@@ -1,0 +1,1025 @@
+{% extends 'config/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block style %}
+    <style type="text/css">
+        [type="radio"]:not(:checked) + label, [type="radio"]:checked + label {
+            padding-left: 24px;
+            padding-right: 43px;
+        }
+
+
+        [type="checkbox"] + label {
+            padding-left: 23px;
+            padding-right: 30px;
+        }
+
+        #datos_canalizacion {
+            display: none;
+        }
+
+        .tabs .tab a {
+            border: solid 1px #EF7F13;
+            color: black;
+        }
+
+        .tabs .tab a.active {
+            background-color: #EF7F13;
+            color: white;
+        }
+
+        .tabs .tab a:hover {
+            background-color: #6E6D6D;
+            color: white;
+            border: none;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+    </style>
+{% endblock %}
+{% block navegador %}
+    <a href="#" style="position: relative; top: 8px; right: 10px; color: white;"
+       data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
+    <a href="{% url 'calidad:list_evaluacion' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
+    <a href="{% url 'calidad:list_llamada' %}" class="breadcrumb font_blanco" style="font-size: 12px;">Servicios</a>
+{% endblock %}
+{% block content %}
+
+
+    <div id="content">
+
+        <div class="row fondo_blanco" style="padding-top: 10%;">
+            <div class="col s1 m1 l1"></div>
+            <div class="col s10 m10 l10" style="margin-top: 0px;">
+                <div class="row">
+                    <div class="col s12">
+                        <p class="negritas font_azul_verde center titulos">FORMULARIO SEGUIMIENTO <a href="#!">
+                            <img src="{% static 'imagenes/1/interrogacion.png' %}" class="responsive-img"></a></p>
+                    </div>
+                </div>
+                <div class="row" style="padding: 1%;">
+                    <div class="col s12" style="text-align: center;">
+                        <ul class="tabs">
+                            <li class="tab col s4"><a class="active" href="#test1">Calificación</a></li>
+                            <li class="tab col s4"><a href="#test2">Comentarios</a></li>
+                            <li class="tab col s4"><a href="#test3">Servicio</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="test1" class="col s12" style="margin-top: 40px;">
+                        <div class="row sin_marg_bottom">
+                        <table>
+                                <tr>
+                                    <th>Rubro</th>
+                                    <th>Comentarios</th>
+                                    <th>Check</th>
+                                </tr>
+                                {% for evaluacion in evaluaciones %}
+                                    <tr>
+                                        <td>{{ evaluacion.rubro.nombre }}</td>
+                                        {% if evaluacion.rubro.comentario %}
+                                        <td>{{ evaluacion.rubro.comentario|linebreaksbr }}</td>
+                                            {% else %}
+                                        <td>Sin comentarios</td>
+                                        {% endif %}
+                                        <td>
+                                            <div>
+                                                <p>
+                                                    {% if evaluacion.estatus_rubro %}
+                                                        <img src="{% static 'imagenes/3/aceptar.png' %}" class="responsive-img" style="position: relative; top: 5px;">
+                                                        {% else %}
+                                                        <img src="{% static 'imagenes/3/rechazar.png' %}" class="responsive-img" style="position: relative; top: 5px;">
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+
+                            </table>
+                        </div>
+                        <div class="row sin_marg_bottom">
+                            <button class="btn waves-effect waves-light col-lg-12" onclick="GuardarEvaluacion()">Guardar
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="test2" class="col s12" style="margin-top: 40px;">
+                        <div class="row sin_marg_bottom">
+                            <div class="col s12" style="margin-bottom: 20px;">
+                                <h5 class="font_gris_oscuro" style="text-align: center;">Comentarios</h5>
+                                <div class="row">
+                                    <div class="col s12" style="padding-top: 15px;">
+                                        <p style="text-align: center;">Comentarios</p>
+                                    </div>
+                                    <div class="input-field col s12">
+                                            <textarea id="comentario" class="materialize-textarea"
+                                                      placeholder="Comentarios"
+                                                      style="padding-left: 14px;" maxlength="3000"></textarea>
+                                    </div>
+
+                                </div>
+                                <div id="compromisos">
+
+                                    <div class="row">
+                                        <div class="input-field col s1">
+                                            <label>1.</label>
+                                        </div>
+                                        <div class="input-field col s11">
+                                            <input id="compromiso1" type="text" placeholder="Compromiso">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s1">
+                                            <label>2.</label>
+                                        </div>
+                                        <div class="input-field col s11">
+                                            <input id="compromiso2" type="text" placeholder="Compromiso">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s1">
+                                            <label>3.</label>
+                                        </div>
+                                        <div class="input-field col s11">
+                                            <input id="compromiso3" type="text" placeholder="Compromiso">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="input-field col s1">
+                                            <label>4.</label>
+                                        </div>
+                                        <div class="input-field col s11">
+                                            <input id="compromiso4" type="text" placeholder="Compromiso">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row sin_marg_bottom">
+                                    <button class="btn waves-effect waves-light col-lg-12"
+                                            onclick="GuardarComentarios()">Guardar
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="test3" class="col s12" style="margin-top: 40px;">
+                        <div class="row sin_marg_bottom">
+                            <div class="col s12" style="margin-bottom: 20px;">
+                                <h5 class="font_gris_oscuro" style="text-align: center;">
+                                    Servicio
+                                </h5>
+                            </div>
+                            <div class="row sin_marg_bottom">
+                                <div class="col s12">
+                                    <p class="font_naranja">
+                                        Línea Origen
+                                    </p>
+                                </div>
+                                <div class="col s12 txt_algn_center">
+                                    <div class="row">
+                                        <div class="col s12">
+                                            <p style="margin-top: 0px; text-align: center;">Tipo de Llamada</p>
+                                        </div>
+                                    </div>
+                                    <div id="tipo_llamada" class="row">
+                                    </div>
+                                </div>
+
+                                <form class="col s12">
+                                    <div class="row">
+                                        <div class="col s12" style="padding-top: 15px;">
+                                            <p style="text-align: center;">Motivo de consulta</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col s12 txt_algn_center">
+                                        <div class="col s3"></div>
+                                        <div class="col s6">
+                                            <div class="row">
+                                                <div class="col s12">
+                                                    <p style="text-align: center;">¿Cómo se enteró?</p>
+                                                </div>
+                                                <div class="input-field col s12 m12 l12">
+                                                    <select id="como_se_entero">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col s3"></div>
+                                    </div>
+                                </form>
+                                <div class="col s12 txt_algn_center">
+                                    <div class="row">
+                                        <div class="col s3"></div>
+                                            <div class="col s6">
+                                                <div class="row">
+                                                    <div class="col s12">
+                                                        <p style="text-align: center;"> Tipificación</p>
+                                                    </div>
+                                                    <div class="input-field col s12 m12 l12">
+                                                        <select id="tipificaciones" onchange="CargarCatTipificacion()">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col s3"></div>
+                                    </div>
+                                    <form action="#">
+                                        <p style="text-align: center;" id="categoria_tipificacion">
+
+                                        </p>
+
+                                        <div class="row">
+                                            <div class="col s12 txt_algn_center">
+                                                <div class="col s3"></div>
+                                                <div class="col s6">
+                                                    <div class="row">
+                                                        <div class="col s12">
+                                                            <p style="text-align: center;">Nivel de riesgo</p>
+                                                        </div>
+                                                        <div class="input-field col s12 m12 l12">
+                                                            <select id="nivel_riesgo">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col s3"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col s12" style="padding-top: 15px;">
+                                                <p style="text-align: center;">Fortalezas</p>
+                                            </div>
+                                            <div class="input-field col s12">
+                                            <textarea id="f" class="materialize-textarea"
+                                                      placeholder="Fortalezas"
+                                                      style="padding-left: 14px;" maxlength="4096"></textarea>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s12" style="padding-top: 15px;">
+                                                <p style="text-align: center;">Recursos</p>
+                                            </div>
+                                            <div class="input-field col s12">
+                                            <textarea id="o" class="materialize-textarea"
+                                                      placeholder="Recursos"
+                                                      style="padding-left: 14px;" maxlength="4096"></textarea>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s12" style="padding-top: 15px;">
+                                                <p style="text-align: center;">Debilidades</p>
+                                            </div>
+                                            <div class="input-field col s12">
+                                            <textarea id="d" class="materialize-textarea"
+                                                      placeholder="Debilidades"
+                                                      style="padding-left: 14px;" maxlength="4096"></textarea>
+
+                                            </div>
+                                        </div>
+                                        <p style="text-align: center;">
+                                            <!--
+                                            <input type="checkbox" id="tp5"/>
+                                            <label for="tp5">Checkbox</label>
+                                            -->
+
+                                        </p>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <select id="fase_cambio">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s12" style="padding-top: 15px;">
+                                    <p style="text-align: center;">Examen de salud mental</p>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select id="em_ute">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select id="em_p">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select id="em_l">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select id="em_m">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12">
+                                    <select id="em_a">
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="row sin_marg_bottom">
+                                <div class="input-field col s12 m6 l6">
+                                    <select id="modalidad_violencia">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12 m6 l6">
+                                    <select id="tipos_violencia">
+
+                                    </select>
+                                </div>
+                                <div class="input-field col s12 m6 l6">
+                                    <select id="violentometro">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12 m6 l6">
+                                    <select id="victimas">
+                                    </select>
+                                </div>
+                                <div class="input-field col s12 m6 l6">
+                                    <select id="agresor">
+                                    </select>
+                                </div>
+                                <div class=" input-field col s12 m6 l6">
+                                    <select id="medio_contacto">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row sin_marg_bottom">
+                                <form class="col s12">
+                                    <div class="row">
+                                        <div class="col s12" style="padding-top: 15px;">
+                                            <p style="text-align: center;">¿Qué acciones tiene que realizar para la
+                                                siguiente llamada?</p>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <textarea id="plan_accion" class="materialize-textarea"
+                                                      placeholder="Plan de acción"
+                                                      style="padding-left: 14px;"></textarea>
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row sin_marg_bottom">
+                                <div class="col s12">
+                                    <p style="text-align: center;">Tareas o actividades recomendadas</p>
+                                </div>
+                                {% for tarea in tareas %}
+                                    <div class="input-field col s12">
+                                        <input id="{{ tarea.nombre }}{{ tarea.pk }}" type="text"
+                                               placeholder="Tarea {{ tarea.nombre }}" value="{{ tarea.nombre }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="row sin_marg_bottom">
+                                <div class="col s12">
+                                    <p>
+                                        <input type="checkbox" id="datos_c"/>
+                                        <label for="datos_c" style="color:#EF7F13!important">¿Requiere
+                                            canalización?</label>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row sin_marg_bottom" id="datos_canalizacion">
+                                <div class="col s12">
+                                    <p style="text-align: center;">Canalizar a:</p>
+                                </div>
+                                <div class="input-field col s12 m12 l12">
+                                    <select id="instituciones">
+                                    </select>
+                                </div>
+                            </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="col s1 m1 l1"></div>
+    </div>
+{% endblock %}
+
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'js/crsfajax.js' %}"></script>
+    <script type="text/javascript">
+        var victima = {{ victima.pk }}
+            $(document).ready(function () {
+                $('select').material_select();
+                $('.button-collapse').sideNav({
+                        menuWidth: 300, // Default is 300
+                        edge: 'left', // Choose the horizontal origin
+                        closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+                        draggable: true // Choose whether you can drag to open on touch screens,
+                    }
+                );
+
+                $('.datepicker').on('mousedown', function (event) {
+                    event.preventDefault();
+                });
+                $('.timepicker').on('mousedown', function (event) {
+                    event.preventDefault();
+                });
+
+                $('.datepicker').pickadate({
+                    selectMonths: true, // Creates a dropdown to control month
+                    selectYears: 100,
+                    min: [1939, 1, 1],
+                    max: [2019, 1, 31],
+                    format: 'yyyy-mm-dd',
+                    today: 'Today',
+                    clear: 'Clear',
+                    close: 'Ok',
+                    closeOnSelect: false, // Close upon selecting a date,
+                    container: undefined // ex. 'body' will append picker to body
+                });
+
+                $('ul.tabs').tabs();
+
+
+                $('#datos_c').change(function () {
+                    if (!$(this).prop('checked')) {
+                        $('#datos_canalizacion').hide();
+                    } else {
+                        $('#datos_canalizacion').show();
+                    }
+
+                })
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_tipos_violencia' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#tipos_violencia").empty().html(' ');
+                        $('#tipos_violencia').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Tipo de violencia")
+                        );
+                        for (i in json) {
+                            $('#tipos_violencia').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        try {
+                            $("#tipos_violencia").val({{ object.tipo_violencia_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        $('#tipos_violencia').material_select();
+                    }
+                });
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_motivo_de_llamada' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        for (i in json) {
+                            $('#tipo_llamada').append('<div class="col s4">' +
+                                                       '<input class="with-gap" name="motivo_llamada" type="radio" value="' + json[i].pk + '" id="tl' + json[i].pk + '"/>' +
+                                                       '<label for="tl' + json[i].pk + '">' + json[i].nombre + '</label>' +
+                                                      '</div>');
+                        }
+                        $('#tl{{ object.tipo_llamada.pk }}').prop('checked', true)
+                    }
+                });
+
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_tipificaciones' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#tipificaciones").empty().html(' ');
+                        $('#tipificaciones').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Tipificaciones")
+                        );
+                        for (i in json) {
+                            $('#tipificaciones').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#tipificaciones').val({{ tipificacion.categoria_tipificacion.pk }})
+                        $('#tipificaciones').material_select();
+                    }
+                });
+
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_nivel_riesgo' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#nivel_riesgo").empty().html(' ');
+                        $('#nivel_riesgo').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Nivel de riesgo")
+                        );
+                        for (i in json) {
+                            $('#nivel_riesgo').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        if ('{{ object.nivel_riesgo_id }}' == 'None') {
+                        } else {
+                            $("#nivel_riesgo").val({{ object.nivel_riesgo_id }})
+                        }
+                        $('#nivel_riesgo').material_select();
+                    }
+                });
+                if ('{{ object.f }}' == 'None') {
+                } else {
+                    $("#f").val('{{ object.f }}');
+                }
+                if ('{{ object.recursos }}' == 'None') {
+                } else {
+                    $("#o").val('{{ object.recursos }}');
+                }
+                if ('{{ object.intervencion }}' == 'None') {
+                } else {
+                    $("#d").val('{{ object.intervencion }}');
+                }
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_fase_cambio' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#fase_cambio").empty().html(' ');
+                        $('#fase_cambio').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Fase de cambio")
+                        );
+                        for (i in json) {
+                            $('#fase_cambio').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        if ('{{ object.fase_cambio_id }}' == 'None') {
+                        } else {
+
+                            $("#fase_cambio").val({{ object.fase_cambio_id }})
+                        }
+                        $('#fase_cambio').material_select();
+                    }
+                });
+
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_estado_mental' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#em_ute").empty().html(' ');
+                        $("#em_p").empty().html(' ');
+                        $("#em_l").empty().html(' ');
+                        $("#em_m").empty().html(' ');
+                        $("#em_a").empty().html(' ');
+
+                        $('#em_ute').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("UTE")
+                        );
+                        for (i in json) {
+                            $('#em_ute').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+
+                        $('#em_p').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("P")
+                        );
+                        for (i in json) {
+                            $('#em_p').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+
+                        $('#em_l').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("L")
+                        );
+                        for (i in json) {
+                            $('#em_l').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+
+                        $('#em_m').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("M")
+                        );
+                        for (i in json) {
+                            $('#em_m').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+
+                        $('#em_a').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("A")
+                        );
+                        for (i in json) {
+                            $('#em_a').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        try {
+                            $("#em_ute").val({{ examen_mental.ute.pk }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        try {
+                            $("#em_p").val({{ examen_mental.p.pk }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        try {
+                            $("#em_l").val({{ examen_mental.l.pk }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        try {
+                            $("#em_m").val({{ examen_mental.m.pk }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        try {
+                            $("#em_a").val({{ examen_mental.a.pk }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        $('#em_ute').material_select();
+                        $('#em_p').material_select();
+                        $('#em_l').material_select();
+                        $('#em_m').material_select();
+                        $('#em_a').material_select();
+                    }
+                });
+
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_modalidad_violencia' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#modalidad_violencia").empty().html(' ');
+                        $('#modalidad_violencia').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Modalidad")
+                        );
+                        for (i in json) {
+                            $('#modalidad_violencia').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        try {
+                            $("#modalidad_violencia").val({{ object.modalidad_violencia_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        $('#modalidad_violencia').material_select();
+                    }
+                });
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_violentometro' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#violentometro").empty().html(' ');
+                        $('#violentometro').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Violentometro")
+                        );
+                        for (i in json) {
+                            $('#violentometro').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        try {
+                            $("#violentometro").val({{ object.violentometro_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        $('#violentometro').material_select();
+                    }
+                });
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_victimas' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#victimas").empty().html(' ');
+                        $('#victimas').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Victimas")
+                        );
+                        for (i in json) {
+                            $('#victimas').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        try {
+                            $("#victimas").val({{ object.victima_involucrada_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        $('#victimas').material_select();
+                    }
+                });
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_agresor' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#agresor").empty().html(' ');
+                        $('#agresor').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Agresor")
+                        );
+                        for (i in json) {
+                            $('#agresor').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        try {
+                            $("#agresor").val({{ object.agresor_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        $('#agresor').material_select();
+                    }
+                });
+
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_medio_contacto' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#medio_contacto").empty().html(' ');
+                        $('#medio_contacto').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Medio de contacto")
+                        );
+                        for (i in json) {
+                            $('#medio_contacto').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        try {
+                            $("#medio_contacto").val({{ object.medio_contacto_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        $('#medio_contacto').material_select();
+                    }
+                });
+
+                if ('{{ object.posible_solucion }}' == 'None') {
+                } else {
+                    $("#plan_accion").val('{{ object.posible_solucion }}');
+                }
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_instituciones' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#instituciones").empty().html(' ');
+                        $('#instituciones').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Institución")
+                        );
+                        for (i in json) {
+                            $('#instituciones').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        try {
+                            $("#instituciones").val({{ object.institucion_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        $('#instituciones').material_select();
+                    }
+                });
+
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_como_se_entero' %}",
+                    cache: false,
+                    success: function (json) {
+
+                        $("#como_se_entero").empty().html(' ');
+                        $('#como_se_entero').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Cómo se enteró")
+                        );
+                        for (i in json) {
+                            $('#como_se_entero').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        try {
+                            $("#como_se_entero").val({{ object.como_se_entero_id }});
+                        } catch (e) {
+                            console.log(e.message)
+                        }
+                        $('#como_se_entero').material_select();
+                    }
+                });
+
+
+            });
+
+
+        function CargarCatTipificacion() {
+            var tipificacion = $('#tipificaciones').val();
+            $('#categoria_tipificacion').empty().html(' ');
+            if (tipificacion !== '') {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_tipificaciones_categorias' %}?tipificacion=" + tipificacion,
+                    cache: false,
+                    success: function (json) {
+
+                        for (i in json) {
+                            $('#categoria_tipificacion').append('<input class="with-gap" name="categoria_tipificacion" type="radio" value="' + json[i].pk + '" id="tic' + json[i].pk + '"/><label for="tic' + json[i].pk + '">' + json[i].nombre + '</label>');
+                        }
+                    }
+                });
+            }
+        }
+
+        function GuardarEvaluacion() {
+            var llamada = {{ object.pk }}
+            var num_totales = $('.rubro').length;
+            var num_rubros_cumplidos = $('.rubro:checkbox:checked').length;
+            var rubros_cumplidos = $('.rubro:checkbox:checked');
+            var array_rubros = []
+            for (i = 0; i < num_rubros_cumplidos; i++) {
+                console.log(i);
+                array_rubros.push(parseInt(rubros_cumplidos[i].value))
+            }
+
+
+            $.ajax({
+                data_type: 'json',
+                traditional: true,
+                method: "POST",
+                url: "{% url 'webservices:evaluar_servicio' %}",
+                cache: false,
+                data: {
+                    llamada: llamada,
+                    rubros: array_rubros,
+                },
+                success: function (json) {
+                    alert('La evaluación ha sido guardada correctamente');
+                },
+                error: function (request) {
+                    alert(request.responseText);
+                    var error = request
+                }
+            });
+
+
+        }
+
+        function GuardarComentarios() {
+            var llamada = {{ object.pk }}
+            var comentario = $('#comentario').val();
+            var compromisos = []
+            console.log($('#compromisos input[type="text"]').filter(function () {
+                if (this.value.length > 0) {
+                    compromisos.push(this.value)
+                }
+            }).length);
+
+            $.ajax({
+                data_type: 'json',
+                traditional: true,
+                method: "POST",
+                url: "{% url 'webservices:comentarios_servicio' %}",
+                cache: false,
+                data: {
+                    llamada_pk: llamada,
+                    comentario: comentario,
+                    compromisos: compromisos,
+                },
+                success: function (json) {
+                    alert('Los comentarios han sido guardados correctamente');
+                },
+                error: function (request) {
+                    alert(request.responseText);
+                    var error = request
+                }
+            });
+
+
+        }
+    </script>
+{% endblock %}
+
+

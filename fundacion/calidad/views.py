@@ -10,7 +10,7 @@ from django.views.generic import CreateView, UpdateView,DetailView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from calidad.forms import EvaluacionForm
-from config.models import Evaluacion, Llamada, TipificacionLLamada, ExamenMental
+from config.models import Evaluacion, Llamada, TipificacionLLamada, ExamenMental, CalificacionLlamada
 
 
 class EvaluacionAdd(PermissionRequiredMixin, CreateView):
@@ -160,8 +160,8 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
             return 'Sin medio de contacto'
         elif column == 'calificacion':
             if row.calificacion is not None:
-                return row.calificacion
-            return '<a href="'+ reverse('calidad:calificar_servicio', kwargs={'pk': row.pk}) +'"> Calificar</a>'
+                return '<a href="'+ reverse('calidad:ver_servicio', kwargs={'pk': row.pk})+'">' + str(row.calificacion) + '</a>'
+            return '<a href="'+ reverse('calidad:calificar_servicio', kwargs={'pk': row.pk}) + '">Calificar</a>'
 
         return super(LlamadaAjaxList, self).render_column(row, column)
 
@@ -192,4 +192,26 @@ class CalificarServicio(PermissionRequiredMixin, DetailView):
         context['examen_mental'] = examen_mental
         context['rubros'] = rubros
         context['tareas'] = servicio.tareas.all()
+        return context
+
+class VerServicio(PermissionRequiredMixin, DetailView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'calidad'
+    model = Llamada
+    template_name = 'calidad/ver_servicio.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(VerServicio, self).get_context_data(**kwargs)
+        servicio = Llamada.objects.get(pk=self.kwargs['pk'])
+        tipificacion = TipificacionLLamada.objects.filter(llamada=servicio).first()
+        examen_mental = ExamenMental.objects.filter(llamada=servicio).first()
+        rubros = Evaluacion.objects.all()
+        evaluacion = CalificacionLlamada.objects.filter(llamada=servicio)
+        context['servicio'] = servicio
+        context['tipificacion'] = tipificacion
+        context['examen_mental'] = examen_mental
+        context['rubros'] = rubros
+        context['tareas'] = servicio.tareas.all()
+        context['evaluaciones'] = evaluacion
         return context
