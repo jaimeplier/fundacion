@@ -200,8 +200,8 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'supervisor'
 
     model = Llamada
-    columns = ['id', 'victima.nombre', 'nombre', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'instituciones', 'medio_contacto']
-    order_columns = ['id', 'victima__nombre', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', 'estatus', '', 'medio_contacto']
+    columns = ['id', 'victima.nombre', 'nombre', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'instituciones', 'medio_contacto.nombre']
+    order_columns = ['id', 'victima__nombre', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', 'estatus', '', 'medio_contacto.nombre']
     max_display_length = 100
     settingstime_zone = timezone(settings.TIME_ZONE)
 
