@@ -8,7 +8,7 @@ from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, Tipo
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     VictimaInvolucrada, Agresor, RedesApoyo, MedioContacto, NivelRiesgo, \
     RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
-    Consejero, Tutor, CPColonia
+    Consejero, Tutor, CPColonia, EstadoCivil
 from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer, TutorSerializer, \
     CPSerializer
 
@@ -308,4 +308,14 @@ class ListDatosCP(ListAPIView):
         queryset = CPColonia.objects.none()
         if cp is not None:
             queryset = CPColonia.objects.filter(codigo=cp)
+        return queryset
+
+class ListEstadoCivil(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = CatalogoSerializer
+
+    def get_queryset(self):
+        queryset = EstadoCivil.objects.filter(estatus=True)
         return queryset
