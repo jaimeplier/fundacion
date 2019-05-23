@@ -1411,7 +1411,8 @@
             var tarea1 = $('#tarea1').val();
             var tarea2 = $('#tarea2').val();
             var tarea3 = $('#tarea3').val();
-            var aliado, linea_negocio = null;
+            var aliado =null;
+            var linea_negocio = null;
             if ($("#es_aliado").prop('checked')) {
                 aliado = $("#aliado").val();
                 linea_negocio = $("#linea_negocio").val();
@@ -1429,9 +1430,9 @@
             }
             console.log('victimas', victimas_menores);
 
-            var tipificacion1, tipificacion2, tipificacion3 = null;
-            var categoria_tipificacion1, categoria_tipificacion2, categoria_tipificacion3 = null;
-            var subcategoria_tipificacion1, subcategoria_tipificacion2, subcategoria_tipificacion3 = null;
+            var tipificacion1 = null, tipificacion2 = null, tipificacion3 = null;
+            var categoria_tipificacion1 = null, categoria_tipificacion2 = null, categoria_tipificacion3 = null;
+            var subcategoria_tipificacion1 = null, subcategoria_tipificacion2 = null, subcategoria_tipificacion3 = null;
 
             switch (num_tipificaciones) {
                 case 1:
@@ -1461,59 +1462,35 @@
                     categoria_tipificacion3 = $("input[name='categoria_tipificacion3']:checked").val();
                     subcategoria_tipificacion3 = $('#subcategoria3').val();
                     break;
+                default:
+                    break;
             }
+
+            if (typeof tipificacion1 === "undefined") tipificacion1 = null;
+            if (typeof tipificacion2 === "undefined") tipificacion2 = null;
+            if (typeof tipificacion3 === "undefined") tipificacion3 = null;
+            if (typeof categoria_tipificacion1 === "undefined") categoria_tipificacion1 = null;
+            if (typeof categoria_tipificacion2 === "undefined") categoria_tipificacion2 = null;
+            if (typeof categoria_tipificacion3 === "undefined") categoria_tipificacion3 = null;
+            if (typeof subcategoria_tipificacion1 === "undefined") subcategoria_tipificacion1 = null;
+            if (typeof subcategoria_tipificacion2 === "undefined") subcategoria_tipificacion2 = null;
+            if (typeof subcategoria_tipificacion3 === "undefined") subcategoria_tipificacion3 = null;
 
             var devolver_llamada = false;
             {% if consejero.tipo_usuario.pk == 1 %}
                 devolver_llamada = $('#devolver_llamada').prop('checked'); //Esta seleccionado devolver llamada
             {% endif %}
 
-
-            /*
-var nivel_riesgo = $('#nivel_riesgo').val(1);
-var f = $('#f').val("Fortalezas de prueba");
-var debilidades = $('#debilidades').val("fortalezas de prueba");
-var amenazas = $('#amenazas').val("amenazas de prueba");
-var recursos = $('#recursos').val("Recursos de prueba");
-var intervencion = $('#intervencion').val("Intervencion de prueba");
-var estado_mental_ute = $('#em_ute').val(1);
-var estado_mental_p = $('#em_p').val(2);
-var estado_mental_l = $('#em_l').val(3);
-var estado_mental_m = $('#em_m').val(1);
-var estado_mental_a = $('#em_a').val(2);
-var fase_cambio = $('#fase_cambio').val(2);
-var modalidad_violencia = $('#modalidad_violencia').val(1);
-var tipo_violencia = $('#tipos_violencia').val(1);
-var violentometro = $('#violentometro').val(1);
-var victimas = $('#victimas').val(1);
-var agresor = $('#agresor').val(1);
-var medio_conatacto = $('#medio_contacto').val(1);
-var plan_accion = $('#plan_accion').val("plan de accion de prueba");
-
-var como_se_entero = $('#como_se_entero').val(2);
-
-var tarea1 = $('#tarea1').val("Tarea de prueba 1");
-var tarea2 = $('#tarea2').val("Tarea de prueba 2");
-var tarea3 = $('#tarea3').val("Tarea de prueba 3");
-
-tipificacion1 = $('#tipificaciones1').val(1);
-var motivo_llamada = $("#tl9").prop('checked', true);
-
-categoria_tipificacion1 = $("#tic63_1").prop('checked', true);
-
-$('select').material_select();
-*/
-
          const rawData = {
                     victima: victima,
-                    motivo_llamada: "" ? motivo_llamada : null,
+                    motivo_llamada: "" ? null : motivo_llamada,
                     categoria_tipificacion1: categoria_tipificacion1,
-                    categoria_tipificacion2: "" ? categoria_tipificacion2 : null,
-                    categoria_tipificacion3: "" ? categoria_tipificacion3 : null,
-                    subcategoria_tipificacion1: "" ? subcategoria_tipificacion1 : null,
-                    subcategoria_tipificacion2: "" ? subcategoria_tipificacion2 : null,
-                    subcategoria_tipificacion3: "" ? subcategoria_tipificacion3 : null,
-                    nivel_riesgo: "" ? nivel_riesgo: null,
+                    categoria_tipificacion2: categoria_tipificacion2,
+                    categoria_tipificacion3: categoria_tipificacion3,
+                    subcategoria_tipificacion1: subcategoria_tipificacion1,
+                    subcategoria_tipificacion2: subcategoria_tipificacion2,
+                    subcategoria_tipificacion3: subcategoria_tipificacion3,
+                    nivel_riesgo: "" ? null : nivel_riesgo,
                     f: f,
                     debilidades: debilidades,
                     amenazas: amenazas,
@@ -1524,35 +1501,33 @@ $('select').material_select();
                     estado_mental_l: estado_mental_l,
                     estado_mental_m: estado_mental_m,
                     estado_mental_a: estado_mental_a,
-                    fase_cambio: "" ?  fase_cambio : null,
-                    modalidad_violencia: "" ? modalidad_violencia : null,
-                    tipo_violencia: "" ? tipo_violencia : null,
-                    violentometro: "" ? violentometro : null,
-                    victimas: "" ? victimas : null,
-                    agresor:  "" ? agresor : null,
+                    fase_cambio: "" ? null :  fase_cambio,
+                    modalidad_violencia: "" ? null : modalidad_violencia,
+                    tipo_violencia: "" ? null : tipo_violencia,
+                    violentometro: "" ? null : violentometro,
+                    victimas: "" ? null : victimas,
+                    agresor: "" ? null : agresor,
                     medio_contacto: medio_conatacto,
                     posible_solucion: plan_accion,
-                    institucion: "" ? institucion : null,
-                    institucion2: "" ? institucion2 : null,
-                    como_se_entero: "" ? como_se_entero : null,
+                    institucion: institucion=="" ? null : institucion,
+                    institucion2: institucion2=="" ? null : institucion2,
+                    como_se_entero: "" ? null : como_se_entero,
                     tarea1: tarea1,
                     tarea2: tarea2,
                     tarea3: tarea3,
                     devolver_llamada: devolver_llamada,
-                    aliado: "" ? aliado : null,
-                    linea_negocio: "" ? linea_negocio : null,
+                    aliado: aliado,
+                    linea_negocio: linea_negocio,
                     victimas_menores: victimas_menores
                 }
 
-    console.log('raw', rawData);
-
+            console.log('raw', rawData);
+            var rawData = JSON.stringify(rawData)
             $.ajax({
                 type: 'post',
                 data: rawData,
+                dataType: 'json',
                 contentType: 'application/json',
-                data_type: 'json',
-                traditional: true,
-                method: "POST",
                 url: "{% url 'webservices:registro_seguimiento' %}",
                 cache: false,
                 success: function (json) {
