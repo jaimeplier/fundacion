@@ -168,7 +168,8 @@ class PrimerRegistro(APIView):
         if 'victimas_menores' in serializer.validated_data:
             lista_menores_edad = serializer.validated_data['victimas_menores']
             for menor in lista_menores_edad:
-                VictimaMenorEdad.objects.create(**menor, llamada=llamada)
+                tutor = Tutor.objects.get(pk=menor['tutor'])
+                VictimaMenorEdad.objects.create(tutor=tutor, edad=menor['edad'], registro=menor['registro'],llamada=llamada)
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
 
@@ -310,7 +311,6 @@ class SeguimientoRegistro(APIView):
         if 'victimas_menores' in serializer.validated_data:
             lista_menores_edad = serializer.validated_data['victimas_menores']
             for menor in lista_menores_edad:
-                print(menor)
                 tutor = Tutor.objects.get(pk=menor['tutor'])
                 VictimaMenorEdad.objects.create(tutor=tutor, edad=menor['edad'], registro=menor['registro'],llamada=llamada)
 
