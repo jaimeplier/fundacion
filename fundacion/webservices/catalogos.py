@@ -91,15 +91,18 @@ class ListTipificaciones(ListAPIView):
 
     def get_queryset(self):
         u = self.request.user
-        consejero = Consejero.objects.get(pk=u.pk)
-        tipo_usuario = consejero.tipo_usuario.pk
-        queryset = Tipificacion.objects.all()
-        if tipo_usuario == 1: # Abogado
-            queryset = Tipificacion.objects.filter(pk=4)
-        elif tipo_usuario == 2: # Medico
-            queryset = Tipificacion.objects.filter(pk__in=[2,3])
-        elif tipo_usuario == 3: # Psicologo
-            queryset = Tipificacion.objects.filter(pk=1)
+        try:
+            consejero = Consejero.objects.get(pk=u.pk)
+            tipo_usuario = consejero.tipo_usuario.pk
+            if tipo_usuario == 1: # Abogado
+                queryset = Tipificacion.objects.filter(pk=4)
+            elif tipo_usuario == 2: # Medico
+                queryset = Tipificacion.objects.filter(pk__in=[2,3])
+            elif tipo_usuario == 3: # Psicologo
+                queryset = Tipificacion.objects.filter(pk=1)
+        except Consejero.DoesNotExist:
+            queryset = Tipificacion.objects.all()
+            return  queryset
         return queryset
 
 class ListTipificacionesCategorias(ListAPIView):
