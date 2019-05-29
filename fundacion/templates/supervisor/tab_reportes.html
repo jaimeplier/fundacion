@@ -36,12 +36,12 @@
             <label class="textoReporte">Selecciona el tipo de reporte</label>
         </div>
         <div class="col s4 m4 l4">
-            <select>
+            <select id="selectReporte" onchange="filtro_select()" >
                 <option value="" disabled selected>Seleccione</option>
-                <option value="1">Productividad</option>
-                <option value="2">Idicadores</option>
+                <option value="1" >Productividad</option>
+                <!-- <option value="2" onchange="change_reporte('productividad')">Idicadores</option> -->
                 <option value="3" selected>Historial de servicios</option>
-                <option value="4">Generales</option>
+                <option value="4" >Generales</option>
             </select>
         </div>
         <div class="col s4 m4 l4"></div>
@@ -79,10 +79,10 @@
         </div>
         <div class="col s4 m4 l4"></div>
     </div>
-    <div class="row" style="padding: 1%;">
+    <div id="div_historial" class="row" style="padding: 1%; display: none;">
         <div class="col s1"></div>
         <div class="col s10">
-            <table id="tabla" class="display responsive-table" style="width:100%; padding-top: 5%;">
+            <table id="tabla_historial" class="display responsive-table" style="width:100%; padding-top: 5%;">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -98,11 +98,115 @@
                     <th>Medio de contacto</th>
                 </tr>
                 </thead>
-                {% block datos_tabla %} {% endblock %}
+                {% block datos_tabla_historial %} {% endblock %}
+            </table>
+        </div>
+        <div class="col s1"></div>
+
+    </div>
+    <div id="div_productividad" class="row" style="padding: 1%; display: none">
+        <div class="col s1"></div>
+        <div class="col s10">
+            <table id="tabla_productividad" class="display responsive-table" style="width:100%; padding-top: 5%;">
+                <thead>
+                <tr>
+                    <th>Consejero</th>
+                    <th>Tiempo en servicio</th>
+                    <th>Total de llamadas</th>
+                    <th>Servicios Atendidos</th>
+                    <th>Transferencias recibidas</th>
+                    <th>Transferencias realizadas</th>
+                    <th>Abandono operativo</th>
+                    <th>Duración promedio de llamada</th>
+                </tr>
+                </thead>
+                {% block datos_tabla_productividad %} {% endblock %}
             </table>
         </div>
         <div class="col s1"></div>
     </div>
+
+    <div id= "div_generales" class="row" style="padding: 1%; display: none">
+        <div class="col s12">
+            <div class="col s3">
+                <label for="sexo">Sexo</label>
+                <select id="sexo"></select>
+            </div>
+            <div class="col s3">
+                <label for="ocupacion">Ocupación</label>
+                <select id="ocupacion"></select>
+            </div>
+            <div class="col s3">
+                <label for="edo_civil">Estado Civil</label>
+                <select id="edo_civil" ></select>
+            </div>
+            <div class="col s3">
+                <label for="nivel_academico">Nivel Académico</label>
+                <select id="nivel_academico" ></select>
+            </div>
+        </div>
+
+        <div class="col s12">
+            <div class="col s3">
+                <label for="como_se_entero">¿Cómo se enteró?</label>
+                <select id="como_se_entero"></select>
+            </div>
+            <div class="col s3">
+                <label for="forma_de_contacto">Forma de contacto</label>
+                <select id="forma_de_contacto"></select>
+            </div>
+            <div class="col s3">
+                <label for="tipo_de_caso">Tipo de caso</label>
+                <select id="tipo_de_caso"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero"></select>
+            </div>
+        </div>
+        <br />
+        <div class="col s1"></div>
+        <div class="col s10">
+            <table id="tabla_generales" class="display responsive-table" style="width:100%; padding-top: 5%;">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre del Usuario</th>
+                    <th>Nombre de Consejero</th>
+                    <th>Inicio de llamada</th>
+                    <th>Fin de llamada</th>
+                    <th>Duración de llamada</th>
+                    <th>Vida en riesgo</th>
+                    <th>Tipificación</th>
+                    <th>Institución de canalización</th>
+                    <th>Estado</th>
+                    <th>Medio de contacto</th>
+                </tr>
+                </thead>
+                {% block datos_tabla_generales %} {% endblock %}
+            </table>
+        </div>
+        <div class="col s1"></div>
+    </div>
+
+    <!-- indicadores por si revive -->
+    <!-- <div class="row" style="padding: 1%;">
+        <div class="col s1"></div>
+        <div class="col s10">
+            <table id="tabla_indicadores" class="display responsive-table" style="width:100%; padding-top: 5%;">
+                <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Sesión Única</th>
+                    <th>Seguimiento</th>
+                    <th>Liberación</th>
+                </tr>
+                </thead>
+                {% block datos_tabla_indicadores %} {% endblock %}
+            </table>
+        </div>
+        <div class="col s1"></div>
+    </div> -->
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'js/crsfajax.js' %}"></script>
@@ -118,6 +222,8 @@
         {% block scripts_tabla %}
         {% endblock %}
         var id = 0;
+        var url = '';
+        var curr_table = tabla_historial;
 
         function actualiza(uid) {
             id = uid;
@@ -129,6 +235,10 @@
         }
 
         $(document).ready(function () {
+            $('.datepicker').on('mousedown',function(event){
+                event.preventDefault();
+            });
+
             $('select').material_select();
             $('.button-collapse').sideNav({
                     menuWidth: 300, // Default is 300
@@ -161,7 +271,185 @@
             });
 
 
-            tabla = $('#tabla').DataTable({
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_sexos' %}",
+                cache: false,
+                success: function (json) {
+                    $("#sexo").empty().html(' ');
+                    $('#sexo').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                            $('#sexo').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#sexo').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_ocupaciones' %}",
+                cache: false,
+                success: function (json) {
+                    $("#ocupacion").empty().html(' ');
+                    $('#ocupacion').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                            $('#ocupacion').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#ocupacion').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_estado_civil' %}",
+                cache: false,
+                success: function (json) {
+                    $("#edo_civil").empty().html(' ');
+                    $('#edo_civil').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#edo_civil').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#edo_civil').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_grado_estudios' %}",
+                cache: false,
+                success: function (json) {
+                    $("#nivel_academico").empty().html(' ');
+                    $('#nivel_academico').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#nivel_academico').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#nivel_academico').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_como_se_entero' %}",
+                cache: false,
+                success: function (json) {
+                    $("#como_se_entero").empty().html(' ');
+                    $('#como_se_entero').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#como_se_entero').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#como_se_entero').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_medio_contacto' %}",
+                cache: false,
+                success: function (json) {
+                    $("#forma_de_contacto").empty().html(' ');
+                    $('#forma_de_contacto').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#forma_de_contacto').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#forma_de_contacto').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_tipificaciones' %}",
+                cache: false,
+                success: function (json) {
+                    console.log('TIPIFICACIONES',json);
+                    $("#tipo_de_caso").empty().html(' ');
+                    $('#tipo_de_caso').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#tipo_de_caso').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#tipo_de_caso').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_consejeros' %}",
+                cache: false,
+                success: function (json) {
+                    $("#consejero").empty().html(' ');
+                    $('#consejero').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text(" ")
+                    );
+                    for (i in json) {
+                        $('#consejero').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#consejero').material_select();
+                }
+            });
+
+
+            tabla_historial = $('#tabla_historial').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
                     {
@@ -204,6 +492,92 @@
                 {% block order %}{% endblock %}
             });
 
+            tabla_productividad = $('#tabla_productividad').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        copyTitle: 'Ajouté au presse-papiers',
+                        copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',
+                        copySuccess: {
+                            _: '%d lignes copiées',
+                            1: '1 ligne copiée'
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print all',
+                        exportOptions: {
+                            modifier: {
+                                selected: null
+                            }
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        customize: function (xlsx) {
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            $('row c[r^="C"]', sheet).attr('s', '2');
+                        }
+                    }
+
+
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: "{% block url_ajax2 %}{% url 'supervisor:list_ajax_productividad' %}{% endblock %}",
+                {% block order2 %}{% endblock %}
+            });
+
+            tabla_generales = $('#tabla_generales').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        copyTitle: 'Ajouté au presse-papiers',
+                        copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',
+                        copySuccess: {
+                            _: '%d lignes copiées',
+                            1: '1 ligne copiée'
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print all',
+                        exportOptions: {
+                            modifier: {
+                                selected: null
+                            }
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        customize: function (xlsx) {
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            $('row c[r^="C"]', sheet).attr('s', '2');
+                        }
+                    }
+
+
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: "{% block url_ajax4 %}{% url 'supervisor:list_ajax_reporte_general' %}{% endblock %}",
+                {% block order4 %}{% endblock %}
+            });
+
         });
 
         function muestra_filtro_fecha(tipo) {
@@ -222,45 +596,104 @@
             }
         }
 
+        function filtro_select() {
+            $('input[name="fechas"]').prop('checked', false);
+            $("#select_fecha_mes").val('');
+            $("#select_fecha_mes1").val('');
+            $("#select_fecha1").val('');
+            $("#select_fecha2").val('');
+            filtrar();
+        }
+
         function filtrar() {
+            console.log('filtrando!')
+             $('.datepicker').on('mousedown',function(event){
+                event.preventDefault();
+            });
+
+            // add switch case de c input
+            var tipoReporte = $('#selectReporte').val();
+            var tablaUrl;
+            var idTabla;
+
+            switch (tipoReporte) {
+                case '1': // productividad
+                    $("#div_historial").hide();
+                    $("#div_productividad").show();
+                    $("#div_generales").hide();
+                    console.log('caso 1');
+                    tablaUrl = "{% url 'supervisor:list_ajax_productividad' %}";
+                    idTabla = '#tabla_productividad';
+                    curr_table = tabla_productividad;
+                    break;
+                case '3': // historial de servicios - list_ajax_llamada
+                    $("#div_historial").show();
+                    $("#div_productividad").hide();
+                    $("#div_generales").hide();
+                    console.log('caso 3');
+                    tablaUrl = "{% url 'supervisor:list_ajax_llamada' %}";
+                    idTabla = '#tabla_historial';
+                    curr_table = tabla_historial;
+                    break;
+                case '4': //generales
+                    $("#div_historial").hide();
+                    $("#div_productividad").hide();
+                    $("#div_generales").show();
+                    console.log('caso 4');
+                    tablaUrl = "{% url 'supervisor:list_ajax_reporte_general' %}";
+                    idTabla = '#tabla_generales';
+                    curr_table = tabla_generales;
+                    break;
+                default:
+                    break;
+                }
+
+
             var filtro = $("input[name='fechas']:checked").val();
             if (filtro == "dia") {
-                filtrar_dia();
+                filtrar_dia(tablaUrl, idTabla, curr_table);
             } else if (filtro == "mes") {
-                filtrar_mes();
+                filtrar_mes(tablaUrl, idTabla, curr_table);
             } else if (filtro == "rango") {
-                filtrar_rango();
+                filtrar_rango(tablaUrl, idTabla, curr_table);
+            } else {
+                filtro_default(tablaUrl, idTabla, curr_table);
             }
         }
 
 
-        function filtrar_dia() {
+        function filtrar_dia(tablaUrl, idTabla, tablaActual) { //  pasar como param: tipo de reporte
             var $dia_picker = $("#select_fecha1").pickadate();
             var dia = $dia_picker.pickadate('picker');
-            nva_url = "{% url 'supervisor:list_ajax_llamada' %}?dia=" + dia.get('select', 'yyyy-mm-dd')
-            console.log(nva_url);
-            tabla.ajax.url(nva_url).load()
-            $('#tabla').dataTable()._fnAjaxUpdate()
+
+            nva_url = tablaUrl + "?dia=" + dia.get('select', 'yyyy-mm-dd')
+            tablaActual.ajax.url(nva_url).load()
+            $(idTabla).dataTable()._fnAjaxUpdate()
         }
 
-        function filtrar_mes() {
+        function filtrar_mes(tablaUrl, idTabla, tablaActual) {
             var $mes_picker = $("#select_fecha_mes").pickadate();
             var mes = $mes_picker.pickadate('picker');
-            nva_url = "{% url 'supervisor:list_ajax_llamada' %}?mes=" + mes.get('select', 'mm')
-            console.log(nva_url);
-            tabla.ajax.url(nva_url).load()
-            $('#tabla').dataTable()._fnAjaxUpdate()
+            nva_url = tablaUrl + "?mes=" + mes.get('select', 'mm')
+            tablaActual.ajax.url(nva_url).load()
+            $(idTabla).dataTable()._fnAjaxUpdate()
         }
 
-        function filtrar_rango() {
+        function filtrar_rango(tablaUrl, idTabla, tablaActual) {
             var $fecha1_picker = $("#select_fecha1").pickadate();
             var $fecha2_picker = $("#select_fecha2").pickadate();
             var fecha1 = $fecha1_picker.pickadate('picker');
             var fecha2 = $fecha2_picker.pickadate('picker');
-            nva_url = "{% url 'supervisor:list_ajax_llamada' %}?fecha1=" + fecha1.get('select', 'yyyy-mm-dd') + "&fecha2=" +fecha2.get('select', 'yyyy-mm-dd')
-            console.log(nva_url);
-            tabla.ajax.url(nva_url).load()
-            $('#tabla').dataTable()._fnAjaxUpdate()
+            nva_url = tablaUrl + "?fecha1=" + fecha1.get('select', 'yyyy-mm-dd') + "&fecha2=" +fecha2.get('select', 'yyyy-mm-dd')
+
+            tablaActual.ajax.url(nva_url).load()
+            $(idTabla).dataTable()._fnAjaxUpdate()
+        }
+
+        function filtro_default(tablaUrl, idTabla, tablaActual) {
+            // nva_url = tablaUrl + "?mes=" + mes.get('select', 'mm')
+            tablaActual.ajax.url(tablaUrl).load()
+            $(idTabla).dataTable()._fnAjaxUpdate()
         }
 
     </script>

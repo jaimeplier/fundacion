@@ -361,98 +361,105 @@
                                     </div>
                                     <form action="#">
                                         <div class="row">
-                                           <div class="col s12 txt_algn_center">
-                                               <div class="row sin_marg_bottom">
-                                                   <div class="input-field col s12 m6 l6 violencia">
-                                                       <p style="margin-top: 0px; text-align: center;">Víctima</p>
-                                                       <select id="victimas" onchange="verificarVictima()">
-                                                       </select>
-                                                   </div>
-                                                   <div class="input-field col s12 m6 l6" id="contenedor_num_menores"
-                                                        style="margin-top: 45px;">
-                                                       <input type="number" min="1" max="5" id="num_menores_victimas"
-                                                              onchange="numMenoresVictima()">
-                                                       <label for="num_menores_victimas">¿Cúantos menores son
-                                                           víctimas?</label>
-                                                   </div>
-                                               </div>
+                                            <div class="col s12 txt_algn_center">
+                                                <div class="row sin_marg_bottom">
+                                                    <div class="input-field col s12 m6 l6 violencia">
+                                                        <p style="margin-top: 0px; text-align: center;">Víctima</p>
+                                                        <select id="victimas" onchange="verificarVictima()">
+                                                        </select>
+                                                    </div>
+                                                    <div class="input-field col s12 m6 l6" id="contenedor_num_menores"
+                                                         style="margin-top: 45px;">
+                                                        <input type="number" min="1" max="5" id="num_menores_victimas"
+                                                               onchange="numMenoresVictima()">
+                                                        <label for="num_menores_victimas">¿Cúantos menores son
+                                                            víctimas?</label>
+                                                    </div>
+                                                </div>
 
-                                           <div id="contenedor_num_victimas">
-                                               <div class="row sin_marg_bottom">
-                                                   <div class="input-field col s12 m2 l2">
-                                                       <p style="text-align: center; text-decoration: underline; font-size: medium;">Niño</p>
-                                                   </div>
-                                                   <div class="input-field col s12 m2 l2">
-                                                       <p style="text-align: center; text-decoration: underline; font-size: medium;">Edad</p>
-                                                   </div>
-                                                   <div class="input-field col s12 m4 l4">
-                                                       <p style="text-align: center; text-decoration: underline; font-size: medium;">Registro de nacimiento</p>
-                                                   </div>
-                                                   <div class="input-field col s12 m4 l4">
-                                                       <p style="text-align: center; text-decoration: underline; font-size: medium;">Quién ejerce patria potestad, tutela o guarda y custodia</p>
-                                                   </div>
-                                               </div>
-                                               <div class="row sin_marg_bottom" id="contenedor_niños_victimas">
-                                                   <div class="input-field col s12 m2 l2">
-                                                       <p style="text-align: center;">Niño 1</p>
-                                                   </div>
-                                                   <div class="input-field col s12 m2 l2">
-                                                       <select id="edad">
-                                                           <option>0-17</option>
-                                                       </select>
-                                                   </div>
-                                                   <div class="col s12 m4 l4" style="margin-top: 10px">
-                                                       <p>
-                                                           <input type="checkbox" id="registrado"/>
-                                                           <label for="registrado" style="color:#EF7F13!important; left: 20%">Está
-                                                               registrado?</label>
-                                                       </p>
-                                                   </div>
-                                                   <div class="input-field col s12 m4 l4">
-                                                       <select>
-                                                           <option>tutor</option>
-                                                       </select>
-                                                   </div>
-                                               </div>
-                                           </div>
+                                                <div id="contenedor_num_victimas">
+                                                    <div class="row sin_marg_bottom">
+                                                        <div class="input-field col s12 m2 l2">
+                                                            <p style="text-align: center; text-decoration: underline; font-size: medium;">
+                                                                Niño</p>
+                                                        </div>
+                                                        <div class="input-field col s12 m2 l2">
+                                                            <p style="text-align: center; text-decoration: underline; font-size: medium;">
+                                                                Edad</p>
+                                                        </div>
+                                                        <div class="input-field col s12 m4 l4">
+                                                            <p style="text-align: center; text-decoration: underline; font-size: medium;">
+                                                                Registro de nacimiento</p>
+                                                        </div>
+                                                        <div class="input-field col s12 m4 l4">
+                                                            <p style="text-align: center; text-decoration: underline; font-size: medium;">
+                                                                Quién ejerce patria potestad, tutela o guarda y
+                                                                custodia</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row sin_marg_bottom" id="contenedor_niños_victimas">
+                                                        <div class="input-field col s12 m2 l2">
+                                                            <p style="text-align: center;">Niño 1</p>
+                                                        </div>
+                                                        <div class="input-field col s12 m2 l2">
+                                                            <select id="edad">
+                                                                <option>0-17</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col s12 m4 l4" style="margin-top: 10px">
+                                                            <p>
+                                                                <input type="checkbox" id="registrado"/>
+                                                                <label for="registrado"
+                                                                       style="color:#EF7F13!important; left: 20%">Está
+                                                                    registrado?</label>
+                                                            </p>
+                                                        </div>
+                                                        <div class="input-field col s12 m4 l4">
+                                                            <select>
+                                                                <option>tutor</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                               <div class="row sin_marg_bottom">
-                                                   <div class="input-field col s12 m6 l6 violencia">
-                                                       <p style="margin-top: 0px; text-align: center;">Agresor</p>
-                                                       <select id="agresor">
-                                                       </select>
-                                                   </div>
-                                                   <div class="input-field col s12 m6 l6 violencia">
-                                                       <p style="margin-top: 0px; text-align: center;">Modalidad</p>
-                                                       <select id="modalidad_violencia">
-                                                       </select>
-                                                   </div>
-                                                   <div class="input-field col s12 m6 l6 violencia">
-                                                       <p style="margin-top: 0px; text-align: center;">Tipo de
-                                                           violencia</p>
-                                                       <select id="tipos_violencia">
-                                                       </select>
-                                                   </div>
-                                                   <div class="input-field col s12 m6 l6 violencia">
-                                                       <p style="margin-top: 0px; text-align: center;">Violentometro</p>
-                                                       <select id="violentometro">
-                                                       </select>
-                                                   </div>
-                                               </div>
-                                               <div class="col s3"></div>
-                                               <div class="col s6">
-                                                   <div class="row">
+                                                <div class="row sin_marg_bottom">
+                                                    <div class="input-field col s12 m6 l6 violencia">
+                                                        <p style="margin-top: 0px; text-align: center;">Agresor</p>
+                                                        <select id="agresor">
+                                                        </select>
+                                                    </div>
+                                                    <div class="input-field col s12 m6 l6 violencia">
+                                                        <p style="margin-top: 0px; text-align: center;">Modalidad</p>
+                                                        <select id="modalidad_violencia">
+                                                        </select>
+                                                    </div>
+                                                    <div class="input-field col s12 m6 l6 violencia">
+                                                        <p style="margin-top: 0px; text-align: center;">Tipo de
+                                                            violencia</p>
+                                                        <select id="tipos_violencia">
+                                                        </select>
+                                                    </div>
+                                                    <div class="input-field col s12 m6 l6 violencia">
+                                                        <p style="margin-top: 0px; text-align: center;">
+                                                            Violentometro</p>
+                                                        <select id="violentometro">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col s3"></div>
+                                                <div class="col s6">
+                                                    <div class="row">
                                                         <div class="col s12">
                                                             <p style="text-align: center;">Nivel de riesgo</p>
                                                         </div>
                                                         <div class="input-field col s12 m12 l12">
-                                                             <select id="nivel_riesgo">
-                                                             </select>
+                                                            <select id="nivel_riesgo">
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col s3"></div>
-                                           </div>
+                                            </div>
                                         </div>
 
                                         <div class="row">
@@ -1466,22 +1473,22 @@
                     break;
             }
 
-            if (typeof tipificacion1 === "undefined") tipificacion1 = null;
-            if (typeof tipificacion2 === "undefined") tipificacion2 = null;
-            if (typeof tipificacion3 === "undefined") tipificacion3 = null;
-            if (typeof categoria_tipificacion1 === "undefined") categoria_tipificacion1 = null;
-            if (typeof categoria_tipificacion2 === "undefined") categoria_tipificacion2 = null;
-            if (typeof categoria_tipificacion3 === "undefined") categoria_tipificacion3 = null;
-            if (typeof subcategoria_tipificacion1 === "undefined") subcategoria_tipificacion1 = null;
-            if (typeof subcategoria_tipificacion2 === "undefined") subcategoria_tipificacion2 = null;
-            if (typeof subcategoria_tipificacion3 === "undefined") subcategoria_tipificacion3 = null;
+            if (typeof tipificacion1 === "undefined" || tipificacion1 === "") tipificacion1 = null;
+            if (typeof tipificacion2 === "undefined" || tipificacion2 === "") tipificacion2 = null;
+            if (typeof tipificacion3 === "undefined" || tipificacion3 === "") tipificacion3 = null;
+            if (typeof categoria_tipificacion1 === "undefined" || categoria_tipificacion1 === "") categoria_tipificacion1 = null;
+            if (typeof categoria_tipificacion2 === "undefined" || categoria_tipificacion2 === "")categoria_tipificacion2 = null;
+            if (typeof categoria_tipificacion3 === "undefined" || categoria_tipificacion3 === "") categoria_tipificacion3 = null;
+            if (typeof subcategoria_tipificacion1 === "undefined" || subcategoria_tipificacion1 === "") subcategoria_tipificacion1 = null;
+            if (typeof subcategoria_tipificacion2 === "undefined" || subcategoria_tipificacion2 === "") subcategoria_tipificacion2 = null;
+            if (typeof subcategoria_tipificacion3 === "undefined" || subcategoria_tipificacion3 === "") subcategoria_tipificacion3 = null;
 
             var devolver_llamada = false;
             {% if consejero.tipo_usuario.pk == 1 %}
                 devolver_llamada = $('#devolver_llamada').prop('checked'); //Esta seleccionado devolver llamada
             {% endif %}
 
-         const rawData = {
+         var rawData = {
                     victima: victima,
                     motivo_llamada: "" ? null : motivo_llamada,
                     categoria_tipificacion1: categoria_tipificacion1,
@@ -1521,8 +1528,8 @@
                     victimas_menores: victimas_menores
                 }
 
-            console.log('raw', rawData);
-            var rawData = JSON.stringify(rawData)
+
+            rawData = JSON.stringify(rawData)
             $.ajax({
                 type: 'post',
                 data: rawData,
