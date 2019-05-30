@@ -717,10 +717,6 @@ class Catmunicipios(models.Model):
     class Meta:
         managed = True
         db_table = 'catmunicipios'
-        constraints = [
-            models.UniqueConstraint(fields=['idmun', 'idestado'], name="municipio-estado")
-        ]
-        #unique_together = (('idmun', 'idestado'),)
 
 class Catcolonias(models.Model):
     municipio = models.ForeignKey('Catmunicipios', models.DO_NOTHING, db_column='municipio_id')#

@@ -29,9 +29,5 @@ class Migration(migrations.Migration):
             model_name='catmunicipios',
             name='idmun',
             field=models.IntegerField(db_column='idMun', primary_key=True, serialize=False),
-        ),
-        migrations.AddConstraint(
-            model_name='catmunicipios',
-            constraint=models.UniqueConstraint(fields=('idmun', 'idestado'), name='municipio-estado'),
-        ),
+        )
     ]
