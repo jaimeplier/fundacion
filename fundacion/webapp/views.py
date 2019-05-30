@@ -281,10 +281,9 @@ class LlamadaAjaxList(LoginRequiredMixin, BaseDatatableView):
         return qs
 
 
-class VerServicio(PermissionRequiredMixin, DetailView):
+class VerServicio(LoginRequiredMixin, DetailView):
     redirect_field_name = 'next'
     login_url = '/'
-    permission_required = 'calidad'
     model = Llamada
     template_name = 'config/ver_servicio.html'
 
