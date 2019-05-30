@@ -173,7 +173,7 @@
         </div>
 
         <div class="col s1"></div>
-        <div class="col s10">
+        <div class="col s10" style="margin-top: 10px;">
             <table id="tabla_generales" class="display responsive-table" style="width:100%; padding-top: 5%;">
                 <thead>
                 <tr>
@@ -712,6 +712,11 @@
 
         function filtro_default(tablaUrl, idTabla, tablaActual) {
             // nva_url = tablaUrl + "?mes=" + mes.get('select', 'mm')
+            if ( idTabla === '#tabla_generales') {
+                const test = $('form').serialize();
+                tablaUrl += '?' + test;
+            }
+
             tablaActual.ajax.url(tablaUrl).load()
             $(idTabla).dataTable()._fnAjaxUpdate()
         }
