@@ -68,8 +68,8 @@ class PrimerRegistro(APIView):
         motivo_llamada = MotivoLLamada.objects.filter(pk=serializer.validated_data['motivo_llamada']).first()
         nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
         modalidad_violencia = ModalidadViolencia.objects.filter(pk=serializer.data['modalidad_violencia']).first()
-        victimas = VictimaInvolucrada.objects.get(pk=serializer.data['victimas'])
-        agresor = Agresor.objects.get(pk=serializer.data['agresor'])
+        victimas = VictimaInvolucrada.objects.filter(pk=serializer.data['victimas']).first()
+        agresor = Agresor.objects.filter(pk=serializer.data['agresor']).first()
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
         devolver_llamada = serializer.validated_data['devolver_llamada']
         linea_negocio = LineaNegocio.objects.filter(pk=serializer.data['linea_negocio']).first()
@@ -210,8 +210,8 @@ class SeguimientoRegistro(APIView):
         motivo_llamada = MotivoLLamada.objects.filter(pk=serializer.validated_data['motivo_llamada']).first()
         nivel_riesgo = NivelRiesgo.objects.filter(pk=serializer.data['nivel_riesgo']).first()
         modalidad_violencia = ModalidadViolencia.objects.filter(pk=serializer.data['modalidad_violencia']).first()
-        victimas = VictimaInvolucrada.objects.get(pk=serializer.data['victimas'])
-        agresor = Agresor.objects.get(pk=serializer.data['agresor'])
+        victimas = VictimaInvolucrada.objects.filter(pk=serializer.data['victimas']).first()
+        agresor = Agresor.objects.filter(pk=serializer.data['agresor']).first()
         como_se_entero = ComoSeEntero.objects.get(pk=serializer.data['como_se_entero'])
         devolver_llamada = serializer.validated_data['devolver_llamada']
         linea_negocio = LineaNegocio.objects.filter(pk=serializer.data['linea_negocio']).first()
