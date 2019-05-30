@@ -410,338 +410,187 @@
                     </div> -->
 
                     <div id="test3" class="col s12" style="margin-top: 40px;">
+
+
                         <div class="row sin_marg_bottom">
                             <div class="col s12" style="margin-bottom: 20px;">
-                                <h5 class="font_gris_oscuro" style="text-align: center;">
+                               <!-- <h5 class="font_gris_oscuro" style="text-align: center;">
                                     Servicio
-                                </h5>
+                                </h5>-->
                             </div>
                             <div class="row sin_marg_bottom">
                                 <div class="col s12">
-                                    <p class="font_naranja">
+                                    <p class="negritas font_gris_oscuro titulos" style="text-align: left">
                                         Línea Origen
+                                        <hr>
                                     </p>
                                 </div>
-                                <div class="col s12 txt_algn_center">
-                                    <div class="row">
-                                        <div class="col s12">
-                                            <p style="margin-top: 0px; text-align: center;"><b>Tipo de Llamada</b></p>
-                                            <p style="margin-top: 0px; text-align: center;"> {{ servicio.tipo_llamada }} </p>
-                                        </div>
-                                    </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Tipo de Llamada</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.tipo_llamada }} </p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Motivo de consulta</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> XXXXXXXXXX </p>
                                 </div>
 
-                                    <div class="row">
-                                        <div class="col s12" style="padding-top: 15px;">
-                                            <p style="text-align: center;"><b>Motivo de consulta</b></p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col s6 txt_algn_center">
-                                        <div class="col s12">
-                                            <div class="row">
-                                                <div class="col s12">
-                                                    <p style="text-align: center;"><b>¿Cómo se enteró?</b></p>
-                                                    <p style="text-align: center;">{{ servicio.como_se_entero }}</p>
-                                                </div>
-                                                <!-- <div class="input-field col s12 m12 l12">
-                                                    <select id="como_se_entero">
-                                                    </select>
-                                                </div> -->
-                                            </div>
-                                        </div>
-                                        <div class="col s3"></div>
-                                    </div>
-                           
-                                        
-                                            <div class="col s6">
-                                                <div class="row">
-                                                    <div class="col s12">
-                                                        <p style="text-align: center;"><b>Tipificación</b></p>
-                                                        <p style="text-align: center;">{{ tipificacion.categoria_tipificacion.tipificacion }}</p>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                            
-
-                                        <!-- <p style="text-align: center;" id="categoria_tipificacion">
-
-                                        </p> -->
-
-                                            <div class="col s12 pull-s3 txt_algn_center">
-                                                <div class="col s12">
-                                                    <div class="row">
-                                                        <div class="col s12">
-                                                            <p style="text-align: center;"><b>Nivel de riesgo</b></p>
-                                                            <p style="text-align: center;">{{ servicio.nivel_riesgo }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;"><b>Fortalezas</b></p>
-                                            </div>
-                                            <div class="col s12">
-                                                <p style="text-align: center;">{{ fortalezas }}</p>
-                                            </div>
-                                        <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;"><b>Recursos</b></p>
-                                            </div>
-                                            <div class="col s12">
-                                                <p style="text-align: center;">{{ servicio.recursos }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;"><b>Debilidades</b></p>
-                                            </div>
-                                            <div class="col s12">
-                                                <p style="text-align: center;">{{ servicio.debilidades }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;"><b>Amenazas</b></p>
-                                            </div>
-                                            <div class="col s12">
-                                                <p style="text-align: center;">{{ servicio.amenazas }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col s12" style="padding-top: 15px;">
-                                                <p style="text-align: center;"><b>Intervencion</b></p>
-                                            </div>
-                                            <div class="col s12">
-                                                <p style="text-align: center;">{{ servicio.intervencion }}</p>
-                                            </div>
-                                        </div>
-                                        <p style="text-align: center;">
-                                            <!--
-                                            <input type="checkbox" id="tp5"/>
-                                            <label for="tp5">Checkbox</label>
-                                            -->
-                                        </p>
-
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>¿Cómo se enteró?</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.como_se_entero }} </p>
+                                </div>
                             </div>
 
-                            <div class="row">
-                                <!-- <div class="col s12">
-                                    <select id="fase_cambio">
-                                    </select>
-                                </div> -->
+                            <div class="row sin_marg_bottom">
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Tipificación</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ tipificacion.categoria_tipificacion.tipificacion }} </p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Nivel de riesgo</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.nivel_riesgo }} </p>
+                                </div>
+
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Fortalezas</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ fortalezas }} </p>
+                                </div>
+                            </div>
+
+                             <div class="row sin_marg_bottom">
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Recursos</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.recursos }}</p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Debilidades</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.debilidades }} </p>
+                                </div>
+
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Amenazas</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.amenazas }} </p>
+                                </div>
+                            </div>
+
+                            <div class="row sin_marg_bottom">
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Intervencion</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.intervencion }}</p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Fase de cambio</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.fase_cambio }} </p>
+                                </div>
+
+                                <div class="col s4">
+
+                                </div>
+                            </div>
+
+                            <div class="row sin_marg_bottom">
                                 <div class="col s12">
-                                    <div class="row">
-                                        <div class="col s12">
-                                            <p style="text-align: center;"><b>Fase de cambio</b></p>
-                                            <p style="text-align: center;">{{ servicio.fase_cambio }}</p>
-                                        </div>
-                                        
-                                    </div>
+                                    <p class="negritas font_gris_oscuro titulos" style="text-align: left">
+                                        Examen de salud mental
+                                        <hr>
+                                    </p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>UTE</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ examen_mental.ute }} </p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>P</b></p>
+                                     <p style="margin-top: 0px; text-align: center;">{{ examen_mental.p }} </p>
                                 </div>
 
-
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>L</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ examen_mental.l }} </p>
+                                </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col s12" style="padding-top: 15px;">
-                                    <p style="text-align: center;"><b>Examen de salud mental</b></p>
-                                </div>
-
-                                <div class="col s6">
-                                    <div class="row">
-                                        <div class="col s12 l6 offset-l6">
-                                            <p style="text-align: center;"><b>UTE</b></p>
-                                            <p style="text-align: center;">{{ examen_mental.ute }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col s6">
-                                    <div class="row">
-                                        <div class="col s12 l6 ">
-                                            <p style="text-align: center;"><b>P</b></p>
-                                            <p style="text-align: center;"> {{ examen_mental.p }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col s6">
-                                    <div class="row">
-                                        <div class="col s12 l6 offset-l6">
-                                            <p style="text-align: center;"><b>L</b></p>
-                                            <p style="text-align: center;">{{ examen_mental.l }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col s6">
-                                    <div class="row">
-                                        <div class="col s12 l6">
-                                            <p style="text-align: center;"><b>M</b></p>
-                                            <p style="text-align: center;">{{ examen_mental.m }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col s6">
-                                    <div class="row">
-                                        <div class="col s12 l6 offset-l6">
-                                            <p style="text-align: center;"><b>A</b></p>
-                                            <p style="text-align: center;">{{ examen_mental.a }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!-- <div class="input-field col s12">
-                                    <select id="em_ute">
-                                    </select>
-                                </div>
-                                <div class="input-field col s12">
-                                    <select id="em_p">
-                                    </select>
-                                </div>
-                                <div class="input-field col s12">
-                                    <select id="em_l">
-                                    </select>
-                                </div>
-                                <div class="input-field col s12">
-                                    <select id="em_m">
-                                    </select>
-                                </div>
-                                <div class="input-field col s12">
-                                    <select id="em_a">
-                                    </select>
-                                </div> -->
-                            </div>
-
 
                             <div class="row sin_marg_bottom">
-                                <div class="col s6">
-                                        <div class="row">
-                                            <div class="col s12 l6 offset-l6">
-                                                <p style="text-align: center;"><b>Modalidad</b></p>
-                                                <p style="text-align: center;">{{ servicio.modalidad_violencia }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                <div class="col s6">
-                                        <div class="row">
-                                            <div class="col s12 l6">
-                                                <p style="text-align: center;"><b>Tipo de violencia</b></p>
-                                                <p style="text-align: center;">{{ servicio.tipo_violencia }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                <div class="col s6">
-                                    <div class="row">
-                                        <div class="col s12 l6 offset-l6">
-                                            <p style="text-align: center;"><b>Violentómetro</b></p>
-                                            <p style="text-align: center;">{{ servicio.violentometro }}</p>
-                                        </div>
-                                    </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>M</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ examen_mental.m }} </p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>A</b></p>
+                                     <p style="margin-top: 0px; text-align: center;">{{ examen_mental.a }} </p>
                                 </div>
 
-                                <div class="col s6">
-                                    <div class="row">
-                                        <div class="col s12 l6">
-                                            <p style="text-align: center;"><b>Víctimas</b></p>
-                                            <p style="text-align: center;">{{ servicio.victima }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col s6">
-                                    <div class="row">
-                                        <div class="col s12 l6 offset-l6">
-                                            <p style="text-align: center;"><b>Agresor</b></p>
-                                            <p style="text-align: center;">{{ servicio.agresor }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col s6">
-                                    <div class="row">
-                                        <div class="col s12 l6">
-                                            <p style="text-align: center;"><b>Medio de contacto</b></p>
-                                            <p style="text-align: center;">{{ servicio.medio_contacto }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-<!-- 
-                                <div class="input-field col s12 m6 l6">
-                                    <select id="tipos_violencia">
-
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select id="violentometro">
-                                    </select>
-                                </div> -->
-                                <!-- <div class="input-field col s12 m6 l6">
-                                    <select id="victimas">
-                                    </select>
-                                </div>
-                                <div class="input-field col s12 m6 l6">
-                                    <select id="agresor">
-                                    </select>
-                                </div>
-                                <div class=" input-field col s12 m6 l6">
-                                    <select id="medio_contacto">
-                                    </select>
-                                </div> -->
+                                <div class="col s4"></div>
                             </div>
+
                             <div class="row sin_marg_bottom">
-                                <form class="col s12">
-                                    <div class="row">
-                                        <div class="col s12" style="padding-top: 15px;">
-                                            <p style="text-align: center;"><b>¿Qué acciones tiene que realizar para la
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Modalidad</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.modalidad_violencia }} </p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Tipo de violencia</b></p>
+                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.tipo_violencia }} </p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Violentómetro</b></p>
+                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.violentometro }} </p>
+                                </div>
+
+                            </div>
+
+                             <div class="row sin_marg_bottom">
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Víctimas</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.victima }} </p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Agresor</b></p>
+                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.agresor }} </p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Medio de contacto</b></p>
+                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.medio_contacto }}</p>
+                                </div>
+
+                            </div>
+
+                            <div class="row sin_marg_bottom">
+                                <div class="col s12">
+                                    <p class="negritas font_gris_oscuro titulos" style="text-align: left">
+                                        Tratamiento
+                                        <hr>
+                                    </p>
+                                </div>
+                                <div class="col s12">
+                                     <p class="font_naranja" style="margin-top: 0px;"><b>¿Qué acciones tiene que realizar para la
                                                 siguiente llamada?</b></p>
-                                        </div>
-                                        <div class="input-field col s12">
-                                            <p style="text-align: center;">Plan de acción a realizar</p>
-                                            <!-- <textarea id="plan_accion" class="materialize-textarea"
-                                                      placeholder="Plan de acción"
-                                                      style="padding-left: 14px;"></textarea> -->
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="row sin_marg_bottom">
-                                <div class="col s12">
-                                    <p style="text-align: center;"><b>Tareas o actividades recomendadas</b></p>
+                                     <p > Plan de acción a realizar </p>
                                 </div>
-                                {% for tarea in tareas %}
-                                    <div class="input-field col s12">
-                                    <p style="text-align: center;"> - {{ tarea.nombre }}  </p>
-                                    </div>
-                                {% endfor %}
-                            </div>
+                                <div class="col s12">
+                                     <p class="font_naranja" style="margin-top: 0px;"><b>Tareas o actividades recomendadas</b></p>
+                                      {% for tarea in tareas %}
+                                            <p> <span class="font_naranja">* </span> {{ tarea.nombre }}  </p>
+                                      {% endfor %}
+                                </div>
+                                <div class="col s12">
+                                    <p>
+                                        <input type="checkbox" id="datos_c"/>
+                                        <label for="datos_c"
+                                        style="color:#EF7F13!important">
+                                        ¿Requiere canalización?</label>
+                                    </p>
+                                </div>
 
-                            <div class="row sin_marg_bottom">
-                                <div class="col s12">
-                                <p style="text-align: center; ">
-                                    <input type="checkbox" id="datos_c"/>
-                                    <label for="datos_c" 
-                                    style="color:#EF7F13!important">
-                                    ¿Requiere canalización?</label>
-                                </p>
+                                <div id="datos_canalizacion">
+                                    <div class="col s12" >
+                                        <p style="text-align: center;">Canalizar a:</p>
+                                    </div>
+                                    <div class="input-field col s12 m12 l12">
+                                        <select id="instituciones">
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="row sin_marg_bottom" id="datos_canalizacion">
-                                <div class="col s12">
-                                    <p style="text-align: center;">Canalizar a:</p>
-                                </div>
-                                <div class="input-field col s12 m12 l12">
-                                    <select id="instituciones">
-                                    </select>
-                                </div>
                             </div>
 
                             </form>
