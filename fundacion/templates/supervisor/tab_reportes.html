@@ -127,44 +127,51 @@
     </div>
 
     <div id= "div_generales" class="row" style="padding: 1%; display: none">
+        <form id="params" name="params">
         <div class="col s12">
             <div class="col s3">
                 <label for="sexo">Sexo</label>
-                <select id="sexo"></select>
+                <select id="sexo" name="sexo"></select>
             </div>
             <div class="col s3">
                 <label for="ocupacion">Ocupación</label>
-                <select id="ocupacion"></select>
+                <select id="ocupacion" name="ocupacion"></select>
             </div>
             <div class="col s3">
-                <label for="edo_civil">Estado Civil</label>
-                <select id="edo_civil" ></select>
+                <label for="estado_civil">Estado Civil</label>
+                <select id="estado_civil" name="estado_civil"></select>
             </div>
             <div class="col s3">
                 <label for="nivel_academico">Nivel Académico</label>
-                <select id="nivel_academico" ></select>
+                <select id="nivel_academico" name="nivel_academico"></select>
             </div>
         </div>
 
         <div class="col s12">
             <div class="col s3">
                 <label for="como_se_entero">¿Cómo se enteró?</label>
-                <select id="como_se_entero"></select>
+                <select id="como_se_entero" name="como_se_entero"></select>
             </div>
             <div class="col s3">
-                <label for="forma_de_contacto">Forma de contacto</label>
-                <select id="forma_de_contacto"></select>
+                <label for="contacto">Forma de contacto</label>
+                <select id="contacto" name="contacto"></select>
             </div>
             <div class="col s3">
-                <label for="tipo_de_caso">Tipo de caso</label>
-                <select id="tipo_de_caso"></select>
+                <label for="tipo_caso">Tipo de caso</label>
+                <select id="tipo_caso" name="tipo_caso"></select>
             </div>
             <div class="col s3">
                 <label for="consejero">Consejero</label>
-                <select id="consejero"></select>
+                <select id="consejero" name="consejero"></select>
             </div>
         </div>
+        </form>
         <br />
+
+        <div class="col s12 center-align">
+            <a class="waves-effect waves-light btn" onclick="filtrar()">buscar</a>
+        </div>
+
         <div class="col s1"></div>
         <div class="col s10">
             <table id="tabla_generales" class="display responsive-table" style="width:100%; padding-top: 5%;">
@@ -320,20 +327,20 @@
                 url: "{% url 'webservices:list_estado_civil' %}",
                 cache: false,
                 success: function (json) {
-                    $("#edo_civil").empty().html(' ');
-                    $('#edo_civil').append(
+                    $("#estado_civil").empty().html(' ');
+                    $('#estado_civil').append(
                         $("<option></option>")
                             .attr("value", "")
                             .text("")
                     );
                     for (i in json) {
-                        $('#edo_civil').append(
+                        $('#estado_civil').append(
                             $("<option></option>")
                                 .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
-                    $('#edo_civil').material_select();
+                    $('#estado_civil').material_select();
                 }
             });
 
@@ -386,20 +393,20 @@
                 url: "{% url 'webservices:list_medio_contacto' %}",
                 cache: false,
                 success: function (json) {
-                    $("#forma_de_contacto").empty().html(' ');
-                    $('#forma_de_contacto').append(
+                    $("#contacto").empty().html(' ');
+                    $('#contacto').append(
                         $("<option></option>")
                             .attr("value", "")
                             .text("")
                     );
                     for (i in json) {
-                        $('#forma_de_contacto').append(
+                        $('#contacto').append(
                             $("<option></option>")
                                 .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
-                    $('#forma_de_contacto').material_select();
+                    $('#contacto').material_select();
                 }
             });
 
@@ -409,20 +416,20 @@
                 cache: false,
                 success: function (json) {
                     console.log('TIPIFICACIONES',json);
-                    $("#tipo_de_caso").empty().html(' ');
-                    $('#tipo_de_caso').append(
+                    $("#tipo_caso").empty().html(' ');
+                    $('#tipo_caso').append(
                         $("<option></option>")
                             .attr("value", "")
                             .text("")
                     );
                     for (i in json) {
-                        $('#tipo_de_caso').append(
+                        $('#tipo_caso').append(
                             $("<option></option>")
                                 .attr("value", json[i].pk)
                                 .text(json[i].nombre)
                         );
                     }
-                    $('#tipo_de_caso').material_select();
+                    $('#tipo_caso').material_select();
                 }
             });
 
@@ -661,12 +668,16 @@
             }
         }
 
-
         function filtrar_dia(tablaUrl, idTabla, tablaActual) { //  pasar como param: tipo de reporte
             var $dia_picker = $("#select_fecha1").pickadate();
             var dia = $dia_picker.pickadate('picker');
 
-            nva_url = tablaUrl + "?dia=" + dia.get('select', 'yyyy-mm-dd')
+            var nva_url = tablaUrl + "?dia=" + dia.get('select', 'yyyy-mm-dd')
+
+            if ( idTabla === '#tabla_generales') {
+                const test = $('form').serialize();
+                nva_url += '&' + test;
+            }
             tablaActual.ajax.url(nva_url).load()
             $(idTabla).dataTable()._fnAjaxUpdate()
         }
@@ -674,7 +685,11 @@
         function filtrar_mes(tablaUrl, idTabla, tablaActual) {
             var $mes_picker = $("#select_fecha_mes").pickadate();
             var mes = $mes_picker.pickadate('picker');
-            nva_url = tablaUrl + "?mes=" + mes.get('select', 'mm')
+            var nva_url = tablaUrl + "?mes=" + mes.get('select', 'mm');
+            if ( idTabla === '#tabla_generales') {
+                const test = $('form').serialize();
+                nva_url += '&' + test;
+            }
             tablaActual.ajax.url(nva_url).load()
             $(idTabla).dataTable()._fnAjaxUpdate()
         }
@@ -684,11 +699,16 @@
             var $fecha2_picker = $("#select_fecha2").pickadate();
             var fecha1 = $fecha1_picker.pickadate('picker');
             var fecha2 = $fecha2_picker.pickadate('picker');
-            nva_url = tablaUrl + "?fecha1=" + fecha1.get('select', 'yyyy-mm-dd') + "&fecha2=" +fecha2.get('select', 'yyyy-mm-dd')
-
+            var nva_url = tablaUrl + "?fecha1=" + fecha1.get('select', 'yyyy-mm-dd') + "&fecha2=" +fecha2.get('select', 'yyyy-mm-dd')
+            if ( idTabla === '#tabla_generales') {
+                const test = $('form').serialize();
+                nva_url += '&' + test;
+            }
             tablaActual.ajax.url(nva_url).load()
             $(idTabla).dataTable()._fnAjaxUpdate()
         }
+
+
 
         function filtro_default(tablaUrl, idTabla, tablaActual) {
             // nva_url = tablaUrl + "?mes=" + mes.get('select', 'mm')
