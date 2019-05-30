@@ -267,7 +267,7 @@ class LlamadaAjaxList(LoginRequiredMixin, BaseDatatableView):
                 return row.medio_contacto.nombre
             return 'Sin medio de contacto'
         elif column == 'ver':
-            return '<a href="'+ reverse('webapp:ver_servicio', kwargs={'pk': row.pk})+'"></a>'
+            return '<a href="'+ reverse('webapp:ver_servicio', kwargs={'pk': row.pk})+'"><i class="material-icons">perm_phone_msg</i></a>'
 
         return super(LlamadaAjaxList, self).render_column(row, column)
 
