@@ -87,8 +87,8 @@ urlpatterns = [
     path('municipio/list/delete/<int:pk>/<int:estado>', views.delete_municipio, name='delete_municipio'),
 
     path('colonia/add/<int:municipio>', ColoniaAdd.as_view(), name='add_colonia'),
-    path('colonia/list/<int:municipio>', views.list_colonia, name='list_colonia'),
-    path('colonia/ajax/list/<int:municipio>', ColoniaAjaxList.as_view(), name='list_ajax_colonia'),
+    path('colonia/list/<int:municipio>/<int:estado>', views.list_colonia, name='list_colonia'),
+    path('colonia/ajax/list/<int:municipio>/<int:estado>', ColoniaAjaxList.as_view(), name='list_ajax_colonia'),
     path('colonia/edit/<int:pk>/<int:municipio>', ColoniaEdit.as_view(), name='edit_colonia'),
     path('colonia/list/delete/<int:pk>', views.delete_colonia, name='delete_colonia'),
 

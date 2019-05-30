@@ -696,3 +696,39 @@ class VictimaMenorEdad(models.Model):
     class Meta:
         managed = True
         db_table = 'victima_menor_edad'
+
+class Catestados(models.Model):
+    pais = models.ForeignKey('Pais', on_delete=models.DO_NOTHING)
+    nombre = models.CharField(max_length=64)
+    nomcorto = models.CharField(db_column='nomCorto', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    clave = models.CharField(max_length=5, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'catestados'
+
+
+class Catmunicipios(models.Model):
+    idmun = models.IntegerField(db_column='idMun', primary_key=True, unique=False)  # Field name made lowercase.
+    idestado = models.ForeignKey(Catestados, models.DO_NOTHING, db_column='idEstado', unique=False)  # Field name made lowercase
+    nombre = models.CharField(max_length=100)
+    clave = models.CharField(max_length=5, blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'catmunicipios'
+        constraints = [
+            models.UniqueConstraint(fields=['idmun', 'idestado'], name="municipio-estado")
+        ]
+        #unique_together = (('idmun', 'idestado'),)
+
+class Catcolonias(models.Model):
+    municipio = models.ForeignKey('Catmunicipios', models.DO_NOTHING, db_column='municipio_id')#
+    estado = models.ForeignKey('Catestados', models.DO_NOTHING)
+    cpostal = models.CharField(db_column='cPostal', max_length=5)  # Field name made lowercase.
+    nombre = models.CharField(max_length=255)
+    tipoasentamiento = models.CharField(db_column='tipoAsentamiento', max_length=75, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = True
+        db_table = 'catcolonias'
