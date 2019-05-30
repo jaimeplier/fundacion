@@ -1,6 +1,8 @@
+from datetime import datetime
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.generic import DetailView
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -9,7 +11,8 @@ from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from config.models import Usuario, Pendiente
+from config.models import Usuario, Pendiente, Llamada, TipificacionLLamada, ExamenMental, Evaluacion, \
+    CalificacionLlamada
 from webapp.forms import PendienteForm
 
 
@@ -219,3 +222,83 @@ def delete_pendiente(request, pk):
     pendiente = get_object_or_404(Pendiente, pk=pk)
     pendiente.delete()
     return JsonResponse({'result': 1})
+
+@login_required(login_url='/')
+def list_llamada(request):
+    template_name = 'config/tab_llamada.html'
+    return render(request, template_name)
+
+
+class LlamadaAjaxList(LoginRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+
+    model = Llamada
+    columns = ['id', 'victima', 'consejero', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo',
+               'tipificacion', 'medio_contacto', 'ver']
+    order_columns = ['id', 'victima__nombre', 'consejero__a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo',
+                     'tipificacionllamada__categoria_tipificacion__nombre', 'medio_contacto__nombre', '']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'victima':
+            return row.victima.nombre
+        elif column == 'consejero':
+            return row.consejero.get_full_name()
+        elif column == 'id':
+            return row.pk
+        elif column == 'duracion_llamada':
+            formato = '%H:%M:%S'
+            h1 = str(row.hora_inicio.hour) + ':' + str(row.hora_inicio.minute) + ':' + str(row.hora_inicio.second)
+            h2 = str(row.hora_fin.hour) + ':' + str(row.hora_fin.minute) + ':' + str(row.hora_fin.second)
+            h1 = datetime.strptime(h1, formato)
+            h2 = datetime.strptime(h2, formato)
+            return str(h2-h1)
+        elif column == 'vida_en_riesgo':
+            if row.vida_en_riesgo:
+                return 'Sí'
+            return 'No'
+        elif column == 'tipificacion':
+            tll = TipificacionLLamada.objects.get(llamada__pk=row.pk)
+            return tll.categoria_tipificacion.tipificacion.nombre
+        elif column == 'medio_contacto':
+            if row.medio_contacto:
+                return row.medio_contacto.nombre
+            return 'Sin medio de contacto'
+        elif column == 'ver':
+            return '<a href="'+ reverse('webapp:ver_servicio', kwargs={'pk': row.pk})+'"></a>'
+
+        return super(LlamadaAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return Llamada.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class VerServicio(PermissionRequiredMixin, DetailView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'calidad'
+    model = Llamada
+    template_name = 'config/ver_servicio.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(VerServicio, self).get_context_data(**kwargs)
+        servicio = Llamada.objects.get(pk=self.kwargs['pk'])
+        tipificacion = TipificacionLLamada.objects.filter(llamada=servicio).first()
+        examen_mental = ExamenMental.objects.filter(llamada=servicio).first()
+        rubros = Evaluacion.objects.all()
+        evaluacion = CalificacionLlamada.objects.filter(llamada=servicio)
+        context['servicio'] = servicio
+        context['tipificacion'] = tipificacion
+        context['examen_mental'] = examen_mental
+        context['rubros'] = rubros
+        context['tareas'] = servicio.tareas.all()
+        context['evaluaciones'] = evaluacion
+        return context

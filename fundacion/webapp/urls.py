@@ -1,6 +1,6 @@
 from django.urls import path
 
-from webapp.views import PendienteAdd, PendienteAjaxList, PendienteEdit
+from webapp.views import PendienteAdd, PendienteAjaxList, PendienteEdit, VerServicio, LlamadaAjaxList
 from . import views
 
 app_name = 'webapp'
@@ -22,5 +22,9 @@ urlpatterns = [
     path('pendiente/edit/<int:pk>', PendienteEdit.as_view(), name='edit_pendiente'),
     path('pendiente/list/delete/<int:pk>', views.delete_pendiente, name='delete_pendiente'),
 
+
+    path('llamada/list/', views.list_llamada, name='list_llamada'),
+    path('llamada/ajax/list/', LlamadaAjaxList.as_view(), name='list_ajax_llamada'),
+    path('ver_servicio/<int:pk>', VerServicio.as_view(), name='ver_servicio'),
 
 ]
