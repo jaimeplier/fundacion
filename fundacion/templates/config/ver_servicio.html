@@ -56,8 +56,18 @@
 {% block navegador %}
     <a href="#" style="position: relative; top: 8px; right: 10px; color: white;"
        data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
+    {% if user.is_consejero %}
+    <a href="{% url 'consejero:busqueda_usuario' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
+    {% elif user.is_admin %}
+    <a href="{% url 'webapp:index' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
+    {% elif user.is_supervisor %}
+    <a href="{% url 'supervisor:resumen' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
+    {% elif user.is_directorio %}
+    <a href="{% url 'administrador:list_acude_institucion' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
+    {% elif user.is_calidad %}
     <a href="{% url 'calidad:list_evaluacion' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
-    <a href="{% url 'calidad:list_llamada' %}" class="breadcrumb font_blanco" style="font-size: 12px;">Servicios</a>
+    {% endif %}
+    <a href="{% url 'webapp:list_llamada' %}" class="breadcrumb font_blanco" style="font-size: 12px;">Servicios</a>
 {% endblock %}
 {% block content %}
 
