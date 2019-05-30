@@ -152,8 +152,11 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
                 return 'Sí'
             return 'No'
         elif column == 'tipificacion':
-            tll = TipificacionLLamada.objects.get(llamada__pk=row.pk)
-            return tll.categoria_tipificacion.tipificacion.nombre
+            try:
+                tll = TipificacionLLamada.objects.get(llamada__pk=row.pk)
+                return tll.categoria_tipificacion.tipificacion.nombre
+            except:
+                return "Sin tipificación"
         elif column == 'medio_contacto':
             if row.medio_contacto:
                 return row.medio_contacto.nombre
