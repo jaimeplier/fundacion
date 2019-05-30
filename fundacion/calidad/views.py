@@ -160,7 +160,7 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
             return 'Sin medio de contacto'
         elif column == 'calificacion':
             if row.calificacion is not None:
-                return '<a href="'+ reverse('calidad:ver_servicio', kwargs={'pk': row.pk})+'">' + str(row.calificacion) + '</a>'
+                return '<a href="'+ reverse('calidad:ver_servicio', kwargs={'pk': row.pk})+'">' + "{0:,.2f}".format(row.calificacion) + '</a>'
             return '<a href="'+ reverse('calidad:calificar_servicio', kwargs={'pk': row.pk}) + '">Calificar</a>'
 
         return super(LlamadaAjaxList, self).render_column(row, column)
