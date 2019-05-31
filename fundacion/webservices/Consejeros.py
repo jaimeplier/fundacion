@@ -104,10 +104,10 @@ class PrimerRegistro(APIView):
         em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_m'])
         em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_a'])
 
-        # ---> Datos de las canalizaciones a instituciones <---
+        # ---> Datos de las canalizaciones a sucursales <---
 
-        institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
-        institucion2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion2']).first()
+        sucursal1 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['sucursal1']).first()
+        sucursal2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['sucursal2']).first()
 
         # ---> REGISTRO DE VICTIMA <---
 
@@ -133,13 +133,13 @@ class PrimerRegistro(APIView):
                                          linea_negocio=linea_negocio,aliado=aliado, duracion_servicio=duracion_servicio)
 
         # ---> REGISTRO DE CANALIZACIONES LLAMADA <---
-        if institucion is not None and institucion2 is not None and institucion == institucion2:
-            canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
+        if sucursal1 is not None and sucursal2 is not None and sucursal1 == sucursal2:
+            canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal1)
         else:
-            if institucion is not None:
-                canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
-            if institucion2 is not None:
-                canalizacion_llamada2 = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion2)
+            if sucursal1 is not None:
+                canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal1)
+            if sucursal2 is not None:
+                canalizacion_llamada2 = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal2)
 
         if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)
@@ -248,10 +248,10 @@ class SeguimientoRegistro(APIView):
         em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_m'])
         em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_a'])
 
-        # ---> Datos de las canalizaciones a instituciones <---
+        # ---> Datos de las canalizaciones a sucursales <---
 
-        institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
-        institucion2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion2']).first()
+        sucursal1 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['sucursal1']).first()
+        sucursal2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['sucursal2']).first()
 
         # ---> REGISTRO DE LLAMADA <---
 
@@ -269,13 +269,13 @@ class SeguimientoRegistro(APIView):
                                          duracion_servicio=duracion_servicio)
 
         # ---> REGISTRO DE CANALIZACIONES LLAMADA <---
-        if institucion is not None and institucion2 is not None and institucion == institucion2:
-            canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
+        if sucursal1 is not None and sucursal2 is not None and sucursal1 == sucursal2:
+            canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal1)
         else:
-            if institucion is not None:
-                canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
-            if institucion2 is not None:
-                canalizacion_llamada2 = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion2)
+            if sucursal1 is not None:
+                canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal1)
+            if sucursal2 is not None:
+                canalizacion_llamada2 = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal2)
 
 
         if tarea1 is not None:
