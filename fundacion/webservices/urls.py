@@ -10,7 +10,7 @@ from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, Lis
     ListTipificaciones, ListTipificacionesCategorias, ListModalidadViolencia, \
     ListVictimas, ListAgresor, ListRedesApoyo, ListMedioContacto, ListNivelRiesgo, \
     ListRecomendacionesRiesgo, ListFaseCambio, ListEstadoMental, ListComoSeEntero, ListAliado, ListLineaNegocio, \
-    ListTipificacionesSubcategorias, ListTutor, ListDatosCP, ListEstadoCivil
+    ListTipificacionesSubcategorias, ListTutor, ListDatosCP, ListEstadoCivil, ListSucursales
 from webservices.views import ResumenLlamada, ListUsuarios, ListEstatusActividadUsuario, UpdateEstatusActividadUsuario, \
     AgregaArchivoMensaje, AgregaArchivoRecado, ListArchivoMensaje, ListArchivoRecado, CambiarEstatusInstitucion, \
     ResumenLlamadaMes
@@ -69,6 +69,7 @@ urlpatterns = [
     path('list_redes_apoyo/', ListRedesApoyo.as_view(), name='list_redes_apoyo'),
     path('list_medio_contacto/', ListMedioContacto.as_view(), name='list_medio_contacto'),
     path('list_instituciones/', ListAcudeInstitucion.as_view(), name='list_instituciones'),
+    path('list_sucursales/', ListSucursales.as_view(), name='list_instituciones'),
     path('list_nivel_riesgo/', ListNivelRiesgo.as_view(), name='list_nivel_riesgo'),
     path('list_recomendaciones_riesgo/', ListRecomendacionesRiesgo.as_view(), name='list_recomendaciones_riesgo'),
     path('list_fase_cambio/', ListFaseCambio.as_view(), name='list_fase_cambio'),
