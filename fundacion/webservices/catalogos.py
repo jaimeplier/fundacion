@@ -218,7 +218,12 @@ class ListSucursales(ListAPIView):
     serializer_class = CatalogoSerializer
 
     def get_queryset(self):
+        keywords = self.request.query_params.get('keywords', None)
         queryset = Sucursal.objects.filter(estatus_institucion__pk__in=[1,2])
+        if keywords is not None:
+            list_keywords = keywords.strip()
+            query='Select id, nombre, match(palabras_clave) AGAINST ("'+list_keywords+'") as Relevance from sucursal where match(palabras_clave) AGAINST ("'+list_keywords+'");'
+            queryset = Sucursal.objects.raw(query)
         return queryset
 
 class ListNivelRiesgo(ListAPIView):
