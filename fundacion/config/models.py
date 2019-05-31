@@ -295,7 +295,7 @@ class Llamada(models.Model):
         db_table = 'llamada'
 
 class LlamadaCanalizacion(models.Model):
-    institucion = models.ForeignKey('AcudeInstitucion', models.DO_NOTHING)
+    sucursal = models.ForeignKey('Sucursal', models.DO_NOTHING)
     llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
     class Meta:
         managed = True
