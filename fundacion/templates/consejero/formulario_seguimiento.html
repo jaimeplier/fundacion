@@ -1509,11 +1509,11 @@
                     estado_mental_m: estado_mental_m,
                     estado_mental_a: estado_mental_a,
                     fase_cambio: "" ? null :  fase_cambio,
-                    modalidad_violencia: "" ? null : modalidad_violencia,
-                    tipo_violencia: "" ? null : tipo_violencia,
-                    violentometro: "" ? null : violentometro,
-                    victimas: "" ? null : victimas,
-                    agresor: "" ? null : agresor,
+                    modalidad_violencia: modalidad_violencia=="" ? null : modalidad_violencia,
+                    tipo_violencia: tipo_violencia=="" ? null : tipo_violencia,
+                    violentometro: violentometro=="" ? null : violentometro,
+                    victimas: victimas=="" ? null : victimas,
+                    agresor: agresor=="" ? null : agresor,
                     medio_contacto: medio_conatacto,
                     posible_solucion: plan_accion,
                     institucion: institucion=="" ? null : institucion,
@@ -1529,6 +1529,7 @@
                 }
 
 
+                console.log('rawdata', rawData)
             rawData = JSON.stringify(rawData)
             $.ajax({
                 type: 'post',
