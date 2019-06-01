@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
-from config.models import Usuario, Pendiente, Llamada, TipificacionLLamada, ExamenMental, Evaluacion, \
+from config.models import Usuario, Pendiente, Llamada, TipificacionLLamada, Evaluacion, \
     CalificacionLlamada
 from webapp.forms import PendienteForm
 
@@ -294,12 +294,12 @@ class VerServicio(LoginRequiredMixin, DetailView):
         context = super(VerServicio, self).get_context_data(**kwargs)
         servicio = Llamada.objects.get(pk=self.kwargs['pk'])
         tipificacion = TipificacionLLamada.objects.filter(llamada=servicio).first()
-        examen_mental = ExamenMental.objects.filter(llamada=servicio).first()
+        ##examen_mental = ExamenMental.objects.filter(llamada=servicio).first()
         rubros = Evaluacion.objects.all()
         evaluacion = CalificacionLlamada.objects.filter(llamada=servicio)
         context['servicio'] = servicio
         context['tipificacion'] = tipificacion
-        context['examen_mental'] = examen_mental
+        ##context['examen_mental'] = examen_mental
         context['rubros'] = rubros
         context['tareas'] = servicio.tareas.all()
         context['evaluaciones'] = evaluacion

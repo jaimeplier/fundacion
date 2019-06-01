@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
-    FaseCambio, ExamenMental, ModalidadViolencia, Agresor, ComoSeEntero, TareaLLamada, \
+    FaseCambio, ModalidadViolencia, Agresor, ComoSeEntero, TareaLLamada, \
     VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion, SubcategoriaTipificacion, VictimaMenorEdad, Tutor
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
@@ -161,7 +161,7 @@ class PrimerRegistro(APIView):
 
         # ---> REGISTRO DE EXAMEN MENTAL <---
 
-        examen_mental = ExamenMental.objects.create(ute=em_ute, p=em_p, l=em_l, m=em_m, a=em_a, llamada=llamada)
+        ##examen_mental = ExamenMental.objects.create(ute=em_ute, p=em_p, l=em_l, m=em_m, a=em_a, llamada=llamada)
 
         # ---> REGISTRO DE Menores de edad en riesgo <---
 
@@ -304,7 +304,7 @@ class SeguimientoRegistro(APIView):
 
         # ---> REGISTRO DE EXAMEN MENTAL <---
 
-        examen_mental = ExamenMental.objects.create(ute=em_ute, p=em_p, l=em_l, m=em_m, a=em_a, llamada=llamada)
+        ##examen_mental = ExamenMental.objects.create(ute=em_ute, p=em_p, l=em_l, m=em_m, a=em_a, llamada=llamada)
 
         # ---> REGISTRO DE Menores de edad en riesgo <---
 
