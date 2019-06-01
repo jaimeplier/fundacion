@@ -3,7 +3,7 @@ from rest_framework import serializers
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, Evaluacion, \
     CalificacionLlamada, TareaLLamada, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
     EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio, Tutor, CPColonia, Colonia, Municipio, Estado, \
-    Pais
+    Pais, CategoriaExamenMental
 
 
 class FechaSerializer(serializers.Serializer):
@@ -75,6 +75,11 @@ class menorSerializer(serializers.Serializer):
             raise serializers.ValidationError('El ID:' +str(value) +' tutor no existe')
         return value
 
+class CategoriaExamenMentalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CategoriaExamenMental
+        fields = ['pk']
+
 class PrimeraVezSerializer(serializers.Serializer):
     # victima
     telefono = serializers.IntegerField()
@@ -142,11 +147,8 @@ class PrimeraVezSerializer(serializers.Serializer):
     subcategoria_tipificacion3 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Examen mental
-    estado_mental_ute = serializers.IntegerField(min_value=1)
-    estado_mental_p = serializers.IntegerField(min_value=1)
-    estado_mental_l = serializers.IntegerField(min_value=1)
-    estado_mental_m = serializers.IntegerField(min_value=1)
-    estado_mental_a = serializers.IntegerField(min_value=1)
+    examen_mental = serializers.ListField(child=CategoriaExamenMentalSerializer(), required=False)
+
 
     # Array menores en riesgo
     victimas_menores = serializers.ListField(child=menorSerializer(), required=False)
@@ -199,11 +201,7 @@ class SeguimientoSerializer(serializers.Serializer):
     subcategoria_tipificacion3 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Examen mental
-    estado_mental_ute = serializers.IntegerField(min_value=1)
-    estado_mental_p = serializers.IntegerField(min_value=1)
-    estado_mental_l = serializers.IntegerField(min_value=1)
-    estado_mental_m = serializers.IntegerField(min_value=1)
-    estado_mental_a = serializers.IntegerField(min_value=1)
+    examen_mental = serializers.ListField(child=CategoriaExamenMentalSerializer(), required=False)
 
     # Array menores en riesgo
     victimas_menores = serializers.ListField(child=menorSerializer(), required=False, allow_null=True)
