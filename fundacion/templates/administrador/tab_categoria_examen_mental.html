@@ -1,0 +1,61 @@
+<!--   SOFTIC SOLUTIONS   -->
+{% extends "config/tab_base.html" %}
+{% block titulo_tabla %}
+    <h5 class="titulo_tabla">- Categorías del examen mental {{ examen_mental.nombre }} -</h5>
+    <a class="waves-effect waves-light btn btn_agregar" style="text-align: center; z-index: 0;" href="{% url 'administrador:add_categoria_examen_mental'  examen_mental.pk %}"><i
+            class="material-icons left">add</i>Agregar</a>
+
+{% endblock %}
+{% load static %}
+{% block navegador %}
+    <a href="#" style="position: relative; top: 8px; right: 10px; color: white;"
+       data-activates="slide-out" class="button-collapse hide-on-large-only"><i class="material-icons">menu</i></a>
+    <a href="{% url 'webapp:index' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
+    <a href="{% url 'administrador:catalogos' %}" class="breadcrumb font_blanco" style="font-size: 12px;">Catálogos</a>
+    <a href="{% url 'administrador:list_examen_mental' %}" class="breadcrumb font_blanco" style="font-size: 12px;">Examen mental</a>
+{% endblock %}
+{% block campos %}
+    <th>ID</th>
+    <th>Nombre</th>
+    <th data-orderable="false">Editar</th>
+    <th data-orderable="false">Eliminar</th>
+{% endblock %}
+
+{% block scripts_tabla %}
+
+
+    function eliminar() {
+    $.ajax({
+    url: "delete/" + id,
+    type: "POST", // http method
+    // handle a successful response
+    success: function (aData) {
+    $('#tabla').dataTable()._fnAjaxUpdate();
+    },
+
+    // handle a non-successful response
+    error: function (xhr, errmsg, err) {
+    alert("Ocurrio un error");
+    }
+    });
+    }
+{% endblock %}
+
+<!-- Bloque para agregar las clases de las columnas en la tabla acorde al diseño -->
+ {% block columns %}
+
+ "columns": [
+                    { className: "center fondo_tab_gris border_rigth"},
+                    { className: "fondo_tab_crema border_rigth"},
+                    { className: "center fondo_tab_gris border_rigth"},
+                    { className: "center fondo_tab_crema"},
+
+                    ],
+
+ {% endblock %}
+
+<!-- *************************************************************************** -->
+
+
+{% block url_ajax %}{% url 'administrador:list_ajax_categoria_examen_mental' examen_mental.pk %}{% endblock %}
+

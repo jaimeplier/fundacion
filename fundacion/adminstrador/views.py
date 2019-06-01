@@ -20,14 +20,15 @@ from adminstrador.forms import AcudeInstitucionForm, EstadoForm, PaisForm, Estad
     DependenciaForm, RedesApoyoForm, VictimaInvolucradaForm, \
     AgresorForm, ComoSeEnteroForm, EstadoMentalForm, NivelRiesgoForm, RecomendacionRiesgoForm, \
     FaseCambioForm, ActividadUsuarioForm, TipificacionForm, CategoriaTipificacionForm, SucursalInstitucionForm, \
-    AliadoForm, LineaNegocioForm, SubcategoriaTipificacionForm, TutorForm, ColoniaForm, CPColoniaForm
+    AliadoForm, LineaNegocioForm, SubcategoriaTipificacionForm, TutorForm, ColoniaForm, CPColoniaForm, ExamenMentalForm, \
+    CategoriaExamenMentalForm
 from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, LenguaIndigena, MedioContacto, \
     ModalidadViolencia, Municipio, NivelEstudio, NivelViolencia, Ocupacion, Religion, TipoViolencia, \
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Rol, Directorio, Supervisor, Calidad, Llamada, Sexo, \
     MotivoLLamada, Dependencia, RedesApoyo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
     CategoriaTipificacion, Sucursal, EstatusInstitucion, Aliado, LineaNegocio, SubcategoriaTipificacion, Tutor, Colonia, \
-    CPColonia, Catestados, Catmunicipios, Catcolonias
+    CPColonia, Catestados, Catmunicipios, Catcolonias, CategoriaExamenMental, ExamenMental
 
 
 @permission_required(perm='administrador', login_url='/')
@@ -4864,4 +4865,240 @@ class TutorEdit(PermissionRequiredMixin, UpdateView):
 def delete_tutor(request, pk):
     tutor = get_object_or_404(Tutor, pk=pk)
     tutor.delete()
+    return JsonResponse({'result': 1})
+
+
+class ExamenMentalAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = ExamenMental
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/examen_mental/list'
+    form_class = ExamenMentalForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ExamenMentalAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'Examen mental', 'url': reverse('administrador:list_examen_mental')}]
+            context['rutas']= rutas
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar un atributo para examen mental'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar un atibuto para examen mental'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_examen_mental(request):
+    template_name = 'administrador/tab_examen_mental.html'
+    return render(request, template_name)
+
+
+class ExamenMentalAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = ExamenMental
+    columns = ['id', 'nombre', 'subcategoria', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_examen_mental',
+                                                   kwargs={
+                                                       'pk': row.pk}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'subcategoria':
+            return '<a class="" href ="' + reverse('administrador:list_categoria_examen_mental',
+                                                   kwargs={
+                                                       'examen_mental': row.pk}) + '"><i class="material-icons">assignment</i></a>'
+        elif column == 'id':
+            return row.pk
+
+        return super(ExamenMentalAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return ExamenMental.objects.all()
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class ExamenMentalEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+    success_url = '/administrador/examen_mental/list'
+
+    model = ExamenMental
+    template_name = 'config/formulario_1Col.html'
+    form_class = ExamenMentalForm
+
+    def get_context_data(self, **kwargs):
+        context = super(ExamenMentalEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'Examen mental', 'url': reverse('administrador:list_examen_mental')}]
+            context['rutas']= rutas
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_examen_mental(request, pk):
+    examen_mental = get_object_or_404(ExamenMental, pk=pk)
+    examen_mental.delete()
+    return JsonResponse({'result': 1})
+
+
+class CategoriaExamenMentalAdd(PermissionRequiredMixin, CreateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = CategoriaExamenMental
+    template_name = 'config/formulario_1Col.html'
+    success_url = '/administrador/categoria_examen_mental/list'
+    form_class = CategoriaExamenMentalForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoriaExamenMentalAdd, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            examen_mental = ExamenMental.objects.get(pk=self.kwargs['examen_mental'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'Examen mental', 'url': reverse('administrador:list_examen_mental')},
+                     {'nombre': 'Categorías de examen mental', 'url': reverse('administrador:list_categoria_examen_mental', kwargs={'examen_mental':examen_mental.pk})}]
+            context['rutas']= rutas
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Agregar una categoría al examen mental'
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Completa todos los campos para registrar una categoria del examen mental'
+        if 'save_and_new' not in context:
+            context['save_and_new'] = 'Guardar y nuevo'
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object
+        form = self.form_class(request.POST)
+        if form.is_valid():
+
+            examen_mental = ExamenMental.objects.get(pk=self.kwargs['examen_mental'])
+            cont_examen_mental = form.save(commit=False)
+
+            cont_examen_mental.examen_mental = examen_mental
+            cont_examen_mental.save()
+            if 'save_and_new' in form.data:
+                return HttpResponseRedirect(self.guardar_y_nuevo())
+
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+    def guardar_y_nuevo(self):
+        return reverse('administrador:add_categoria_examen_mental', kwargs={'examen_mental': self.kwargs['examen_mental']})
+
+    def get_success_url(self):
+        return reverse('administrador:list_categoria_examen_mental', kwargs={'examen_mental': self.kwargs['examen_mental']})
+
+
+@permission_required(perm='catalogo', login_url='/')
+def list_categoria_examen_mental(request, examen_mental):
+    template_name = 'administrador/tab_categoria_examen_mental.html'
+    examen_mental_obj = ExamenMental.objects.get(pk=examen_mental)
+    context = {'examen_mental': examen_mental_obj}
+    return render(request, template_name, context)
+
+
+class CategoriaExamenMentalAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = CategoriaExamenMental
+    columns = ['id', 'nombre', 'editar', 'eliminar']
+    order_columns = ['id', 'nombre']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'editar':
+            return '<a class="" href ="' + reverse('administrador:edit_categoria_examen_mental',
+                                                   kwargs={
+                                                       'pk': row.pk, 'examen_mental': self.kwargs[
+                                                           'examen_mental']}) + '"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/editar.png"></a>'
+        elif column == 'eliminar':
+            return '<a class=" modal-trigger" href ="#" onclick="actualiza(' + str(
+                row.pk) + ')"><img  src="http://orientacionjuvenil.colorsandberries.com/Imagenes/fundacion_origen/3/eliminar.png"></a>'
+        elif column == 'id':
+            return row.pk
+        return super(CategoriaExamenMentalAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return CategoriaExamenMental.objects.filter(examen_mental__pk=self.kwargs['examen_mental'])
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
+        return qs
+
+
+class CategoriaExamenMentalEdit(PermissionRequiredMixin, UpdateView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'catalogo'
+
+    model = CategoriaExamenMental
+    template_name = 'config/formulario_1Col.html'
+    form_class = CategoriaExamenMentalForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoriaExamenMentalEdit, self).get_context_data(**kwargs)
+        if 'rutas' not in context:
+            examen_mental = ExamenMental.objects.get(pk=self.kwargs['examen_mental'])
+            rutas = [{'nombre': 'menu', 'url': reverse('webapp:index')},
+                     {'nombre': 'Catálogos', 'url': reverse('administrador:catalogos')},
+                     {'nombre': 'Examen mental', 'url': reverse('administrador:list_examen_mental')},
+                     {'nombre': 'Categorías de examen mental', 'url': reverse('administrador:list_categoria_examen_mental', kwargs={'examen_mental':examen_mental.pk})}]
+            context['rutas']= rutas
+        if 'form' not in context:
+            context['form'] = self.form_class()
+        if 'titulo' not in context:
+            context['titulo'] = 'Editar '
+        if 'instrucciones' not in context:
+            context['instrucciones'] = 'Modifica o actualiza los datos que requieras'
+        return context
+
+    def get_success_url(self):
+        return reverse('administrador:list_categoria_examen_mental', kwargs={'examen_mental': self.kwargs['examen_mental']})
+
+
+@permission_required(perm='catalogo', login_url='/')
+def delete_categoria_examen_mental(request, pk):
+    categoria_examen_mental = get_object_or_404(CategoriaExamenMental, pk=pk)
+    categoria_examen_mental.delete()
     return JsonResponse({'result': 1})

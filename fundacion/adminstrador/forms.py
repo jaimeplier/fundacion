@@ -6,7 +6,7 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     Dependencia, RedesApoyo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
     CategoriaTipificacion, Sucursal, Aliado, LineaNegocio, SubcategoriaTipificacion, Tutor, Colonia, CPColonia, \
-    Catestados, Catmunicipios, Catcolonias
+    Catestados, Catmunicipios, Catcolonias, ExamenMental, CategoriaExamenMental
 
 
 class ConsejeroForm(ModelForm):
@@ -355,3 +355,13 @@ class TutorForm(ModelForm):
     class Meta:
         model = Tutor
         exclude = ['fecha_alta', 'fecha_baja', 'estatus']
+
+class ExamenMentalForm(ModelForm):
+    class Meta:
+        model = ExamenMental
+        exclude = ['fecha_alta', 'fecha_baja', 'estatus']
+
+class CategoriaExamenMentalForm(ModelForm):
+    class Meta:
+        model = CategoriaExamenMental
+        exclude = ['fecha_alta', 'fecha_baja', 'estatus', 'examen_mental']
