@@ -518,7 +518,7 @@ class ExamenMental(Catalogo):
         db_table = 'examen_mental'
 
 class CategoriaExamenMental(Catalogo):
-    examen_mental = models.ForeignKey('ExamenMental', models.DO_NOTHING)
+    examen_mental = models.ForeignKey('ExamenMental', models.DO_NOTHING, related_name='categoria_examen')
     class Meta:
         managed = True
         db_table = 'categoria_examen_mental'
