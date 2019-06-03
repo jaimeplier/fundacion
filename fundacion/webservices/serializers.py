@@ -159,7 +159,7 @@ class PrimeraVezSerializer(serializers.Serializer):
     subcategoria_tipificacion3 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Examen mental
-    examen_mental = serializers.ListField(child=serializers.IntegerField(), required=False)
+    examen_mental = serializers.ListField(child=CategoriaExamenMentalSerializer(), required=False)
 
 
     # Array menores en riesgo
@@ -213,7 +213,7 @@ class SeguimientoSerializer(serializers.Serializer):
     subcategoria_tipificacion3 = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Examen mental
-    examen_mental = serializers.ListField(child=serializers.IntegerField(), required=False)
+    examen_mental = serializers.ListField(child=CategoriaExamenMentalSerializer(), required=False)
 
     # Array menores en riesgo
     victimas_menores = serializers.ListField(child=menorSerializer(), required=False, allow_null=True)

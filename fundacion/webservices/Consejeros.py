@@ -13,7 +13,7 @@ from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, R
     MotivoLLamada, EstadoMental, NivelRiesgo, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
     FaseCambio, ModalidadViolencia, Agresor, ComoSeEntero, TareaLLamada, \
     VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion, SubcategoriaTipificacion, VictimaMenorEdad, Tutor, \
-    ExamenMentalLLamada
+    ExamenMentalLLamada, CategoriaExamenMental
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
     BusquedaSerializer, VictimaSerializer
