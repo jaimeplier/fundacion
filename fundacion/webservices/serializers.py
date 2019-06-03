@@ -3,7 +3,7 @@ from rest_framework import serializers
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, Evaluacion, \
     CalificacionLlamada, TareaLLamada, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
     EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio, Tutor, CPColonia, Colonia, Municipio, Estado, \
-    Pais, CategoriaExamenMental
+    Pais, CategoriaExamenMental, ExamenMental
 
 
 class FechaSerializer(serializers.Serializer):
@@ -79,6 +79,18 @@ class CategoriaExamenMentalSerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoriaExamenMental
         fields = ['pk']
+
+class CategoriaExamenMentalSerializerpk(serializers.ModelSerializer):
+    class Meta:
+        model = CategoriaExamenMental
+        fields = ['pk', 'nombre']
+
+class ExamenMentalSerializer(serializers.ModelSerializer):
+    categorias = CategoriaExamenMentalSerializerpk(source='categoria_examen', many=True)
+    class Meta:
+        model = ExamenMental
+        fields = ['pk', 'nombre', 'categorias']
+
 
 class PrimeraVezSerializer(serializers.Serializer):
     # victima

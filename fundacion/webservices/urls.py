@@ -10,7 +10,7 @@ from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, Lis
     ListTipificaciones, ListTipificacionesCategorias, ListModalidadViolencia, \
     ListVictimas, ListAgresor, ListRedesApoyo, ListMedioContacto, ListNivelRiesgo, \
     ListRecomendacionesRiesgo, ListFaseCambio, ListEstadoMental, ListComoSeEntero, ListAliado, ListLineaNegocio, \
-    ListTipificacionesSubcategorias, ListTutor, ListDatosCP, ListEstadoCivil, ListSucursales
+    ListTipificacionesSubcategorias, ListTutor, ListDatosCP, ListEstadoCivil, ListSucursales, ListExamenMental
 from webservices.views import ResumenLlamada, ListUsuarios, ListEstatusActividadUsuario, UpdateEstatusActividadUsuario, \
     AgregaArchivoMensaje, AgregaArchivoRecado, ListArchivoMensaje, ListArchivoRecado, CambiarEstatusInstitucion, \
     ResumenLlamadaMes
@@ -80,5 +80,6 @@ urlpatterns = [
     path('list_tutor/', ListTutor.as_view(), name='list_tutor'),
     path('list_cp/', ListDatosCP.as_view(), name='list_cp'),
     path('list_estado_civil/', ListEstadoCivil.as_view(), name='list_estado_civil'),
+    path('list_examen_mental/', ListExamenMental.as_view(), name='list_examen_mental'),
 
 ]
