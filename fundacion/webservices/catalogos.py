@@ -8,9 +8,9 @@ from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, Tipo
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     VictimaInvolucrada, Agresor, RedesApoyo, MedioContacto, NivelRiesgo, \
     RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
-    Consejero, Tutor, CPColonia, EstadoCivil, Sucursal
+    Consejero, Tutor, CPColonia, EstadoCivil, Sucursal, CategoriaExamenMental, ExamenMental
 from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer, TutorSerializer, \
-    CPSerializer
+    CPSerializer, CategoriaExamenMentalSerializerpk, ExamenMentalSerializer
 
 
 class ListSexo(ListAPIView):
@@ -336,4 +336,14 @@ class ListEstadoCivil(ListAPIView):
 
     def get_queryset(self):
         queryset = EstadoCivil.objects.filter(estatus=True)
+        return queryset
+
+class ListExamenMental(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = ExamenMentalSerializer
+
+    def get_queryset(self):
+        queryset = ExamenMental.objects.filter(estatus=True)
         return queryset
