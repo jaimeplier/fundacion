@@ -205,6 +205,7 @@ class Sucursal(Catalogo):
     convenio = models.BooleanField(default=False)
     estatus_institucion = models.ForeignKey('EstatusInstitucion', models.DO_NOTHING)
     direccion = models.CharField(max_length=512)
+    palabras_clave = models.TextField(max_length=128, null=True, blank=True)
 
     @property
     def latitud(self):
@@ -294,7 +295,7 @@ class Llamada(models.Model):
         db_table = 'llamada'
 
 class LlamadaCanalizacion(models.Model):
-    institucion = models.ForeignKey('AcudeInstitucion', models.DO_NOTHING)
+    sucursal = models.ForeignKey('Sucursal', models.DO_NOTHING)
     llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
     class Meta:
         managed = True
@@ -510,17 +511,25 @@ class ComoSeEntero(Catalogo):
         managed = True
         db_table = 'como_se_entero'
 
-class ExamenMental(models.Model):
-    llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
-    ute = models.ForeignKey('EstadoMental', models.DO_NOTHING, related_name='ute')
-    p = models.ForeignKey('EstadoMental', models.DO_NOTHING, related_name='p')
-    l = models.ForeignKey('EstadoMental', models.DO_NOTHING, related_name='l')
-    m = models.ForeignKey('EstadoMental', models.DO_NOTHING, related_name='m')
-    a = models.ForeignKey('EstadoMental', models.DO_NOTHING, related_name='a')
+class ExamenMental(Catalogo):
 
     class Meta:
         managed = True
         db_table = 'examen_mental'
+
+class CategoriaExamenMental(Catalogo):
+    examen_mental = models.ForeignKey('ExamenMental', models.DO_NOTHING)
+    class Meta:
+        managed = True
+        db_table = 'categoria_examen_mental'
+
+
+class ExamenMentalLLamada(models.Model):
+    llamada = models.ForeignKey('Llamada', models.DO_NOTHING)
+    categoria_examen_mental = models.ForeignKey('CategoriaExamenMental', models.DO_NOTHING)
+    class Meta:
+        managed = True
+        db_table = 'examen_mental_llamada'
 
 class EstadoMental(Catalogo):
 

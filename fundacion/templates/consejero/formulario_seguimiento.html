@@ -649,6 +649,11 @@
                                     </a></p>
                                 </div>
                                 <div class="col s12 m12 l12">
+                                    <div class="col s12">
+                                        <input style="width: 85%" id="palabrasClave1" class="validate" onblur="CargarPalabrasClave()"
+                                        type="text" placeholder="Palabras clave para buscar institución">
+                                    </div>
+                                    <!-- <button onclick="reloadInstituciones('instituciones')" -->
                                     <button onclick="reloadInstituciones('instituciones')"
                                             class="btn fondo_naranja redondo"
                                             style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
@@ -1330,6 +1335,83 @@
 
                 }
             });
+        }
+
+        function CargarPalabrasClave() {
+            var palabrasClave = encodeURIComponent($('#palabrasClave1').val());
+            console.log('pal clave', palabrasClave, typeof palabrasClave)
+            if (palabrasClave != '' && palabrasClave != '%20' ) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_sucursales' %}?keywords=" + palabrasClave,
+                    cache: false,
+                    success: function (json) {
+                        if (json.length > 0){
+                            console.log('res json', json)
+                            $("#instituciones").empty().html(' ');
+                            $('#instituciones').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Institución")
+                            );
+                            for (i in json) {
+                                $('#instituciones').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                                // $('#instituciones2').append(
+                                //     $("<option></option>")
+                                //         .attr("value", json[i].pk)
+                                //         .text(json[i].nombre)
+                                // );
+                            }
+                            $('#instituciones').material_select();
+                            // $('#instituciones2').material_select();
+                            $('.js-example-basic-single').select2();
+                        }
+                        else {
+                            console.log('no se encontraron resultados')
+                        }
+                    }
+                });
+            } else {
+                console.log('en default')
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_sucursales' %}" ,
+                    cache: false,
+                    success: function (json) {
+                        if (json.length > 0){
+                            console.log('res json', json)
+                            $("#instituciones").empty().html(' ');
+                            $('#instituciones').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Institución")
+                            );
+                            for (i in json) {
+                                $('#instituciones').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                                // $('#instituciones2').append(
+                                //     $("<option></option>")
+                                //         .attr("value", json[i].pk)
+                                //         .text(json[i].nombre)
+                                // );
+                            }
+                            $('#instituciones').material_select();
+                            // $('#instituciones2').material_select();
+                            $('.js-example-basic-single').select2();
+                        }
+                        else {
+                            console.log('no se encontraron resultados')
+                        }
+                    }
+                });
+            }
         }
 
         function CargarLineaNegocio() {

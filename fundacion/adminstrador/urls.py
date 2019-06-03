@@ -24,7 +24,8 @@ from adminstrador.views import AcudeInstitucionAdd, AcudeInstitucionAjaxList, Ac
     SucursalInstitucionAjaxList, SucursalInstitucionEdit, AliadoAdd, AliadoAjaxList, AliadoEdit, LineaNegocioAdd, \
     LineaNegocioAjaxList, LineaNegocioEdit, SubcategoriaTipificacionAdd, SubcategoriaTipificacionAjaxList, \
     SubcategoriaTipificacionEdit, TutorAdd, TutorAjaxList, TutorEdit, ColoniaAdd, ColoniaAjaxList, ColoniaEdit, \
-    CPColoniaAdd, CPColoniaAjaxList, CPColoniaEdit
+    CPColoniaAdd, CPColoniaAjaxList, CPColoniaEdit, ExamenMentalAdd, ExamenMentalAjaxList, ExamenMentalEdit, \
+    CategoriaExamenMentalAdd, CategoriaExamenMentalAjaxList, CategoriaExamenMentalEdit
 from . import views
 
 app_name = 'administrador'
@@ -317,4 +318,21 @@ urlpatterns = [
     path('tutor/ajax/list/', TutorAjaxList.as_view(), name='list_ajax_tutor'),
     path('tutor/edit/<int:pk>', TutorEdit.as_view(), name='edit_tutor'),
     path('tutor/list/delete/<int:pk>', views.delete_tutor, name='delete_tutor'),
+
+    path('examen_mental/add/', ExamenMentalAdd.as_view(), name='add_examen_mental'),
+    path('examen_mental/list/', views.list_examen_mental, name='list_examen_mental'),
+    path('examen_mental/ajax/list/', ExamenMentalAjaxList.as_view(), name='list_ajax_examen_mental'),
+    path('examen_mental/edit/<int:pk>', ExamenMentalEdit.as_view(), name='edit_examen_mental'),
+    path('examen_mental/list/delete/<int:pk>', views.delete_examen_mental, name='delete_examen_mental'),
+
+    path('categoria_examen_mental/add/<int:examen_mental>', CategoriaExamenMentalAdd.as_view(),
+         name='add_categoria_examen_mental'),
+    path('categoria_examen_mental/list/<int:examen_mental>', views.list_categoria_examen_mental,
+         name='list_categoria_examen_mental'),
+    path('categoria_examen_mental/ajax/list/<int:examen_mental>', CategoriaExamenMentalAjaxList.as_view(),
+         name='list_ajax_categoria_examen_mental'),
+    path('categoria_examen_mental/edit/<int:pk>/<int:examen_mental>', CategoriaExamenMentalEdit.as_view(),
+         name='edit_categoria_examen_mental'),
+    path('categoria_examen_mental/list/delete/<int:pk>', views.delete_categoria_examen_mental,
+         name='delete_categoria_examen_mental'),
 ]

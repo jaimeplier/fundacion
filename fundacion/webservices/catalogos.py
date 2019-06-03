@@ -8,7 +8,7 @@ from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, Tipo
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     VictimaInvolucrada, Agresor, RedesApoyo, MedioContacto, NivelRiesgo, \
     RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
-    Consejero, Tutor, CPColonia, EstadoCivil
+    Consejero, Tutor, CPColonia, EstadoCivil, Sucursal
 from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer, TutorSerializer, \
     CPSerializer
 
@@ -209,6 +209,21 @@ class ListAcudeInstitucion(ListAPIView):
 
     def get_queryset(self):
         queryset = AcudeInstitucion.objects.all()
+        return queryset
+
+class ListSucursales(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = CatalogoSerializer
+
+    def get_queryset(self):
+        keywords = self.request.query_params.get('keywords', None)
+        queryset = Sucursal.objects.filter(estatus_institucion__pk__in=[1,2])
+        if keywords is not None:
+            list_keywords = keywords.strip()
+            query='Select id, nombre, match(palabras_clave) AGAINST ("'+list_keywords+'") as Relevance from sucursal where match(palabras_clave) AGAINST ("'+list_keywords+'");'
+            queryset = Sucursal.objects.raw(query)
         return queryset
 
 class ListNivelRiesgo(ListAPIView):

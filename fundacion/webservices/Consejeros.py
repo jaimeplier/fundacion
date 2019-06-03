@@ -11,8 +11,9 @@ from rest_framework.views import APIView
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
     MotivoLLamada, EstadoMental, NivelRiesgo, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
-    FaseCambio, ExamenMental, ModalidadViolencia, Agresor, ComoSeEntero, TareaLLamada, \
-    VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion, SubcategoriaTipificacion, VictimaMenorEdad, Tutor
+    FaseCambio, ModalidadViolencia, Agresor, ComoSeEntero, TareaLLamada, \
+    VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion, SubcategoriaTipificacion, VictimaMenorEdad, Tutor, \
+    ExamenMentalLLamada
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
     BusquedaSerializer, VictimaSerializer
@@ -96,18 +97,10 @@ class PrimerRegistro(APIView):
         cat_tipificacion3 = CategoriaTipificacion.objects.filter(pk=serializer.data['categoria_tipificacion3']).first()
         subcat_tipificacion3 = SubcategoriaTipificacion.objects.filter(pk=serializer.data['subcategoria_tipificacion3']).first()
 
-        # ---> Datos del examen mental <---
+        # ---> Datos de las canalizaciones a sucursales <---
 
-        em_ute = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_ute'])
-        em_p = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_p'])
-        em_l = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_l'])
-        em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_m'])
-        em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_a'])
-
-        # ---> Datos de las canalizaciones a instituciones <---
-
-        institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
-        institucion2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion2']).first()
+        sucursal1 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['sucursal1']).first()
+        sucursal2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['sucursal2']).first()
 
         # ---> REGISTRO DE VICTIMA <---
 
@@ -133,13 +126,13 @@ class PrimerRegistro(APIView):
                                          linea_negocio=linea_negocio,aliado=aliado, duracion_servicio=duracion_servicio)
 
         # ---> REGISTRO DE CANALIZACIONES LLAMADA <---
-        if institucion is not None and institucion2 is not None and institucion == institucion2:
-            canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
+        if sucursal1 is not None and sucursal2 is not None and sucursal1 == sucursal2:
+            canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal1)
         else:
-            if institucion is not None:
-                canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
-            if institucion2 is not None:
-                canalizacion_llamada2 = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion2)
+            if sucursal1 is not None:
+                canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal1)
+            if sucursal2 is not None:
+                canalizacion_llamada2 = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal2)
 
         if tarea1 is not None:
             tarea = TareaLLamada.objects.create(nombre=tarea1)
@@ -159,10 +152,6 @@ class PrimerRegistro(APIView):
         if cat_tipificacion3 is not None:
             llamada_tipifificacion3 = TipificacionLLamada.objects.create(llamada=llamada, categoria_tipificacion=cat_tipificacion3, subcategoria_tipificacion=subcat_tipificacion3)
 
-        # ---> REGISTRO DE EXAMEN MENTAL <---
-
-        examen_mental = ExamenMental.objects.create(ute=em_ute, p=em_p, l=em_l, m=em_m, a=em_a, llamada=llamada)
-
         # ---> REGISTRO DE Menores de edad en riesgo <---
 
         if 'victimas_menores' in serializer.validated_data:
@@ -170,6 +159,13 @@ class PrimerRegistro(APIView):
             for menor in lista_menores_edad:
                 tutor = Tutor.objects.get(pk=menor['tutor'])
                 VictimaMenorEdad.objects.create(tutor=tutor, edad=menor['edad'], registro=menor['registro'],llamada=llamada)
+
+        # ---> REGISTRO del examen mental <---
+
+        if 'examen_mental'in serializer.validated_data:
+            list_cat_examen_mental = serializer.validated_data['examen_mental']
+            for cat_exam_mental in list_cat_examen_mental:
+                ExamenMentalLLamada.objects.create(llamada=llamada, categoria_examen_mental= cat_exam_mental)
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
 
@@ -240,18 +236,10 @@ class SeguimientoRegistro(APIView):
         subcat_tipificacion3 = SubcategoriaTipificacion.objects.filter(
             pk=serializer.data['subcategoria_tipificacion3']).first()
 
-        # ---> Datos del examen mental <---
+        # ---> Datos de las canalizaciones a sucursales <---
 
-        em_ute = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_ute'])
-        em_p = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_p'])
-        em_l = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_l'])
-        em_m = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_m'])
-        em_a = EstadoMental.objects.get(pk=serializer.validated_data['estado_mental_a'])
-
-        # ---> Datos de las canalizaciones a instituciones <---
-
-        institucion = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion']).first()
-        institucion2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['institucion2']).first()
+        sucursal1 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['sucursal1']).first()
+        sucursal2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['sucursal2']).first()
 
         # ---> REGISTRO DE LLAMADA <---
 
@@ -269,13 +257,13 @@ class SeguimientoRegistro(APIView):
                                          duracion_servicio=duracion_servicio)
 
         # ---> REGISTRO DE CANALIZACIONES LLAMADA <---
-        if institucion is not None and institucion2 is not None and institucion == institucion2:
-            canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
+        if sucursal1 is not None and sucursal2 is not None and sucursal1 == sucursal2:
+            canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal1)
         else:
-            if institucion is not None:
-                canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion)
-            if institucion2 is not None:
-                canalizacion_llamada2 = LlamadaCanalizacion.objects.create(llamada=llamada, institucion=institucion2)
+            if sucursal1 is not None:
+                canalizacion_llamada = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal1)
+            if sucursal2 is not None:
+                canalizacion_llamada2 = LlamadaCanalizacion.objects.create(llamada=llamada, sucursal=sucursal2)
 
 
         if tarea1 is not None:
@@ -302,10 +290,6 @@ class SeguimientoRegistro(APIView):
                                                                              categoria_tipificacion=cat_tipificacion3,
                                                                              subcategoria_tipificacion=subcat_tipificacion3)
 
-        # ---> REGISTRO DE EXAMEN MENTAL <---
-
-        examen_mental = ExamenMental.objects.create(ute=em_ute, p=em_p, l=em_l, m=em_m, a=em_a, llamada=llamada)
-
         # ---> REGISTRO DE Menores de edad en riesgo <---
 
         if 'victimas_menores' in serializer.validated_data:
@@ -313,6 +297,13 @@ class SeguimientoRegistro(APIView):
             for menor in lista_menores_edad:
                 tutor = Tutor.objects.get(pk=menor['tutor'])
                 VictimaMenorEdad.objects.create(tutor=tutor, edad=menor['edad'], registro=menor['registro'],llamada=llamada)
+
+        # ---> REGISTRO del examen mental <---
+
+        if 'examen_mental' in serializer.validated_data:
+            list_cat_examen_mental = serializer.validated_data['examen_mental']
+            for cat_exam_mental in list_cat_examen_mental:
+                ExamenMentalLLamada.objects.create(llamada=llamada, categoria_examen_mental=cat_exam_mental)
 
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
