@@ -20,12 +20,6 @@ def registro_primera_vez(request):
     consejero = Consejero.objects.get(pk=request.user.pk)
     return render(request, template_name, {'consejero': consejero})
 
-
-@permission_required(perm='consejero', login_url='/')
-def registro_seguimiento(request):
-    template_name = 'consejero/formulario_seguimiento.html'
-    return render(request, template_name)
-
 class SeguimientoEdit(PermissionRequiredMixin, UpdateView):
     redirect_field_name = 'next'
     login_url = '/'
