@@ -415,7 +415,7 @@ class Victima(models.Model):
     lengua_indigena = models.ForeignKey('LenguaIndigena', models.DO_NOTHING, blank=True, null=True)
     fecha_nacimiento = models.DateField(blank=True, null=True)
     cp = models.CharField(max_length=10, null=True, blank=True)
-    colonia = models.CharField(max_length=512, null=True, blank=True)
+    colonia = models.ForeignKey('Colonia', models.DO_NOTHING, null=True, blank=True)
     trabajo_remunerado = models.BooleanField(null=True, blank=True)
     redes_apoyo = models.ForeignKey('RedesApoyo', models.DO_NOTHING, blank=True, null=True)
     estatus = models.BooleanField(default=True)
