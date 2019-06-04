@@ -11,6 +11,8 @@ class VictimaForm(ModelForm):
         super(VictimaForm, self).__init__(*args, **kwargs)
         if v.cp is not None:
             self.fields['colonia'].queryset = Colonia.objects.filter(cp = v.cp)
+            if v.colonia:
+                self.fields['colonia'].initial = v.colonia
         else:
             self.fields['colonia'].queryset = Colonia.objects.none()
 
