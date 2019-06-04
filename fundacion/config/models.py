@@ -205,6 +205,7 @@ class Sucursal(Catalogo):
     convenio = models.BooleanField(default=False)
     estatus_institucion = models.ForeignKey('EstatusInstitucion', models.DO_NOTHING)
     direccion = models.CharField(max_length=512)
+    estado = models.ForeignKey('Estado', models.DO_NOTHING)
     palabras_clave = models.TextField(max_length=128, null=True, blank=True)
 
     @property
