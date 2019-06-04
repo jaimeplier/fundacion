@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, Evaluacion, \
     CalificacionLlamada, TareaLLamada, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
-    EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio, Tutor, CPColonia, Colonia, Municipio, Estado, \
+    EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio, Tutor, Colonia, Municipio, Estado, \
     Pais, CategoriaExamenMental, ExamenMental
 
 
@@ -57,12 +57,6 @@ class ColoniaSerializer(serializers.ModelSerializer):
         model = Colonia
         fields = ['pk', 'nombre', 'municipio']
 
-class CPSerializer(serializers.ModelSerializer):
-    colonia = ColoniaSerializer()
-    class Meta:
-        model = CPColonia
-        fields = ['pk', 'codigo', 'colonia']
-
 class menorSerializer(serializers.Serializer):
     edad = serializers.IntegerField(min_value=0, max_value=17)
     tutor = serializers.IntegerField()
@@ -75,10 +69,14 @@ class menorSerializer(serializers.Serializer):
             raise serializers.ValidationError('El ID:' +str(value) +' tutor no existe')
         return value
 
-class CategoriaExamenMentalSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CategoriaExamenMental
-        fields = ['pk']
+class CategoriaExamenMentalSerializer(serializers.Serializer):
+    pk = serializers.IntegerField()
+
+    def validate_pk(self, value):
+        try:
+            CategoriaExamenMental.objects.get(pk=value)
+        except:
+            raise serializers.ValidationError('El ID: '+str(value)+ 'de categoría no existe')
 
 class CategoriaExamenMentalSerializerpk(serializers.ModelSerializer):
     class Meta:

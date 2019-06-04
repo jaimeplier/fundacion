@@ -165,7 +165,8 @@ class PrimerRegistro(APIView):
         if 'examen_mental'in serializer.validated_data:
             list_cat_examen_mental = serializer.validated_data['examen_mental']
             for cat_exam_mental in list_cat_examen_mental:
-                ExamenMentalLLamada.objects.create(llamada=llamada, categoria_examen_mental= cat_exam_mental)
+                cat_exa = CategoriaExamenMental.objects.get(pk=cat_exam_mental['pk'])
+                ExamenMentalLLamada.objects.create(llamada=llamada, categoria_examen_mental= cat_exa)
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
 
@@ -303,7 +304,8 @@ class SeguimientoRegistro(APIView):
         if 'examen_mental' in serializer.validated_data:
             list_cat_examen_mental = serializer.validated_data['examen_mental']
             for cat_exam_mental in list_cat_examen_mental:
-                ExamenMentalLLamada.objects.create(llamada=llamada, categoria_examen_mental=cat_exam_mental)
+                cat_exa = CategoriaExamenMental.objects.get(pk=cat_exam_mental['pk'])
+                ExamenMentalLLamada.objects.create(llamada=llamada, categoria_examen_mental=cat_exa)
 
 
         return Response({'exito': 'registro exitoso'}, status=status.HTTP_200_OK)
