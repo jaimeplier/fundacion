@@ -77,6 +77,7 @@ class CategoriaExamenMentalSerializer(serializers.Serializer):
             CategoriaExamenMental.objects.get(pk=value)
         except:
             raise serializers.ValidationError('El ID: '+str(value)+ 'de categoría no existe')
+        return value
 
 class CategoriaExamenMentalSerializerpk(serializers.ModelSerializer):
     class Meta:
