@@ -524,30 +524,8 @@
                         <div class="col s12" style="padding-top: 15px;">
                             <p style="text-align: center;">Examen de salud mental</p>
                         </div>
-                        <div class="input-field col s6">
-                            <p style="margin-top: 0px; text-align: center;">Ubicación Tiempo Espacio (UTE)</p>
-                            <select id="em_ute">
-                            </select>
-                        </div>
-                        <div class="input-field col s6">
-                            <p style="margin-top: 0px; text-align: center;">Pensamiento (P)</p>
-                            <select id="em_p">
-                            </select>
-                        </div>
-                        <div class="input-field col s6">
-                            <p style="margin-top: 0px; text-align: center;">Lenguaje (L)</p>
-                            <select id="em_l">
-                            </select>
-                        </div>
-                        <div class="input-field col s6">
-                            <p style="margin-top: 0px; text-align: center;">Memoria (M)</p>
-                            <select id="em_m">
-                            </select>
-                        </div>
-                        <div class="input-field col s6">
-                            <p style="margin-top: 0px; text-align: center;">Atención (A)</p>
-                            <select id="em_a">
-                            </select>
+                        <div id="examen_salud_mental" >
+
                         </div>
                     </div>
 
@@ -612,33 +590,42 @@
                     </div>
 
                     <div class="row sin_marg_bottom" id="datos_canalizacion">
-                        <div class="col s12">
-                            <p style="text-align: center;">Canalizar a: <a
-                                    href="{% url 'administrador:list_acude_institucion' %}" target="_blank">
-                                <button class="btn fondo_naranja redondo" style="width: 125px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">+ Nueva institución</button>
-                            </a></p>
-                        </div>
                         <div class="col s12 m12 l12">
-                            <button onclick="reloadInstituciones('instituciones')" class="btn fondo_naranja redondo"
-                                    style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
-                                <i class="material-icons" style="cursor: pointer">refresh</i>
-                            </button>
-                            <select class="browser-default js-example-basic-single" id="instituciones"
-                                    style="width: 85%">
-                            </select>
-                        </div>
-                        <div class="col s12">
-                            <p style="text-align: center;">Canalizar a:</p>
-                        </div>
-                        <div class="col s12 m12 l12">
-                            <button onclick="reloadInstituciones('instituciones2')" class="btn fondo_naranja redondo"
-                                    style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
-                                <i class="material-icons" style="cursor: pointer">refresh</i>
-                            </button>
-                            <select class="browser-default js-example-basic-single" id="instituciones2"
-                                    style="width: 85%">
-                            </select>
-                        </div>
+                                    <div class="col s12">
+                                        <input style="width: 85%" id="palabrasClave1" class="validate" onblur="CargarPalabrasClave()"
+                                        type="text" placeholder="Buscar por palabras clave">
+                                    </div>
+                                    <!-- <button onclick="reloadInstituciones('instituciones')" -->
+                                    <button onclick="reloadInstituciones('instituciones')"
+                                            class="btn fondo_naranja redondo"
+                                            style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
+                                        <i class="material-icons" style="cursor: pointer">refresh</i>
+                                    </button>
+                                    <select class="browser-default js-example-basic-single" id="instituciones"
+                                            style="width: 85%">
+                                    </select>
+                                </div>
+                                <div class="col s12">
+                                    <br />
+                                </div>
+                                <br>
+                                <div class="col s12">
+                                    <p style="text-align: left ">2. Canalizar a:</p>
+                                </div>
+                                <div class="col s12 m12 l12">
+                                    <div class="col s12">
+                                        <input style="width: 85%" id="palabrasClave2" class="validate" onblur="CargarPalabrasClave2()"
+                                        type="text" placeholder="Buscar por palabras clave">
+                                    </div>
+                                    <button onclick="reloadInstituciones('instituciones2')"
+                                            class="btn fondo_naranja redondo"
+                                            style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
+                                        <i class="material-icons" style="cursor: pointer">refresh</i>
+                                    </button>
+                                    <select class="browser-default js-example-basic-single" id="instituciones2"
+                                            style="width: 85%">
+                                    </select>
+                                </div>
                     </div>
 
 
@@ -853,6 +840,42 @@
                     $('#ocupaciones').material_select();
                 }
             });
+
+            $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_examen_mental' %}",
+                    cache: false,
+                    success: function (json) {
+                        console.log('json examen mental', json);
+                        examenes_mentales = json.length;
+                        console.log('examenes mentales', examenes_mentales);
+                        for (i of json ) {
+                        $('#examen_salud_mental').append(`
+                                <div class="input-field col s6">
+                                    <p style="margin-top: 0px; text-align: center;">${ i.nombre }</p>
+                                    <select id="mental_${ i.pk }">
+                                    </select>
+                                </div>
+                        `);
+
+                        $("#mental_"+ i.pk).empty().html(' ');
+
+                        $('#mental_'+ i.pk).append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                        for (j of i.categorias) {
+                        $('#mental_'+ i.pk).append(
+                            $("<option></option>")
+                                .attr("value", j.pk)
+                                .text(j.nombre)
+                            );
+                        }
+                        $('#mental_'+ i.pk).material_select();
+                        }
+                    }
+                });
 
             $.ajax({
                 method: "GET",
@@ -1219,7 +1242,7 @@
 
             $.ajax({
                 method: "GET",
-                url: "{% url 'webservices:list_instituciones' %}",
+                url: "{% url 'webservices:list_sucursales' %}",
                 cache: false,
                 success: function (json) {
 
@@ -1317,6 +1340,150 @@
                                                                        '<input class="with-gap" onclick="checkSubcategorias('+json[i].pk+','+elem+')" name="categoria_tipificacion'+elem+'" type="radio" value="' + json[i].pk + '" id="tic' + json[i].pk + '_'+elem+'"/>' +
                                                                        '<label for="tic' + json[i].pk + '_'+elem+'">' + json[i].nombre + '</label>' +
                                                                      '</div>');
+                        }
+                    }
+                });
+            }
+        }
+
+        function CargarPalabrasClave() {
+            var palabrasClave = encodeURIComponent($('#palabrasClave1').val());
+            if (palabrasClave != '' && palabrasClave != '%20' ) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_sucursales' %}?keywords=" + palabrasClave,
+                    cache: false,
+                    success: function (json) {
+                        if (json.length > 0){
+                            console.log('res json', json)
+                            $("#instituciones").empty().html(' ');
+                            $('#instituciones').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Institución")
+                            );
+                            for (i in json) {
+                                $('#instituciones').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                                // $('#instituciones2').append(
+                                //     $("<option></option>")
+                                //         .attr("value", json[i].pk)
+                                //         .text(json[i].nombre)
+                                // );
+                            }
+                            $('#instituciones').material_select();
+                            // $('#instituciones2').material_select();
+                            $('.js-example-basic-single').select2();
+                        }
+                        else {
+                            console.log('no se encontraron resultados')
+                        }
+                    }
+                });
+            } else {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_sucursales' %}" ,
+                    cache: false,
+                    success: function (json) {
+                        if (json.length > 0){
+                            console.log('res json', json)
+                            $("#instituciones").empty().html(' ');
+                            $('#instituciones').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Institución")
+                            );
+                            for (i in json) {
+                                $('#instituciones').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                                // $('#instituciones2').append(
+                                //     $("<option></option>")
+                                //         .attr("value", json[i].pk)
+                                //         .text(json[i].nombre)
+                                // );
+                            }
+                            $('#instituciones').material_select();
+                            // $('#instituciones2').material_select();
+                            $('.js-example-basic-single').select2();
+                        }
+                        else {
+                            console.log('no se encontraron resultados')
+                        }
+                    }
+                });
+            }
+        }
+
+        function CargarPalabrasClave2() {
+            var palabrasClave = encodeURIComponent($('#palabrasClave1').val());
+            if (palabrasClave != '' && palabrasClave != '%20' ) {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_sucursales' %}?keywords=" + palabrasClave,
+                    cache: false,
+                    success: function (json) {
+                        if (json.length > 0){
+                            console.log('res json', json)
+                            $("#instituciones2").empty().html(' ');
+                            $('#instituciones2').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Institución")
+                            );
+                            for (i in json) {
+                                $('#instituciones2').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                            }
+                            $('#instituciones2').material_select();
+                            $('.js-example-basic-single').select2();
+                        }
+                        else {
+                            console.log('no se encontraron resultados')
+                        }
+                    }
+                });
+            } else {
+                $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_sucursales' %}" ,
+                    cache: false,
+                    success: function (json) {
+                        if (json.length > 0){
+                            console.log('res json', json)
+                            $("#instituciones2").empty().html(' ');
+                            $('#instituciones2').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Institución")
+                            );
+                            for (i in json) {
+                                $('#instituciones2').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                                // $('#instituciones2').append(
+                                //     $("<option></option>")
+                                //         .attr("value", json[i].pk)
+                                //         .text(json[i].nombre)
+                                // );
+                            }
+                            $('#instituciones2').material_select();
+                            // $('#instituciones2').material_select();
+                            $('.js-example-basic-single').select2();
+                        }
+                        else {
+                            console.log('no se encontraron resultados')
                         }
                     }
                 });
@@ -1469,6 +1636,18 @@
             var tarea2 = $('#tarea2').val();
             var tarea3 = $('#tarea3').val();
             var num_hijos_menores = 0, num_hijos_mayores = 0;
+            var examen_mental = [];
+            for (var i = 1; i < examenes_mentales + 1; i++) {
+                var valorExamen = $('#mental_'+ i).val();
+                var objExamenes = {}
+
+                console.log('valor mental ', valorExamen);
+                if (valorExamen != ''){
+                    objExamenes.pk = valorExamen
+                    examen_mental.push(objExamenes);
+                }
+            }
+
             if ($("#t_hijos").prop('checked')) {
                 num_hijos_mayores = $("#hijos_mayores").val();
                 num_hijos_menores = $("#hijos_menores").val();
@@ -1595,11 +1774,13 @@
                     devolver_llamada: devolver_llamada,
                     aliado: aliado,
                     linea_negocio: linea_negocio,
-                    victimas_menores: victimas_menores
+                    victimas_menores: victimas_menores,
+                    examen_mental: examen_mental,
                 }
 
 
             rawData = JSON.stringify(rawData)
+            console.log('data', rawData);
 
             $.ajax({
                 type: 'post',
