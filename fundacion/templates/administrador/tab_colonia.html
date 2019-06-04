@@ -13,8 +13,8 @@
     <a href="{% url 'webapp:index' %}" class=" font_blanco"><img src="{% static 'imagenes/base/home.png' %}" class="responsive-img" style="position: relative; top: 5px;"></a>
     <a href="{% url 'administrador:catalogos' %}" class="breadcrumb font_blanco" style="font-size: 12px;">Catálogos</a>
     <a href="{% url 'administrador:list_pais' %}" class="breadcrumb font_blanco" style="font-size: 12px;">País</a>
-    <a href="{% url 'administrador:list_estado' municipio.idestado.pais.pk %}" class="breadcrumb font_blanco" style="font-size: 12px;">Estado</a>
-    <a href="{% url 'administrador:list_municipio' municipio.idestado.pk %}" class="breadcrumb font_blanco" style="font-size: 12px;">Municipio</a>
+    <a href="{% url 'administrador:list_estado' municipio.estado.pais.pk %}" class="breadcrumb font_blanco" style="font-size: 12px;">Estado</a>
+    <a href="{% url 'administrador:list_municipio' municipio.estado.pk %}" class="breadcrumb font_blanco" style="font-size: 12px;">Municipio</a>
 {% endblock %}
 {% block campos %}
     <th>ID</th>
@@ -61,5 +61,5 @@
 <!-- *************************************************************************** -->
 
 
-{% block url_ajax %}{% url 'administrador:list_ajax_colonia' municipio.pk municipio.idestado.pk %}{% endblock %}
+{% block url_ajax %}{% url 'administrador:list_ajax_colonia' municipio.pk %}{% endblock %}
 

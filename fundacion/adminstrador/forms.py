@@ -5,8 +5,8 @@ from config.models import AcudeInstitucion, Estado, Pais, EstadoCivil, Estatus, 
     Violentometro, ViveCon, ContactoInstitucion, Consejero, Directorio, Supervisor, Calidad, Sexo, MotivoLLamada, \
     Dependencia, RedesApoyo, VictimaInvolucrada, Agresor, \
     ComoSeEntero, EstadoMental, NivelRiesgo, RecomendacionRiesgo, FaseCambio, EstatusUsuario, Tipificacion, \
-    CategoriaTipificacion, Sucursal, Aliado, LineaNegocio, SubcategoriaTipificacion, Tutor, Colonia, CPColonia, \
-    Catestados, Catmunicipios, Catcolonias, ExamenMental, CategoriaExamenMental
+    CategoriaTipificacion, Sucursal, Aliado, LineaNegocio, SubcategoriaTipificacion, Tutor, Colonia, \
+    ExamenMental, CategoriaExamenMental
 
 
 class ConsejeroForm(ModelForm):
@@ -85,8 +85,8 @@ class AcudeInstitucionForm(ModelForm):
 
 class EstadoForm(ModelForm):
     class Meta:
-        model = Catestados
-        exclude = ['nomcorto', 'clave', 'pais']
+        model = Estado
+        exclude = ['pais']
 
 
 class PaisForm(ModelForm):
@@ -139,18 +139,14 @@ class ModalidadViolenciaForm(ModelForm):
 
 class MunicipioForm(ModelForm):
     class Meta:
-        model = Catmunicipios
-        exclude = ['clave', 'idestado', 'idmun']
+        model = Municipio
+        exclude = ['estado', 'cat_mun_id']
 
 class ColoniaForm(ModelForm):
     class Meta:
-        model = Catcolonias
-        exclude = ['tipoasentamiento', 'estado', 'municipio']
+        model = Colonia
+        exclude = ['municipio']
 
-class CPColoniaForm(ModelForm):
-    class Meta:
-        model = CPColonia
-        exclude = ['colonia']
 
 class NivelEstudioForm(ModelForm):
     class Meta:
