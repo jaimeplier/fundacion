@@ -13,7 +13,7 @@ from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, R
     MotivoLLamada, EstadoMental, NivelRiesgo, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
     FaseCambio, ModalidadViolencia, Agresor, ComoSeEntero, TareaLLamada, \
     VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion, SubcategoriaTipificacion, VictimaMenorEdad, Tutor, \
-    ExamenMentalLLamada, CategoriaExamenMental
+    ExamenMentalLLamada, CategoriaExamenMental, Colonia
 from config.permissions import ConsejeroPermission
 from webservices.serializers import PrimeraVezSerializer, SeguimientoSerializer, ConsejeroSerializer, LLamadaSerializer, \
     BusquedaSerializer, VictimaSerializer
@@ -36,7 +36,6 @@ class PrimerRegistro(APIView):
         num_hijos_menores = serializer.data['num_hijos_menores']
         num_hijos_mayores = serializer.data['num_hijos_mayores']
         estado_civil = EstadoCivil.objects.filter(pk=serializer.data['estado_civil']).first()
-        municipio = Municipio.objects.filter(pk=serializer.data['municipio']).first()
         ocupacion = Ocupacion.objects.filter(pk=serializer.data['ocupacion']).first()
         religion = Religion.objects.filter(pk=serializer.data['religion']).first()
         vive_con = ViveCon.objects.filter(pk=serializer.data['vive_con']).first()
@@ -44,6 +43,8 @@ class PrimerRegistro(APIView):
         nivel_estudio = NivelEstudio.objects.filter(pk=serializer.data['nivel_estudio']).first()
         lengua_indigena = LenguaIndigena.objects.filter(pk=serializer.data['lengua_indigena']).first()
         redes_apoyo = RedesApoyo.objects.filter(pk=serializer.data['redes_apoyo']).first()
+        cp = serializer.data['cp']
+        colonia = Colonia.objects.filter(pk=serializer.data['colonia']).first()
 
         # ---> DATOS DE LA LLAMADA <---
 
@@ -103,12 +104,15 @@ class PrimerRegistro(APIView):
         sucursal2 = AcudeInstitucion.objects.filter(pk=serializer.validated_data['sucursal2']).first()
 
         # ---> REGISTRO DE VICTIMA <---
-
+        municipio = None
+        if colonia is not None:
+            municipio = colonia.municipio
         victima = Victima.objects.create(nombre=nombre, telefono=telefono, apellido_paterno=apellido_paterno,
                                          apellido_materno=apellido_materno, estado_civil=estado_civil,
                                          municipio=municipio, ocupacion=ocupacion, religion=religion, vive_con=vive_con,
                                          sexo=sexo, nivel_estudio=nivel_estudio, lengua_indigena=lengua_indigena,
-                                         num_hijos_mayores=num_hijos_mayores, num_hijos_menores=num_hijos_menores)
+                                         num_hijos_mayores=num_hijos_mayores, num_hijos_menores=num_hijos_menores,
+                                         colonia=colonia, cp=cp)
 
         # ---> REGISTRO DE LLAMADA <---
 

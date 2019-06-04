@@ -98,7 +98,6 @@ class PrimeraVezSerializer(serializers.Serializer):
     apellido_paterno = serializers.CharField(max_length=128, allow_null=True, allow_blank=True, required=False)
     apellido_materno = serializers.CharField(max_length=128, allow_blank=True, allow_null=True, required=False)
     estado_civil = serializers.IntegerField(min_value=1, allow_null=True, required=False)
-    municipio = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     ocupacion = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     religion = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     vive_con = serializers.IntegerField(min_value=1, allow_null=True, required=False)
@@ -107,6 +106,8 @@ class PrimeraVezSerializer(serializers.Serializer):
     lengua_indigena = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     num_hijos_menores = serializers.IntegerField(min_value=0, allow_null=True, required=False)
     num_hijos_mayores = serializers.IntegerField(min_value=0, allow_null=True, required=False)
+    colonia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    cp = serializers.CharField(max_length=5, allow_null=True, allow_blank=True, required=False)
     #Fecha de nacimiento
     #Codigo postal
     #Colonia
@@ -195,6 +196,7 @@ class SeguimientoSerializer(serializers.Serializer):
     devolver_llamada = serializers.BooleanField(default=False)
     linea_negocio = serializers.IntegerField(min_value=1, allow_null=True, required=False)
     aliado = serializers.IntegerField(min_value=1, allow_null=True, required=False)
+    colonia = serializers.IntegerField(min_value=1, allow_null=True, required=False)
 
     # Tareas asiganadas a la llamada
     tarea1 = serializers.CharField(max_length=512, allow_blank=True, allow_null=True, required=False)
