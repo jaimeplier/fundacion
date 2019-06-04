@@ -86,7 +86,7 @@ class AcudeInstitucionForm(ModelForm):
 class EstadoForm(ModelForm):
     class Meta:
         model = Estado
-        exclude = ['pais']
+        exclude = ['pais', 'fecha_alta', 'fecha_baja', 'estatus']
 
 
 class PaisForm(ModelForm):
@@ -140,12 +140,12 @@ class ModalidadViolenciaForm(ModelForm):
 class MunicipioForm(ModelForm):
     class Meta:
         model = Municipio
-        exclude = ['estado', 'cat_mun_id']
+        exclude = ['estado', 'cat_mun_id', 'fecha_alta', 'fecha_baja', 'estatus']
 
 class ColoniaForm(ModelForm):
     class Meta:
         model = Colonia
-        exclude = ['municipio']
+        exclude = ['municipio', 'fecha_alta', 'fecha_baja', 'estatus']
 
 
 class NivelEstudioForm(ModelForm):

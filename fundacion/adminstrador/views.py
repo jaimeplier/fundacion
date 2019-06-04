@@ -1549,14 +1549,8 @@ class MunicipioAdd(PermissionRequiredMixin, CreateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             estado = Estado.objects.get(pk=self.kwargs['estado'])
-            municipio_pk_max = Municipio.objects.filter(pk=estado).aggregate(Max('idmun'))
-            if municipio_pk_max['idmun__max'] is None:
-                municipio_pk = 1
-            else:
-                municipio_pk = municipio_pk_max['idmun__max'] + 1
             municipio = form.save(commit=False)
-            municipio.pk = estado
-            municipio.idmun = municipio_pk
+            municipio.estado = estado
             municipio.save()
 
             return HttpResponseRedirect(self.get_success_url())
@@ -1700,7 +1694,6 @@ class ColoniaAdd(PermissionRequiredMixin, CreateView):
             municipio = Municipio.objects.get(pk=self.kwargs['municipio'])
             colonia = form.save(commit=False)
             colonia.municipio = municipio
-            colonia.estado = municipio.estado
             colonia.save()
 
             return HttpResponseRedirect(self.get_success_url())
