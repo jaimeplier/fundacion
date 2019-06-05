@@ -156,11 +156,13 @@
                             </select>
                         </div>
                         <div class=" input-field col s12 m4 l4">
-                            <input id="cp" type="number" class="validate" required="required">
+                            <input id="cp" type="number" class="validate" required="required" onblur="cargarColonias()">
                             <label for="cp">Código Postal</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            <input id="colonia" type="text" class="validate" required="required">
+                            <select id="colonia">
+                                <option>Colonia</option>
+                            </select>
                             <label for="colonia"> Colonia</label>
                         </div>
                     </div>
@@ -846,9 +848,7 @@
                     url: "{% url 'webservices:list_examen_mental' %}",
                     cache: false,
                     success: function (json) {
-                        console.log('json examen mental', json);
                         examenes_mentales = json.length;
-                        console.log('examenes mentales', examenes_mentales);
                         for (i of json ) {
                         $('#examen_salud_mental').append(`
                                 <div class="input-field col s6">
@@ -1368,11 +1368,6 @@
                                         .attr("value", json[i].pk)
                                         .text(json[i].nombre)
                                 );
-                                // $('#instituciones2').append(
-                                //     $("<option></option>")
-                                //         .attr("value", json[i].pk)
-                                //         .text(json[i].nombre)
-                                // );
                             }
                             $('#instituciones').material_select();
                             // $('#instituciones2').material_select();
@@ -1581,6 +1576,36 @@
             }
         }
 
+        function cargarColonias() {
+            var cp = $('#cp').val();
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_cp' %}?cp=" + cp,
+                cache: false,
+                success: function (json) {
+                    if (json.length > 0){
+                        $("#colonia").empty().html(' ');
+                            $('#colonia').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Colonia")
+                            );
+                            for (i in json) {
+                                $('#colonia').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                            }
+                            $('#colonia').material_select();
+                    } else {
+                        console.log('no hay colonias registradas con ese cp')
+                    }
+                }
+            });
+        }
+
         function GuardarLLamada() {
             var vida_riesgo = $("input[name='riesgo']:checked").val();
             var datos_personales = $('#datos_p').prop('checked'); //Esta seleccionado datos personales?
@@ -1639,9 +1664,7 @@
             var examen_mental = [];
             for (var i = 1; i < examenes_mentales + 1; i++) {
                 var valorExamen = $('#mental_'+ i).val();
-                var objExamenes = {}
-
-                console.log('valor mental ', valorExamen);
+                var objExamenes = {};
                 if (valorExamen != ''){
                     objExamenes.pk = valorExamen
                     examen_mental.push(objExamenes);
@@ -1765,8 +1788,8 @@
                     agresor: agresor==="" ? null : agresor,
                     medio_contacto: medio_conatacto,
                     posible_solucion: plan_accion,
-                    institucion: institucion=="" ? null : institucion,
-                    institucion2: institucion2=="" ? null : institucion2,
+                    sucursal1: institucion=="" ? null : institucion,
+                    sucursal2: institucion2=="" ? null : institucion2,
                     como_se_entero: como_se_entero==="" ? null : como_se_entero,
                     tarea1: tarea1,
                     tarea2: tarea2,
@@ -1803,7 +1826,7 @@
         function reloadInstituciones(id_select) {
             $.ajax({
                 method: "GET",
-                url: "{% url 'webservices:list_instituciones' %}",
+                url: "{% url 'webservices:list_sucursales' %}",
                 cache: false,
                 success: function (json) {
 

@@ -121,7 +121,7 @@
                             </div>
                             <div class="row sin_marg_bottom">
                                 <div class=" input-field col s12 m6 l6">
-                                    {% render_field form.cp %}
+                                    {% render_field form.cp onblur="cargarColonias()" %}
                                     <label for="{{ form.cp.auto_id }}">Código Postal</label>
                                 </div>
                                 <div class="input-field col s12 m6 l6">
@@ -645,9 +645,16 @@
                             </div>
 
                             <div class="row sin_marg_bottom" id="datos_canalizacion">
+                                {% if estado != 0 %}
+                                    <div class="col s12">
+                                    <select id="estados" style="width: 85%">
+                                    </select>
+                                    </div>
+                                {% endif %}
                                 <div class="col s10">
-                                    <p style="text-align: left;">1. Canalizar a: <span style="text-align: right; float: right"><a
-                                            href="{% url 'administrador:list_acude_institucion' %}" target="_blank">
+                                    <p style="text-align: left;">1. Canalizar a: <span style="text-align: right; float: right">
+
+                                        <a href="{% url 'administrador:list_acude_institucion' %}" target="_blank">
                                         <button class="btn fondo_naranja redondo"
                                                 style="width: 125px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
                                             + Nueva institución
@@ -655,6 +662,7 @@
                                     </a></span>
                                     </p>
                                 </div>
+
                                 <div class="col s2"></div>
                                 <div class="col s12 m12 l12">
                                     <div class="col s12">
@@ -662,7 +670,7 @@
                                         type="text" placeholder="Buscar por palabras clave">
                                     </div>
                                     <!-- <button onclick="reloadInstituciones('instituciones')" -->
-                                    <button onclick="reloadInstituciones('instituciones')"
+                                    <button onclick="CargarPalabrasClave()"
                                             class="btn fondo_naranja redondo"
                                             style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
                                         <i class="material-icons" style="cursor: pointer">refresh</i>
@@ -683,7 +691,7 @@
                                         <input style="width: 85%" id="palabrasClave2" class="validate" onblur="CargarPalabrasClave2()"
                                         type="text" placeholder="Buscar por palabras clave">
                                     </div>
-                                    <button onclick="reloadInstituciones('instituciones2')"
+                                    <button onclick="CargarPalabrasClave2()"
                                             class="btn fondo_naranja redondo"
                                             style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
                                         <i class="material-icons" style="cursor: pointer">refresh</i>
@@ -725,6 +733,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript">
+        var estado = 0;
         var examenes_mentales;
         var victima = {{ victima.pk }}
            var list_tutores;
@@ -1243,21 +1252,51 @@
 
                 $.ajax({
                     method: "GET",
-                    url: "{% url 'webservices:list_instituciones' %}",
+                    url: "{% url 'webservices:list_sucursales' %}",
                     cache: false,
                     success: function (json) {
+                        var val_colonia = $('#id_colonia').val();
+
+                        {% if estado != 0 %}
+                            $.ajax({
+                                method: "GET",
+                                url: "{% url 'webservices:list_estado' %}",
+                                cache: false,
+                                success: function (json) {
+
+                                $("#estados").empty().html(' ');
+                                $('#estados').append(
+                                    $("<option></option>")
+                                .attr("value", "")
+                                .text("Estados")
+                                );
+
+                                for (i in json) {
+                                    $('#estados').append(
+                                        $("<option></option>")
+                                            .attr("value", json[i].pk)
+                                            .text(json[i].nombre)
+                                    );
+                                }
+                                $('#estados').material_select();
+                            }
+                        });
+                        {%  else  %}
+                            estado = {{ estado }};
+                        {% endif %}
+
 
                         $("#instituciones").empty().html(' ');
                         $('#instituciones').append(
                             $("<option></option>")
                                 .attr("value", "")
-                                .text("Institución")
+                                .text("Sucursal")
                         );
                         $("#instituciones2").empty().html(' ');
                         $('#instituciones2').append(
                             $("<option></option>")
                                 .attr("value", "")
-                                .text("Institución")
+                                .text("Sucursal")
                         );
                         for (i in json) {
                             $('#instituciones').append(
@@ -1336,6 +1375,35 @@
 
             });
 
+        function cargarColonias() {
+            var cp = $('#id_cp').val();
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_cp' %}?cp=" + cp,
+                cache: false,
+                success: function (json) {
+                    if (json.length > 0){
+                        $("#id_colonia").empty().html(' ');
+                            $('#id_colonia').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Colonia")
+                            );
+                            for (i in json) {
+                                $('#id_colonia').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                            }
+                            $('#id_colonia').material_select();
+                    } else {
+                        console.log('no hay colonias registradas con ese cp')
+                    }
+                }
+            });
+        }
 
         function CargarCatTipificacion(elem) {
             var tipificacion = $('#tipificaciones'+elem).val();
@@ -1396,11 +1464,16 @@
         }
 
         function CargarPalabrasClave() {
+            var val_estados = $('#estados').val();
             var palabrasClave = encodeURIComponent($('#palabrasClave1').val());
+            var url =  "{% url 'webservices:list_sucursales' %}";
+            var string_palabras_clave = (palabrasClave == '') ? '' :   "?keywords=" + palabrasClave;
+            var string_estado = (val_estados == '') ? '' :   "?estado=" + val_estados;
+
             if (palabrasClave != '' && palabrasClave != '%20' ) {
                 $.ajax({
                     method: "GET",
-                    url: "{% url 'webservices:list_sucursales' %}?keywords=" + palabrasClave,
+                    url: "{% url 'webservices:list_sucursales' %}?keywords=" + palabrasClave + '&estado=',
                     cache: false,
                     success: function (json) {
                         if (json.length > 0){
@@ -1409,7 +1482,7 @@
                             $('#instituciones').append(
                                 $("<option></option>")
                                     .attr("value", "")
-                                    .text("Institución")
+                                    .text("Sucursal")
                             );
                             for (i in json) {
                                 $('#instituciones').append(
@@ -1444,7 +1517,7 @@
                             $('#instituciones').append(
                                 $("<option></option>")
                                     .attr("value", "")
-                                    .text("Institución")
+                                    .text("Sucursal")
                             );
                             for (i in json) {
                                 $('#instituciones').append(
@@ -1645,7 +1718,6 @@
                 }
             }
 
-            console.log('examen mental arr', examen_mental)
 
             let victimas_menores = [];
             for (var i = 1; i <= num_menores; i++) {
@@ -1865,10 +1937,15 @@
             return mensaje_error
         }
 
-        function reloadInstituciones(id_select) {
+        function reloadInstituciones(id_select, palabrasClave) {
+            var palabrasClave = $('#' + palabrasClave).val());
+            var url =  "{% url 'webservices:list_sucursales' %}";
+            var string_palabras_clave = (palabrasClave == '') ? '' :   "?keywords=" + palabrasClave;
+            var string_estado = (val_estados == '') ? '' :   "?estado=" + val_estados;
+
             $.ajax({
                 method: "GET",
-                url: "{% url 'webservices:list_instituciones' %}",
+                url: url + string_palabras_clave + string_estado,
                 cache: false,
                 success: function (json) {
 
@@ -1876,7 +1953,7 @@
                     $("#"+id_select).append(
                         $("<option></option>")
                             .attr("value", "")
-                            .text("Institución")
+                            .text("Sucursales")
                     );
                     for (i in json) {
                         $("#"+id_select).append(
@@ -1886,8 +1963,32 @@
                         );
                     }
                     $("#"+id_select).material_select();
-                    //$('.js-example-basic-single').select2();
+                    $('.js-example-basic-single').select2();
                 }
+
+                success: function (json) {
+                        if (json.length > 0){
+                            console.log('res json', json)
+                            $("#instituciones2").empty().html(' ');
+                            $('#instituciones2').append(
+                                $("<option></option>")
+                                    .attr("value", "")
+                                    .text("Institución")
+                            );
+                            for (i in json) {
+                                $('#instituciones2').append(
+                                    $("<option></option>")
+                                        .attr("value", json[i].pk)
+                                        .text(json[i].nombre)
+                                );
+                            }
+                            $('#instituciones2').material_select();
+                            $('.js-example-basic-single').select2();
+                        }
+                        else {
+                            console.log('no se encontraron resultados')
+                        }
+                    }
             });
         }
         num_tipificaciones = 1
