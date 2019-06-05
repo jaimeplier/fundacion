@@ -160,8 +160,8 @@
                             <label for="cp">Código Postal</label>
                         </div>
                         <div class="input-field col s12 m4 l4">
-                            <select id="colonia">
-                                <option>Colonia</option>
+                            <select id="colonia" onchange="setColonia()">
+                                <option value="">Colonia</option>
                             </select>
                             <label for="colonia"> Colonia</label>
                         </div>
@@ -592,42 +592,63 @@
                     </div>
 
                     <div class="row sin_marg_bottom" id="datos_canalizacion">
+                        <div id="area_estados">
+                            <div class="col s12">
+                            <select id="estados" style="width: 85%">
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col s10">
+                            <p style="text-align: left;">1. Canalizar a: <span style="text-align: right; float: right">
+
+                                <a href="{% url 'administrador:list_acude_institucion' %}" target="_blank">
+                                <button class="btn fondo_naranja redondo"
+                                        style="width: 125px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
+                                    + Nueva institución
+                                </button>
+                            </a></span>
+                            </p>
+                        </div>
+
+                        <div class="col s2"></div>
                         <div class="col s12 m12 l12">
-                                    <div class="col s12">
-                                        <input style="width: 85%" id="palabrasClave1" class="validate" onblur="CargarPalabrasClave()"
-                                        type="text" placeholder="Buscar por palabras clave">
-                                    </div>
-                                    <!-- <button onclick="reloadInstituciones('instituciones')" -->
-                                    <button onclick="reloadInstituciones('instituciones')"
-                                            class="btn fondo_naranja redondo"
-                                            style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
-                                        <i class="material-icons" style="cursor: pointer">refresh</i>
-                                    </button>
-                                    <select class="browser-default js-example-basic-single" id="instituciones"
-                                            style="width: 85%">
-                                    </select>
-                                </div>
-                                <div class="col s12">
-                                    <br />
-                                </div>
-                                <br>
-                                <div class="col s12">
-                                    <p style="text-align: left ">2. Canalizar a:</p>
-                                </div>
-                                <div class="col s12 m12 l12">
-                                    <div class="col s12">
-                                        <input style="width: 85%" id="palabrasClave2" class="validate" onblur="CargarPalabrasClave2()"
-                                        type="text" placeholder="Buscar por palabras clave">
-                                    </div>
-                                    <button onclick="reloadInstituciones('instituciones2')"
-                                            class="btn fondo_naranja redondo"
-                                            style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
-                                        <i class="material-icons" style="cursor: pointer">refresh</i>
-                                    </button>
-                                    <select class="browser-default js-example-basic-single" id="instituciones2"
-                                            style="width: 85%">
-                                    </select>
-                                </div>
+                            <div class="col s12">
+                                <input style="width: 85%" id="palabrasClave1" class="validate" 
+                                onblur="reloadInstituciones('instituciones', 'palabrasClave1')"
+                                type="text" placeholder="Buscar por palabras clave">
+                            </div>
+                            <!-- <button onclick="reloadInstituciones('instituciones')" -->
+                            <button onclick="reloadInstituciones('instituciones', 'palabrasClave1')"
+                                    class="btn fondo_naranja redondo"
+                                    style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
+                                <i class="material-icons" style="cursor: pointer">refresh</i>
+                            </button>
+                            <select class="browser-default js-example-basic-single" id="instituciones"
+                                    style="width: 85%">
+                            </select>
+                        </div>
+                        <div class="col s12">
+                            <br />
+                        </div>
+                        <br>
+                        <div class="col s12">
+                            <p style="text-align: left ">2. Canalizar a:</p>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <div class="col s12">
+                                <input style="width: 85%" id="palabrasClave2" class="validate" 
+                                onblur="reloadInstituciones('instituciones2', 'palabrasClave2')"
+                                type="text" placeholder="Buscar por palabras clave">
+                            </div>
+                            <button onclick="reloadInstituciones('instituciones2', 'palabrasClave2')"
+                                    class="btn fondo_naranja redondo"
+                                    style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
+                                <i class="material-icons" style="cursor: pointer">refresh</i>
+                            </button>
+                            <select class="browser-default js-example-basic-single" id="instituciones2"
+                                    style="width: 85%">
+                            </select>
+                        </div>
                     </div>
 
 
@@ -653,6 +674,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     <script type="text/javascript">
     var list_tutores;
+    var id_colonia;
         $(document).ready(function () {
             $('.collapsible').collapsible();
             $('select').material_select();
@@ -773,6 +795,70 @@
                     $('#sexo').material_select();
                 }
             });
+
+            $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:list_sucursales' %}",
+                    cache: false,
+                    success: function (json) {
+                        var val_colonia = $('#id_colonia').val();
+
+                        {% if id_colonia == undefined %}
+                            $.ajax({
+                                method: "GET",
+                                url: "{% url 'webservices:list_estado' %}",
+                                cache: false,
+                                success: function (json) {
+
+                                $("#estados").empty().html(' ');
+                                $('#estados').append(
+                                    $("<option></option>")
+                                .attr("value", "")
+                                .text("Estados")
+                                );
+
+                                for (i in json) {
+                                    $('#estados').append(
+                                        $("<option></option>")
+                                            .attr("value", json[i].pk)
+                                            .text(json[i].nombre)
+                                    );
+                                }
+                                $('#estados').material_select();
+                            }
+                        });
+                        {% endif %}
+
+
+                        $("#instituciones").empty().html(' ');
+                        $('#instituciones').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Sucursal")
+                        );
+                        $("#instituciones2").empty().html(' ');
+                        $('#instituciones2').append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Sucursal")
+                        );
+                        for (i in json) {
+                            $('#instituciones').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                            $('#instituciones2').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#instituciones').material_select();
+                        $('#instituciones2').material_select();
+                        $('.js-example-basic-single').select2();
+                    }
+                });
 
             $.ajax({
                 method: "GET",
@@ -1250,13 +1336,13 @@
                     $('#instituciones').append(
                         $("<option></option>")
                             .attr("value", "")
-                            .text("Institución")
+                            .text("Sucursal")
                     );
                     $("#instituciones2").empty().html(' ');
                     $('#instituciones2').append(
                         $("<option></option>")
                             .attr("value", "")
-                            .text("Institución")
+                            .text("Sucursal")
                     );
                     for (i in json) {
                         $('#instituciones').append(
@@ -1346,142 +1432,12 @@
             }
         }
 
-        function CargarPalabrasClave() {
-            var palabrasClave = encodeURIComponent($('#palabrasClave1').val());
-            if (palabrasClave != '' && palabrasClave != '%20' ) {
-                $.ajax({
-                    method: "GET",
-                    url: "{% url 'webservices:list_sucursales' %}?keywords=" + palabrasClave,
-                    cache: false,
-                    success: function (json) {
-                        if (json.length > 0){
-                            console.log('res json', json)
-                            $("#instituciones").empty().html(' ');
-                            $('#instituciones').append(
-                                $("<option></option>")
-                                    .attr("value", "")
-                                    .text("Institución")
-                            );
-                            for (i in json) {
-                                $('#instituciones').append(
-                                    $("<option></option>")
-                                        .attr("value", json[i].pk)
-                                        .text(json[i].nombre)
-                                );
-                            }
-                            $('#instituciones').material_select();
-                            // $('#instituciones2').material_select();
-                            $('.js-example-basic-single').select2();
-                        }
-                        else {
-                            console.log('no se encontraron resultados')
-                        }
-                    }
-                });
+        function setColonia() {
+            id_colonia = $('#colonia').val();
+            if ( id_colonia != '' && id_colonia != undefined ) {
+                $('#area_estados').show();
             } else {
-                $.ajax({
-                    method: "GET",
-                    url: "{% url 'webservices:list_sucursales' %}" ,
-                    cache: false,
-                    success: function (json) {
-                        if (json.length > 0){
-                            console.log('res json', json)
-                            $("#instituciones").empty().html(' ');
-                            $('#instituciones').append(
-                                $("<option></option>")
-                                    .attr("value", "")
-                                    .text("Institución")
-                            );
-                            for (i in json) {
-                                $('#instituciones').append(
-                                    $("<option></option>")
-                                        .attr("value", json[i].pk)
-                                        .text(json[i].nombre)
-                                );
-                                // $('#instituciones2').append(
-                                //     $("<option></option>")
-                                //         .attr("value", json[i].pk)
-                                //         .text(json[i].nombre)
-                                // );
-                            }
-                            $('#instituciones').material_select();
-                            // $('#instituciones2').material_select();
-                            $('.js-example-basic-single').select2();
-                        }
-                        else {
-                            console.log('no se encontraron resultados')
-                        }
-                    }
-                });
-            }
-        }
-
-        function CargarPalabrasClave2() {
-            var palabrasClave = encodeURIComponent($('#palabrasClave1').val());
-            if (palabrasClave != '' && palabrasClave != '%20' ) {
-                $.ajax({
-                    method: "GET",
-                    url: "{% url 'webservices:list_sucursales' %}?keywords=" + palabrasClave,
-                    cache: false,
-                    success: function (json) {
-                        if (json.length > 0){
-                            console.log('res json', json)
-                            $("#instituciones2").empty().html(' ');
-                            $('#instituciones2').append(
-                                $("<option></option>")
-                                    .attr("value", "")
-                                    .text("Institución")
-                            );
-                            for (i in json) {
-                                $('#instituciones2').append(
-                                    $("<option></option>")
-                                        .attr("value", json[i].pk)
-                                        .text(json[i].nombre)
-                                );
-                            }
-                            $('#instituciones2').material_select();
-                            $('.js-example-basic-single').select2();
-                        }
-                        else {
-                            console.log('no se encontraron resultados')
-                        }
-                    }
-                });
-            } else {
-                $.ajax({
-                    method: "GET",
-                    url: "{% url 'webservices:list_sucursales' %}" ,
-                    cache: false,
-                    success: function (json) {
-                        if (json.length > 0){
-                            console.log('res json', json)
-                            $("#instituciones2").empty().html(' ');
-                            $('#instituciones2').append(
-                                $("<option></option>")
-                                    .attr("value", "")
-                                    .text("Institución")
-                            );
-                            for (i in json) {
-                                $('#instituciones2').append(
-                                    $("<option></option>")
-                                        .attr("value", json[i].pk)
-                                        .text(json[i].nombre)
-                                );
-                                // $('#instituciones2').append(
-                                //     $("<option></option>")
-                                //         .attr("value", json[i].pk)
-                                //         .text(json[i].nombre)
-                                // );
-                            }
-                            $('#instituciones2').material_select();
-                            // $('#instituciones2').material_select();
-                            $('.js-example-basic-single').select2();
-                        }
-                        else {
-                            console.log('no se encontraron resultados')
-                        }
-                    }
-                });
+                $('#area_estados').hide();
             }
         }
 
@@ -1588,7 +1544,7 @@
                         $("#colonia").empty().html(' ');
                             $('#colonia').append(
                                 $("<option></option>")
-                                    .attr("value", "")
+                                    .attr("value", " ")
                                     .text("Colonia")
                             );
                             for (i in json) {
@@ -1823,28 +1779,39 @@
 
         }
 
-        function reloadInstituciones(id_select) {
+        function reloadInstituciones(id_select, idPalabrasClave) {
+            var val_estados = $('#estados').val();
+            var val_colonia = $('#colonia').val();
+            var palabrasClave = $('#' + idPalabrasClave).val();
+            var url =  "{% url 'webservices:list_sucursales' %}";
+            var string_palabras_clave = (palabrasClave == '') ? '?' :   "?keywords=" + palabrasClave;
+            var string_estado = (val_estados == '' || val_estados == undefined) ? '' :   "&estado=" + val_estados;
+            var string_colonia = (val_colonia == '' || val_colonia == undefined) ? '' :   "&colonia=" + val_colonia;
+            console.log('url completo', url + string_palabras_clave + string_colonia + string_estado)
             $.ajax({
                 method: "GET",
-                url: "{% url 'webservices:list_sucursales' %}",
+                url: url + string_palabras_clave + string_colonia + string_estado,
                 cache: false,
                 success: function (json) {
-
-                    $("#"+id_select).empty().html(' ');
-                    $("#"+id_select).append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Institución")
-                    );
-                    for (i in json) {
+                    if (json.length > 0) {
+                        $("#"+id_select).empty().html(' ');
                         $("#"+id_select).append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Sucursales")
                         );
+                        for (i in json) {
+                            $("#"+id_select).append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $("#"+id_select).material_select();
+                        $('.js-example-basic-single').select2();
+                    } else {
+                        console.log('no se encontraron resultados')
                     }
-                    $("#"+id_select).material_select();
-                    //$('.js-example-basic-single').select2();
                 }
             });
         }

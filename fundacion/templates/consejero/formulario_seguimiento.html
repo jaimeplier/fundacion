@@ -645,7 +645,7 @@
                             </div>
 
                             <div class="row sin_marg_bottom" id="datos_canalizacion">
-                                {% if estado != 0 %}
+                                {% if estado == 0 %}
                                     <div class="col s12">
                                     <select id="estados" style="width: 85%">
                                     </select>
@@ -666,11 +666,12 @@
                                 <div class="col s2"></div>
                                 <div class="col s12 m12 l12">
                                     <div class="col s12">
-                                        <input style="width: 85%" id="palabrasClave1" class="validate" onblur="CargarPalabrasClave()"
+                                        <input style="width: 85%" id="palabrasClave1" class="validate" 
+                                        onblur="reloadInstituciones('instituciones', 'palabrasClave1')"
                                         type="text" placeholder="Buscar por palabras clave">
                                     </div>
                                     <!-- <button onclick="reloadInstituciones('instituciones')" -->
-                                    <button onclick="CargarPalabrasClave()"
+                                    <button onclick="reloadInstituciones('instituciones', 'palabrasClave1')"
                                             class="btn fondo_naranja redondo"
                                             style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
                                         <i class="material-icons" style="cursor: pointer">refresh</i>
@@ -688,10 +689,11 @@
                                 </div>
                                 <div class="col s12 m12 l12">
                                     <div class="col s12">
-                                        <input style="width: 85%" id="palabrasClave2" class="validate" onblur="CargarPalabrasClave2()"
+                                        <input style="width: 85%" id="palabrasClave2" class="validate" 
+                                        onblur="reloadInstituciones('instituciones2', 'palabrasClave2')"
                                         type="text" placeholder="Buscar por palabras clave">
                                     </div>
-                                    <button onclick="CargarPalabrasClave2()"
+                                    <button onclick="reloadInstituciones('instituciones2', 'palabrasClave2')"
                                             class="btn fondo_naranja redondo"
                                             style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
                                         <i class="material-icons" style="cursor: pointer">refresh</i>
@@ -703,7 +705,7 @@
                             </div>
 
 
-                            </form>
+                            <!-- </form> -->
                         </div>
                         <div class="row">
                             <div class="col s12 center" style="margin-bottom: 5%;">
@@ -1013,9 +1015,7 @@
                     url: "{% url 'webservices:list_examen_mental' %}",
                     cache: false,
                     success: function (json) {
-                        console.log('json examen mental', json);
                         examenes_mentales = json.length;
-                        console.log('examenes mentales', examenes_mentales);
                         for (i of json ) {
                         $('#examen_salud_mental').append(`
                                 <div class="input-field col s6">
@@ -1256,8 +1256,9 @@
                     cache: false,
                     success: function (json) {
                         var val_colonia = $('#id_colonia').val();
+                        console.log('val estado', { estado })
 
-                        {% if estado != 0 %}
+                        {% if estado == 0 %}
                             $.ajax({
                                 method: "GET",
                                 url: "{% url 'webservices:list_estado' %}",
@@ -1937,58 +1938,38 @@
             return mensaje_error
         }
 
-        function reloadInstituciones(id_select, palabrasClave) {
-            var palabrasClave = $('#' + palabrasClave).val());
+        function reloadInstituciones(id_select, idPalabrasClave) {
+            var val_estados = $('#estados').val();
+            var palabrasClave = $('#' + idPalabrasClave).val();
             var url =  "{% url 'webservices:list_sucursales' %}";
-            var string_palabras_clave = (palabrasClave == '') ? '' :   "?keywords=" + palabrasClave;
-            var string_estado = (val_estados == '') ? '' :   "?estado=" + val_estados;
-
+            var string_palabras_clave = (palabrasClave == '') ? '?keywords=' :   "?keywords=" + palabrasClave;
+            var string_estado = (val_estados == '' || val_estados == undefined) ? '' :   "&estado=" + val_estados;
+            console.log('url completo', url + string_palabras_clave + string_estado)
             $.ajax({
                 method: "GET",
                 url: url + string_palabras_clave + string_estado,
                 cache: false,
                 success: function (json) {
-
-                    $("#"+id_select).empty().html(' ');
-                    $("#"+id_select).append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("Sucursales")
-                    );
-                    for (i in json) {
+                    if (json.length > 0) {
+                        $("#"+id_select).empty().html(' ');
                         $("#"+id_select).append(
                             $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
+                                .attr("value", "")
+                                .text("Sucursales")
                         );
-                    }
-                    $("#"+id_select).material_select();
-                    $('.js-example-basic-single').select2();
-                }
-
-                success: function (json) {
-                        if (json.length > 0){
-                            console.log('res json', json)
-                            $("#instituciones2").empty().html(' ');
-                            $('#instituciones2').append(
+                        for (i in json) {
+                            $("#"+id_select).append(
                                 $("<option></option>")
-                                    .attr("value", "")
-                                    .text("Institución")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
                             );
-                            for (i in json) {
-                                $('#instituciones2').append(
-                                    $("<option></option>")
-                                        .attr("value", json[i].pk)
-                                        .text(json[i].nombre)
-                                );
-                            }
-                            $('#instituciones2').material_select();
-                            $('.js-example-basic-single').select2();
                         }
-                        else {
-                            console.log('no se encontraron resultados')
-                        }
+                        $("#"+id_select).material_select();
+                        $('.js-example-basic-single').select2();
+                    } else {
+                        console.log('no se encontraron resultados')
                     }
+                }
             });
         }
         num_tipificaciones = 1
