@@ -41,8 +41,8 @@ class SeguimientoEdit(PermissionRequiredMixin, UpdateView):
         if 'victima' not in context:
             context['victima'] = self.model.pk
         if 'estado' not in context:
-            if self.model.colonia.municipio.estado:
-                context['estado'] = self.model.colonia.municipio.estado.pk
+            if self.object.colonia:
+                context['estado'] = self.object.colonia.municipio.estado.pk
             else:
                 context['estado'] = 0
         return context
