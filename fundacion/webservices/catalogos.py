@@ -224,7 +224,7 @@ class ListSucursales(ListAPIView):
         queryset = Sucursal.objects.filter(estatus_institucion__pk__in=[1,2])
         if estado is not None:
             queryset = Sucursal.objects.filter(estado__pk=estado)
-        if colonia is not None:
+        elif colonia is not None:
             colonia_obj = Colonia.objects.get(pk=colonia)
             queryset = Sucursal.objects.filter(estado=colonia_obj.municipio.estado)
         if keywords is not None:
