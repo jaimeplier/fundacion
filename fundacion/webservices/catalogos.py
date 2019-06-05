@@ -219,11 +219,18 @@ class ListSucursales(ListAPIView):
 
     def get_queryset(self):
         keywords = self.request.query_params.get('keywords', None)
+        estado = self.request.query_params.get('estado', None)
+        colonia = self.request.query_params.get('colonia', None)
         queryset = Sucursal.objects.filter(estatus_institucion__pk__in=[1,2])
+        if estado is not None:
+            queryset = Sucursal.objects.filter(estado__pk=estado)
+        elif colonia is not None:
+            colonia_obj = Colonia.objects.get(pk=colonia)
+            queryset = Sucursal.objects.filter(estado=colonia_obj.municipio.estado)
         if keywords is not None:
             list_keywords = keywords.strip()
             query='Select id, nombre, match(palabras_clave) AGAINST ("'+list_keywords+'") as Relevance from sucursal where match(palabras_clave) AGAINST ("'+list_keywords+'");'
-            queryset = Sucursal.objects.raw(query)
+            queryset = queryset.raw(query)
         return queryset
 
 class ListNivelRiesgo(ListAPIView):
