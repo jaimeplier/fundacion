@@ -252,6 +252,7 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
         consejero = self.request.GET.get(u'consejero', None)
         vive_con = self.request.GET.get(u'vive_con', None)
         religion = self.request.GET.get(u'religion', None)
+        violentometro = self.request.GET.get(u'violentometro', None)
         if dia:
             datetime_object = datetime.strptime(dia, '%Y-%m-%d')
             qs = qs.filter(fecha=datetime_object)
@@ -281,6 +282,8 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
             qs = qs.filter(victima__vive_con__pk=vive_con)
         if religion:
             qs = qs.filter(victima__religion__pk=religion)
+        if violentometro:
+            qs = qs.filter(violentometro__pk=violentometro)
 
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
