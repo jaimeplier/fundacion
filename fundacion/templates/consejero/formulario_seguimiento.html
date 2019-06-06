@@ -647,10 +647,11 @@
                             <div class="row sin_marg_bottom" id="datos_canalizacion">
                                 
                                     <div class="col s12">
-                                    <select id="estados" style="width: 85%">
+                                    <select id="estados" style="width: 85%"
+                                    onchange="reloadInstituciones('instituciones', 'palabrasClave1');reloadInstituciones('instituciones2', 'palabrasClave2')">
                                     </select>
                                     </div>
-                                
+
                                 <div class="col s10">
                                     <p style="text-align: left;">1. Canalizar a: <span style="text-align: right; float: right">
 
