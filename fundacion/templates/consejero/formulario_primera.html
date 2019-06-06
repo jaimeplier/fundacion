@@ -1811,7 +1811,14 @@
                         $("#"+id_select).material_select();
                         $('.js-example-basic-single').select2();
                     } else {
-                        console.log('no se encontraron resultados')
+                        $("#"+id_select).empty().html(' ');
+                        $("#"+id_select).append(
+                            $("<option></option>")
+                                .attr("value", "")
+                                .text("Sin resultados")
+                        );
+                        $("#"+id_select).material_select();
+                        $('.js-example-basic-single').select2();
                     }
                 }
             });
