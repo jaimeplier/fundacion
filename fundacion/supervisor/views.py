@@ -250,6 +250,7 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
         contacto = self.request.GET.get(u'contacto', None)
         tipo_caso = self.request.GET.get(u'tipo_caso', None)
         consejero = self.request.GET.get(u'consejero', None)
+        vive_con = self.request.GET.get(u'vive_con', None)
         if dia:
             datetime_object = datetime.strptime(dia, '%Y-%m-%d')
             qs = qs.filter(fecha=datetime_object)
@@ -275,6 +276,8 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
             qs = qs.filter(tipificacionllamada__categoria_tipificacion__pk=tipo_caso)
         if consejero:
             qs = qs.filter(consejero__pk=consejero)
+        if vive_con:
+            qs = qs.filter(vive_con__pk=vive_con)
 
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
