@@ -12,8 +12,9 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+
+# GDAL PARA FUNCIONAR EN WINDOWS
 """
-GDAL PARA FUNCIONAR EN WINDOWS
 if os.name == 'nt':
     import platform
     OSGEO4W = r"C:\OSGeo4W"

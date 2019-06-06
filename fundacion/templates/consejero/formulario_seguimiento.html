@@ -645,12 +645,12 @@
                             </div>
 
                             <div class="row sin_marg_bottom" id="datos_canalizacion">
-                                {% if estado == 0 %}
+                                
                                     <div class="col s12">
                                     <select id="estados" style="width: 85%">
                                     </select>
                                     </div>
-                                {% endif %}
+                                
                                 <div class="col s10">
                                     <p style="text-align: left;">1. Canalizar a: <span style="text-align: right; float: right">
 
@@ -1258,7 +1258,6 @@
                         var val_colonia = $('#id_colonia').val();
                         console.log('val estado', { estado })
 
-                        {% if estado == 0 %}
                             $.ajax({
                                 method: "GET",
                                 url: "{% url 'webservices:list_estado' %}",
@@ -1282,10 +1281,7 @@
                                 $('#estados').material_select();
                             }
                         });
-                        {%  else  %}
-                            estado = {{ estado }};
-                        {% endif %}
-
+                        
 
                         $("#instituciones").empty().html(' ');
                         $('#instituciones').append(
