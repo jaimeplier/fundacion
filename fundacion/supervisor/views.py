@@ -57,7 +57,7 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
             if canalizaciones.count() >0:
                 canalizaciones_str = ''
                 for canalizacion in canalizaciones:
-                    canalizaciones_str += canalizacion.institucion.nombre + '<br>'
+                    canalizaciones_str += canalizacion.sucursal.nombre + '<br>'
                 return canalizaciones_str
             return 'Sin canalización'
 
