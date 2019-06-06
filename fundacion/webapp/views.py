@@ -12,7 +12,7 @@ from django.views.generic import CreateView, UpdateView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from config.models import Usuario, Pendiente, Llamada, TipificacionLLamada, Evaluacion, \
-    CalificacionLlamada, VictimaMenorEdad, ExamenMentalLLamada
+    CalificacionLlamada, VictimaMenorEdad, ExamenMentalLLamada, LlamadaCanalizacion
 from webapp.forms import PendienteForm
 
 
@@ -296,6 +296,7 @@ class VerServicio(LoginRequiredMixin, DetailView):
         victimas_menores = VictimaMenorEdad.objects.filter(llamada=servicio)
         tipificacion = TipificacionLLamada.objects.filter(llamada=servicio).first()
         examen_mental = ExamenMentalLLamada.objects.filter(llamada=servicio)
+        canalizaciones = LlamadaCanalizacion.objects.filter(llamada=servicio)
         rubros = Evaluacion.objects.all()
         evaluacion = CalificacionLlamada.objects.filter(llamada=servicio)
         context['servicio'] = servicio
@@ -306,4 +307,5 @@ class VerServicio(LoginRequiredMixin, DetailView):
         context['evaluaciones'] = evaluacion
         context['victimas_menores'] = victimas_menores
         context['examen_mental'] = examen_mental
+        context['canalizaciones'] = canalizaciones
         return context
