@@ -256,6 +256,7 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
         modalidad_violencia = self.request.GET.get(u'modalidad_violencia', None)
         fase_cambio = self.request.GET.get(u'fase_cambio', None)
         tutor = self.request.GET.get(u'tutor', None)
+        motivo_llamada = self.request.GET.get(u'motivo_llamada', None)
         if dia:
             datetime_object = datetime.strptime(dia, '%Y-%m-%d')
             qs = qs.filter(fecha=datetime_object)
@@ -293,6 +294,8 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
             qs = qs.filter(fase_cambio__pk=fase_cambio)
         if tutor:
             qs = qs.filter(victimamenoredad__tutor__pk=tutor).distinct()
+        if motivo_llamada:
+            qs = qs.filter(motivo__pk=motivo_llamada)
 
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
