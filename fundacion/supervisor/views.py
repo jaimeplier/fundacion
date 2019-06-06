@@ -13,7 +13,7 @@ from config.models import Llamada, Consejero, LlamadaCanalizacion
 from fundacion import settings
 
 
-@permission_required(perm='supervisor', login_url='/')
+@permission_required(perm='reportes', login_url='/')
 def reportes(request):
     template_name = 'supervisor/tab_reportes.html'
     return render(request, template_name)
@@ -27,7 +27,7 @@ def resumen(request):
 class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
     login_url = '/'
-    permission_required = 'supervisor'
+    permission_required = 'reportes'
 
     model = Llamada
     columns = ['id', 'victima.nombre', 'nombre', 'fecha', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'instituciones', 'medio_contacto']
@@ -88,7 +88,7 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
 class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
     login_url = '/'
-    permission_required = 'supervisor'
+    permission_required = 'reportes'
 
     model = Consejero
     columns = ['consejero', 'tiempo_servicio', 'total_llamadas', 'llamadas_atendidas', 'transferencias_recibidas',
@@ -115,7 +115,7 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
         elif column == 'abandonos':
             return row['abandonos']
         elif column == 'promedio':
-            return row['promedio']
+            return "{0:,.2f}".format(row['promedio'])
         elif column == 'duracion_llamada':
             formato = '%H:%M:%S'
             h1 = str(row.hora_inicio.hour) + ':' + str(row.hora_inicio.minute) + ':' + str(row.hora_inicio.second)
@@ -197,7 +197,7 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
 class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
     redirect_field_name = 'next'
     login_url = '/'
-    permission_required = 'supervisor'
+    permission_required = 'reportes'
 
     model = Llamada
     columns = ['id', 'victima.nombre', 'nombre', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'instituciones', 'motivo.nombre', 'medio_contacto.nombre']
