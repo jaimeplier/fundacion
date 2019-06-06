@@ -304,4 +304,5 @@ class VerServicio(LoginRequiredMixin, DetailView):
         context['rubros'] = rubros
         context['tareas'] = servicio.tareas.all()
         context['evaluaciones'] = evaluacion
+        context['victimas_menores'] = victimas_menores
         return context
