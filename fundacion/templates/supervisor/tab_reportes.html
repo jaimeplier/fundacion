@@ -168,6 +168,70 @@
                 <label for="consejero">Consejero</label>
                 <select id="consejero" name="consejero"></select>
             </div>
+            <div class="col s3">
+                <label for="consejero">####################</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">Consejero</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
+            <div class="col s3">
+                <label for="consejero">$$$$$$$$$$$$$$$$4</label>
+                <select id="consejero" name="consejero"></select>
+            </div>
         </div>
         </form>
         <br />
@@ -247,6 +311,9 @@
 
         $(document).ready(function () {
             $('.datepicker').on('mousedown',function(event){
+                event.preventDefault();
+            });
+            $('.selector_mes').on('mousedown',function(event){
                 event.preventDefault();
             });
 
@@ -588,7 +655,6 @@
                 ajax: "{% block url_ajax4 %}{% url 'supervisor:list_ajax_reporte_general' %}{% endblock %}",
                 {% block order4 %}{% endblock %}
             });
-
         });
 
         function muestra_filtro_fecha(tipo) {
@@ -600,6 +666,7 @@
                 $("#div_fecha1").hide();
                 $("#div_fecha2").hide();
                 $("#div_mes").show();
+
             } else if (tipo == 'rango') {
                 $("#div_fecha1").show();
                 $("#div_fecha2").show();
