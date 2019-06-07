@@ -10,7 +10,8 @@ from django.views.generic import CreateView, UpdateView,DetailView
 from django_datatables_view.base_datatable_view import BaseDatatableView
 
 from calidad.forms import EvaluacionForm
-from config.models import Evaluacion, Llamada, TipificacionLLamada, CalificacionLlamada
+from config.models import Evaluacion, Llamada, TipificacionLLamada, CalificacionLlamada, VictimaMenorEdad, \
+    ExamenMentalLLamada, LlamadaCanalizacion
 
 
 class EvaluacionAdd(PermissionRequiredMixin, CreateView):
@@ -187,14 +188,20 @@ class CalificarServicio(PermissionRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(CalificarServicio, self).get_context_data(**kwargs)
         servicio = Llamada.objects.get(pk=self.kwargs['pk'])
+        victimas_menores = VictimaMenorEdad.objects.filter(llamada=servicio)
         tipificacion = TipificacionLLamada.objects.filter(llamada=servicio).first()
-        ##examen_mental = ExamenMental.objects.filter(llamada=servicio).first()
+        examen_mental = ExamenMentalLLamada.objects.filter(llamada=servicio)
+        canalizaciones = LlamadaCanalizacion.objects.filter(llamada=servicio)
         rubros = Evaluacion.objects.all()
+        evaluacion = CalificacionLlamada.objects.filter(llamada=servicio)
         context['servicio'] = servicio
         context['tipificacion'] = tipificacion
-        ##context['examen_mental'] = examen_mental
         context['rubros'] = rubros
         context['tareas'] = servicio.tareas.all()
+        context['evaluaciones'] = evaluacion
+        context['victimas_menores'] = victimas_menores
+        context['examen_mental'] = examen_mental
+        context['canalizaciones'] = canalizaciones
         return context
 
 class VerServicio(PermissionRequiredMixin, DetailView):
@@ -207,14 +214,18 @@ class VerServicio(PermissionRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(VerServicio, self).get_context_data(**kwargs)
         servicio = Llamada.objects.get(pk=self.kwargs['pk'])
+        victimas_menores = VictimaMenorEdad.objects.filter(llamada=servicio)
         tipificacion = TipificacionLLamada.objects.filter(llamada=servicio).first()
-        ##examen_mental = ExamenMental.objects.filter(llamada=servicio).first()
+        examen_mental = ExamenMentalLLamada.objects.filter(llamada=servicio)
+        canalizaciones = LlamadaCanalizacion.objects.filter(llamada=servicio)
         rubros = Evaluacion.objects.all()
         evaluacion = CalificacionLlamada.objects.filter(llamada=servicio)
         context['servicio'] = servicio
         context['tipificacion'] = tipificacion
-        ##context['examen_mental'] = examen_mental
         context['rubros'] = rubros
         context['tareas'] = servicio.tareas.all()
         context['evaluaciones'] = evaluacion
+        context['victimas_menores'] = victimas_menores
+        context['examen_mental'] = examen_mental
+        context['canalizaciones'] = canalizaciones
         return context
