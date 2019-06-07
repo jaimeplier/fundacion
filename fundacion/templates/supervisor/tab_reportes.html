@@ -526,6 +526,28 @@
                 }
             });
 
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_sexos' %}",
+                cache: false,
+                success: function (json) {
+                    $("#sexo").empty().html(' ');
+                    $('#sexo').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                            $('#sexo').append(
+                                $("<option></option>")
+                                    .attr("value", json[i].pk)
+                                    .text(json[i].nombre)
+                            );
+                        }
+                        $('#sexo').material_select();
+                }
+            });
+
 
             tabla_historial = $('#tabla_historial').DataTable({
                 dom: 'Bfrtip',
