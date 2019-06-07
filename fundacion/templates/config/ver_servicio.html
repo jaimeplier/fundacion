@@ -93,6 +93,23 @@
                                     Servicio
                                 </h5>-->
                             </div>
+
+                        {% if servicio.aliado %}
+                            <div class="row sin_marg_bottom">
+                                <div class="col s12">
+                                    <p class="negritas font_gris_oscuro titulos" style="text-align: left">
+                                        Aliado
+                                        <hr>
+                                    </p>
+                                </div>
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Nombre</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.aliado.nombre }} </p>
+                                </div>
+
+                            </div>
+                        {% endif %}
+
                             <div class="row sin_marg_bottom">
                                 <div class="col s12">
                                     <p class="negritas font_gris_oscuro titulos" style="text-align: left">
@@ -102,16 +119,30 @@
                                 </div>
                                 <div class="col s4">
                                      <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Tipo de Llamada</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.tipo_llamada }} </p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.motivo }} </p>
                                 </div>
+                            <!--
                                 <div class="col s4">
                                      <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Motivo de consulta</b></p>
                                      <p style="margin-top: 0px; text-align: center;"> {{ servicio.motivo }}  </p>
                                 </div>
-
+                               -->
                                 <div class="col s4">
                                      <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>¿Cómo se enteró?</b></p>
+                                    {% if servicio.como_se_entero %}
                                      <p style="margin-top: 0px; text-align: center;"> {{ servicio.como_se_entero }} </p>
+                                    {% else %}
+                                    <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Medio de contacto</b></p>
+                                     {% if servicio.medio_contacto %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.medio_contacto }}</p>
+                                        {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                        {% endif %}
                                 </div>
                             </div>
 
@@ -120,6 +151,22 @@
                                      <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Tipificación</b></p>
                                      <p style="margin-top: 0px; text-align: center;"> {{ tipificacion.categoria_tipificacion.tipificacion }} </p>
                                 </div>
+
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Categoría de Tipificación</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ tipificacion.categoria_tipificacion }} </p>
+                                </div>
+
+                                 <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Subcategoría de Tipificación</b></p>
+                                     {% if tipificacion.subcategoria_tipificacion %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ tipificacion.subcategoria_tipificacion }} </p>
+                                     {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                </div>
+                                {% endif %}
+
+                            <!--
                                 <div class="col s4">
                                      <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Nivel de riesgo</b></p>
                                      <p style="margin-top: 0px; text-align: center;"> {{ servicio.nivel_riesgo }} </p>
@@ -129,38 +176,190 @@
                                      <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Fortalezas</b></p>
                                      <p style="margin-top: 0px; text-align: center;"> {{ fortalezas }} </p>
                                 </div>
+                            -->
                             </div>
 
-                             <div class="row sin_marg_bottom">
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Recursos</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.recursos }}</p>
+
+                        {% if tipificacion.categoria_tipificacion.nombre == 'Violencia' %}
+                            <div class="row sin_marg_bottom">
+                                <div class="col s12">
+                                    <p class="negritas font_gris_oscuro titulos" style="text-align: left">
+                                        Violencia
+                                        <hr>
+                                    </p>
                                 </div>
+                            <div class="row sin_marg_bottom">
                                 <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Debilidades</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.debilidades }} </p>
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Víctimas</b></p>
+                                    {% if servicio.victima_involucrada %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.victima_involucrada }} </p>
+
+                                    {% else %}
+                                    <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                    {% endif %}
                                 </div>
 
                                 <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Amenazas</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.amenazas }} </p>
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Agresor</b></p>
+                                    {% if servicio.agresor %}
+                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.agresor }} </p>
+                                    {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                    {% endif %}
                                 </div>
+
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Modalidad</b></p>
+                                    {% if servicio.modalidad_violencia %}
+                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.modalidad_violencia }} </p>
+                                    {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="row sin_marg_bottom">
+
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Tipo de violencia</b></p>
+                                    {% if servicio.tipo_violencia %}
+                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.tipo_violencia }} </p>
+                                    {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Violentómetro</b></p>
+                                    {% if servicio.violentometro %}
+                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.violentometro }} </p>
+                                    {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% if servicio.victima_involucrada.nombre == 'Hijos' %}
+                                {% for victima_menor in victimas_menores %}
+                                <div class="row sin_marg_bottom" style="border-style: solid; border-width: 2px;">
+                                    <div class="col s3">
+                                        <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Niño</b></p>
+                                        <p style="margin-top: 0px; text-align: center;">Menor {{ forloop.counter }} </p>
+                                    </div>
+
+                                    <div class="col s3">
+                                        <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Edad</b></p>
+                                        <p style="margine-top: 0px; text-align: center;"> {{ victima_menor.edad }} </p>
+                                    </div>
+
+                                    <div class="col s3">
+                                        <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Registro de nacimiento</b></p>
+                                        {% if victima_menor.registro %}
+                                            <p style="margin-top: 0px; text-align: center;"> Sí </p>
+                                        {% else %}
+                                            <p style="margin-top: 0px; text-align: center;"> No </p>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col s3">
+                                        <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Tutela</b></p>
+                                        <p style="margin-top: 0px; text-align: center;"> {{ victima_menor.tutor }} </p>
+                                    </div>
+                                </div>
+
+                                {% endfor %}
+                            {% endif %}
+
+
+
+                        </div>
+                        {% endif %}
+
+
+
+                             <div class="row sin_marg_bottom">
+                                 <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Nivel de Riesgo</b></p>
+                                     {% if servicio.nivel_riesgo  %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.nivel_riesgo }}</p>
+                                        {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                        {% endif %}
+                                </div>
+
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Fortalezas</b></p>
+                                     {% if servicio.f  %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.f|linebreaksbr }}</p>
+                                        {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                        {% endif %}
+                                </div>
+
+                                <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Recursos</b></p>
+                                     {% if servicio.recursos   %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.recursos|linebreaksbr }}</p>
+                                        {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                        {% endif %}
+                                </div>
+
+
+                             <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Recursos</b></p>
+                                     {% if servicio.recursos   %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.recursos|linebreaksbr }}</p>
+                                        {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                        {% endif %}
+                                </div>
+
+                             <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Debilidades</b></p>
+                                     {% if servicio.debilidades %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.debilidades|linebreaksbr }}</p>
+                                        {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                        {% endif %}
+                                </div>
+
+                             <div class="col s4">
+                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Amenazas</b></p>
+                                     {% if servicio.amenazas %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.amenazas|linebreaksbr }}</p>
+                                        {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                        {% endif %}
+                                </div>
+
                             </div>
 
                             <div class="row sin_marg_bottom">
                                 <div class="col s4">
                                      <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Intervencion</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.intervencion }}</p>
+                                     {% if servicio.intervencion  %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.intervencion}}</p>
+                                        {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                        {% endif %}
                                 </div>
+
                                 <div class="col s4">
                                      <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Fase de cambio</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.fase_cambio }} </p>
+                                     {% if servicio.fase_cambio  %}
+                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.fase_cambio}}</p>
+                                        {% else %}
+                                     <p style="margin-top: 0px; text-align: center;">Sin datos</p>
+                                        {% endif %}
                                 </div>
 
                                 <div class="col s4">
 
                                 </div>
                             </div>
+
+                            {% if examen_mental %}
 
                             <div class="row sin_marg_bottom">
                                 <div class="col s12">
@@ -169,102 +368,60 @@
                                         <hr>
                                     </p>
                                 </div>
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Ubicación tiempo espacio (UTE)</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ examen_mental.ute }} </p>
-                                </div>
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Pensamiento (P)</b></p>
-                                     <p style="margin-top: 0px; text-align: center;">{{ examen_mental.p }} </p>
-                                </div>
 
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Lenguaje (L)</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ examen_mental.l }} </p>
-                                </div>
-                            </div>
-
-                            <div class="row sin_marg_bottom">
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Memoria (M)</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ examen_mental.m }} </p>
-                                </div>
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Atención (A)</b></p>
-                                     <p style="margin-top: 0px; text-align: center;">{{ examen_mental.a }} </p>
-                                </div>
-
-                                <div class="col s4"></div>
-                            </div>
-
-                            <div class="row sin_marg_bottom">
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Modalidad</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.modalidad_violencia }} </p>
-                                </div>
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Tipo de violencia</b></p>
-                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.tipo_violencia }} </p>
-                                </div>
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Violentómetro</b></p>
-                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.violentometro }} </p>
-                                </div>
-
-                            </div>
-
-                             <div class="row sin_marg_bottom">
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Víctimas</b></p>
-                                     <p style="margin-top: 0px; text-align: center;"> {{ servicio.victima }} </p>
-                                </div>
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Agresor</b></p>
-                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.agresor }} </p>
-                                </div>
-                                <div class="col s4">
-                                     <p class="font_naranja" style="margin-top: 0px; text-align: center;"><b>Medio de contacto</b></p>
-                                     <p style="margin-top: 0px; text-align: center;">{{ servicio.medio_contacto }}</p>
-                                </div>
-
-                            </div>
+                                {% for examen in examen_mental %}
+                                 <div class="col s4">
+                                 <p class="font_naranja" style="margin-top: 0px; text-align: center;">
+                                     <b>{{ examen.categoria_examen_mental.examen_mental }}</b></p>
+                                     <p style="margin-top: 0px; text-align: center;"> {{ examen.categoria_examen_mental }} </p>
+                                 </div>
+                                {% endfor %}
+                            {% endif %}
 
                             <div class="row sin_marg_bottom">
                                 <div class="col s12">
                                     <p class="negritas font_gris_oscuro titulos" style="text-align: left">
                                         Tratamiento
-                                        <hr>
+                                    <hr>
                                     </p>
                                 </div>
-                                <div class="col s12">
-                                     <p class="font_naranja" style="margin-top: 0px;"><b>¿Qué acciones tiene que realizar para la
-                                                siguiente llamada?</b></p>
-                                     <p > Plan de acción a realizar </p>
+                                <div class="col s6">
+                                    <p class="font_naranja" style="margin-top: 0px;text-align: center;"><b>¿Qué acciones tiene que realizar
+                                        para la
+                                        siguiente llamada?</b></p>
+                                    {% if servicio.posible_solucion %}
+                                        <p style="margin-top: 0px; text-align: center;">{{ servicio.posible_solucion|linebreaksbr }}</p>
+                                    {% else %}
+                                        <p style="margin-top: 0px; text-align: center;">No se guardaron recomendaciones</p>
+                                    {% endif %}
                                 </div>
-                                <div class="col s12">
-                                     <p class="font_naranja" style="margin-top: 0px;"><b>Tareas o actividades recomendadas</b></p>
-                                      {% for tarea in tareas %}
-                                            <p> <span class="font_naranja">* </span> {{ tarea.nombre }}  </p>
-                                      {% endfor %}
-                                </div>
-                                <div class="col s12">
-                                    <p>
-                                        <input type="checkbox" id="datos_c"/>
-                                        <label for="datos_c"
-                                        style="color:#EF7F13!important">
-                                        ¿Requiere canalización?</label>
-                                    </p>
+                                <div class="col s6">
+                                {% if tareas %}
+                                    <p class="font_naranja" style="margin-top: 0px;text-align: center;"><b>Tareas o actividades
+                                        recomendadas</b></p>
+                                    {% for tarea in tareas %}
+                                        <p><span class="font_naranja">* </span> {{ tarea.nombre }}  </p>
+                                    {% endfor %}
+                                {% endif %}
                                 </div>
 
-                                <div id="datos_canalizacion">
-                                    <div class="col s12" >
-                                        <p style="text-align: center;">Canalizar a:</p>
-                                    </div>
-                                    <div class="input-field col s12 m12 l12">
-                                        <select id="instituciones">
-                                        </select>
-                                    </div>
+                            {% if canalizaciones %}
+                                <div class="col s12">
+                                    <p class="negritas font_gris_oscuro titulos" style="text-align: left">
+                                        Canalización
+                                    <hr>
+                                    </p>
                                 </div>
+                            <div class="row">
+                                {% for canalizacion in canalizaciones %}
+                                <div class="col s6">
+                                    <p class="font_naranja" style="margin-top: 0px;text-align: center;"><b>Canalizar a:</b></p>
+
+                                        <p style="margin-top: 0px; text-align: center;">{{ canalizacion.sucursal }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
 
                             </div>
 
