@@ -270,6 +270,7 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
         categoria_examen_mental = self.request.GET.get(u'categoria_examen_mental', None)
         institucion = self.request.GET.get(u'institucion', None)
         sucursal = self.request.GET.get(u'sucursal', None)
+        tutor = self.request.GET.get(u'tutor', None)
         if dia:
             datetime_object = datetime.strptime(dia, '%Y-%m-%d')
             qs = qs.filter(fecha=datetime_object)
@@ -337,6 +338,8 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
             qs = qs.filter(llamadacanalizacion__sucursal__institucion=institucion).distinct()
         if sucursal:
             qs = qs.filter(llamadacanalizacion__sucursal=sucursal).distinct()
+        if tutor:
+            qs = qs.filter(victimamenoredad__tutor__pk=tutor).distinct()
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
         return qs
