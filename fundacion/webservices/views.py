@@ -12,7 +12,7 @@ from config.models import Llamada, Mensaje, Recado, Usuario, EstatusUsuario, Arc
     EstatusInstitucion, Sucursal, Consejero, LlamadaCanalizacion
 from webservices.serializers import FechaSerializer, MensajeSerializer, MensajeSerializerPk, RecadoSerializer, \
     RecadoSerializerPk, UsuarioSerializer, EstatusUsuarioSerializer, PkSerializer, ArchivoMensajeSerializer, \
-    ArchivoRecadoSerializer, EstatusInstitucionSucursalSerializer, FechaSerializerMes
+    ArchivoRecadoSerializer, EstatusInstitucionSucursalSerializer, FechaSerializerMes, UsuariosAjaxListSerializer
 
 
 class ResumenLlamada(APIView):
@@ -248,3 +248,49 @@ class CambiarEstatusInstitucion(APIView):
 
     def get_serializer(self):
         return EstatusInstitucionSucursalSerializer()
+
+class ReporteUsuarioViewSet(APIView):
+    #permission_classes = (IsAuthenticated,)
+    #authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    def get(self, request):
+        dia = self.request.query_params.get('dia', None)
+        mes = self.request.query_params.get('mes', None)
+        anio = self.request.query_params.get('anio', None)
+        fecha1 = self.request.query_params.get('fecha1', None)
+        fecha2 = self.request.query_params.get('fecha2', None)
+
+        if dia:
+            datetime_object = datetime.strptime(dia, '%Y-%m-%d')
+            queryset = Llamada.objects.filter(fecha=datetime_object).aggregate(
+                total_usuarios=Count('victima', distinct=True),
+                primera_vez=Count('motivo', filter=Q(motivo__pk=8)),
+                seguimiento=Count('motivo', filter=Q(motivo__pk=9)),
+                total_servicios=Count('pk'))
+        elif mes and anio:
+            queryset = Llamada.objects.filter(fecha__month=mes, fecha__year=anio).aggregate(
+                total_usuarios=Count('victima', distinct=True),
+                primera_vez=Count('motivo', filter=Q(motivo__pk=8)),
+                seguimiento=Count('motivo', filter=Q(motivo__pk=9)),
+                total_servicios=Count('pk'))
+        elif fecha1 and fecha2:
+            fecha_inicio = datetime.strptime(fecha1, '%Y-%m-%d')
+            fecha_fin = datetime.strptime(fecha2, '%Y-%m-%d')
+            queryset = Llamada.objects.filter(fecha__range=(fecha_inicio, fecha_fin)).aggregate(
+                total_usuarios=Count('victima', distinct=True),
+                primera_vez=Count('motivo', filter=Q(motivo__pk=8)),
+                seguimiento=Count('motivo', filter=Q(motivo__pk=9)),
+                total_servicios=Count('pk'))
+        else:
+            queryset = Llamada.objects.all().aggregate(
+                total_usuarios=Count('victima', distinct=True),
+                primera_vez=Count('motivo', filter=Q(motivo__pk=8)),
+                seguimiento=Count('motivo', filter=Q(motivo__pk=9)),
+                total_servicios=Count('pk'))
+
+        return Response({'data':[[queryset['total_usuarios'], queryset['primera_vez'], queryset['seguimiento'],
+                                 queryset['total_servicios']]]})
+
+
+    def get_serializer(self):
+        return UsuariosAjaxListSerializer()

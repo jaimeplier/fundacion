@@ -389,3 +389,6 @@ class EstatusInstitucionSucursalSerializer(serializers.Serializer):
     tipo = serializers.IntegerField()
     pk = serializers.IntegerField()
     estatus = serializers.IntegerField()
+
+class UsuariosAjaxListSerializer(serializers.Serializer):
+    dia = serializers.DateField(required=False)
