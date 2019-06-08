@@ -261,6 +261,7 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
         vida_riesgo = self.request.GET.get(u'vida_riesgo', None)
         tipo_violencia = self.request.GET.get(u'tipo_violencia', None)
         nivel_riesgo = self.request.GET.get(u'nivel_riesgo', None)
+        victima_involucrada = self.request.GET.get(u'victima_involucrada', None)
         if dia:
             datetime_object = datetime.strptime(dia, '%Y-%m-%d')
             qs = qs.filter(fecha=datetime_object)
@@ -303,11 +304,13 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
         if dependencia_institucion:
             qs = qs.filter(llamadacanalizacion__sucursal__institucion__dependencia=dependencia_institucion).distinct()
         if vida_riesgo:
-            qs = qs.filter(vida_en_riesgo=vida_riesgo)
+            qs = qs.filter(vida_en_riesgo__pk=vida_riesgo)
         if tipo_violencia:
-            qs = qs.filter(tipo_violencia=tipo_violencia)
+            qs = qs.filter(tipo_violencia__pk=tipo_violencia)
         if nivel_riesgo:
-            qs = qs.filter(nivel_riesgo=nivel_riesgo)
+            qs = qs.filter(nivel_riesgo__pk=nivel_riesgo)
+        if victima_involucrada:
+            qs = qs.filter(victima_involucrada__pk=victima_involucrada)
 
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
