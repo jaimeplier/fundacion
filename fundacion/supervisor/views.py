@@ -263,6 +263,7 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
         nivel_riesgo = self.request.GET.get(u'nivel_riesgo', None)
         victima_involucrada = self.request.GET.get(u'victima_involucrada', None)
         agresor = self.request.GET.get(u'agresor', None)
+        aliado = self.request.GET.get(u'aliado', None)
         if dia:
             datetime_object = datetime.strptime(dia, '%Y-%m-%d')
             qs = qs.filter(fecha=datetime_object)
@@ -314,7 +315,8 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
             qs = qs.filter(victima_involucrada__pk=victima_involucrada)
         if agresor:
             qs = qs.filter(agresor__pk=agresor)
-
+        if aliado:
+            qs = qs.filter(aliado__pk=aliado)
         if search:
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
         return qs
