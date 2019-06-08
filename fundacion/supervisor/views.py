@@ -326,13 +326,13 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
         if aliado:
             qs = qs.filter(aliado__pk=aliado)
         if estado:
-            qs = qs.filter(victima__municipio__estado__pk=estado)
+            qs = qs.filter(victima__municipio__estado__pk=estado).distinct()
         if municipio:
-            qs = qs.filter(victima__municipio__pk=municipio)
+            qs = qs.filter(victima__municipio__pk=municipio).distinct()
         if examen_mental:
-            qs = qs.filter(examenmentalllamada__categoria_examen_mental__examen_mental__pk=examen_mental)
+            qs = qs.filter(examenmentalllamada__categoria_examen_mental__examen_mental__pk=examen_mental).distinct()
         if categoria_examen_mental:
-            qs = qs.filter(examenmentalllamada__categoria_examen_mental__pk=categoria_examen_mental)
+            qs = qs.filter(examenmentalllamada__categoria_examen_mental__pk=categoria_examen_mental).distinct()
         if institucion:
             qs = qs.filter(llamadacanalizacion__sucursal__institucion=institucion).distinct()
         if sucursal:
