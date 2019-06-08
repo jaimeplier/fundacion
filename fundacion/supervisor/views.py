@@ -342,13 +342,3 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
             qs = qs.filter(nombre__icontains=search) | qs.filter(pk__icontains=search)
         return qs
 
-
-def UsuariosAjaxList(request):
-
-    queryset = Llamada.objects.all().aggregate(
-        total_usuarios=Count('victima', distinct=True),
-        primera_vez=Count('motivo', filter=Q(motivo__pk=8)),
-        seguimiento=Count('motivo', filter=Q(motivo__pk=9)),
-        total_servicios=Count('pk'))
-    return JsonResponse(queryset)
-
