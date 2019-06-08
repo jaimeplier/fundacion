@@ -268,6 +268,7 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
         municipio = self.request.GET.get(u'municipio', None)
         examen_mental = self.request.GET.get(u'examen_mental', None)
         categoria_examen_mental = self.request.GET.get(u'categoria_examen_mental', None)
+        institucion = self.request.GET.get(u'institucion', None)
         sucursal = self.request.GET.get(u'sucursal', None)
         if dia:
             datetime_object = datetime.strptime(dia, '%Y-%m-%d')
@@ -332,6 +333,8 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
             qs = qs.filter(examenmentalllamada__categoria_examen_mental__examen_mental__pk=examen_mental)
         if categoria_examen_mental:
             qs = qs.filter(examenmentalllamada__categoria_examen_mental__pk=categoria_examen_mental)
+        if institucion:
+            qs = qs.filter(llamadacanalizacion__sucursal__institucion=institucion).distinct()
         if sucursal:
             qs = qs.filter(llamadacanalizacion__sucursal=sucursal).distinct()
         if search:
