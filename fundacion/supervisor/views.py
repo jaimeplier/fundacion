@@ -260,7 +260,9 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
         nivel_academico = self.request.GET.get(u'nivel_academico', None)
         como_se_entero = self.request.GET.get(u'como_se_entero', None)
         contacto = self.request.GET.get(u'contacto', None)
-        tipo_caso = self.request.GET.get(u'tipo_caso', None)
+        tipificacion = self.request.GET.get(u'tipificacion', None)
+        categoria_tipificacion = self.request.GET.get(u'categoria_tipificacion', None)
+        subcategoria_tipificacion = self.request.GET.get(u'subcategoria_tipificacion', None)
         consejero = self.request.GET.get(u'consejero', None)
         vive_con = self.request.GET.get(u'vive_con', None)
         religion = self.request.GET.get(u'religion', None)
@@ -303,8 +305,12 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
             qs = qs.filter(como_se_entero__pk=como_se_entero)
         if contacto:
             qs = qs.filter(medio_contacto__pk=contacto)
-        if tipo_caso:
-            qs = qs.filter(tipificacionllamada__categoria_tipificacion__pk=tipo_caso)
+        if tipificacion:
+            qs = qs.filter(tipificacionllamada__categoria_tipificacion__tipificacion__pk=tipificacion)
+        if categoria_tipificacion:
+            qs = qs.filter(tipificacionllamada__categoria_tipificacion__pk=categoria_tipificacion)
+        if subcategoria_tipificacion:
+            qs = qs.filter(tipificacionllamada__subcategoria_tipificacion__pk=subcategoria_tipificacion)
         if consejero:
             qs = qs.filter(consejero__pk=consejero)
         if vive_con:

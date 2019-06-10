@@ -20,4 +20,7 @@ urlpatterns = [
     path('calificar_servicio/<int:pk>', CalificarServicio.as_view(), name='calificar_servicio'),
     path('ver_servicio/<int:pk>', VerServicio.as_view(), name='ver_servicio'),
 
+    path('evaluacion/list/', views.list_evaluacion, name='list_evaluacion'),
+    path('evaluacion/ajax/list/', EvaluacionAjaxList.as_view(), name='list_ajax_evaluacion'),
+
     ]
