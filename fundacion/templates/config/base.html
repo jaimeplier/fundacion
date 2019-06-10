@@ -133,7 +133,7 @@
                     <li class="menu_redondo"><a href="{% url 'calidad:list_evaluacion_rubro' %}">Cantidad de rubros en llamadas</a></li>
                     <li class="menu_redondo"><a href="{% url 'calidad:list_llamada' %}">Servicios</a></li>
                 {% endif %}
-                <li class="menu_redondo"><a href="{% url 'webapp:list_pendiente' %}">Pendientes</a></li>
+                <li class="menu_redondo"><a href="{% url 'webapp:list_pendiente' %}">Pendientes: <b id="num_pendientes"></b></a></li>
                 <li class="menu_redondo"><a href="{% url 'webapp:ver_recados' %}">Recados</a></li>
                 <li class="menu_redondo" style="margin-bottom: 15%;"><a href="{% url 'webapp:ver_avisos' %}">Avisos</a></li>
 
@@ -217,6 +217,19 @@
                 $('#actividad_usuario').material_select();
             }
         });
+
+        $.ajax({
+            method: "GET",
+            url: "{% url 'webservices:list_count_pendientes' %}",
+            cache: false,
+            success: function (json) {
+                $("#num_pendientes").empty().html(' ');
+                $('#num_pendientes').append(
+                    json.cantidad
+                );
+            }
+        });
+
     });
 
     function CambiarActividad() {

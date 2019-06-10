@@ -9,11 +9,10 @@ from rest_framework.views import APIView
 
 from django.db.models import Sum, Count, Avg, Q
 from config.models import Llamada, Mensaje, Recado, Usuario, EstatusUsuario, ArchivoMensaje, AcudeInstitucion, \
-    EstatusInstitucion, Sucursal, Consejero, LlamadaCanalizacion
+    EstatusInstitucion, Sucursal, Consejero, LlamadaCanalizacion, Pendiente
 from webservices.serializers import FechaSerializer, MensajeSerializer, MensajeSerializerPk, RecadoSerializer, \
     RecadoSerializerPk, UsuarioSerializer, EstatusUsuarioSerializer, PkSerializer, ArchivoMensajeSerializer, \
     ArchivoRecadoSerializer, EstatusInstitucionSucursalSerializer, FechaSerializerMes, UsuariosAjaxListSerializer
-
 
 class ResumenLlamada(APIView):
 
@@ -249,9 +248,18 @@ class CambiarEstatusInstitucion(APIView):
     def get_serializer(self):
         return EstatusInstitucionSucursalSerializer()
 
+class CountPendientes(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    def get(self, request):
+        usuario = self.request.user
+        pendientes = Pendiente.objects.filter(usuario = usuario, completado=False).count()
+        return Response({'cantidad': pendientes})
+
 class ReporteUsuarioViewSet(APIView):
-    #permission_classes = (IsAuthenticated,)
-    #authentication_classes = (TokenAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
 
     def get(self, request):
         dia = self.request.query_params.get('dia', None)
