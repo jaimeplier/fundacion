@@ -162,76 +162,90 @@
                 <select id="contacto" name="contacto"></select>
             </div>
             <div class="col s3">
-                <label for="tipo_caso">Tipo de caso</label>
-                <select id="tipo_caso" name="tipo_caso"></select>
+                <label for="tipo_caso">Tipificación</label>
+                <select id="tipo_caso" onchange="list_tipificaciones_categoria()"
+                name="tipificacion"></select>
+            </div>
+            <div class="col s3">
+                <label for="tipificaciones_categorias">Categoría de tipificacion</label>
+                <select id="tipificaciones_categorias" onchange="list_tipificaciones_subcategoria()" 
+                 name="tipificaciones_categorias"></select>
+            </div>
+            <div class="col s3">
+                <label for="tipificaciones_subcategorias">Categoría de tipificacion</label>
+                <select id="tipificaciones_subcategorias" name="tipificaciones_subcategorias"></select>
             </div>
             <div class="col s3">
                 <label for="consejero">Consejero</label>
                 <select id="consejero" name="consejero"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">####################</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="vive_con">Vive con</label>
+                <select id="vive_con" name="vive_con"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="religion">Religión</label>
+                <select id="religion" name="religion"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="violentometro">Violentómetro</label>
+                <select id="violentometro" name="violentometro"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="aliado">Aliado</label>
+                <select id="aliado" name="aliado"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="modalidad_violencia">Modalidad de violencia</label>
+                <select id="modalidad_violencia" name="modalidad_violencia"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="fase_cambio">Fase de cambio</label>
+                <select id="fase_cambio" name="fase_cambio"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="tutor">Tutor</label>
+                <select id="tutor" name="tutor"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="estado">Estado</label>
+                <select id="estado" name="estado" onchange="list_municipios()"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="municipio">Municipio</label>
+                <select id="municipio" name="municipio"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="tipo_llamada">Tipo de llamada</label>
+                <select id="tipo_llamada" name="motivo_llamada"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="instituciones">Instituciones</label>
+                <select id="instituciones" name="institucion"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="nivel_riesgo">Nivel de riesgo</label>
+                <select id="nivel_riesgo" name="nivel_riesgo"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="tipos_violencia">Tipos de violencia</label>
+                <select id="tipos_violencia" name="tipo_violencia"></select>
+            </div>        
+            <div class="col s3">
+                <label for="victimas">Víctimas involucradas</label>
+                <select id="victimas" name="victimas"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="agresor">Agresor</label>
+                <select id="agresor" name="agresor"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">Consejero</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="examen_mental">Examen mental</label>
+                <select id="examen_mental" name="examen_mental"></select>
             </div>
             <div class="col s3">
-                <label for="consejero">$$$$$$$$$$$$$$$$4</label>
-                <select id="consejero" name="consejero"></select>
+                <label for="sucursales">Sucursales</label>
+                <select id="sucursales" name="sucursal"></select>
             </div>
         </div>
         </form>
@@ -487,7 +501,6 @@
                 url: "{% url 'webservices:list_tipificaciones' %}",
                 cache: false,
                 success: function (json) {
-                    console.log('TIPIFICACIONES',json);
                     $("#tipo_caso").empty().html(' ');
                     $('#tipo_caso').append(
                         $("<option></option>")
@@ -524,6 +537,358 @@
                         );
                     }
                     $('#consejero').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_vive_con' %}",
+                cache: false,
+                success: function (json) {
+                    $("#vive_con").empty().html(' ');
+                    $('#vive_con').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#vive_con').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#vive_con').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_religiones' %}",
+                cache: false,
+                success: function (json) {
+                    $("#religion").empty().html(' ');
+                    $('#religion').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#religion').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#religion').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_modalidad_violencia' %}",
+                cache: false,
+                success: function (json) {
+                    $("#modalidad_violencia").empty().html(' ');
+                    $('#modalidad_violencia').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#modalidad_violencia').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#modalidad_violencia').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_violentometro' %}",
+                cache: false,
+                success: function (json) {
+                    $("#violentometro").empty().html(' ');
+                    $('#violentometro').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#violentometro').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#violentometro').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_aliado' %}",
+                cache: false,
+                success: function (json) {
+                    $("#aliado").empty().html(' ');
+                    $('#aliado').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#aliado').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#aliado').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_fase_cambio' %}",
+                cache: false,
+                success: function (json) {
+                    $("#fase_cambio").empty().html(' ');
+                    $('#fase_cambio').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#fase_cambio').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#fase_cambio').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_tutor' %}",
+                cache: false,
+                success: function (json) {
+                    $("#tutor").empty().html(' ');
+                    $('#tutor').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#tutor').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#tutor').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_motivo_de_llamada' %}",
+                cache: false,
+                success: function (json) {
+                    $("#tipo_llamada").empty().html(' ');
+                    $('#tipo_llamada').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#tipo_llamada').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#tipo_llamada').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_instituciones' %}",
+                cache: false,
+                success: function (json) {
+                    $("#instituciones").empty().html(' ');
+                    $('#instituciones').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#instituciones').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#instituciones').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_estado' %}",
+                cache: false,
+                success: function (json) {
+                    $("#estado").empty().html(' ');
+                    $('#estado').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#estado').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#estado').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_nivel_riesgo' %}",
+                cache: false,
+                success: function (json) {
+                    $("#nivel_riesgo").empty().html(' ');
+                    $('#nivel_riesgo').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#nivel_riesgo').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#nivel_riesgo').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_tipos_violencia' %}",
+                cache: false,
+                success: function (json) {
+                    $("#tipos_violencia").empty().html(' ');
+                    $('#tipos_violencia').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#tipos_violencia').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#tipos_violencia').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_victimas' %}",
+                cache: false,
+                success: function (json) {
+                    $("#victimas").empty().html(' ');
+                    $('#victimas').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#victimas').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#victimas').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_agresor' %}",
+                cache: false,
+                success: function (json) {
+                    $("#agresor").empty().html(' ');
+                    $('#agresor').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#agresor').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#agresor').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_examen_mental' %}",
+                cache: false,
+                success: function (json) {
+                    $("#examen_mental").empty().html(' ');
+                    $('#examen_mental').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#examen_mental').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#examen_mental').material_select();
+                }
+            });
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_sucursales' %}",
+                cache: false,
+                success: function (json) {
+                    $("#sucursales").empty().html(' ');
+                    $('#sucursales').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#sucursales').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#sucursales').material_select();
                 }
             });
 
@@ -706,6 +1071,84 @@
             filtrar();
         }
 
+        function list_tipificaciones_categoria() {           
+            var tipificacion = $("#tipo_caso").val();
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_tipificaciones_categorias' %}?tipificacion="+ tipificacion ,
+                cache: false,
+                success: function (json) {
+                    $("#tipificaciones_categorias").empty().html(' ');
+                    $('#tipificaciones_categorias').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#tipificaciones_categorias').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#tipificaciones_categorias').material_select();
+                }
+            });
+        }
+
+        function list_tipificaciones_subcategoria() {           
+            var tipificacion = $("#tipificaciones_categorias").val();
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_tipificaciones_subcategorias' %}?categoria="+ tipificacion ,
+                cache: false,
+                success: function (json) {
+                    $("#tipificaciones_subcategorias").empty().html(' ');
+                    $('#tipificaciones_subcategorias').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#tipificaciones_subcategorias').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#tipificaciones_subcategorias').material_select();
+                }
+            });
+        }
+
+        function list_municipios() {           
+            var tipificacion = $("#estado").val();
+
+            $.ajax({
+                method: "GET",
+                url: "{% url 'webservices:list_municipio' %}?estado="+ tipificacion ,
+                cache: false,
+                success: function (json) {
+                    $("#municipio").empty().html(' ');
+                    $('#municipio').append(
+                        $("<option></option>")
+                            .attr("value", "")
+                            .text("")
+                    );
+                    for (i in json) {
+                        $('#municipio').append(
+                            $("<option></option>")
+                                .attr("value", json[i].pk)
+                                .text(json[i].nombre)
+                        );
+                    }
+                    $('#municipio').material_select();
+                }
+            });
+        }
+
         function filtrar() {
             console.log('filtrando!')
              $('.datepicker').on('mousedown',function(event){
@@ -783,6 +1226,7 @@
             if ( idTabla === '#tabla_generales') {
                 const test = $('form').serialize();
                 nva_url += '&' + test;
+                console.log('url', nva_url);
             }
             tablaActual.ajax.url(nva_url).load()
             $(idTabla).dataTable()._fnAjaxUpdate()
@@ -810,7 +1254,7 @@
                 const test = $('form').serialize();
                 tablaUrl += '?' + test;
             }
-
+            console.log('url', tablaUrl);
             tablaActual.ajax.url(tablaUrl).load()
             $(idTabla).dataTable()._fnAjaxUpdate()
         }
