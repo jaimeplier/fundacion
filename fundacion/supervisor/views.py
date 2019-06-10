@@ -92,9 +92,9 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'reportes'
 
     model = Consejero
-    columns = ['consejero', 'tiempo_servicio', 'total_llamadas', 'llamadas_atendidas', 'transferencias_recibidas',
-               'transferencias_realizadas', 'abandonos', 'promedio', 'calif_promedio']
-    order_columns = ['consejero', '', '', '', '', '', '', '']
+    columns = ['consejero', 'tiempo_servicio', 'total_llamadas', 'llamadas_atendidas', 'abandonos', 'promedio',
+               'calif_promedio']
+    order_columns = ['consejero', '', '', '', '', '']
     max_display_length = 100
     settingstime_zone = timezone(settings.TIME_ZONE)
 
@@ -109,10 +109,10 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
             return row['total_llamadas']
         elif column == 'llamadas_atendidas':
             return row['llamadas_atendidas']
-        elif column == 'transferencias_recibidas':
-            return row['transferencias_recibidas']
-        elif column == 'transferencias_realizadas':
-            return row['transferencias_realizadas']
+        # elif column == 'transferencias_recibidas':
+        #     return row['transferencias_recibidas']
+        # elif column == 'transferencias_realizadas':
+        #     return row['transferencias_realizadas']
         elif column == 'calif_promedio':
             if row['calif_promedio'] is not None:
                 return "{0:,.2f}".format(row['calif_promedio'])
@@ -139,8 +139,6 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
             tiempo_servicio=Sum('duracion_servicio')).annotate(
             abandonos=Count('motivo', filter=Q(motivo__pk__in=[3, 6]))).annotate(
             promedio=Avg('duracion_servicio')).annotate(
-            transferencias_recibidas=Count('transferencia',filter=Q(recibido=True))).annotate(
-            transferencias_realizadas=Count('transferencia',filter=Q(transferencia=True))).annotate(
             llamadas_atendidas=Count('fecha', filter=Q(fecha__month__gte=current_time.month,
                                                        fecha__month__lte=current_time.month))).annotate(
             calif_promedio=Avg('calificacion'))
@@ -157,8 +155,6 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
             tiempo_servicio=Sum('duracion_servicio')).annotate(
             abandonos=Count('motivo', filter=Q(motivo__pk__in=[3, 6]))).annotate(
             promedio=Avg('duracion_servicio')).annotate(
-            transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
-            transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
             llamadas_atendidas=Count('fecha')).annotate(
             calif_promedio=Avg('calificacion'))
         if dia:
@@ -168,8 +164,6 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
                 tiempo_servicio=Sum('duracion_servicio')).annotate(
                 abandonos=Count('motivo', filter=Q(motivo__pk__in=[3, 6]))).annotate(
                 promedio=Avg('duracion_servicio')).annotate(
-                transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
-                transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
                 llamadas_atendidas=Count('fecha')).order_by('consejero').annotate(
             calif_promedio=Avg('calificacion'))
         elif mes:
@@ -178,8 +172,6 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
                 tiempo_servicio=Sum('duracion_servicio')).annotate(
                 abandonos=Count('motivo', filter=Q(motivo__pk__in=[3, 6]))).annotate(
                 promedio=Avg('duracion_servicio')).annotate(
-                transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
-                transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
                 llamadas_atendidas=Count('fecha')).order_by('consejero').annotate(
             calif_promedio=Avg('calificacion'))
         elif fecha1 and fecha2:
@@ -190,8 +182,6 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
                 tiempo_servicio=Sum('duracion_servicio')).annotate(
                 abandonos=Count('motivo', filter=Q(motivo__pk__in=[3, 6]))).annotate(
                 promedio=Avg('duracion_servicio')).annotate(
-                transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
-                transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
                 llamadas_atendidas=Count('fecha')).order_by('consejero').annotate(
             calif_promedio=Avg('calificacion'))
         if search:
@@ -200,8 +190,6 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
                 tiempo_servicio=Sum('duracion_servicio')).annotate(
                 abandonos=Count('motivo', filter=Q(motivo__pk__in=[3, 6]))).annotate(
                 promedio=Avg('duracion_servicio')).annotate(
-                transferencias_recibidas=Count('transferencia', filter=Q(recibido=True))).annotate(
-                transferencias_realizadas=Count('transferencia', filter=Q(transferencia=True))).annotate(
                 llamadas_atendidas=Count('fecha')).annotate(
             calif_promedio=Avg('calificacion'))
         return queryset
