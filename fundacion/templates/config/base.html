@@ -130,6 +130,7 @@
                     <li class="menu_redondo"><a href="{% url 'webapp:list_llamada' %}">Servicios</a></li>
                 {% elif user.is_calidad %}
                     <li class="menu_redondo"><a href="{% url 'calidad:list_evaluacion' %}">Rubros de evaluación</a></li>
+                    <li class="menu_redondo"><a href="{% url 'calidad:list_evaluacion_rubro' %}">Cantidad de rubros en llamadas</a></li>
                     <li class="menu_redondo"><a href="{% url 'calidad:list_llamada' %}">Servicios</a></li>
                 {% endif %}
                 <li class="menu_redondo"><a href="{% url 'webapp:list_pendiente' %}">Pendientes</a></li>

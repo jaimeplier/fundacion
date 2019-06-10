@@ -2,6 +2,7 @@ from datetime import timedelta, datetime
 
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models import Count, Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -229,3 +230,44 @@ class VerServicio(PermissionRequiredMixin, DetailView):
         context['examen_mental'] = examen_mental
         context['canalizaciones'] = canalizaciones
         return context
+
+@permission_required(perm='calidad', login_url='/')
+def list_evaluacion_rubro(request):
+    template_name = 'calidad/tab_evaluacion_rubro.html'
+    return render(request, template_name)
+
+
+class EvaluacionRubroAjaxList(PermissionRequiredMixin, BaseDatatableView):
+    redirect_field_name = 'next'
+    login_url = '/'
+    permission_required = 'calidad'
+
+    model = CalificacionLlamada
+    columns = ['nombre', 'estatus_true', 'estatus_false', 'total_estatus']
+    order_columns = ['rubro__nombre', 'estatus_true', 'estatus_false', 'total_estatus']
+    max_display_length = 100
+
+    def render_column(self, row, column):
+
+        if column == 'nombre':
+            return row['rubro__nombre']
+        elif column == 'estatus_true':
+            return row['estatus_true']
+        elif column == 'estatus_false':
+            return row['estatus_false']
+        elif column == 'total_estatus':
+            return row['total_estatus']
+
+        return super(EvaluacionRubroAjaxList, self).render_column(row, column)
+
+    def get_initial_queryset(self):
+        return CalificacionLlamada.objects.values('rubro__nombre').annotate(
+            estatus_true=Count('estatus_rubro',filter=Q(estatus_rubro=True))).annotate(
+            estatus_false=Count('estatus_rubro',filter=Q(estatus_rubro=False))).annotate(
+            total_estatus=Count('estatus_rubro'))
+
+    def filter_queryset(self, qs):
+        search = self.request.GET.get(u'search[value]', None)
+        if search:
+            qs = qs.filter(rubro__nombre__icontains=search)
+        return qs
