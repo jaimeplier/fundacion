@@ -135,7 +135,7 @@
                 {% endif %}
                 <li class="menu_redondo"><a href="{% url 'webapp:list_pendiente' %}">Pendientes: <b id="num_pendientes"></b></a></li>
                 <li class="menu_redondo"><a href="{% url 'webapp:ver_recados' %}">Recados</a></li>
-                <li class="menu_redondo" style="margin-bottom: 15%;"><a href="{% url 'webapp:ver_avisos' %}">Avisos</a></li>
+                <li class="menu_redondo" style="margin-bottom: 15%;"><a href="{% url 'webapp:ver_avisos' %}">Avisos: <b id="num_avisos"></b></a></li>
 
             </ul>
         </div>
@@ -225,6 +225,18 @@
             success: function (json) {
                 $("#num_pendientes").empty().html(' ');
                 $('#num_pendientes').append(
+                    json.cantidad
+                );
+            }
+        });
+
+        $.ajax({
+            method: "GET",
+            url: "{% url 'webservices:list_count_avisos' %}",
+            cache: false,
+            success: function (json) {
+                $("#num_avisos").empty().html(' ');
+                $('#num_avisos').append(
                     json.cantidad
                 );
             }

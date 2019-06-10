@@ -14,7 +14,7 @@ from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, Lis
     ListEstado, ListMunicipio
 from webservices.views import ResumenLlamada, ListUsuarios, ListEstatusActividadUsuario, UpdateEstatusActividadUsuario, \
     AgregaArchivoMensaje, AgregaArchivoRecado, ListArchivoMensaje, ListArchivoRecado, CambiarEstatusInstitucion, \
-    ResumenLlamadaMes, ReporteUsuarioViewSet, CountPendientes
+    ResumenLlamadaMes, ReporteUsuarioViewSet, CountPendientes, CountAvisos
 from . import views
 
 app_name = 'webservices'
@@ -36,7 +36,7 @@ urlpatterns = [
     path('cambiar_estatus_institucion/', CambiarEstatusInstitucion.as_view(), name='cambiar_estatus_institucion'),
 
     path('list_count_pendientes/', CountPendientes.as_view(), name='list_count_pendientes'),
-    #path('list_count_avisos/', CountAvisos.as_view(), name='list_count_avisos'),
+    path('list_count_avisos/', CountAvisos.as_view(), name='list_count_avisos'),
     #path('list_count_recados/', CountRecados.as_view(), name='list_count_recados'),
     # Consejeros:
     path('registro_primera_vez/', PrimerRegistro.as_view(), name='registro_primera_vez'),
