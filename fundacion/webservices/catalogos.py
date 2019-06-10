@@ -8,7 +8,7 @@ from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, Tipo
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     VictimaInvolucrada, Agresor, RedesApoyo, MedioContacto, NivelRiesgo, \
     RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
-    Consejero, Tutor, EstadoCivil, Sucursal, CategoriaExamenMental, ExamenMental, Colonia, Estado
+    Consejero, Tutor, EstadoCivil, Sucursal, CategoriaExamenMental, ExamenMental, Colonia, Estado, Municipio
 from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer, TutorSerializer, \
     CategoriaExamenMentalSerializerpk, ExamenMentalSerializer, ColoniaSerializer
 
@@ -363,4 +363,17 @@ class ListEstado(ListAPIView):
 
     def get_queryset(self):
         queryset = Estado.objects.filter(estatus=True)
+        return queryset
+
+class ListMunicipio(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = CatalogoSerializer
+
+    def get_queryset(self):
+        estado = self.request.query_params.get('estado', None)
+        queryset = Municipio.objects.none()
+        if estado is not None:
+            queryset = Municipio.objects.filter(estado__pk=estado, estatus=True)
         return queryset
