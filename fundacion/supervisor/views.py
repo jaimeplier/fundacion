@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 # Create your views here.
+from django.urls import reverse
 from django_datatables_view.base_datatable_view import BaseDatatableView
 from pytz import timezone
 
@@ -31,8 +32,10 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'reportes'
 
     model = Llamada
-    columns = ['id', 'victima.nombre', 'nombre', 'fecha', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'instituciones', 'medio_contacto']
-    order_columns = ['id', 'victima__nombre', 'fecha', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', '', 'estatus__nombre', 'medio_contacto']
+    columns = ['id', 'victima.nombre', 'nombre', 'fecha', 'hora_inicio', 'hora_fin', 'duracion_llamada',
+               'vida_en_riesgo', 'tipo_violencia', 'instituciones', 'medio_contacto', 'ver']
+    order_columns = ['id', 'victima__nombre', 'fecha', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '',
+                     'vida_en_riesgo', 'tipo_violencia', '', 'estatus__nombre', 'medio_contacto', '']
     max_display_length = 100
     settingstime_zone = timezone(settings.TIME_ZONE)
 
@@ -61,6 +64,8 @@ class LlamadaAjaxList(PermissionRequiredMixin, BaseDatatableView):
                     canalizaciones_str += canalizacion.sucursal.nombre + '<br>'
                 return canalizaciones_str
             return 'Sin canalización'
+        elif column == 'ver':
+            return '<a href="'+ reverse('webapp:ver_servicio', kwargs={'pk': row.pk})+'" target="_blank"><i class="material-icons">perm_phone_msg</i></a>'
 
         return super(LlamadaAjaxList, self).render_column(row, column)
 
@@ -200,8 +205,10 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
     permission_required = 'reportes'
 
     model = Llamada
-    columns = ['id', 'victima.nombre', 'nombre', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo', 'tipo_violencia', 'instituciones', 'motivo.nombre', 'medio_contacto.nombre']
-    order_columns = ['id', 'victima__nombre', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo', 'tipo_violencia', '', 'motivo.nombre', 'medio_contacto.nombre']
+    columns = ['id', 'victima.nombre', 'nombre', 'hora_inicio', 'hora_fin', 'duracion_llamada', 'vida_en_riesgo',
+               'tipo_violencia', 'instituciones', 'motivo.nombre', 'medio_contacto.nombre', 'ver']
+    order_columns = ['id', 'victima__nombre', 'consejero.a_paterno', 'hora_inicio', 'hora_fin', '', 'vida_en_riesgo',
+                     'tipo_violencia', '', 'motivo.nombre', 'medio_contacto.nombre', '']
     max_display_length = 100
     settingstime_zone = timezone(settings.TIME_ZONE)
 
@@ -230,6 +237,8 @@ class GeneralAjaxList(PermissionRequiredMixin, BaseDatatableView):
             h1 = datetime.strptime(h1, formato)
             h2 = datetime.strptime(h2, formato)
             return str(h2-h1)
+        elif column == 'ver':
+            return '<a href="'+ reverse('webapp:ver_servicio', kwargs={'pk': row.pk})+'" target="_blank"><i class="material-icons">perm_phone_msg</i></a>'
 
         return super(GeneralAjaxList, self).render_column(row, column)
 
