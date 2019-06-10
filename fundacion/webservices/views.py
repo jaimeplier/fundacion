@@ -267,6 +267,15 @@ class CountAvisos(APIView):
             destinatarios=usuario, leido=False).count()
         return Response({'cantidad': mensaje})
 
+class CountRecados(APIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    def get(self, request):
+        usuario = self.request.user
+        recado = Recado.objects.filter(usuario=usuario, leido=False).count()
+        return Response({'cantidad': recado})
+
 
 class ReporteUsuarioViewSet(APIView):
     permission_classes = (IsAuthenticated,)

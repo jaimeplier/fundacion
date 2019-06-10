@@ -134,7 +134,7 @@
                     <li class="menu_redondo"><a href="{% url 'calidad:list_llamada' %}">Servicios</a></li>
                 {% endif %}
                 <li class="menu_redondo"><a href="{% url 'webapp:list_pendiente' %}">Pendientes: <b id="num_pendientes"></b></a></li>
-                <li class="menu_redondo"><a href="{% url 'webapp:ver_recados' %}">Recados</a></li>
+                <li class="menu_redondo"><a href="{% url 'webapp:ver_recados' %}">Recados: <b id="num_recados"></b></a></li>
                 <li class="menu_redondo" style="margin-bottom: 15%;"><a href="{% url 'webapp:ver_avisos' %}">Avisos: <b id="num_avisos"></b></a></li>
 
             </ul>
@@ -237,6 +237,18 @@
             success: function (json) {
                 $("#num_avisos").empty().html(' ');
                 $('#num_avisos').append(
+                    json.cantidad
+                );
+            }
+        });
+
+        $.ajax({
+            method: "GET",
+            url: "{% url 'webservices:list_count_recados' %}",
+            cache: false,
+            success: function (json) {
+                $("#num_recados").empty().html(' ');
+                $('#num_recados').append(
                     json.cantidad
                 );
             }
