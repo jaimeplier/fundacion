@@ -9,7 +9,7 @@ from webservices.catalogos import ListSexo, ListReligion, ListGradoEstudios, Lis
     ListTipoLlamada, ListTipoViolencia, ListViolentometro, ListAcudeInstitucion, ListMotivoLlamada, \
     ListTipificaciones, ListTipificacionesCategorias, ListModalidadViolencia, \
     ListVictimas, ListAgresor, ListRedesApoyo, ListMedioContacto, ListNivelRiesgo, \
-    ListRecomendacionesRiesgo, ListFaseCambio, ListEstadoMental, ListComoSeEntero, ListAliado, ListLineaNegocio, \
+    ListRecomendacionesRiesgo, ListFaseCambio, ListComoSeEntero, ListAliado, ListLineaNegocio, \
     ListTipificacionesSubcategorias, ListTutor, ListDatosCP, ListEstadoCivil, ListSucursales, ListExamenMental, \
     ListEstado, ListMunicipio, GetSucursal
 from webservices.views import ResumenLlamada, ListUsuarios, ListEstatusActividadUsuario, UpdateEstatusActividadUsuario, \
@@ -80,7 +80,6 @@ urlpatterns = [
     path('list_nivel_riesgo/', ListNivelRiesgo.as_view(), name='list_nivel_riesgo'),
     path('list_recomendaciones_riesgo/', ListRecomendacionesRiesgo.as_view(), name='list_recomendaciones_riesgo'),
     path('list_fase_cambio/', ListFaseCambio.as_view(), name='list_fase_cambio'),
-    path('list_estado_mental/', ListEstadoMental.as_view(), name='list_estado_mental'),
     path('list_como_se_entero/', ListComoSeEntero.as_view(), name='list_como_se_entero'),
     path('list_aliado/', ListAliado.as_view(), name='list_aliado'),
     path('list_line_negocio/', ListLineaNegocio.as_view(), name='list_line_negocio'),

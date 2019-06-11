@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 
 from config.models import Llamada, Victima, EstadoCivil, Municipio, Ocupacion, Religion, ViveCon, Sexo, NivelEstudio, \
     LenguaIndigena, Consejero, MedioContacto, Violentometro, TipoViolencia, AcudeInstitucion, TipoLlamada, \
-    MotivoLLamada, EstadoMental, NivelRiesgo, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
+    MotivoLLamada, NivelRiesgo, CategoriaTipificacion, TipificacionLLamada, RedesApoyo, \
     FaseCambio, ModalidadViolencia, Agresor, ComoSeEntero, TareaLLamada, \
     VictimaInvolucrada, LineaNegocio, Aliado, LlamadaCanalizacion, SubcategoriaTipificacion, VictimaMenorEdad, Tutor, \
     ExamenMentalLLamada, CategoriaExamenMental, Colonia

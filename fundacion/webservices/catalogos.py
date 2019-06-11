@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoViolencia, \
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
     VictimaInvolucrada, Agresor, RedesApoyo, MedioContacto, NivelRiesgo, \
-    RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
+    RecomendacionRiesgo, FaseCambio, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
     Consejero, Tutor, EstadoCivil, Sucursal, CategoriaExamenMental, ExamenMental, Colonia, Estado, Municipio
 from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer, TutorSerializer, \
     CategoriaExamenMentalSerializerpk, ExamenMentalSerializer, ColoniaSerializer, SucursalSerializer
@@ -278,16 +278,6 @@ class ListFaseCambio(ListAPIView):
 
     def get_queryset(self):
         queryset = FaseCambio.objects.all()
-        return queryset
-
-class ListEstadoMental(ListAPIView):
-    permission_classes = (IsAuthenticated,)
-    authentication_classes = (TokenAuthentication, SessionAuthentication)
-
-    serializer_class = CatalogoSerializer
-
-    def get_queryset(self):
-        queryset = EstadoMental.objects.all()
         return queryset
 
 class ListComoSeEntero(ListAPIView):
