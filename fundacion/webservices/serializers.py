@@ -3,7 +3,7 @@ from rest_framework import serializers
 from config.models import Consejero, Llamada, Victima, MotivoLLamada, TipoLlamada, Evaluacion, \
     CalificacionLlamada, TareaLLamada, Usuario, Rol, Mensaje, Recado, ComentarioLlamada, CompromisoLlamada, \
     EstatusUsuario, ArchivoMensaje, ArchivoRecado, Aliado, LineaNegocio, Tutor, Colonia, Municipio, Estado, \
-    Pais, CategoriaExamenMental, ExamenMental
+    Pais, CategoriaExamenMental, ExamenMental, Sucursal, AcudeInstitucion, ContactoInstitucion
 
 
 class FechaSerializer(serializers.Serializer):
@@ -17,6 +17,23 @@ class CatalogoSerializer(serializers.Serializer):
     pk = serializers.IntegerField()
     nombre = serializers.CharField()
     estatus = serializers.BooleanField()
+
+class ContactoInstitucionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ContactoInstitucion
+        fields = ['pk', 'nombre', 'telefono', 'extension']
+
+class InstitucionSerializer(serializers.ModelSerializer):
+    contactos = ContactoInstitucionSerializer(source='contactoinstitucion_set', many=True)
+    class Meta:
+        model = AcudeInstitucion
+        fields = ['pk', 'nombre', 'direccion', 'contactos']
+
+class SucursalSerializer(serializers.ModelSerializer):
+    institucion = InstitucionSerializer(many=False)
+    class Meta:
+        model = Sucursal
+        fields = ['pk', 'convenio', 'nombre', 'telefonos', 'horarios', 'direccion', 'institucion']
 
 class AliadoSerializer(serializers.ModelSerializer):
     class Meta:

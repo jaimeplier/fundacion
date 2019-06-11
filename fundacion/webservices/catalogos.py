@@ -2,7 +2,8 @@ from rest_framework import status
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.generics import ListAPIView, get_object_or_404
+from rest_framework.generics import ListAPIView, get_object_or_404, RetrieveAPIView
+from rest_framework.views import APIView
 
 from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, TipoLlamada, TipoViolencia, \
     Violentometro, AcudeInstitucion, MotivoLLamada, Tipificacion, CategoriaTipificacion, ModalidadViolencia, \
@@ -10,7 +11,7 @@ from config.models import Sexo, Religion, NivelEstudio, Ocupacion, ViveCon, Tipo
     RecomendacionRiesgo, FaseCambio, EstadoMental, ComoSeEntero, Aliado, LineaNegocio, SubcategoriaTipificacion, \
     Consejero, Tutor, EstadoCivil, Sucursal, CategoriaExamenMental, ExamenMental, Colonia, Estado, Municipio
 from webservices.serializers import CatalogoSerializer, AliadoSerializer, LineaNegocioSerializer, TutorSerializer, \
-    CategoriaExamenMentalSerializerpk, ExamenMentalSerializer, ColoniaSerializer
+    CategoriaExamenMentalSerializerpk, ExamenMentalSerializer, ColoniaSerializer, SucursalSerializer
 
 
 class ListSexo(ListAPIView):
@@ -232,6 +233,19 @@ class ListSucursales(ListAPIView):
             colonia_obj = Colonia.objects.get(pk=colonia)
             queryset = Sucursal.objects.filter(estado=colonia_obj.municipio.estado)
         return queryset
+
+class GetSucursal(ListAPIView):
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication, SessionAuthentication)
+
+    serializer_class = SucursalSerializer
+    def get_queryset(self):
+        sucursal_pk = self.request.query_params.get('sucursal', None)
+        queryset = Sucursal.objects.none()
+        if sucursal_pk is not None:
+            queryset= Sucursal.objects.filter(pk=sucursal_pk)
+        return queryset
+
 
 class ListNivelRiesgo(ListAPIView):
     permission_classes = (IsAuthenticated,)
