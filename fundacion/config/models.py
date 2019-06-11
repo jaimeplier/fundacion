@@ -526,12 +526,6 @@ class ExamenMentalLLamada(models.Model):
         managed = True
         db_table = 'examen_mental_llamada'
 
-class EstadoMental(Catalogo):
-
-    class Meta:
-        managed = True
-        db_table = 'estado_mental'
-
 class NivelRiesgo(Catalogo):
 
     class Meta:
