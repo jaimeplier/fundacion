@@ -207,6 +207,8 @@ class Sucursal(Catalogo):
     direccion = models.CharField(max_length=512)
     estado = models.ForeignKey('Estado', models.DO_NOTHING)
     palabras_clave = models.TextField(max_length=128, null=True, blank=True)
+    telefonos = models.TextField(max_length=256, null=True, blank=True)
+    horarios = models.TextField(max_length=256, null=True, blank=True)
 
     @property
     def latitud(self):
