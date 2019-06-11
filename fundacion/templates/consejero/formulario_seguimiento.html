@@ -1050,90 +1050,6 @@
                     }
                 });
 
-                $.ajax({
-                    method: "GET",
-                    url: "{% url 'webservices:list_estado_mental' %}",
-                    cache: false,
-                    success: function (json) {
-
-                        $("#em_ute").empty().html(' ');
-                        $("#em_p").empty().html(' ');
-                        $("#em_l").empty().html(' ');
-                        $("#em_m").empty().html(' ');
-                        $("#em_a").empty().html(' ');
-
-                        $('#em_ute').append(
-                            $("<option></option>")
-                                .attr("value", "")
-                                .text("UTE")
-                        );
-                        for (i in json) {
-                            $('#em_ute').append(
-                                $("<option></option>")
-                                    .attr("value", json[i].pk)
-                                    .text(json[i].nombre)
-                            );
-                        }
-
-                        $('#em_p').append(
-                            $("<option></option>")
-                                .attr("value", "")
-                                .text("P")
-                        );
-                        for (i in json) {
-                            $('#em_p').append(
-                                $("<option></option>")
-                                    .attr("value", json[i].pk)
-                                    .text(json[i].nombre)
-                            );
-                        }
-
-                        $('#em_l').append(
-                            $("<option></option>")
-                                .attr("value", "")
-                                .text("L")
-                        );
-                        for (i in json) {
-                            $('#em_l').append(
-                                $("<option></option>")
-                                    .attr("value", json[i].pk)
-                                    .text(json[i].nombre)
-                            );
-                        }
-
-                        $('#em_m').append(
-                            $("<option></option>")
-                                .attr("value", "")
-                                .text("M")
-                        );
-                        for (i in json) {
-                            $('#em_m').append(
-                                $("<option></option>")
-                                    .attr("value", json[i].pk)
-                                    .text(json[i].nombre)
-                            );
-                        }
-
-                        $('#em_a').append(
-                            $("<option></option>")
-                                .attr("value", "")
-                                .text("A")
-                        );
-                        for (i in json) {
-                            $('#em_a').append(
-                                $("<option></option>")
-                                    .attr("value", json[i].pk)
-                                    .text(json[i].nombre)
-                            );
-                        }
-                        $('#em_ute').material_select();
-                        $('#em_p').material_select();
-                        $('#em_l').material_select();
-                        $('#em_m').material_select();
-                        $('#em_a').material_select();
-                    }
-                });
-
 
                 $.ajax({
                     method: "GET",
@@ -1677,11 +1593,6 @@
             var amenazas = $('#amenazas').val();
             var recursos = $('#recursos').val();
             var intervencion = $('#intervencion').val();
-            var estado_mental_ute = $('#em_ute').val();
-            var estado_mental_p = $('#em_p').val();
-            var estado_mental_l = $('#em_l').val();
-            var estado_mental_m = $('#em_m').val();
-            var estado_mental_a = $('#em_a').val();
             var fase_cambio = $('#fase_cambio').val();
             var modalidad_violencia = $('#modalidad_violencia').val();
             var tipo_violencia = $('#tipos_violencia').val();
@@ -1796,11 +1707,6 @@
                     amenazas: amenazas,
                     recursos: recursos,
                     intervencion: intervencion,
-                    estado_mental_ute: estado_mental_ute,
-                    estado_mental_p: estado_mental_p,
-                    estado_mental_l: estado_mental_l,
-                    estado_mental_m: estado_mental_m,
-                    estado_mental_a: estado_mental_a,
                     fase_cambio: "" ? null :  fase_cambio,
                     modalidad_violencia: modalidad_violencia=="" ? null : modalidad_violencia,
                     tipo_violencia: tipo_violencia=="" ? null : tipo_violencia,

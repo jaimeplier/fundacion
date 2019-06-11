@@ -599,6 +599,8 @@
                             </select>
                             </div>
                         </div>
+
+                        <div class="col s6">
                         <div class="col s10">
                             <p style="text-align: left;">1. Canalizar a: <span style="text-align: right; float: right">
 
@@ -619,19 +621,29 @@
                                 type="text" placeholder="Buscar por palabras clave">
                             </div>
                             <!-- <button onclick="reloadInstituciones('instituciones')" -->
+                        <div class="col s11">
                             <button onclick="reloadInstituciones('instituciones', 'palabrasClave1')"
                                     class="btn fondo_naranja redondo"
                                     style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
                                 <i class="material-icons" style="cursor: pointer">refresh</i>
                             </button>
                             <select class="browser-default js-example-basic-single" id="instituciones"
-                                    style="width: 85%">
+                                    style="width: 85%" onchange="cargarDatosSucursal('#instituciones', '#contenedor_sucursal1')">
                             </select>
                         </div>
+                        </div>
+                    </div>
+
+                        <div class="col s6" id="contenedor_sucursal1">
+
+                        </div>
+
                         <div class="col s12">
                             <br />
                         </div>
                         <br>
+
+                    <div class="col s6">
                         <div class="col s12">
                             <p style="text-align: left ">2. Canalizar a:</p>
                         </div>
@@ -641,15 +653,23 @@
                                 onblur="reloadInstituciones('instituciones2', 'palabrasClave2')"
                                 type="text" placeholder="Buscar por palabras clave">
                             </div>
+                        <div class="col s11">
                             <button onclick="reloadInstituciones('instituciones2', 'palabrasClave2')"
                                     class="btn fondo_naranja redondo"
                                     style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
                                 <i class="material-icons" style="cursor: pointer">refresh</i>
                             </button>
                             <select class="browser-default js-example-basic-single" id="instituciones2"
-                                    style="width: 85%">
+                                    style="width: 85%" onchange="cargarDatosSucursal('#instituciones2', '#contenedor_sucursal2')">
                             </select>
                         </div>
+                        </div>
+                    </div>
+
+                    <div class="col s6" id="contenedor_sucursal2">
+
+                    </div>
+
                     </div>
 
 
@@ -1104,90 +1124,6 @@
                 }
             });
 
-            $.ajax({
-                method: "GET",
-                url: "{% url 'webservices:list_estado_mental' %}",
-                cache: false,
-                success: function (json) {
-
-                    $("#em_ute").empty().html(' ');
-                    $("#em_p").empty().html(' ');
-                    $("#em_l").empty().html(' ');
-                    $("#em_m").empty().html(' ');
-                    $("#em_a").empty().html(' ');
-
-                    $('#em_ute').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("UTE")
-                    );
-                    for (i in json) {
-                        $('#em_ute').append(
-                            $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
-                        );
-                    }
-
-                    $('#em_p').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("P")
-                    );
-                    for (i in json) {
-                        $('#em_p').append(
-                            $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
-                        );
-                    }
-
-                    $('#em_l').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("L")
-                    );
-                    for (i in json) {
-                        $('#em_l').append(
-                            $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
-                        );
-                    }
-
-                    $('#em_m').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("M")
-                    );
-                    for (i in json) {
-                        $('#em_m').append(
-                            $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
-                        );
-                    }
-
-                    $('#em_a').append(
-                        $("<option></option>")
-                            .attr("value", "")
-                            .text("A")
-                    );
-                    for (i in json) {
-                        $('#em_a').append(
-                            $("<option></option>")
-                                .attr("value", json[i].pk)
-                                .text(json[i].nombre)
-                        );
-                    }
-                    $('#em_ute').material_select();
-                    $('#em_p').material_select();
-                    $('#em_l').material_select();
-                    $('#em_m').material_select();
-                    $('#em_a').material_select();
-                }
-            });
-
 
             $.ajax({
                 method: "GET",
@@ -1478,6 +1414,27 @@
                 }
             });
         }
+
+        function cargarDatosSucursal(idSucursal, contenedor) {
+            var sucursal = $(idSucursal).val()
+            $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:get_sucursal' %}?sucursal=" + sucursal,
+                    cache: false,
+                    success: function (json) {
+                        console.log('json!', json)
+                        $(contenedor).empty();
+                        $(contenedor).append( `
+                        <p><b>Dirección: </b> <span>` + json[0].direccion + ` </span></p>` +
+                        `<p><b>Teléfono: </b> <span>` + json[0].telefonos + ` </span></p>` +
+                        `<p><b>Horario: </b> <span>` + json[0].horarios + ` </span></p>`
+                    );
+                    }
+                });
+
+
+        }
+
 
         function CargarLineaNegocio() {
             var aliado = $('#aliado').val();

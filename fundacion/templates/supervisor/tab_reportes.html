@@ -133,7 +133,7 @@
 
 
     <!-- display: none -->
-    <div id="div_usuarios" class="row" style="padding: 1%; ">
+    <div id="div_usuarios" class="row" style="padding: 1%; display: none ">
         <div class="col s1"></div>
         <div class="col s10">
             <table id="tabla_usuarios" class="display responsive-table" style="width:100%; padding-top: 5%;">
@@ -142,6 +142,7 @@
                     <th>Total usuarios</th>
                     <th>Primera vez</th>
                     <th>Seguimiento</th>
+                    <th>Total servicios</th>
                 </tr>
                 </thead>
                 {% block datos_tabla_usuarios %} {% endblock %}
@@ -1023,6 +1024,49 @@
                 {% block order2 %}{% endblock %}
             });
 
+             tabla_usuarios = $('#tabla_usuarios').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        copyTitle: 'Ajouté au presse-papiers',
+                        copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',
+                        copySuccess: {
+                            _: '%d lignes copiées',
+                            1: '1 ligne copiée'
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        orientation: 'landscape',
+                        pageSize: 'LEGAL'
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Print all',
+                        exportOptions: {
+                            modifier: {
+                                selected: null
+                            }
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        customize: function (xlsx) {
+                            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            $('row c[r^="C"]', sheet).attr('s', '2');
+                        }
+                    }
+
+
+                ],
+                processing: true,
+                serverSide: true,
+                ajax: "{% block url_ajax5 %}{% url 'webservices:reporte_usuarios' %}{% endblock %}",
+                {% block order5 %}{% endblock %}
+            });
+
             tabla_generales = $('#tabla_generales').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
@@ -1214,9 +1258,9 @@
                     $("#div_productividad").hide();
                     $("#div_generales").hide();
                     $("#div_usuarios").show();
-                    tablaUrl = "{% url 'supervisor:list_ajax_reporte_general' %}";
-                    idTabla = '#tabla_generales';
-                    curr_table = tabla_generales;
+                    tablaUrl = "{% url 'webservices:reporte_usuarios' %}";
+                    idTabla = '#tabla_usuarios';
+                    curr_table = tabla_usuarios;
                     break;
 
                 default:
