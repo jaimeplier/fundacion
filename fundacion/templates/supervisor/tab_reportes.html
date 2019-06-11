@@ -46,6 +46,7 @@
                 <!-- <option value="2" onchange="change_reporte('productividad')">Idicadores</option> -->
                 <option value="3" selected>Historial de servicios</option>
                 <option value="4" >Generales</option>
+                <option value="5" >Usuarios</option>
             </select>
         </div>
         <div class="col s4 m4 l4"></div>
@@ -125,6 +126,25 @@
                 </tr>
                 </thead>
                 {% block datos_tabla_productividad %} {% endblock %}
+            </table>
+        </div>
+        <div class="col s1"></div>
+    </div>
+
+
+    <!-- display: none -->
+    <div id="div_usuarios" class="row" style="padding: 1%; ">
+        <div class="col s1"></div>
+        <div class="col s10">
+            <table id="tabla_usuarios" class="display responsive-table" style="width:100%; padding-top: 5%;">
+                <thead>
+                <tr>
+                    <th>Total usuarios</th>
+                    <th>Primera vez</th>
+                    <th>Seguimiento</th>
+                </tr>
+                </thead>
+                {% block datos_tabla_usuarios %} {% endblock %}
             </table>
         </div>
         <div class="col s1"></div>
@@ -915,6 +935,8 @@
             });
 
 
+    
+
             tabla_historial = $('#tabla_historial').DataTable({
                 dom: 'Bfrtip',
                 buttons: [
@@ -1150,7 +1172,6 @@
         }
 
         function filtrar() {
-            console.log('filtrando!')
              $('.datepicker').on('mousedown',function(event){
                 event.preventDefault();
             });
@@ -1165,7 +1186,7 @@
                     $("#div_historial").hide();
                     $("#div_productividad").show();
                     $("#div_generales").hide();
-                    console.log('caso 1');
+                    $("#div_usuarios").hide();
                     tablaUrl = "{% url 'supervisor:list_ajax_productividad' %}";
                     idTabla = '#tabla_productividad';
                     curr_table = tabla_productividad;
@@ -1174,7 +1195,7 @@
                     $("#div_historial").show();
                     $("#div_productividad").hide();
                     $("#div_generales").hide();
-                    console.log('caso 3');
+                    $("#div_usuarios").hide();
                     tablaUrl = "{% url 'supervisor:list_ajax_llamada' %}";
                     idTabla = '#tabla_historial';
                     curr_table = tabla_historial;
@@ -1182,12 +1203,22 @@
                 case '4': //generales
                     $("#div_historial").hide();
                     $("#div_productividad").hide();
+                    $("#div_usuarios").hide();
                     $("#div_generales").show();
-                    console.log('caso 4');
                     tablaUrl = "{% url 'supervisor:list_ajax_reporte_general' %}";
                     idTabla = '#tabla_generales';
                     curr_table = tabla_generales;
                     break;
+                case '5': // usuarios
+                    $("#div_historial").hide();
+                    $("#div_productividad").hide();
+                    $("#div_generales").hide();
+                    $("#div_usuarios").show();
+                    tablaUrl = "{% url 'supervisor:list_ajax_reporte_general' %}";
+                    idTabla = '#tabla_generales';
+                    curr_table = tabla_generales;
+                    break;
+
                 default:
                     break;
                 }
