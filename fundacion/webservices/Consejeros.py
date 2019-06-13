@@ -53,7 +53,7 @@ class PrimerRegistro(APIView):
         formato = '%H:%M:%S'
         h1 = datetime.strptime(hora_inicio, formato)
         h2 = datetime.strptime(hora_fin, formato)
-        duracion_servicio = str(h2 - h1)
+        duracion_servicio = ((h2 - h1).seconds)/60
         consejero = Consejero.objects.get(pk=self.request.user.pk)
         f = serializer.data['f']
         debilidades = serializer.data['debilidades']
@@ -193,7 +193,7 @@ class SeguimientoRegistro(APIView):
         formato = '%H:%M:%S'
         h1 = datetime.strptime(hora_inicio, formato)
         h2 = datetime.strptime(hora_fin, formato)
-        duracion_servicio = str(h2 - h1)
+        duracion_servicio = ((h2 - h1).seconds)/60
         consejero = Consejero.objects.get(pk=self.request.user.pk)
         victima = Victima.objects.get(pk=serializer.validated_data['victima'])
         f = serializer.data['f']
