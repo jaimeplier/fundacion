@@ -289,7 +289,7 @@ class Llamada(models.Model):
     linea_negocio = models.ForeignKey('LineaNegocio', models.DO_NOTHING, blank=True, null=True)
     aliado = models.ForeignKey('Aliado', models.DO_NOTHING, blank=True, null=True)
     tareas = models.ManyToManyField('TareaLLamada', related_name='tareas')
-    duracion_servicio = models.TimeField()
+    duracion_servicio = models.BigIntegerField()
     transferencia = models.BooleanField(default=False)
     recibido = models.BooleanField(default=False)
 
