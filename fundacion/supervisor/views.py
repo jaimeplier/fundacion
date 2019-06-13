@@ -106,7 +106,7 @@ class ProductividadAjaxList(PermissionRequiredMixin, BaseDatatableView):
     def render_column(self, row, column):
 
         if column == 'tiempo_servicio':
-            return "{0:,.2f}".format(row['tiempo_servicio'])
+            return "{0:,.2f}".format(row['tiempo_servicio']/60)
         elif column == 'consejero':
             consejero = Consejero.objects.get(pk=row['consejero'])
             return consejero.get_full_name()
