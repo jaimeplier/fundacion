@@ -645,16 +645,18 @@
                             </div>
 
                             <div class="row sin_marg_bottom" id="datos_canalizacion">
-                                
+                                <div id="area_estados">
                                     <div class="col s12">
                                     <select id="estados" style="width: 85%"
                                     onchange="reloadInstituciones('instituciones', 'palabrasClave1');reloadInstituciones('instituciones2', 'palabrasClave2')">
                                     </select>
                                     </div>
-
+                                </div>
+        
+                                <div class="col s6">
                                 <div class="col s10">
                                     <p style="text-align: left;">1. Canalizar a: <span style="text-align: right; float: right">
-
+        
                                         <a href="{% url 'administrador:list_acude_institucion' %}" target="_blank">
                                         <button class="btn fondo_naranja redondo"
                                                 style="width: 125px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
@@ -663,7 +665,7 @@
                                     </a></span>
                                     </p>
                                 </div>
-
+        
                                 <div class="col s2"></div>
                                 <div class="col s12 m12 l12">
                                     <div class="col s12">
@@ -672,19 +674,29 @@
                                         type="text" placeholder="Buscar por palabras clave">
                                     </div>
                                     <!-- <button onclick="reloadInstituciones('instituciones')" -->
+                                <div class="col s11">
                                     <button onclick="reloadInstituciones('instituciones', 'palabrasClave1')"
                                             class="btn fondo_naranja redondo"
                                             style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
                                         <i class="material-icons" style="cursor: pointer">refresh</i>
                                     </button>
                                     <select class="browser-default js-example-basic-single" id="instituciones"
-                                            style="width: 85%">
+                                            style="width: 85%" onchange="cargarDatosSucursal('#instituciones', '#contenedor_sucursal1')">
                                     </select>
                                 </div>
+                                </div>
+                            </div>
+        
+                                <div class="col s6" id="contenedor_sucursal1">
+        
+                                </div>
+        
                                 <div class="col s12">
                                     <br />
                                 </div>
                                 <br>
+        
+                            <div class="col s6">
                                 <div class="col s12">
                                     <p style="text-align: left ">2. Canalizar a:</p>
                                 </div>
@@ -694,16 +706,25 @@
                                         onblur="reloadInstituciones('instituciones2', 'palabrasClave2')"
                                         type="text" placeholder="Buscar por palabras clave">
                                     </div>
+                                <div class="col s11">
                                     <button onclick="reloadInstituciones('instituciones2', 'palabrasClave2')"
                                             class="btn fondo_naranja redondo"
                                             style="width: 50px; height: 30px; font-size: xx-small; padding-left: 10px; padding-right: 10px">
                                         <i class="material-icons" style="cursor: pointer">refresh</i>
                                     </button>
                                     <select class="browser-default js-example-basic-single" id="instituciones2"
-                                            style="width: 85%">
+                                            style="width: 85%" onchange="cargarDatosSucursal('#instituciones2', '#contenedor_sucursal2')">
                                     </select>
                                 </div>
+                                </div>
                             </div>
+        
+                            <div class="col s6" id="contenedor_sucursal2">
+        
+                            </div>
+        
+                            </div>
+        
 
 
                             <!-- </form> -->
@@ -1288,6 +1309,25 @@
                 });
 
             });
+
+            function cargarDatosSucursal(idSucursal, contenedor) {
+            var sucursal = $(idSucursal).val()
+            $.ajax({
+                    method: "GET",
+                    url: "{% url 'webservices:get_sucursal' %}?sucursal=" + sucursal,
+                    cache: false,
+                    success: function (json) {
+                        console.log('json!', json)
+                        $(contenedor).empty();
+                        $(contenedor).append( `
+                        <p><b>Dirección: </b> <span>` + json[0].direccion + ` </span></p>` +
+                        `<p><b>Teléfono: </b> <span>` + json[0].telefonos + ` </span></p>` +
+                        `<p><b>Horario: </b> <span>` + json[0].horarios + ` </span></p>`
+                    );
+                    }
+                });
+        }
+
 
         function cargarColonias() {
             var cp = $('#id_cp').val();
